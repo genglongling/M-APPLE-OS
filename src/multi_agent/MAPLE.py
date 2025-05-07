@@ -3,6 +3,7 @@ import os
 from collections import deque
 from colorama import Fore
 from graphviz import Digraph  # type: ignore
+from multi_agent.agent import Agent  # Add import for base Agent class
 
 # Layer 1: Specification Construction (Workflow Construction)
 class WorkflowSpecification:
@@ -34,7 +35,26 @@ class InterAgentCoordinator:
     Manages agent instantiation, dependency resolution, and coordination.
     """
     def __init__(self, nodes, edges):
-        self.agents = [node['agent'] for node in nodes]
+        # Ensure all agents inherit from base Agent class
+        self.agents = []
+        for node in nodes:
+            agent = node['agent']
+            if not isinstance(agent, Agent):
+                # Convert to base Agent if not already
+                base_agent = Agent(
+                    name=agent.name,
+                    backstory=getattr(agent, 'backstory', ''),
+                    task_description=getattr(agent, 'task_description', ''),
+                    task_expected_output=getattr(agent, 'task_expected_output', '')
+                )
+                # Copy over any additional attributes
+                for attr in dir(agent):
+                    if not attr.startswith('_') and not hasattr(base_agent, attr):
+                        setattr(base_agent, attr, getattr(agent, attr))
+                self.agents.append(base_agent)
+            else:
+                self.agents.append(agent)
+        
         self.dependencies = {node['agent'].name: [dep for dep in node.get('dependencies', [])] for node in nodes}
         self._set_agent_dependencies()
 
@@ -111,11 +131,33 @@ class ExecutionManager:
         executed_agents = []
         try:
             for agent in sorted_agents:
-                print(f"🚀 Running Agent: {agent.name}")
+                print(f"\n🚀 Running Agent: {agent.name}")
+                # Use the base Agent's run method which includes LLM integration
                 result = agent.run()
                 self.context[agent.name] = result
                 executed_agents.append(agent)
                 print(Fore.GREEN + f"✅ {agent.name} completed successfully.")
+
+                # print each agent result
+                # print(Fore.CYAN + "📊 Agent Results:")
+                # if isinstance(result, dict):
+                #     for key, value in result.items():
+                #         if key == 'schedule':
+                #             print(f"  Schedule entries: {len(value)}")
+                #             # Print first few entries as example
+                #             for entry in value[:3]:
+                #                 print(f"    - {entry}")
+                #             if len(value) > 3:
+                #                 print(f"    ... and {len(value)-3} more entries")
+                #         elif key == 'errors':
+                #             print(f"  Errors: {len(value)}")
+                #             for error in value:
+                #                 print(f"    - {error}")
+                #         else:
+                #             print(f"  {key}: {value}")
+                # else:
+                #     print(f"  {result}")
+                # print(Fore.RESET)
         except Exception as e:
             print(Fore.RED + f"❌ ERROR in {agent.name}: {str(e)}")
             if adaptation_manager:

@@ -76,7 +76,12 @@ def make_placeholder_schedule(job, offset=0):
 # Create agents for each job, with run() returning a standardized schedule
 class JSSPAgent(Agent):
     def __init__(self, name, backstory, task_description, task_expected_output, model_type="openai"):
-        super().__init__(name, backstory, task_description, task_expected_output)
+        super().__init__(
+            name=name,
+            backstory=backstory,
+            task_description=task_description,
+            task_expected_output=task_expected_output
+        )
         self.client = get_llm_client(model_type)
         self.model_type = model_type
 
@@ -140,6 +145,16 @@ class SupervisorAgent(Agent):
     Objective: Find the schedule with the minimum possible makespan.
     (Note: This baseline implementation does not perform optimization.)
     """
+    def __init__(self, name, backstory, task_description, task_expected_output, model_type="openai"):
+        super().__init__(
+            name=name,
+            backstory=backstory,
+            task_description=task_description,
+            task_expected_output=task_expected_output
+        )
+        self.client = get_llm_client(model_type)
+        self.model_type = model_type
+
     def run(self):
         # Aggregate all job agent schedules from context
         all_schedules = []
@@ -178,7 +193,12 @@ class SupervisorAgent(Agent):
 
 class JSSPValidationAgent(Agent):
     def __init__(self, name, backstory, task_description, task_expected_output, model_type="openai"):
-        super().__init__(name, backstory, task_description, task_expected_output)
+        super().__init__(
+            name=name,
+            backstory=backstory,
+            task_description=task_description,
+            task_expected_output=task_expected_output
+        )
         self.client = get_llm_client(model_type)
         self.model_type = model_type
 
@@ -208,9 +228,21 @@ class JSSPValidationAgent(Agent):
         
         for machine, schedule in machine_schedules.items():
             schedule.sort(key=lambda x: x.get('start', 0))
+            # Track processed pairs to avoid duplicates
+            processed_pairs = set()
             for i in range(len(schedule)-1):
-                if schedule[i].get('end', 0) > schedule[i+1].get('start', 0):
-                    errors.append(f"Overlap detected on {machine}: {schedule[i].get('job')} Step {schedule[i].get('step')} and {schedule[i+1].get('job')} Step {schedule[i+1].get('step')}")
+                for j in range(i+1, len(schedule)):
+                    # Create a unique key for this pair
+                    pair_key = (schedule[i].get('job'), schedule[i].get('step'), 
+                              schedule[j].get('job'), schedule[j].get('step'))
+                    if pair_key in processed_pairs:
+                        continue
+                    
+                    if schedule[i].get('end', 0) > schedule[j].get('start', 0):
+                        error_msg = f"Overlap detected on {machine}: {schedule[i].get('job')} Step {schedule[i].get('step')} and {schedule[j].get('job')} Step {schedule[j].get('step')}"
+                        if error_msg not in errors:  # Avoid duplicate error messages
+                            errors.append(error_msg)
+                        processed_pairs.add(pair_key)
         
         # 2. Check job precedence constraints
         job_steps = {}
@@ -260,7 +292,7 @@ for job in jobs:
         backstory=f"Agent for {job['name']} scheduling.",
         task_description=f"Schedule steps for {job['name']} on required machines with precedence.",
         task_expected_output=f"Step schedule for {job['name']} respecting machine and precedence constraints.",
-        model_type="openai"  # or other model type
+        model_type="google"  # Changed from "openai" to "google"
     )
     agents.append(agent)
     
@@ -270,7 +302,7 @@ validation_agent = JSSPValidationAgent(
     backstory="Validates JSSP schedules for constraint violations.",
     task_description="Check all schedules for machine constraints, precedence constraints, and makespan validity.",
     task_expected_output="Validation results with any detected violations.",
-    model_type="openai"  # Can be changed to "anthropic", "google", or "deepseek"
+    model_type="google"  # Changed from "openai" to "google"
 )
 
 # Add supervisor agent
@@ -278,7 +310,8 @@ supervisor_agent = SupervisorAgent(
     name="Supervisor Agent",
     backstory="Aggregates all job schedules and produces the overall minimum makespan JSSP schedule.",
     task_description="Combine all job agent schedules into a single overall minimum makespan JSSP schedule.",
-    task_expected_output="Overall minimum makespan JSSP schedule as a table."
+    task_expected_output="Overall minimum makespan JSSP schedule as a table.",
+    model_type="google"  # Changed from "openai" to "google"
 )
 
 agents.extend([supervisor_agent, validation_agent])
