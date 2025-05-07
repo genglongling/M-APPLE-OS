@@ -4,7 +4,7 @@ from dotenv import load_dotenv
 from openai import OpenAI
 import google.generativeai as genai
 from anthropic import Anthropic
-# from deepseek import Deepseek
+from deepseek import Deepseek
 
 # Set up project root and src path
 dir_path = os.path.dirname(os.path.abspath(__file__))
@@ -31,29 +31,12 @@ def get_llm_client(model_type="openai"):
     else:
         raise ValueError(f"Unsupported model type: {model_type}")
 
-# DMU dataset loader
-def load_dmu_dataset(filepath):
-    jobs = []
-    with open(filepath, 'r') as f:
-        lines = [line.strip() for line in f if line.strip()]
-        n_jobs, n_machines = map(int, lines[0].split())
-        for job_idx, line in enumerate(lines[1:]):
-            tokens = list(map(int, line.split()))
-            steps = [(f"Machine{machine}", duration) for machine, duration in zip(tokens[::2], tokens[1::2])]
-            jobs.append({'name': f'Job{job_idx+1}', 'steps': steps})
-    return jobs
-
-# Load jobs from DMU dataset
-DMU_FILE = os.path.join(project_root, 'applications', 'DMU', 'rcmax_50_20_9.txt')
-jobs = load_dmu_dataset(DMU_FILE)
-
-# After loading jobs
-all_machine_indices = set()
-for job in jobs:
-    for machine, _ in job['steps']:
-        idx = int(machine.replace('Machine', ''))
-        all_machine_indices.add(idx)
-machine_names = [f"Machine{idx}" for idx in sorted(all_machine_indices)]
+# Define job steps and machine constraints for Experiment 1
+jobs = [
+    {'name': 'Job1', 'steps': [('MachineA', 3), ('MachineB', 2), ('MachineC', 2)]},
+    {'name': 'Job2', 'steps': [('MachineA', 2), ('MachineC', 1), ('MachineB', 4)]},
+    {'name': 'Job3', 'steps': [('MachineB', 4), ('MachineA', 1), ('MachineC', 3)]},
+]
 
 # Helper: create a placeholder schedule for demonstration
 # In a real system, the agent would compute this based on constraints
@@ -89,7 +72,7 @@ class JSSPAgent(Agent):
         current_time = 0
         
         # Track machine availability
-        machine_availability = {name: 0 for name in machine_names}
+        machine_availability = {'MachineA': 0, 'MachineB': 0, 'MachineC': 0}
         
         for step_idx, (machine, duration) in enumerate(job['steps']):
             # Find the earliest possible start time considering:
@@ -153,7 +136,7 @@ class SupervisorAgent(Agent):
 
         # Algorithm 1: Reschedule all jobs together
         # Initialize machine availability times
-        machine_availability = {name: 0 for name in machine_names}
+        machine_availability = {'MachineA': 0, 'MachineB': 0, 'MachineC': 0}
         # Track completion time for each job
         job_completion = {job['name']: 0 for job in jobs}
         # Track which step each job is on
@@ -223,7 +206,7 @@ class SupervisorAgent(Agent):
         
         # Calculate upper bound
         job_sums = {}
-        machine_sums = {name: 0 for name in machine_names}
+        machine_sums = {'MachineA': 0, 'MachineB': 0, 'MachineC': 0}
         
         for job in jobs:
             job_sum = sum(duration for _, duration in job['steps'])
@@ -269,7 +252,7 @@ class JSSPValidationAgent(Agent):
         errors = []
         
         # 1. Check machine constraints (no overlapping operations)
-        machine_schedules = {name: [] for name in machine_names}
+        machine_schedules = {'MachineA': [], 'MachineB': [], 'MachineC': []}
         for entry in all_schedules:
             machine = entry.get('machine')
             if machine in machine_schedules:
@@ -329,7 +312,7 @@ for job in jobs:
         backstory=f"Agent for {job['name']} scheduling.",
         task_description=f"Schedule steps for {job['name']} on required machines with precedence.",
         task_expected_output=f"Step schedule for {job['name']} respecting machine and precedence constraints.",
-        model_type="openai"  # or other model type
+        model_type="openai"  # Can be changed to "anthropic", "google", or "deepseek"
     )
     agents.append(agent)
 
@@ -353,22 +336,20 @@ supervisor_agent = SupervisorAgent(
 
 agents.extend([supervisor_agent, validation_agent])
 
-# Only job agents as initial nodes
-nodes = [{'agent': agent, 'dependencies': []} for agent in agents if isinstance(agent, JSSPAgent)]
-
-# Supervisor depends on all job agents
-nodes.append({'agent': supervisor_agent, 'dependencies': [agent.name for agent in agents if isinstance(agent, JSSPAgent)]})
-
-# Validation agent depends on supervisor
-nodes.append({'agent': validation_agent, 'dependencies': [supervisor_agent.name]})
-
+# Disruption event: MachineA unavailable from t=4 to t=6
+# We'll encode this as part of the task_spec
 task_spec = {
-    'nodes': nodes,
+    'nodes': [
+        {'agent': agents[0], 'dependencies': []},
+        {'agent': agents[1], 'dependencies': []},
+        {'agent': agents[2], 'dependencies': []},
+        {'agent': supervisor_agent, 'dependencies': [agents[0].name, agents[1].name, agents[2].name]},
+        {'agent': validation_agent, 'dependencies': [supervisor_agent.name]},
+    ],
     'edges': [],
     'jobs': jobs,
     'disruptions': [
-        # You may want to update this for dynamic machine names
-        # {'machine': 'MachineA', 'unavailable': [(4, 6)]}
+        {'machine': 'MachineA', 'unavailable': [(4, 6)]}
     ],
     'rules': [
         'Each job must perform its steps strictly in order.',
