@@ -134,116 +134,320 @@ class JSSPAgent(Agent):
         return {'schedule': schedule}
 
 # Add a final Supervisor Agent
+# Algorithm 1: Reschedule all jobs together
+# class SupervisorAgent(Agent):
+#     def __init__(self, name, backstory, task_description, task_expected_output, model_type="openai"):
+#         super().__init__(name, backstory, task_description, task_expected_output)
+#         self.client = get_llm_client(model_type)
+#         self.model_type = model_type
+
+#     def run(self):
+#         # Get schedules from all job agents
+#         all_schedules = []
+#         for agent in self.dependencies:
+#             if hasattr(agent, 'context') and isinstance(agent.context, dict) and 'schedule' in agent.context:
+#                 all_schedules.extend(agent.context['schedule'])
+        
+#         if not all_schedules:
+#             print("Warning: No schedules found from job agents")
+#             return {'schedule': []}
+
+#         # Initialize machine availability times
+#         machine_availability = {name: 0 for name in machine_names}
+#         # Track completion time for each job
+#         job_completion = {job['name']: 0 for job in jobs}
+#         # Track which step each job is on
+#         job_step = {job['name']: 0 for job in jobs}
+#         # Track which jobs are completed
+#         completed_jobs = set()
+#         # New schedule
+#         new_schedule = []
+
+#         while len(completed_jobs) < len(jobs):
+#             # For each job that's not completed
+#             for job in jobs:
+#                 job_name = job['name']
+#                 if job_name in completed_jobs:
+#                     continue
+
+#                 current_step = job_step[job_name]
+#                 if current_step >= len(job['steps']):
+#                     completed_jobs.add(job_name)
+#                     continue
+
+#                 machine, duration = job['steps'][current_step]
+                
+#                 # Calculate earliest possible start time
+#                 # Must be after:
+#                 # 1. Previous step completion
+#                 # 2. Machine availability
+#                 start_time = max(
+#                     job_completion[job_name],  # Previous step completion
+#                     machine_availability[machine]  # Machine availability
+#                 )
+
+#                 # Check for conflicts with existing operations
+#                 while True:
+#                     conflict = False
+#                     for existing_op in new_schedule:
+#                         if (existing_op['machine'] == machine and
+#                             not (start_time >= existing_op['end'] or 
+#                                  start_time + duration <= existing_op['start'])):
+#                             conflict = True
+#                             start_time = existing_op['end']
+#                             break
+#                     if not conflict:
+#                         break
+
+#                 # Schedule this operation
+#                 end_time = start_time + duration
+#                 new_schedule.append({
+#                     'job': job_name,
+#                     'step': current_step + 1,
+#                     'machine': machine,
+#                     'start': start_time,
+#                     'end': end_time,
+#                     'precedence': f"After {job_name} Step {current_step}" if current_step > 0 else None
+#                 })
+
+#                 # Update tracking variables
+#                 machine_availability[machine] = end_time
+#                 job_completion[job_name] = end_time
+#                 job_step[job_name] += 1
+
+#         # Sort the new schedule by start time
+#         new_schedule.sort(key=lambda x: (x.get('start', 0), x.get('machine', ''), x.get('job', '')))
+        
+#         # Calculate makespan
+#         makespan = max(entry.get('end', 0) for entry in new_schedule)
+        
+#         # Calculate upper bound
+#         job_sums = {}
+#         machine_sums = {name: 0 for name in machine_names}
+        
+#         for job in jobs:
+#             job_sum = sum(duration for _, duration in job['steps'])
+#             job_sums[job['name']] = job_sum
+            
+#         for entry in new_schedule:
+#             machine = entry.get('machine')
+#             duration = entry.get('end', 0) - entry.get('start', 0)
+#             if machine in machine_sums:
+#                 machine_sums[machine] += duration
+        
+#         ub = max(max(job_sums.values()), max(machine_sums.values()))
+        
+#         print(f"\nUpper Bound (UB): {ub}")
+#         print(f"Current Makespan: {makespan}")
+#         print(f"Gap to UB: {makespan - ub}")
+        
+#         # Store in agent's context
+#         self.context = {'schedule': new_schedule}
+#         return {'schedule': new_schedule}
+
+# class JSSPValidationAgent(Agent):
+#     def __init__(self, name, backstory, task_description, task_expected_output, model_type="openai"):
+#         super().__init__(name, backstory, task_description, task_expected_output)
+#         self.client = get_llm_client(model_type)
+#         self.model_type = model_type
+
+#     def run(self):
+#         # Get schedule from supervisor agent
+#         all_schedules = []
+#         for agent in self.dependencies:
+#             if hasattr(agent, 'context') and isinstance(agent.context, dict) and 'schedule' in agent.context:
+#                 all_schedules.extend(agent.context['schedule'])
+        
+#         if not all_schedules:
+#             return {
+#                 'valid': False,
+#                 'errors': ['No schedules found from supervisor agent'],
+#                 'makespan': None
+#             }
+        
+#         # Initialize validation results
+#         errors = []
+        
+#         # 1. Check machine constraints (no overlapping operations)
+#         machine_schedules = {name: [] for name in machine_names}
+#         for entry in all_schedules:
+#             machine = entry.get('machine')
+#             if machine in machine_schedules:
+#                 machine_schedules[machine].append(entry)
+        
+#         for machine, schedule in machine_schedules.items():
+#             schedule.sort(key=lambda x: x.get('start', 0))
+#             for i in range(len(schedule)-1):
+#                 if schedule[i].get('end', 0) > schedule[i+1].get('start', 0):
+#                     errors.append(f"Overlap detected on {machine}: {schedule[i].get('job')} Step {schedule[i].get('step')} and {schedule[i+1].get('job')} Step {schedule[i+1].get('step')}")
+        
+#         # 2. Check job precedence constraints
+#         job_steps = {}
+#         for entry in all_schedules:
+#             job = entry.get('job')
+#             if job not in job_steps:
+#                 job_steps[job] = []
+#             job_steps[job].append(entry)
+        
+#         for job, steps in job_steps.items():
+#             steps.sort(key=lambda x: x.get('step', 0))
+#             for i in range(len(steps)-1):
+#                 if steps[i].get('end', 0) > steps[i+1].get('start', 0):
+#                     errors.append(f"Precedence violation in {job}: Step {steps[i].get('step')} ends after Step {steps[i+1].get('step')} starts")
+        
+#         # 3. Check job completion
+#         for job in jobs:
+#             job_name = job['name']
+#             if job_name not in job_steps or len(job_steps[job_name]) != len(job['steps']):
+#                 errors.append(f"Incomplete schedule for {job_name}")
+        
+#         # 4. Check makespan
+#         makespan = max(entry.get('end', 0) for entry in all_schedules)
+#         if makespan < 10:  # UB is 10
+#             errors.append(f"Makespan {makespan} is below theoretical UB of 10")
+        
+#         # Print validation results
+#         print("\n=== Validation Results ===")
+#         if errors:
+#             print("❌ Validation failed with the following errors:")
+#             for error in errors:
+#                 print(f"- {error}")
+#         else:
+#             print("✅ Schedule is valid!")
+#         print(f"Final Makespan: {makespan}")
+        
+#         return {
+#             'valid': len(errors) == 0,
+#             'errors': errors,
+#             'makespan': makespan
+#         }
+
+# agents = []
+# for job in jobs:
+#     agent = JSSPAgent(
+#         name=f"{job['name']} Agent",
+#         backstory=f"Agent for {job['name']} scheduling.",
+#         task_description=f"Schedule steps for {job['name']} on required machines with precedence.",
+#         task_expected_output=f"Step schedule for {job['name']} respecting machine and precedence constraints.",
+#         model_type="openai"  # or other model type
+#     )
+#     agents.append(agent)
+
 class SupervisorAgent(Agent):
-    def __init__(self, name, backstory, task_description, task_expected_output, model_type="openai"):
+    """
+    Aggregates all job schedules and attempts to generate a schedule with minimum makespan using Tabu Search.
+    """
+    def __init__(self, name, backstory, task_description, task_expected_output, model_type="openai", tabu_tenure=5, max_iter=100):
         super().__init__(name, backstory, task_description, task_expected_output)
         self.client = get_llm_client(model_type)
         self.model_type = model_type
+        self.tabu_tenure = tabu_tenure
+        self.max_iter = max_iter
 
     def run(self):
-        # Get schedules from all job agents
-        all_schedules = []
-        for agent in self.dependencies:
-            if hasattr(agent, 'context') and isinstance(agent.context, dict) and 'schedule' in agent.context:
-                all_schedules.extend(agent.context['schedule'])
-        
-        if not all_schedules:
-            print("Warning: No schedules found from job agents")
-            return {'schedule': []}
+        import random
+        from collections import deque
 
-        # Algorithm 1: Reschedule all jobs together
-        # Initialize machine availability times
-        machine_availability = {name: 0 for name in machine_names}
-        # Track completion time for each job
-        job_completion = {job['name']: 0 for job in jobs}
-        # Track which step each job is on
-        job_step = {job['name']: 0 for job in jobs}
-        # Track which jobs are completed
-        completed_jobs = set()
-        # New schedule
-        new_schedule = []
-
-        while len(completed_jobs) < len(jobs):
-            # For each job that's not completed
-            for job in jobs:
-                job_name = job['name']
-                if job_name in completed_jobs:
-                    continue
-
-                current_step = job_step[job_name]
-                if current_step >= len(job['steps']):
-                    completed_jobs.add(job_name)
-                    continue
-
-                machine, duration = job['steps'][current_step]
-                
-                # Calculate earliest possible start time
-                # Must be after:
-                # 1. Previous step completion
-                # 2. Machine availability
-                start_time = max(
-                    job_completion[job_name],  # Previous step completion
-                    machine_availability[machine]  # Machine availability
-                )
-
-                # Check for conflicts with existing operations
-                while True:
-                    conflict = False
-                    for existing_op in new_schedule:
-                        if (existing_op['machine'] == machine and
-                            not (start_time >= existing_op['end'] or 
-                                 start_time + duration <= existing_op['start'])):
-                            conflict = True
-                            start_time = existing_op['end']
+        def schedule_from_order(job_order):
+            machine_availability = {name: 0 for name in machine_names}
+            job_completion = {job['name']: 0 for job in job_order}
+            job_step = {job['name']: 0 for job in job_order}
+            completed_jobs = set()
+            new_schedule = []
+            while len(completed_jobs) < len(job_order):
+                for job in job_order:
+                    job_name = job['name']
+                    if job_name in completed_jobs:
+                        continue
+                    current_step = job_step[job_name]
+                    if current_step >= len(job['steps']):
+                        completed_jobs.add(job_name)
+                        continue
+                    machine, duration = job['steps'][current_step]
+                    start_time = max(
+                        job_completion[job_name],
+                        machine_availability[machine]
+                    )
+                    # Check for conflicts with existing operations
+                    while True:
+                        conflict = False
+                        for existing_op in new_schedule:
+                            if (existing_op['machine'] == machine and
+                                not (start_time >= existing_op['end'] or 
+                                     start_time + duration <= existing_op['start'])):
+                                conflict = True
+                                start_time = existing_op['end']
+                                break
+                        if not conflict:
                             break
-                    if not conflict:
-                        break
+                    end_time = start_time + duration
+                    new_schedule.append({
+                        'job': job_name,
+                        'step': current_step + 1,
+                        'machine': machine,
+                        'start': start_time,
+                        'end': end_time,
+                        'precedence': f"After {job_name} Step {current_step}" if current_step > 0 else None
+                    })
+                    machine_availability[machine] = end_time
+                    job_completion[job_name] = end_time
+                    job_step[job_name] += 1
+            return new_schedule
 
-                # Schedule this operation
-                end_time = start_time + duration
-                new_schedule.append({
-                    'job': job_name,
-                    'step': current_step + 1,
-                    'machine': machine,
-                    'start': start_time,
-                    'end': end_time,
-                    'precedence': f"After {job_name} Step {current_step}" if current_step > 0 else None
-                })
+        # Initial solution: greedy order
+        current_order = jobs[:]
+        current_schedule = schedule_from_order(current_order)
+        current_makespan = max(entry.get('end', 0) for entry in current_schedule)
+        best_order = list(current_order)
+        best_schedule = list(current_schedule)
+        best_makespan = current_makespan
 
-                # Update tracking variables
-                machine_availability[machine] = end_time
-                job_completion[job_name] = end_time
-                job_step[job_name] += 1
+        tabu_list = deque(maxlen=self.tabu_tenure)
+        tabu_list.append(tuple(job['name'] for job in current_order))
 
-        # Sort the new schedule by start time
-        new_schedule.sort(key=lambda x: (x.get('start', 0), x.get('machine', ''), x.get('job', '')))
-        
-        # Calculate makespan
-        makespan = max(entry.get('end', 0) for entry in new_schedule)
-        
+        for it in range(self.max_iter):
+            neighbors = []
+            # Generate neighbors by swapping every pair of jobs
+            for i in range(len(current_order)):
+                for j in range(i+1, len(current_order)):
+                    neighbor_order = list(current_order)
+                    neighbor_order[i], neighbor_order[j] = neighbor_order[j], neighbor_order[i]
+                    order_tuple = tuple(job['name'] for job in neighbor_order)
+                    if order_tuple in tabu_list:
+                        continue
+                    neighbor_schedule = schedule_from_order(neighbor_order)
+                    neighbor_makespan = max(entry.get('end', 0) for entry in neighbor_schedule)
+                    neighbors.append((neighbor_makespan, neighbor_order, neighbor_schedule, order_tuple))
+            if not neighbors:
+                print(f"[Tabu] Iteration {it+1}: No more neighbors, stopping early.")
+                break
+            # Choose the best neighbor
+            neighbors.sort(key=lambda x: x[0])
+            best_neighbor = neighbors[0]
+            current_makespan, current_order, current_schedule, order_tuple = best_neighbor
+            tabu_list.append(order_tuple)
+            if current_makespan < best_makespan:
+                best_makespan = current_makespan
+                best_order = list(current_order)
+                best_schedule = list(current_schedule)
+            print(f"[Tabu] Iteration {it+1}: Current makespan = {current_makespan}, Best makespan so far = {best_makespan}")
         # Calculate upper bound
         job_sums = {}
         machine_sums = {name: 0 for name in machine_names}
-        
         for job in jobs:
             job_sum = sum(duration for _, duration in job['steps'])
             job_sums[job['name']] = job_sum
-            
-        for entry in new_schedule:
+        for entry in best_schedule:
             machine = entry.get('machine')
             duration = entry.get('end', 0) - entry.get('start', 0)
             if machine in machine_sums:
                 machine_sums[machine] += duration
-        
         ub = max(max(job_sums.values()), max(machine_sums.values()))
-        
-        print(f"\nUpper Bound (UB): {ub}")
-        print(f"Current Makespan: {makespan}")
-        print(f"Gap to UB: {makespan - ub}")
-        
-        # Store in agent's context
-        self.context = {'schedule': new_schedule}
-        return {'schedule': new_schedule}
+        print(f"\n[SupervisorAgent][Tabu] Minimum Makespan found: {best_makespan}")
+        print(f"Upper Bound (UB): {ub}")
+        print(f"Gap to UB: {best_makespan - ub}")
+        self.context = {'schedule': best_schedule}
+        return {'schedule': best_schedule}
 
 class JSSPValidationAgent(Agent):
     def __init__(self, name, backstory, task_description, task_expected_output, model_type="openai"):
@@ -332,7 +536,7 @@ for job in jobs:
         model_type="openai"  # or other model type
     )
     agents.append(agent)
-
+    
 # Add validation agent
 validation_agent = JSSPValidationAgent(
     name="JSSP Validation Agent",
@@ -348,7 +552,9 @@ supervisor_agent = SupervisorAgent(
     backstory="Aggregates all job schedules and produces the overall JSSP schedule.",
     task_description="Combine all job agent schedules into a single overall JSSP schedule.",
     task_expected_output="Overall JSSP schedule as a table.",
-    model_type="openai"  # Can be changed to "anthropic", "google", or "deepseek"
+    model_type="openai",  # Can be changed to "anthropic", "google", or "deepseek"
+    tabu_tenure=5,
+    max_iter=100
 )
 
 agents.extend([supervisor_agent, validation_agent])

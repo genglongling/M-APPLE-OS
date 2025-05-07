@@ -1,5 +1,10 @@
 import sys
 import os
+from dotenv import load_dotenv
+from openai import OpenAI
+import google.generativeai as genai
+from anthropic import Anthropic
+# from deepseek import Deepseek
 
 # Set up project root and src path
 dir_path = os.path.dirname(os.path.abspath(__file__))
@@ -9,12 +14,46 @@ sys.path.append(os.path.join(project_root, 'src'))
 from multi_agent.MAPLE import MAPLE
 from multi_agent.agent import Agent
 
-# Define job steps and machine constraints for Experiment 1
-jobs = [
-    {'name': 'Job1', 'steps': [('MachineA', 3), ('MachineB', 2), ('MachineC', 2)]},
-    {'name': 'Job2', 'steps': [('MachineA', 2), ('MachineC', 1), ('MachineB', 4)]},
-    {'name': 'Job3', 'steps': [('MachineB', 4), ('MachineA', 1), ('MachineC', 3)]},
-]
+# Load environment variables
+load_dotenv()
+
+# Initialize different LLM clients
+def get_llm_client(model_type="openai"):
+    if model_type == "openai":
+        return OpenAI()
+    elif model_type == "anthropic":
+        return Anthropic(api_key=os.getenv("ANTHROPIC_API_KEY"))
+    elif model_type == "google":
+        genai.configure(api_key=os.getenv("GOOGLE_API_KEY"))
+        return genai
+    elif model_type == "deepseek":
+        return Deepseek(api_key=os.getenv("DEEPSEEK_API_KEY"))
+    else:
+        raise ValueError(f"Unsupported model type: {model_type}")
+
+# DMU dataset loader
+def load_dmu_dataset(filepath):
+    jobs = []
+    with open(filepath, 'r') as f:
+        lines = [line.strip() for line in f if line.strip()]
+        n_jobs, n_machines = map(int, lines[0].split())
+        for job_idx, line in enumerate(lines[1:]):
+            tokens = list(map(int, line.split()))
+            steps = [(f"Machine{machine}", duration) for machine, duration in zip(tokens[::2], tokens[1::2])]
+            jobs.append({'name': f'Job{job_idx+1}', 'steps': steps})
+    return jobs
+
+# Load jobs from DMU dataset
+DMU_FILE = os.path.join(project_root, 'applications', 'DMU', 'rcmax_50_20_9.txt')
+jobs = load_dmu_dataset(DMU_FILE)
+
+# After loading jobs
+all_machine_indices = set()
+for job in jobs:
+    for machine, _ in job['steps']:
+        idx = int(machine.replace('Machine', ''))
+        all_machine_indices.add(idx)
+machine_names = [f"Machine{idx}" for idx in sorted(all_machine_indices)]
 
 # Helper: create a placeholder schedule for demonstration
 # In a real system, the agent would compute this based on constraints
@@ -36,6 +75,11 @@ def make_placeholder_schedule(job, offset=0):
 
 # Create agents for each job, with run() returning a standardized schedule
 class JSSPAgent(Agent):
+    def __init__(self, name, backstory, task_description, task_expected_output, model_type="openai"):
+        super().__init__(name, backstory, task_description, task_expected_output)
+        self.client = get_llm_client(model_type)
+        self.model_type = model_type
+
     def run(self):
         job_idx = int(self.name.split('Job')[1][0]) - 1
         job = jobs[job_idx]
@@ -45,7 +89,7 @@ class JSSPAgent(Agent):
         current_time = 0
         
         # Track machine availability
-        machine_availability = {'MachineA': 0, 'MachineB': 0, 'MachineC': 0}
+        machine_availability = {name: 0 for name in machine_names}
         
         for step_idx, (machine, duration) in enumerate(job['steps']):
             # Find the earliest possible start time considering:
@@ -91,48 +135,53 @@ class JSSPAgent(Agent):
 
 # Add a final Supervisor Agent
 class SupervisorAgent(Agent):
+    """
+    SupervisorAgent: Aggregates all job agent schedules.
+    Objective: Find the schedule with the minimum possible makespan.
+    (Note: This baseline implementation does not perform optimization.)
+    """
     def run(self):
-        # # Get schedules from all job agents
-        # all_schedules = []
-        # for agent in self.dependencies:
-        #     if hasattr(agent, 'context') and isinstance(agent.context, dict) and 'schedule' in agent.context:
-        #         all_schedules.extend(agent.context['schedule'])
-        
+        # Aggregate all job agent schedules from context
+        all_schedules = []
+        for agent in self.dependencies:
+            if hasattr(agent, 'context') and isinstance(agent.context, dict) and 'schedule' in agent.context:
+                all_schedules.extend(agent.context['schedule'])
+
         if not all_schedules:
             print("Warning: No schedules found from job agents")
             return {'schedule': []}
-        
+
         # Sort by start time
         all_schedules.sort(key=lambda x: (x.get('start', 0), x.get('machine', ''), x.get('job', '')))
-        
+
         # Calculate makespan
         makespan = max(entry.get('end', 0) for entry in all_schedules)
-        
-        # Calculate upper bound
+
+        # Calculate upper bound (UB) from job definitions (theoretical UB)
         job_sums = {}
-        machine_sums = {'MachineA': 0, 'MachineB': 0, 'MachineC': 0}
-        
+        machine_sums = {name: 0 for name in machine_names}
         for job in jobs:
             job_sum = sum(duration for _, duration in job['steps'])
             job_sums[job['name']] = job_sum
-            
-        for entry in all_schedules:
-            machine = entry.get('machine')
-            duration = entry.get('end', 0) - entry.get('start', 0)
-            if machine in machine_sums:
-                machine_sums[machine] += duration
-        
+            for machine, duration in job['steps']:
+                if machine in machine_sums:
+                    machine_sums[machine] += duration
         ub = max(max(job_sums.values()), max(machine_sums.values()))
-        
-        print(f"\nUpper Bound (UB): {ub}")
+
+        print(f"\n[SupervisorAgent] (Baseline) Objective: Find minimum makespan.")
         print(f"Current Makespan: {makespan}")
+        print(f"Upper Bound (UB): {ub}")
         print(f"Gap to UB: {makespan - ub}")
-        
-        # Store in agent's context
+
         self.context = {'schedule': all_schedules}
         return {'schedule': all_schedules}
 
 class JSSPValidationAgent(Agent):
+    def __init__(self, name, backstory, task_description, task_expected_output, model_type="openai"):
+        super().__init__(name, backstory, task_description, task_expected_output)
+        self.client = get_llm_client(model_type)
+        self.model_type = model_type
+
     def run(self):
         # Get schedule from supervisor agent
         all_schedules = []
@@ -151,7 +200,7 @@ class JSSPValidationAgent(Agent):
         errors = []
         
         # 1. Check machine constraints (no overlapping operations)
-        machine_schedules = {'MachineA': [], 'MachineB': [], 'MachineC': []}
+        machine_schedules = {name: [] for name in machine_names}
         for entry in all_schedules:
             machine = entry.get('machine')
             if machine in machine_schedules:
@@ -210,42 +259,46 @@ for job in jobs:
         name=f"{job['name']} Agent",
         backstory=f"Agent for {job['name']} scheduling.",
         task_description=f"Schedule steps for {job['name']} on required machines with precedence.",
-        task_expected_output=f"Step schedule for {job['name']} respecting machine and precedence constraints."
+        task_expected_output=f"Step schedule for {job['name']} respecting machine and precedence constraints.",
+        model_type="openai"  # or other model type
     )
     agents.append(agent)
-
+    
 # Add validation agent
 validation_agent = JSSPValidationAgent(
     name="JSSP Validation Agent",
     backstory="Validates JSSP schedules for constraint violations.",
     task_description="Check all schedules for machine constraints, precedence constraints, and makespan validity.",
-    task_expected_output="Validation results with any detected violations."
+    task_expected_output="Validation results with any detected violations.",
+    model_type="openai"  # Can be changed to "anthropic", "google", or "deepseek"
 )
 
 # Add supervisor agent
 supervisor_agent = SupervisorAgent(
     name="Supervisor Agent",
-    backstory="Aggregates all job schedules and produces the overall JSSP schedule.",
-    task_description="Combine all job agent schedules into a single overall JSSP schedule.",
-    task_expected_output="Overall JSSP schedule as a table."
+    backstory="Aggregates all job schedules and produces the overall minimum makespan JSSP schedule.",
+    task_description="Combine all job agent schedules into a single overall minimum makespan JSSP schedule.",
+    task_expected_output="Overall minimum makespan JSSP schedule as a table."
 )
 
 agents.extend([supervisor_agent, validation_agent])
 
-# Disruption event: MachineA unavailable from t=4 to t=6
-# We'll encode this as part of the task_spec
+# Only job agents as initial nodes
+nodes = [{'agent': agent, 'dependencies': []} for agent in agents if isinstance(agent, JSSPAgent)]
+
+# Supervisor depends on all job agents
+nodes.append({'agent': supervisor_agent, 'dependencies': [agent.name for agent in agents if isinstance(agent, JSSPAgent)]})
+
+# Validation agent depends on supervisor
+nodes.append({'agent': validation_agent, 'dependencies': [supervisor_agent.name]})
+
 task_spec = {
-    'nodes': [
-        {'agent': agents[0], 'dependencies': []},
-        {'agent': agents[1], 'dependencies': []},
-        {'agent': agents[2], 'dependencies': []},
-        {'agent': supervisor_agent, 'dependencies': [agents[0].name, agents[1].name, agents[2].name]},
-        {'agent': validation_agent, 'dependencies': [supervisor_agent.name]},
-    ],
+    'nodes': nodes,
     'edges': [],
     'jobs': jobs,
     'disruptions': [
-        {'machine': 'MachineA', 'unavailable': [(4, 6)]}
+        # You may want to update this for dynamic machine names
+        # {'machine': 'MachineA', 'unavailable': [(4, 6)]}
     ],
     'rules': [
         'Each job must perform its steps strictly in order.',
