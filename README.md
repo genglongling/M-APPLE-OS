@@ -1,7 +1,8 @@
-# **M-APPLE Agent OS: A General-Purpose Operating System for Dynamic Planning, Multi-Agent Communication, and Multi-Thread Execution**
+# **M-APPLE Agent OS: A General-Purpose Operating System for Dynamic Scheduling and Optimization **
 
 ```
 What if LLM and Agent lost track of information? Reverting back as a transaction!
+M-APPLE Agent OS os A General-Purpose Operating System for Dynamic Planning, Multi-Agent Communication, and Multi-Thread Execution**
 
 --- M-APPLE-OS Authors
 ```
