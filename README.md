@@ -12,7 +12,7 @@ M-APPLE Agent OS os A General-Purpose Operating System for Dynamic Planning, Mul
   🌐 <a href="https://example.com/project">Project Page</a>
 </p>
 
-This repository extends REALM-Bench with **M-APPLE-OS (MAPLE)**, a general-purpose, three-layer operating system for multi-agent planning, dynamic adaptation, and robust execution. M-APPLE-OS provides:
+This repository extends REALM-Bench with **M-APPLE-OS (MAPLE)**, a general-purpose, three-layer operating system for multi-agent scheduling, planning and optimization: workflow specification, agent communication, self-validation, robust execution, and dynamic adaptation. M-APPLE-OS provides:
 
 - **Dynamic Planning**: Supports both static and dynamic (disruption-prone) tasks.
 - **Multi-Agent Communication**: Robust inter-agent dependency management and coordination.
