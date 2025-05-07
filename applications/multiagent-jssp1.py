@@ -5,6 +5,8 @@ from openai import OpenAI
 import google.generativeai as genai
 from anthropic import Anthropic
 # from deepseek import Deepseek
+from datetime import datetime
+import logging
 
 # Set up project root and src path
 dir_path = os.path.dirname(os.path.abspath(__file__))
@@ -16,6 +18,38 @@ from multi_agent.agent import Agent
 
 # Load environment variables
 load_dotenv()
+
+# Configure logging
+def setup_logging(dataset):
+    # Create results directory if it doesn't exist
+    results_dir = "./results"
+    if not os.path.exists(results_dir):
+        os.makedirs(results_dir)
+        print(f"Created results directory: {results_dir}")
+
+    # Create a logger
+    logger = logging.getLogger()
+    logger.setLevel(logging.INFO)
+
+    # Create file handler
+    log_file = f"./results/{dataset}_dmu.txt"
+    file_handler = logging.FileHandler(log_file)
+    file_handler.setLevel(logging.INFO)
+
+    # Create console handler
+    console_handler = logging.StreamHandler()
+    console_handler.setLevel(logging.INFO)
+
+    # Create formatter
+    formatter = logging.Formatter('%(message)s')
+    file_handler.setFormatter(formatter)
+    console_handler.setFormatter(formatter)
+
+    # Add handlers to logger
+    logger.addHandler(file_handler)
+    logger.addHandler(console_handler)
+
+    return logger
 
 # Initialize different LLM clients
 def get_llm_client(model_type="openai"):
@@ -43,17 +77,25 @@ def load_dmu_dataset(filepath):
             jobs.append({'name': f'Job{job_idx+1}', 'steps': steps})
     return jobs
 
-# Load jobs from DMU dataset
-DMU_FILE = os.path.join(project_root, 'applications', 'DMU', 'rcmax_50_20_9.txt')
-jobs = load_dmu_dataset(DMU_FILE)
-
-# After loading jobs
-all_machine_indices = set()
-for job in jobs:
-    for machine, _ in job['steps']:
-        idx = int(machine.replace('Machine', ''))
-        all_machine_indices.add(idx)
-machine_names = [f"Machine{idx}" for idx in sorted(all_machine_indices)]
+# After imports, add the list of datasets
+DATASETS = [
+    # "rcmax_20_15_5", #Dmu03_
+    # "rcmax_20_15_8", #Dmu04_
+    # "rcmax_20_20_7", #Dmu08_
+    # "rcmax_20_20_8", #Dmu09_
+    # "rcmax_30_15_5", #Dmu13_
+    # "rcmax_30_15_4", #Dmu14_
+    # "rcmax_30_20_9", #Dmu18_
+    # "rcmax_30_20_8", #Dmu19_
+    # "rcmax_40_15_10",#Dmu23_
+    # "rcmax_40_15_8", #Dmu24_
+    # "rcmax_40_20_6", #Dmu28_
+    # "rcmax_40_20_2", #Dmu29_
+    # "rcmax_50_15_2", #Dmu33_
+    # "rcmax_50_15_4", #Dmu34_
+    # "rcmax_50_20_6", #Dmu38_
+    "rcmax_50_20_9" #Dmu39_
+]
 
 # Helper: create a placeholder schedule for demonstration
 # In a real system, the agent would compute this based on constraints
@@ -333,6 +375,7 @@ class JSSPAgent(Agent):
 #     )
 #     agents.append(agent)
 
+# algorithm 1: tabu search
 class SupervisorAgent(Agent):
     """
     Aggregates all job schedules and attempts to generate a schedule with minimum makespan using Tabu Search.
@@ -343,8 +386,30 @@ class SupervisorAgent(Agent):
         self.model_type = model_type
         self.tabu_tenure = tabu_tenure
         self.max_iter = max_iter
+        self.convergence_threshold = 0
+        self.has_run = False
+        # Get dataset name from the DMU file
+        self.dataset_name = os.path.splitext(os.path.basename(DMU_FILE))[0]
 
     def run(self):
+        if self.has_run and hasattr(self, 'context') and 'schedule' in self.context:
+            print("[SupervisorAgent] Using previously computed schedule")
+            return self.context
+
+        # Create results directory if it doesn't exist
+        results_dir = "./results"
+        if not os.path.exists(results_dir):
+            os.makedirs(results_dir)
+            print(f"Created results directory: {results_dir}")
+
+        # Create output file
+        output_file = f"./results/{self.dataset_name}_dmu.txt"
+        with open(output_file, 'w') as f:
+            f.write(f"=== Tabu Search Results for {self.dataset_name} ===\n")
+            f.write(f"Timestamp: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n\n")
+            print(f"=== Tabu Search Results for {self.dataset_name} ===")
+            print(f"Timestamp: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n")
+
         import random
         from collections import deque
 
@@ -405,6 +470,11 @@ class SupervisorAgent(Agent):
         tabu_list = deque(maxlen=self.tabu_tenure)
         tabu_list.append(tuple(job['name'] for job in current_order))
 
+        # Track previous makespan for convergence checking
+        previous_makespan = float('inf')
+        no_improvement_count = 0
+        max_no_improvement = 1 # [note] Stop if no improvement for 1 iterations
+
         for it in range(self.max_iter):
             neighbors = []
             # Generate neighbors by swapping every pair of jobs
@@ -418,19 +488,42 @@ class SupervisorAgent(Agent):
                     neighbor_schedule = schedule_from_order(neighbor_order)
                     neighbor_makespan = max(entry.get('end', 0) for entry in neighbor_schedule)
                     neighbors.append((neighbor_makespan, neighbor_order, neighbor_schedule, order_tuple))
+            
             if not neighbors:
                 print(f"[Tabu] Iteration {it+1}: No more neighbors, stopping early.")
                 break
+
             # Choose the best neighbor
             neighbors.sort(key=lambda x: x[0])
             best_neighbor = neighbors[0]
             current_makespan, current_order, current_schedule, order_tuple = best_neighbor
             tabu_list.append(order_tuple)
+
+            # Check for convergence
+            if current_makespan == previous_makespan:
+                no_improvement_count += 1
+                if no_improvement_count >= max_no_improvement:
+                    print(f"[Tabu] Iteration {it+1}: No improvement for {max_no_improvement} iterations, stopping.")
+                    break
+            else:
+                no_improvement_count = 0
+
             if current_makespan < best_makespan:
                 best_makespan = current_makespan
                 best_order = list(current_order)
                 best_schedule = list(current_schedule)
-            print(f"[Tabu] Iteration {it+1}: Current makespan = {current_makespan}, Best makespan so far = {best_makespan}")
+                msg = f"[Tabu] Iteration {it+1}: New best makespan found: {best_makespan}"
+                print(msg)
+                with open(output_file, 'a') as f:
+                    f.write(msg + "\n")
+            else:
+                msg = f"[Tabu] Iteration {it+1}: Current makespan = {current_makespan}, Best makespan = {best_makespan}"
+                print(msg)
+                with open(output_file, 'a') as f:
+                    f.write(msg + "\n")
+
+            previous_makespan = current_makespan
+
         # Calculate upper bound
         job_sums = {}
         machine_sums = {name: 0 for name in machine_names}
@@ -443,9 +536,31 @@ class SupervisorAgent(Agent):
             if machine in machine_sums:
                 machine_sums[machine] += duration
         ub = max(max(job_sums.values()), max(machine_sums.values()))
-        print(f"\n[SupervisorAgent][Tabu] Minimum Makespan found: {best_makespan}")
-        print(f"Upper Bound (UB): {ub}")
-        print(f"Gap to UB: {best_makespan - ub}")
+        
+        # Write final results to file and print to console
+        final_results = [
+            "\n=== Final Results ===",
+            f"Minimum Makespan found: {best_makespan}",
+            f"Upper Bound (UB): {ub}",
+            f"Gap to UB: {best_makespan - ub}",
+            f"Total iterations: {it+1}",
+            f"Convergence status: {'Converged' if no_improvement_count >= max_no_improvement else 'Not converged'}\n",
+            "=== Detailed Schedule ==="
+        ]
+
+        # Print and write final results
+        with open(output_file, 'a') as f:
+            for line in final_results:
+                print(line)
+                f.write(line + "\n")
+            
+            # Write detailed schedule
+            for entry in best_schedule:
+                schedule_line = f"Job: {entry['job']}, Step: {entry['step']}, Machine: {entry['machine']}, Start: {entry['start']}, End: {entry['end']}"
+                print(schedule_line)
+                f.write(schedule_line + "\n")
+
+        self.has_run = True
         self.context = {'schedule': best_schedule}
         return {'schedule': best_schedule}
 
@@ -454,6 +569,8 @@ class JSSPValidationAgent(Agent):
         super().__init__(name, backstory, task_description, task_expected_output)
         self.client = get_llm_client(model_type)
         self.model_type = model_type
+        # Get dataset name from the DMU file
+        self.dataset_name = os.path.splitext(os.path.basename(DMU_FILE))[0]
 
     def run(self):
         # Get schedule from supervisor agent
@@ -510,132 +627,167 @@ class JSSPValidationAgent(Agent):
         if makespan < 10:  # UB is 10
             errors.append(f"Makespan {makespan} is below theoretical UB of 10")
         
-        # Print validation results
-        print("\n=== Validation Results ===")
+        # Create results directory if it doesn't exist
+        results_dir = "./results"
+        if not os.path.exists(results_dir):
+            os.makedirs(results_dir)
+            print(f"Created results directory: {results_dir}")
+
+        # Write validation results to file and print to console
+        output_file = f"./results/{self.dataset_name}_dmu.txt"
+        validation_results = [
+            "\n=== Validation Results ==="
+        ]
+
         if errors:
-            print("❌ Validation failed with the following errors:")
+            validation_results.extend([
+                "❌ Validation failed with the following errors:"
+            ])
             for error in errors:
-                print(f"- {error}")
+                validation_results.append(f"- {error}")
         else:
-            print("✅ Schedule is valid!")
-        print(f"Final Makespan: {makespan}")
+            validation_results.append("✅ Schedule is valid!")
         
+        validation_results.append(f"Final Makespan: {makespan}")
+
+        # Print and write validation results
+        with open(output_file, 'a') as f:
+            for line in validation_results:
+                print(line)
+                f.write(line + "\n")
+
         return {
             'valid': len(errors) == 0,
             'errors': errors,
             'makespan': makespan
         }
 
-agents = []
-for job in jobs:
-    agent = JSSPAgent(
-        name=f"{job['name']} Agent",
-        backstory=f"Agent for {job['name']} scheduling.",
-        task_description=f"Schedule steps for {job['name']} on required machines with precedence.",
-        task_expected_output=f"Step schedule for {job['name']} respecting machine and precedence constraints.",
-        model_type="openai"  # or other model type
-    )
-    agents.append(agent)
-    
-# Add validation agent
-validation_agent = JSSPValidationAgent(
-    name="JSSP Validation Agent",
-    backstory="Validates JSSP schedules for constraint violations.",
-    task_description="Check all schedules for machine constraints, precedence constraints, and makespan validity.",
-    task_expected_output="Validation results with any detected violations.",
-    model_type="openai"  # Can be changed to "anthropic", "google", or "deepseek"
-)
+# Modify the main execution section at the bottom of the file
+if __name__ == "__main__":
+    # Process each dataset
+    for dataset in DATASETS:
+        # Setup logging for this dataset
+        logger = setup_logging(dataset)
+        
+        logger.info(f"\n{'='*50}")
+        logger.info(f"Processing dataset: {dataset}")
+        logger.info(f"{'='*50}\n")
 
-# Add supervisor agent
-supervisor_agent = SupervisorAgent(
-    name="Supervisor Agent",
-    backstory="Aggregates all job schedules and produces the overall JSSP schedule.",
-    task_description="Combine all job agent schedules into a single overall JSSP schedule.",
-    task_expected_output="Overall JSSP schedule as a table.",
-    model_type="openai",  # Can be changed to "anthropic", "google", or "deepseek"
-    tabu_tenure=5,
-    max_iter=100
-)
+        # Update DMU file path for current dataset
+        DMU_FILE = os.path.join(project_root, 'applications', 'DMU', f'{dataset}.txt')
+        
+        # Load jobs for current dataset
+        jobs = load_dmu_dataset(DMU_FILE)
+        
+        # After loading jobs
+        all_machine_indices = set()
+        for job in jobs:
+            for machine, _ in job['steps']:
+                idx = int(machine.replace('Machine', ''))
+                all_machine_indices.add(idx)
+        machine_names = [f"Machine{idx}" for idx in sorted(all_machine_indices)]
 
-agents.extend([supervisor_agent, validation_agent])
+        # Create agents for each job
+        agents = []
+        for job in jobs:
+            agent = JSSPAgent(
+                name=f"{job['name']} Agent",
+                backstory=f"Agent for {job['name']} scheduling.",
+                task_description=f"Schedule steps for {job['name']} on required machines with precedence.",
+                task_expected_output=f"Step schedule for {job['name']} respecting machine and precedence constraints.",
+                model_type="openai"
+            )
+            agents.append(agent)
+        
+        # Add validation agent
+        validation_agent = JSSPValidationAgent(
+            name="JSSP Validation Agent",
+            backstory="Validates JSSP schedules for constraint violations.",
+            task_description="Check all schedules for machine constraints, precedence constraints, and makespan validity.",
+            task_expected_output="Validation results with any detected violations.",
+            model_type="openai"
+        )
 
-# Only job agents as initial nodes
-nodes = [{'agent': agent, 'dependencies': []} for agent in agents if isinstance(agent, JSSPAgent)]
+        # Add supervisor agent
+        supervisor_agent = SupervisorAgent(
+            name="Supervisor Agent",
+            backstory="Aggregates all job schedules and produces the overall JSSP schedule.",
+            task_description="Combine all job agent schedules into a single overall JSSP schedule.",
+            task_expected_output="Overall JSSP schedule as a table.",
+            model_type="openai",
+            tabu_tenure=5,
+            max_iter=100
+        )
 
-# Supervisor depends on all job agents
-nodes.append({'agent': supervisor_agent, 'dependencies': [agent.name for agent in agents if isinstance(agent, JSSPAgent)]})
+        agents.extend([supervisor_agent, validation_agent])
 
-# Validation agent depends on supervisor
-nodes.append({'agent': validation_agent, 'dependencies': [supervisor_agent.name]})
+        # Only job agents as initial nodes
+        nodes = [{'agent': agent, 'dependencies': []} for agent in agents if isinstance(agent, JSSPAgent)]
 
-task_spec = {
-    'nodes': nodes,
-    'edges': [],
-    'jobs': jobs,
-    'disruptions': [
-        # You may want to update this for dynamic machine names
-        # {'machine': 'MachineA', 'unavailable': [(4, 6)]}
-    ],
-    'rules': [
-        'Each job must perform its steps strictly in order.',
-        'Each machine can only handle one operation at a time.',
-        'No two operations use the same machine at the same time.'
-    ]
-}
+        # Supervisor depends on all job agents
+        nodes.append({'agent': supervisor_agent, 'dependencies': [agent.name for agent in agents if isinstance(agent, JSSPAgent)]})
 
-# Initialize MAPLE (no dynamic_adaptation argument in original MAPLE.py)
-maple = MAPLE(task_spec)
+        # Validation agent depends on supervisor
+        nodes.append({'agent': validation_agent, 'dependencies': [supervisor_agent.name]})
 
-# Run MAPLE
-maple.run(with_rollback=True, validate=True)
+        task_spec = {
+            'nodes': nodes,
+            'edges': [],
+            'jobs': jobs,
+            'disruptions': [],
+            'rules': [
+                'Each job must perform its steps strictly in order.',
+                'Each machine can only handle one operation at a time.',
+                'No two operations use the same machine at the same time.'
+            ]
+        }
 
-# After MAPLE run, set context and re-run supervisor agent
-context = maple.executor.context
-supervisor_agent.context = context
-context[supervisor_agent.name] = supervisor_agent.run()
+        # Initialize MAPLE
+        maple = MAPLE(task_spec)
 
-# Extract and print overall schedule from supervisor agent
-context = maple.executor.context
-supervisor_output = context.get(supervisor_agent.name, {})
+        # Run MAPLE
+        maple.run(with_rollback=True, validate=True)
 
-if isinstance(supervisor_output, dict) and 'schedule' in supervisor_output:
-    all_schedules = supervisor_output['schedule']
-    # Sort by start time for overall schedule
-    all_schedules.sort(key=lambda x: (x.get('start', 0), x.get('machine', ''), x.get('job', '')))
-    print("\n| Job  | Step | Machine  | Time Slot | Precedence Constraints      |")
-    print("|------|------|----------|-----------|----------------------------|")
-    for entry in all_schedules:
-        job = entry.get('job', '?')
-        step = entry.get('step', '?')
-        machine = entry.get('machine', '?')
-        start = entry.get('start', '?')
-        end = entry.get('end', '?')
-        prec = entry.get('precedence', 'None')
-        print(f"| {job} | {step} | {machine} | {start}-{end} | {prec} |")
-    # Calculate makespan
-    makespan = max(entry.get('end', 0) for entry in all_schedules)
-    print(f"\nBest static makespan: {makespan}")
-else:
-    print("\n(No detailed schedules found from supervisor agent. Supervisor agent output unavailable.)")
+        # Extract and print overall schedule from supervisor agent
+        context = maple.executor.context
+        supervisor_output = context.get(supervisor_agent.name, {})
 
-# User prompt for Gantt chart or detailed schedule
-def print_gantt_chart(context):
-    print("\n=== JSSP Gantt Chart/Table (Textual) ===")
-    found = False
-    for agent_name, output in context.items():
-        print(f"\n{agent_name}:")
-        if isinstance(output, str):
-            print(output)
-        elif isinstance(output, dict) and 'schedule' in output:
-            found = True
-            print("Time | Machine | Job | Step")
-            for entry in output['schedule']:
-                print(f"{entry.get('start', '?')}-{entry.get('end', '?')} | {entry.get('machine', '?')} | {entry.get('job', '?')} | {entry.get('step', '?')}")
+        logger.info(f"=== Results for {dataset} ===")
+        logger.info(f"Timestamp: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n")
+
+        if isinstance(supervisor_output, dict) and 'schedule' in supervisor_output:
+            all_schedules = supervisor_output['schedule']
+            # Sort by start time for overall schedule
+            all_schedules.sort(key=lambda x: (x.get('start', 0), x.get('machine', ''), x.get('job', '')))
+            
+            # Write detailed schedule
+            logger.info("| Job  | Step | Machine  | Time Slot | Precedence Constraints      |")
+            logger.info("|------|------|----------|-----------|----------------------------|")
+            for entry in all_schedules:
+                job = entry.get('job', '?')
+                step = entry.get('step', '?')
+                machine = entry.get('machine', '?')
+                start = entry.get('start', '?')
+                end = entry.get('end', '?')
+                prec = entry.get('precedence', 'None')
+                logger.info(f"| {job} | {step} | {machine} | {start}-{end} | {prec} |")
+            
+            # Calculate and write makespan
+            makespan = max(entry.get('end', 0) for entry in all_schedules)
+            logger.info(f"\nBest static makespan for {dataset}: {makespan}")
+
+            # Write Gantt chart
+            logger.info("\n=== JSSP Gantt Chart/Table (Textual) ===")
+            logger.info("Time | Machine | Job | Step")
+            for entry in all_schedules:
+                logger.info(f"{entry.get('start', '?')}-{entry.get('end', '?')} | {entry.get('machine', '?')} | {entry.get('job', '?')} | {entry.get('step', '?')}")
         else:
-            print("(No detailed schedule available. Ensure agent outputs include schedule details.)")
-    if not found:
-        print("\n(To enable Gantt chart, agent outputs should include a 'schedule' key with step timing and machine info.)")
+            logger.info(f"\nNo detailed schedules found for {dataset}")
 
-show = input("\nShow Gantt chart or detailed JSSP schedule? (y/n): ").strip().lower()
-if show == 'y':
-    print_gantt_chart(context) 
+        logger.info(f"\nCompleted processing {dataset}")
+        logger.info(f"{'='*50}\n")
+
+        # Remove handlers to avoid duplicate logging in next iteration
+        for handler in logger.handlers[:]:
+            handler.close()
+            logger.removeHandler(handler) 

@@ -133,7 +133,7 @@ If you find this repository helpful, please cite the following paper:
 
 ```
 M-APPLE Agent OS: A General-Purpose Operating System for Dynamic Planning, Multi-Agent Communication, and Multi-Thread Execution
-Anonymous Author(s)
+Anonymous Author(s)  
 ```
 
 ---
