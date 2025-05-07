@@ -1,4 +1,4 @@
-# **M-APPLE Agent OS: A General-Purpose Multi-Agent System for Dynamic Scheduling and Optimization**
+# **M-APPLE System: A General-Purpose Multi-Agent System for Dynamic Scheduling and Optimization**
 
 ```
 What if LLM and Agent lost track of information? Reverting back as a transaction!
