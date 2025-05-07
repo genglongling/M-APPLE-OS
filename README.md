@@ -138,3 +138,125 @@ Anonymous Author(s)
 
 ---
 
+# M-APPLE-OS: Multi-Agent Job Shop Scheduling Problem (JSSP) System
+
+A multi-agent system for solving Job Shop Scheduling Problems using various Large Language Models (LLMs).
+
+## Overview
+
+This system implements a multi-agent approach to solve Job Shop Scheduling Problems (JSSP) using different LLMs. The system consists of several specialized agents:
+
+- **JSSP Agents**: Individual agents responsible for scheduling specific jobs
+- **Supervisor Agent**: Coordinates and aggregates schedules from all job agents
+- **Validation Agent**: Validates schedules for constraint violations and optimality
+
+## Features
+
+- Multi-agent architecture for distributed scheduling
+- Support for multiple LLM providers:
+  - OpenAI (GPT models)
+  - Anthropic (Claude)
+  - Google (Gemini)
+  - Deepseek
+- Constraint validation and makespan optimization
+- Flexible scheduling with machine and precedence constraints
+- Real-time schedule validation and optimization
+
+## Installation
+
+1. Clone the repository:
+```bash
+git clone https://github.com/yourusername/M-APPLE-OS.git
+cd M-APPLE-OS
+```
+
+2. Create and activate a virtual environment:
+```bash
+python -m venv venv
+source venv/bin/activate  # On Windows: venv\Scripts\activate
+```
+
+3. Install required packages:
+```bash
+pip install -r requirements.txt
+```
+
+4. Set up environment variables:
+Create a `.env` file in the root directory with your API keys:
+```
+OPENAI_API_KEY=your_openai_key
+ANTHROPIC_API_KEY=your_anthropic_key
+GOOGLE_API_KEY=your_google_key
+DEEPSEEK_API_KEY=your_deepseek_key
+```
+
+## Usage
+
+1. Basic usage with default OpenAI model:
+```python
+from applications.multiagent_jssp1 import MAPLE, jobs
+
+# Initialize and run the system
+maple = MAPLE(task_spec)
+maple.run(with_rollback=True, validate=True)
+```
+
+2. Using different LLM providers:
+```python
+# Create agents with specific LLM
+agent = JSSPAgent(
+    name="Job1 Agent",
+    backstory="Agent for Job1 scheduling.",
+    task_description="Schedule steps for Job1.",
+    task_expected_output="Step schedule for Job1.",
+    model_type="anthropic"  # or "google" or "deepseek"
+)
+```
+
+## Project Structure
+
+```
+M-APPLE-OS/
+├── applications/
+│   ├── multiagent-jssp1.py      # Main JSSP implementation
+│   ├── multiagent-jssp1-basellm.py
+│   └── test_*.py                # Test files
+├── src/
+│   ├── multi_agent/            # Multi-agent system components
+│   ├── utils/                  # Utility functions
+│   └── tool_agent/            # Tool-related components
+├── requirements.txt
+└── README.md
+```
+
+## Requirements
+
+- Python 3.8+
+- Required packages (see requirements.txt):
+  - openai
+  - anthropic
+  - google-generativeai
+  - deepseek-ai
+  - python-dotenv
+  - colorama
+  - graphviz
+
+## Contributing
+
+1. Fork the repository
+2. Create a feature branch
+3. Commit your changes
+4. Push to the branch
+5. Create a Pull Request
+
+## License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+## Acknowledgments
+
+- Based on the MAPLE (Multi-Agent Planning and Learning Environment) framework
+- Inspired by various JSSP solving approaches and multi-agent systems
+
+---
+
