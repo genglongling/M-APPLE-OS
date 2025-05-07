@@ -122,7 +122,8 @@ and edit the "multiagent-p5.py" following the below coding format.
 ---
 
 ## **📂 Project Structure**  
-![MAPLE Code Structure](img/sagallm_structure.png)
+![MAPLE Code Structure](img/maple_workflow.png)
+
 
 ---
 
