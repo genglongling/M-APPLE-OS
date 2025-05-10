@@ -3,8 +3,12 @@ import csv
 from collections import defaultdict
 import argparse # Import argparse
 
-DMU_DIR = os.path.join(os.path.dirname(__file__), 'DMU')
-# BASE_DIR will be set via command-line argument
+# Get the project root directory
+current_file = os.path.abspath(__file__)
+project_root = os.path.dirname(os.path.dirname(current_file)) if 'applications' in current_file else os.path.dirname(current_file)
+
+# Update paths based on the new location
+DMU_DIR = os.path.join(project_root, 'applications', 'DMU')
 
 # Helper: Load DMU dataset
 def load_dmu_dataset(filepath):
@@ -26,7 +30,7 @@ def load_schedule(filepath):
         for row in reader:
             schedule.append({
                 'job': row['job'],
-                'step': int(row['step']),
+                'step': int(row['step'].split(' ')[1]) if ' ' in row['step'] else int(row['step']),
                 'machine': row['machine'],
                 'start': int(row['start']),
                 'end': int(row['end'])
@@ -92,13 +96,35 @@ def validate_schedule(jobs, schedule):
         'error_details': '; '.join(errors)
     }
 
+def find_schedule_file(base_dir, dataset_name, model_name):
+    """Try different naming patterns to find the schedule file"""
+    patterns = [
+        f'{dataset_name}_{model_name}_5.csv',  # Original pattern
+        f'{dataset_name}_{model_name}-sim1_5.csv',  # Alternative pattern with -sim1
+        f'{dataset_name}-{model_name}_5.csv',  # Another alternative
+        f'{dataset_name}_{model_name.replace("-sim1", "")}_5.csv'  # Pattern without sim1
+    ]
+    
+    for pattern in patterns:
+        path = os.path.join(base_dir, pattern)
+        if os.path.exists(path):
+            return path
+    
+    # If none of the patterns match, try a more flexible approach by listing files
+    for file in os.listdir(base_dir):
+        if file.startswith(dataset_name) and file.endswith('_5.csv') and 'meta' not in file:
+            return os.path.join(base_dir, file)
+    
+    return None
+
 def main():
     parser = argparse.ArgumentParser(description="Validate JSSP schedules for a given model.")
     parser.add_argument("--model_name", type=str, required=True, help="Name of the model to validate (e.g., gemini-2.5-sim1)")
     args = parser.parse_args()
 
     MODEL_NAME = args.model_name
-    BASE_DIR = os.path.join(os.path.dirname(__file__), f'../results_baselines/{MODEL_NAME}')
+    # Update BASE_DIR based on file location
+    BASE_DIR = os.path.join(project_root, 'results_baselines', MODEL_NAME)
 
     if not os.path.isdir(BASE_DIR):
         print(f"Error: Base directory for model {MODEL_NAME} not found at {BASE_DIR}")
@@ -114,12 +140,11 @@ def main():
         dmu_file = os.path.join(DMU_DIR, f'{dataset_name}.txt')
         jobs = load_dmu_dataset(dmu_file)
         
-        # Construct schedule file name based on new convention
-        schedule_file_name = f'{dataset_name}_{MODEL_NAME}_5.csv'
-        schedule_file_path = os.path.join(BASE_DIR, schedule_file_name)
+        # Find schedule file using the helper function
+        schedule_file_path = find_schedule_file(BASE_DIR, dataset_name, MODEL_NAME)
 
-        if not os.path.exists(schedule_file_path):
-            print(f"No schedule file found for {dataset_name} at {schedule_file_path}")
+        if not schedule_file_path:
+            print(f"No schedule file found for {dataset_name}")
             results.append({
                 'Dataset': dataset_name,
                 'Makespan': None,
@@ -130,7 +155,8 @@ def main():
                 'ErrorDetails': 'Schedule file not found.'
             })
             continue
-            
+        
+        print(f"Found schedule file: {os.path.basename(schedule_file_path)}")
         schedule = load_schedule(schedule_file_path)
         val = validate_schedule(jobs, schedule)
         results.append({
