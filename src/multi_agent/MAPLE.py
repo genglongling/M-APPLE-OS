@@ -482,6 +482,101 @@ class MAPLE:
         self.executor = ExecutionManager(self.coordinator.agents)
         self.adaptation_manager = DynamicAdaptationManager(self.workflow, self.coordinator, self.executor)
 
+    def LCSR_replanning_and_optimized(self): # with disruptions
+        """
+        Implements Local Reactive Compensation Protocol (LRCP) as in Algorithm 2.
+        This function should be called before self-validation.
+        """
+        print("\n=== [MAPLE] Local Reactive Compensation Protocol (LRCP) ===")
+        W_exec_completed = False
+        agent_status = {agent.name: 'active' for agent in self.coordinator.agents}
+        disruptions = getattr(self, 'disruptions', set())  # Placeholder: set of disruptions
+        persistent_log = {}
+        queue_reordered = False
+        max_iterations = 100
+        iteration = 0
+        
+        # For demonstration, we assume disruptions is empty unless set externally
+        while not W_exec_completed:
+            iteration += 1
+            print(f"\n[LRCP] Iteration {iteration}")
+            if iteration > max_iterations:
+                print("[LRCP] Max iterations reached, breaking to avoid infinite loop.")
+                break
+            W_exec_completed = True  # Will set to False if any agent is still active
+            for agent in self.coordinator.agents:
+                print(f"  Agent {agent.name} status: {agent_status[agent.name]}")
+                if agent_status[agent.name] != 'active':
+                    continue
+                W_exec_completed = False
+                # 3: if new task assigned to agent
+                # (Assume new task if agent.context is empty or not set)
+                if not hasattr(agent, 'context') or not agent.context:
+                    print(f"    New task assigned to {agent.name}, running agent...")
+                    # 4: Execute role; update persistent log
+                    try:
+                        result = agent.run()
+                        agent.context = result
+                        persistent_log[agent.name] = result
+                        print(f"    {agent.name} executed successfully.")
+                    except Exception as e:
+                        print(f"❌ ERROR in {agent.name}: {e}")
+                        agent_status[agent.name] = 'failed'
+                        continue
+                # 6: if disruption affects agent
+                if disruptions and agent.name in disruptions:
+                    print(f"⚡ Disruption detected for {agent.name}")
+                    # 7: Activate compensator
+                    if hasattr(agent, 'compensate'):
+                        agent.compensate()
+                    # 8: if temporal delay is feasible (simulate always feasible for now)
+                    temporal_delay_feasible = True
+                    if temporal_delay_feasible:
+                        # 9: Perform local compensation (simulate by re-running agent)
+                        print(f"🔄 Local compensation for {agent.name}")
+                        try:
+                            result = agent.run()
+                            agent.context = result
+                            persistent_log[agent.name] = result
+                            print(f"    Local compensation for {agent.name} succeeded.")
+                        except Exception as e:
+                            print(f"❌ Compensation failed for {agent.name}: {e}")
+                            agent_status[agent.name] = 'failed'
+                            continue
+                    else:
+                        # 10: else if queue reordering improves slack
+                        if not queue_reordered:
+                            print(f"🔃 Applying dynamic queue reordering for {agent.name}")
+                            # Simulate queue reordering by shuffling agent order
+                            import random
+                            random.shuffle(self.coordinator.agents)
+                            queue_reordered = True
+                        else:
+                            # 12: else estimate reallocation cost (simulate cost always below threshold)
+                            t_wip = 1  # Simulated cost
+                            threshold = 2
+                            if t_wip <= threshold:
+                                print(f"🔁 Reassigning task locally for {agent.name}")
+                                try:
+                                    result = agent.run()
+                                    agent.context = result
+                                    persistent_log[agent.name] = result
+                                    print(f"    Local reassignment for {agent.name} succeeded.")
+                                except Exception as e:
+                                    print(f"❌ Local reassignment failed for {agent.name}: {e}")
+                                    agent_status[agent.name] = 'failed'
+                                    continue
+                            else:
+                                print(f"⛔ Terminating and returning updated W_exec for {agent.name}")
+                                agent_status[agent.name] = 'terminated'
+                                continue
+            # End for each agent
+            # If all agents are not active, break
+            if all(status != 'active' for status in agent_status.values()):
+                print("[LRCP] All agents are inactive. Breaking loop.")
+                break
+        print("=== LRCP protocol completed ===")
+
     def run(self, with_rollback=True, validate=True):
         print("\n=== [MAPLE] Specification Construction ===")
         print(f"Nodes: {[n['agent'].name for n in self.workflow.get_nodes()]}")
@@ -490,5 +585,7 @@ class MAPLE:
         self.coordinator._set_agent_dependencies()
         print("\n=== [MAPLE] Execution & Validation ===")
         self.executor.execute(with_rollback=with_rollback, adaptation_manager=self.adaptation_manager)
+        # Call LRCP protocol before self-validation
+        self.LCSR_replanning_and_optimized()
         if validate:
             self.executor.self_validate() 

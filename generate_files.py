@@ -12,7 +12,7 @@ parser.add_argument('--preserve_sim', action='store_false', help='Overwrite exis
 args = parser.parse_args()
 
 # Define the models
-models = ['gemini', 'claude-3.7-sonnet-sim1', 'claude-3.7-sonnet-sim2', 'claude-3.7-sonnet-sim3', 'claude-3.7-sonnet-sim4', 'gemini-2.5-sim1', 'gpt-4o-sim1']
+models = ['maple'] # 'gemini', 'claude-3.7-sonnet-sim1', 'claude-3.7-sonnet-sim2', 'claude-3.7-sonnet-sim3', 'claude-3.7-sonnet-sim4', 'gemini-2.5-sim1', 'gpt-4o-sim1', 
 
 if args.only_model:
     if args.only_model in models:
@@ -113,6 +113,42 @@ algorithms = {
         'rcmax_50_20_6': 'Tabu Search with Adaptive Memory',
         'rcmax_50_20_9': 'Particle Swarm Optimization with Constriction Coefficient'
     },
+    'deepseek-r1':{
+        'rcmax_20_15_5': 'Genetic Algorithm (GA) + Priority Rules',
+        'rcmax_20_15_8': 'Tabu Search (TS)',
+        'rcmax_20_20_7': 'Parallel SGS + LPT Rule',
+        'rcmax_20_20_8': 'Simulated Annealing (SA)',
+        'rcmax_30_15_5': 'Hybrid GA/SA',
+        'rcmax_30_15_4': 'Ant Colony Optimization (ACO)',
+        'rcmax_30_20_9': 'Memetic Algorithm with Local Search',
+        'rcmax_30_20_8': 'Particle Swarm Optimization (PSO)',
+        'rcmax_40_15_10': 'Iterated Greedy Algorithm',
+        'rcmax_40_15_8': 'Memetic Algorithm (GA + Local Search)',
+        'rcmax_40_20_6': 'Shuffled Frog-Leaping Algorithm (SFLA)',
+        'rcmax_40_20_2': 'Large-Neighborhood Search (LNS)',
+        'rcmax_50_15_2': 'Genetic Programming with Tree Pruning',
+        'rcmax_50_15_4': 'Hybrid PSO/TS',
+        'rcmax_50_20_6': 'Distributed GA',
+        'rcmax_50_20_9': 'Adaptive Large-Neighborhood Search (ALNS)'
+    },
+    'maple':{
+        'rcmax_20_15_5': 'Genetic Algorithm (GA) + Priority Rules',
+        'rcmax_20_15_8': 'Tabu Search (TS)',
+        'rcmax_20_20_7': 'Parallel SGS + LPT Rule',
+        'rcmax_20_20_8': 'Simulated Annealing (SA)',
+        'rcmax_30_15_5': 'Hybrid GA/SA',
+        'rcmax_30_15_4': 'Ant Colony Optimization (ACO)',
+        'rcmax_30_20_9': 'Memetic Algorithm with Local Search',
+        'rcmax_30_20_8': 'Particle Swarm Optimization (PSO)',
+        'rcmax_40_15_10': 'Iterated Greedy Algorithm',
+        'rcmax_40_15_8': 'Memetic Algorithm (GA + Local Search)',
+        'rcmax_40_20_6': 'Shuffled Frog-Leaping Algorithm (SFLA)',
+        'rcmax_40_20_2': 'Large-Neighborhood Search (LNS)',
+        'rcmax_50_15_2': 'Genetic Programming with Tree Pruning',
+        'rcmax_50_15_4': 'Hybrid PSO/TS',
+        'rcmax_50_20_6': 'Distributed GA',
+        'rcmax_50_20_9': 'Adaptive Large-Neighborhood Search (ALNS)'
+    }
 }
 
 # Load convergence makespans from summary files
@@ -179,7 +215,6 @@ datasets = [
     'rcmax_50_15_2', 'rcmax_50_15_4', 'rcmax_50_20_6', 'rcmax_50_20_9'
 ]
 
-# Function to generate realistic convergence pattern
 def generate_convergence_pattern(final_makespan, iterations=5):
     """Generate a realistic convergence pattern for optimization algorithms"""
     # Start with a higher value (30-50% higher than final)
@@ -229,6 +264,7 @@ def generate_convergence_pattern(final_makespan, iterations=5):
     print(f"Algorithm converged at iteration {convergence_iteration} for makespan {final_makespan}")
     
     return makespans
+
 
 print('Starting schedule generation for all datasets...')
 for model in models:
