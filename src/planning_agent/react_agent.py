@@ -12,6 +12,10 @@ import os
 project_root = os.path.abspath(os.path.join(os.getcwd(), '..'))
 print(f"📂 Project Root: {project_root}")
 
+# Append 'applications' directory to sys.path
+applications_path = os.path.join(project_root, 'applications')
+sys.path.append(applications_path)
+
 # Append 'src' directory to sys.path
 src_path = os.path.join(project_root, 'src')
 sys.path.append(src_path)
@@ -30,10 +34,12 @@ try:
     from utils.completions import completions_create
     from utils.completions import update_chat_history
     from utils.extraction import extract_tag_content
+    from utils.llm_client import get_llm_client
 
     print("✅ tool_agent.tool imported successfully!")
     print("✅ utils.completions imported successfully!")
     print("✅ utils.extraction imported successfully!")
+    print("✅ utils.llm_client imported successfully!")
 except ModuleNotFoundError as e:
     print("❌ Import failed:", e)
 
@@ -87,7 +93,7 @@ class ReactAgent:
     collect tool signatures, and process multiple tool calls in a given round of interaction.
 
     Attributes:
-        client (OpenAI): The OpenAI client used to handle model-based completions.
+        client: The LLM client used to handle model-based completions (OpenAI or Google).
         model (str): The name of the model used for generating responses.
         tools (list[Tool]): A list of Tool instances available for execution.
         tools_dict (dict): A dictionary mapping tool names to their corresponding Tool instances.
@@ -96,11 +102,23 @@ class ReactAgent:
     def __init__(
         self,
         tools: Tool | list[Tool],
-        model: str = "gpt-4o",
+        model: str = "gemini",
         system_prompt: str = BASE_SYSTEM_PROMPT,
+        model_type: str = "google",
     ) -> None:
-        self.client = OpenAI()
+        # Ensure API key is set
+        if model_type == "openai":
+            api_key = os.getenv("OPENAI_API_KEY")
+            if not api_key:
+                raise ValueError("OPENAI_API_KEY environment variable is not set")
+        elif model_type == "google":
+            api_key = os.getenv("GOOGLE_API_KEY")
+            if not api_key:
+                raise ValueError("GOOGLE_API_KEY environment variable is not set")
+        
+        self.client = get_llm_client(model_type)
         self.model = model
+        self.model_type = model_type
         self.system_prompt = system_prompt
         self.tools = tools if isinstance(tools, list) else [tools]
         self.tools_dict = {tool.name: tool for tool in self.tools}
@@ -184,8 +202,7 @@ class ReactAgent:
         if self.tools:
             # Run the ReAct loop for max_rounds
             for _ in range(max_rounds):
-
-                completion = completions_create(self.client, chat_history, self.model)
+                completion = completions_create(self.client, chat_history, self.model, model_type=self.model_type)
 
                 response = extract_tag_content(str(completion), "response")
                 if response.found:
@@ -203,4 +220,4 @@ class ReactAgent:
                     print(Fore.BLUE + f"\nObservations: {observations}")
                     update_chat_history(chat_history, f"{observations}", "user")
 
-        return completions_create(self.client, chat_history, self.model)
+        return completions_create(self.client, chat_history, self.model, model_type=self.model_type)

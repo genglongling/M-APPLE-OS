@@ -33,12 +33,13 @@ class ReflectionAgent:
 
     Attributes:
         model (str): The model name used for generating and reflecting on responses.
-        client (OpenAI): An instance of the OpenAI client to interact with the language model.
+        client: The LLM client used to interact with the language model.
     """
 
-    def __init__(self, model: str = "gpt-4o"):
-        self.client = OpenAI()
+    def __init__(self, model: str = "gemini", model_type: str = "google"):
+        self.client = get_llm_client(model_type)
         self.model = model
+        self.model_type = model_type
 
     def _request_completion(
         self,

@@ -1,17 +1,93 @@
-def completions_create(client, messages: list, model: str) -> str:
+import time
+import random
+from openai import OpenAI, RateLimitError
+import google.generativeai as genai
+import os
+from dotenv import load_dotenv
+
+# Load environment variables
+load_dotenv()
+
+def completions_create(client, messages: list, model: str, model_type: str = "google", max_retries: int = 5, base_delay: float = 1.0) -> str:
     """
     Sends a request to the client's `completions.create` method to interact with the language model.
+    Includes exponential backoff retry logic for rate limiting.
 
     Args:
-        client (OpenAI): The OpenAI client object
+        client: The LLM client object (OpenAI or Google)
         messages (list[dict]): A list of message objects containing chat history for the model.
         model (str): The model to use for generating tool calls and responses.
+        model_type (str): The type of model to use ("openai" or "google"). Defaults to "google".
+        max_retries (int): Maximum number of retry attempts for rate limiting.
+        base_delay (float): Base delay in seconds for exponential backoff.
 
     Returns:
         str: The content of the model's response.
     """
-    response = client.chat.completions.create(messages=messages, model=model,temperature=0.3, max_tokens=3000 )
-    return str(response.choices[0].message.content)
+    # Check if we're using OpenAI or Google
+    is_openai = model_type == "openai"
+    is_google = model_type == "google"
+
+    if is_openai:
+        # Ensure OpenAI API key is set
+        api_key = os.getenv("OPENAI_API_KEY")
+        if not api_key:
+            raise ValueError("OPENAI_API_KEY environment variable is not set")
+
+        for attempt in range(max_retries):
+            try:
+                response = client.chat.completions.create(
+                    messages=messages,
+                    model=model,
+                    temperature=0.3,
+                    max_tokens=3000
+                )
+                return str(response.choices[0].message.content)
+            except RateLimitError as e:
+                if attempt == max_retries - 1:  # Last attempt
+                    raise e
+                
+                # Calculate delay with exponential backoff and jitter
+                delay = base_delay * (2 ** attempt) + random.uniform(0, 1)
+                print(f"Rate limit hit. Retrying in {delay:.2f} seconds...")
+                time.sleep(delay)
+            except Exception as e:
+                if "Missing bearer or basic authentication" in str(e):
+                    raise ValueError("Invalid or missing OpenAI API key. Please check your OPENAI_API_KEY environment variable.")
+                raise e
+    elif is_google:
+        # Ensure Google API key is set
+        api_key = os.getenv("GOOGLE_API_KEY")
+        if not api_key:
+            raise ValueError("GOOGLE_API_KEY environment variable is not set")
+
+        for attempt in range(max_retries):
+            try:
+                # Convert messages to Google's format
+                google_messages = []
+                for msg in messages:
+                    role = "user" if msg["role"] == "user" else "model"
+                    google_messages.append({"role": role, "parts": [msg["content"]]})
+
+                # Create a new chat session
+                chat = client.GenerativeModel(model).start_chat(history=google_messages)
+                
+                # Get the last message
+                last_message = google_messages[-1]["parts"][0]
+                
+                # Send the message and get response
+                response = chat.send_message(last_message)
+                return str(response.text)
+            except Exception as e:
+                if attempt == max_retries - 1:  # Last attempt
+                    raise e
+                
+                # Calculate delay with exponential backoff and jitter
+                delay = base_delay * (2 ** attempt) + random.uniform(0, 1)
+                print(f"Error occurred. Retrying in {delay:.2f} seconds...")
+                time.sleep(delay)
+    else:
+        raise ValueError(f"Unsupported model type: {model_type}")
 
 
 def build_prompt_structure(prompt: str, role: str, tag: str = "") -> dict:

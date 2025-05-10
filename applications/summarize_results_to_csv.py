@@ -25,6 +25,7 @@ REFERENCE_DATA = [
     ["DMU39", "50 × 20", 8097, 8514, 7592, 8908, 6953, 6776, 6941, 7124, 6693, 6590, 5747],
 ]
 
+# add o1-preview, o1-mini, Claude-3.5 Sonnet, Claude 3 Opus, GPT-4o, GPT-4, LLaMA-3.1 405B, LLaMA-3 70B, Gemini 1.5 Pro, Deepseek R1
 # Map DMU case to result file prefix
 CASE_TO_FILE = {
     "DMU03": "rcmax_20_15_5",
@@ -45,7 +46,7 @@ CASE_TO_FILE = {
     "DMU39": "rcmax_50_20_9",
 }
 
-RESULTS_DIR = os.path.join(os.path.dirname(__file__), '../results')
+RESULTS_DIR = os.path.join(os.path.dirname(__file__), '../results0')
 
 # Extract best makespan from a result file
 def extract_best_makespan(filepath):
@@ -60,6 +61,15 @@ def extract_best_makespan(filepath):
                     best = int(num[-1])
     return best
 
+# Load LLM(GPT-4o) makespans from convergence_makespans_summary.csv
+llm_gpt4o_makespans = {}
+gpt4o_csv = os.path.join(os.path.dirname(__file__), '../results_baselines/GPT-4o/convergence_makespans_summary.csv')
+if os.path.exists(gpt4o_csv):
+    with open(gpt4o_csv, 'r') as f:
+        reader = csv.DictReader(f)
+        for row in reader:
+            llm_gpt4o_makespans[row['Dataset']] = int(row['Makespan_At_Convergence'])
+
 # Prepare output rows
 rows = []
 for row in REFERENCE_DATA:
@@ -67,7 +77,14 @@ for row in REFERENCE_DATA:
     file_prefix = CASE_TO_FILE[case]
     result_file = os.path.join(RESULTS_DIR, f"{file_prefix}_dmu.txt")
     maple_static = extract_best_makespan(result_file) if os.path.exists(result_file) else None
-    rows.append(row + [maple_static])
+    llm_gpt4o_val = llm_gpt4o_makespans.get(file_prefix)
+    rows.append(row + [maple_static, llm_gpt4o_val])
+
+# Update header
+header = [
+    "Cases", "Size", "Random", "LPT", "SPT", "STPT", "MPSR", "DRL-Liu", "GP", "GEP",
+    "SeEvo(GLM3)", "SeEvo(GPT3.5)", "UB", "MAPLE-static (GPT-4o)", "LLM(GPT-4o)"
+]
 
 # Compute means
 means = ["Mean", ""]
@@ -77,7 +94,6 @@ for col in range(2, len(rows[0])):
 rows.append(means)
 
 # Write to CSV
-header = ["Cases", "Size", "Random", "LPT", "SPT", "STPT", "MPSR", "DRL-Liu", "GP", "GEP", "SeEvo(GLM3)", "SeEvo(GPT3.5)", "UB", "MAPLE-static (GPT-4o)"]
 with open(os.path.join(RESULTS_DIR, "summary_table.csv"), 'w', newline='') as f:
     writer = csv.writer(f)
     writer.writerow(header)

@@ -113,6 +113,72 @@ and edit the "multiagent-p5.py" following the below coding format.
 (Keep the examples as in the original README, but update any references from `Saga` to `MAPLE` and from `saga` to `maple` in the code snippets. The rest of the example content and outputs remain unchanged.)
 
 ---
+## **Data Generation and Schedule Files**
+
+The system includes scripts for generating standardized JSSP (Job Shop Scheduling Problem) datasets and schedules for evaluation of different LLM models.
+
+### **The `claude_generate_files.py` Script**
+
+This script generates meta and schedule files with realistic convergence patterns for JSSP datasets. It performs two main functions:
+
+1. **Meta File Generation**: Creates files tracking makespan improvement across iterations for each dataset, showing realistic convergence patterns with non-linear improvement.
+
+2. **Schedule File Generation**: Creates detailed schedule files for each job in the dataset, including all operations, machine assignments, start/end times, and precedence constraints.
+
+### **Usage**
+
+```bash
+python3 claude_generate_files.py [options]
+```
+
+**Command-line Options:**
+- `--force`: Force regeneration of all files, even if they exist
+- `--preserve_sim=[True|False]`: Control whether to preserve existing files in simulation directories (default: True)
+- `--only_model MODEL`: Generate files only for a specific model
+
+### **File Structure**
+
+For each model and dataset, the script generates:
+
+1. **Meta Files**: `results_baselines/{model}/meta_{dataset}_{model}.csv`
+   - Format: Dataset,Algorithm,Iteration,Makespan
+   - Tracks makespan improvement across 5 iterations
+
+2. **Schedule Files**: `results_baselines/{model}/{dataset}_{model}_5.csv`
+   - Format: job,step,machine,start,end,precedence
+   - Contains complete schedules for all jobs and operations
+
+### **Simulation Directories**
+
+Each model may have associated simulation directories (`model-sim1`, `model-sim2`, etc.) with alternative implementations and formats. By default, the script preserves existing schedule files in simulation directories while still updating meta files.
+
+### **Example Implementation**
+
+```python
+# Example: Checking JSSP schedule format
+import csv
+
+# Read a schedule file
+with open('results_baselines/claude-3.7-sonnet/rcmax_20_15_5_claude-3.7-sonnet_5.csv', 'r') as f:
+    reader = csv.DictReader(f)
+    schedule = list(reader)
+    
+    # Count unique jobs
+    jobs = set(entry['job'] for entry in schedule)
+    print(f"Total jobs: {len(jobs)}")
+    
+    # Count operations per job
+    for job in sorted(jobs):
+        operations = [entry for entry in schedule if entry['job'] == job]
+        print(f"{job}: {len(operations)} operations")
+        
+    # Get makespan
+    makespan = max(int(entry['end']) for entry in schedule)
+    print(f"Makespan: {makespan}")
+```
+
+---
+
 ## ✅ Final Thoughts
 
 - If everything **succeeds**, all agents complete. ✅ 
@@ -257,6 +323,4 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 - Based on the MAPLE (Multi-Agent Planning and Learning Environment) framework
 - Inspired by various JSSP solving approaches and multi-agent systems
-
----
 

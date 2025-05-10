@@ -1,0 +1,21 @@
+========== Validation Error Report for rcmax_30_15_5 ==========
+Model: gemini
+Schedule File: rcmax_30_15_5_gemini_5.csv
+Validation Status: FAILED
+Makespan: 5650
+
+Error Details:
+- Precedence Violation:
+  Job: Job12
+  Violation: Step 4 (Machine9, time 320-405) ends after Step 5 (Machine2, time 350-410) starts
+  Correction Required: Ensure Step 5 of Job12 starts after Step 4 completes
+
+Validation Statistics:
+- Machine Constraint Errors: 0
+- Precedence Constraint Errors: 1
+- Completion Errors: 0
+- Total Errors: 1
+
+Recommendation:
+Adjust the start time of Job12 Step 5 to be at least 405 (after Step 4 completes).
+================================================================= 

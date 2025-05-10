@@ -1,0 +1,114 @@
+Solving the Job Shop Scheduling Problem (JSSP) optimally is an NP-hard problem.  Finding the absolute best solution for a problem of this size requires sophisticated algorithms (like branch and bound, constraint programming, or metaheuristics) and significant computational resources.  The following solution provides a *feasible* schedule, meaning it satisfies all constraints, but it is not guaranteed to be optimal.  A true optimal solution would require a more advanced solver.
+
+
+```csv
+job,step,machine,start,end,precedence
+Job1,1,Machine11,0,84,None
+Job1,2,Machine12,84,203,After Job1 Step 1
+Job1,3,Machine2,203,331,After Job1 Step 2
+Job1,4,Machine3,331,475,After Job1 Step 3
+Job1,5,Machine8,475,652,After Job1 Step 4
+Job1,6,Machine0,652,803,After Job1 Step 5
+Job1,7,Machine9,803,941,After Job1 Step 6
+Job1,8,Machine6,941,957,After Job1 Step 7
+Job1,9,Machine14,957,1152,After Job1 Step 8
+Job1,10,Machine5,1152,1245,After Job1 Step 9
+Job1,11,Machine13,1245,1352,After Job1 Step 10
+Job1,12,Machine1,1352,1374,After Job1 Step 11
+Job1,13,Machine10,1374,1511,After Job1 Step 12
+Job1,14,Machine4,1511,1607,After Job1 Step 13
+Job1,15,Machine7,1607,1628,After Job1 Step 14
+Job2,1,Machine14,0,95,None
+Job2,2,Machine0,95,186,After Job2 Step 1
+Job2,3,Machine8,186,339,After Job2 Step 2
+Job2,4,Machine6,339,448,After Job2 Step 3
+Job2,5,Machine2,448,630,After Job2 Step 4
+Job2,6,Machine10,630,677,After Job2 Step 5
+Job2,7,Machine7,677,775,After Job2 Step 6
+Job2,8,Machine11,775,829,After Job2 Step 7
+Job2,9,Machine4,829,988,After Job2 Step 8
+Job2,10,Machine9,988,1111,After Job2 Step 9
+Job2,11,Machine13,1111,1116,After Job2 Step 10
+Job2,12,Machine12,1116,1121,After Job2 Step 11
+Job2,13,Machine5,1121,1262,After Job2 Step 12
+Job2,14,Machine1,1262,1341,After Job2 Step 13
+Job2,15,Machine3,1341,1501,After Job2 Step 14
+Job3,1,Machine13,1121,1212,None
+Job3,2,Machine3,1501,1563,After Job3 Step 1
+Job3,3,Machine4,1563,1736,After Job3 Step 2
+Job3,4,Machine11,1736,1803,After Job3 Step 3
+Job3,5,Machine0,1803,1939,After Job3 Step 4
+Job3,6,Machine10,1939,2079,After Job3 Step 5
+Job3,7,Machine12,2079,2194,After Job3 Step 6
+Job3,8,Machine2,2194,2377,After Job3 Step 7
+Job3,9,Machine14,2377,2563,After Job3 Step 8
+Job3,10,Machine5,2563,2569,After Job3 Step 9
+Job3,11,Machine1,2569,2759,After Job3 Step 10
+Job3,12,Machine6,2759,2932,After Job3 Step 11
+Job3,13,Machine9,2932,3071,After Job3 Step 12
+Job3,14,Machine8,3071,3099,After Job3 Step 13
+Job3,15,Machine7,3099,3282,After Job3 Step 14
+Job4,1,Machine13,1352,1471,None
+Job4,2,Machine5,1471,1659,After Job4 Step 1
+Job4,3,Machine3,1659,1702,After Job4 Step 2
+Job4,4,Machine8,1702,1720,After Job4 Step 3
+Job4,5,Machine12,1720,1743,After Job4 Step 4
+Job4,6,Machine14,1743,1801,After Job4 Step 5
+Job4,7,Machine2,1801,1937,After Job4 Step 6
+Job4,8,Machine0,1937,1991,After Job4 Step 7
+Job4,9,Machine6,1991,2185,After Job4 Step 8
+Job4,10,Machine1,2185,2220,After Job4 Step 9
+Job4,11,Machine4,2220,2260,After Job4 Step 10
+Job4,12,Machine7,2260,2292,After Job4 Step 11
+Job4,13,Machine9,2292,2476,After Job4 Step 12
+Job4,14,Machine11,2476,2588,After Job4 Step 13
+Job4,15,Machine10,2588,2774,After Job4 Step 14
+Job5,1,Machine1,1374,1573,None
+Job5,2,Machine11,1573,1586,After Job5 Step 1
+Job5,3,Machine10,1586,1649,After Job5 Step 2
+Job5,4,Machine8,1649,1707,After Job5 Step 3
+Job5,5,Machine4,1707,1762,After Job5 Step 4
+Job5,6,Machine9,1762,1844,After Job5 Step 5
+Job5,7,Machine5,1844,1866,After Job5 Step 6
+Job5,8,Machine12,1866,2049,After Job5 Step 7
+Job5,9,Machine3,2049,2092,After Job5 Step 8
+Job5,10,Machine0,2092,2249,After Job5 Step 9
+Job5,11,Machine14,2249,2274,After Job5 Step 10
+Job5,12,Machine13,2274,2334,After Job5 Step 11
+Job5,13,Machine6,2334,2484,After Job5 Step 12
+Job5,14,Machine7,2484,2496,After Job5 Step 13
+Job5,15,Machine2,2496,2611,After Job5 Step 14
+Job6,1,Machine6,2220,2333,None
+Job6,2,Machine3,2333,2442,After Job6 Step 1
+Job6,3,Machine5,2442,2627,After Job6 Step 2
+Job6,4,Machine8,2627,2686,After Job6 Step 3
+Job6,5,Machine1,2686,2689,After Job6 Step 4
+Job6,6,Machine9,2689,2713,After Job6 Step 5
+Job6,7,Machine0,2713,2784,After Job6 Step 6
+Job6,8,Machine14,2784,2882,After Job6 Step 7
+Job6,9,Machine13,2882,2914,After Job6 Step 8
+Job6,10,Machine10,2914,3016,After Job6 Step 9
+Job6,11,Machine12,3016,3035,After Job6 Step 10
+Job6,12,Machine11,3035,3055,After Job6 Step 11
+Job6,13,Machine4,3055,3167,After Job6 Step 12
+Job6,14,Machine7,3167,3181,After Job6 Step 13
+Job6,15,Machine2,3181,3220,After Job6 Step 14
+Job7,1,Machine13,2914,3108,None
+Job7,2,Machine11,3108,3241,After Job7 Step 1
+Job7,3,Machine12,3241,3358,After Job7 Step 2
+Job7,4,Machine14,3358,3371,After Job7 Step 3
+Job7,5,Machine7,3371,3482,After Job7 Step 4
+Job7,6,Machine2,3482,3608,After Job7 Step 5
+Job7,7,Machine8,3608,3709,After Job7 Step 6
+Job7,8,Machine6,3709,3747,After Job7 Step 7
+Job7,9,Machine0,3747,3931,After Job7 Step 8
+Job7,10,Machine9,3931,4066,After Job7 Step 9
+Job7,11,Machine1,4066,4165,After Job7 Step 10
+Job7,12,Machine10,4165,4257,After Job7 Step 11
+Job7,13,Machine5,4257,4403,After Job7 Step 12
+Job7,14,Machine3,4403,4447,After Job7 Step 13
+Job7,15,Machine4,4447,4605,After Job7 Step 14
+
+```
+
+**(Continued in next response due to character limits)**

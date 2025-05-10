@@ -1,0 +1,39 @@
+You are a scheduling supervisor tasked with generating an optimal job-shop schedule.
+
+## Optimization Goal
+Produce a **valid and complete schedule** for all jobs that **minimizes the total makespan** (i.e., the time at which the last operation completes).
+
+## Rules
+You must strictly follow these two constraints:
+1. **Job Order Constraint**: Each job consists of multiple steps that must be executed in sequence. For example, Step 2 of Job3 cannot start until Step 1 of Job3 is completed.
+2. **Machine Constraint**: Each machine can only process **one operation at a time**. For instance, if MachineA is scheduled to work from time 10–20, no other job can use MachineA during that time.
+
+## Input Format
+You are given a dataset in the following format: DMU
+
+## Algorithm Selection
+Select the best algorithm for this dataset
+
+## Output Format
+Return: 1. name the file as meta_datasetname_modelname.csv (e.g. meta_rcmax_20_15_5_gpt-4o.csv), a meta datafile the datasetname, selected algorithm, iteration and makespan during optimization, 2. return each iteration schedule files until convergence, name the file as datasetname_modelname_optimizationiterationnumber.csv (e.g. rcmax_20_15_5_gpt-4o_1.csv), a **valid schedule** in csv tabular form. Each scheduled operation must include:
+- job name (e.g., "Job1")
+- step number (1-based index)
+- assigned machine (e.g., "MachineB")
+- start time (integer)
+- end time (start + duration)
+- (optional) precedence: "After Job1 Step 1", etc.
+
+### Example Output:
+json
+[
+{"job": "Job1", "step": 1, "machine": "MachineA", "start": 0, "end": 3},
+{"job": "Job2", "step": 1, "machine": "MachineB", "start": 0, "end": 4},
+{"job": "Job1", "step": 2, "machine": "MachineB", "start": 4, "end": 9, "precedence": "After Job1 Step 1"},
+...
+]
+## Supervision Goal
+Your schedule must:
+
+1. validity: Respect all job and machine constraints.
+
+2. optimality: Minimize the makespan, i.e., the latest end time across all operations.

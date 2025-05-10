@@ -18,7 +18,7 @@ from multi_agent.agent import Agent
 load_dotenv()
 
 # Initialize different LLM clients
-def get_llm_client(model_type="openai"):
+def get_llm_client(model_type="google"):
     if model_type == "openai":
         return OpenAI()
     elif model_type == "anthropic":
@@ -75,7 +75,7 @@ def make_placeholder_schedule(job, offset=0):
 
 # Create agents for each job, with run() returning a standardized schedule
 class JSSPAgent(Agent):
-    def __init__(self, name, backstory, task_description, task_expected_output, model_type="openai"):
+    def __init__(self, name, backstory, task_description, task_expected_output, model_type="google"):
         super().__init__(
             name=name,
             backstory=backstory,
@@ -145,7 +145,7 @@ class SupervisorAgent(Agent):
     Objective: Find the schedule with the minimum possible makespan.
     (Note: This baseline implementation does not perform optimization.)
     """
-    def __init__(self, name, backstory, task_description, task_expected_output, model_type="openai"):
+    def __init__(self, name, backstory, task_description, task_expected_output, model_type="google"):
         super().__init__(
             name=name,
             backstory=backstory,
@@ -191,100 +191,7 @@ class SupervisorAgent(Agent):
         self.context = {'schedule': all_schedules}
         return {'schedule': all_schedules}
 
-class JSSPValidationAgent(Agent):
-    def __init__(self, name, backstory, task_description, task_expected_output, model_type="openai"):
-        super().__init__(
-            name=name,
-            backstory=backstory,
-            task_description=task_description,
-            task_expected_output=task_expected_output
-        )
-        self.client = get_llm_client(model_type)
-        self.model_type = model_type
-
-    def run(self):
-        # Get schedule from supervisor agent
-        all_schedules = []
-        for agent in self.dependencies:
-            if hasattr(agent, 'context') and isinstance(agent.context, dict) and 'schedule' in agent.context:
-                all_schedules.extend(agent.context['schedule'])
-        
-        if not all_schedules:
-            return {
-                'valid': False,
-                'errors': ['No schedules found from supervisor agent'],
-                'makespan': None
-            }
-        
-        # Initialize validation results
-        errors = []
-        
-        # 1. Check machine constraints (no overlapping operations)
-        machine_schedules = {name: [] for name in machine_names}
-        for entry in all_schedules:
-            machine = entry.get('machine')
-            if machine in machine_schedules:
-                machine_schedules[machine].append(entry)
-        
-        for machine, schedule in machine_schedules.items():
-            schedule.sort(key=lambda x: x.get('start', 0))
-            # Track processed pairs to avoid duplicates
-            processed_pairs = set()
-            for i in range(len(schedule)-1):
-                for j in range(i+1, len(schedule)):
-                    # Create a unique key for this pair
-                    pair_key = (schedule[i].get('job'), schedule[i].get('step'), 
-                              schedule[j].get('job'), schedule[j].get('step'))
-                    if pair_key in processed_pairs:
-                        continue
-                    
-                    if schedule[i].get('end', 0) > schedule[j].get('start', 0):
-                        error_msg = f"Overlap detected on {machine}: {schedule[i].get('job')} Step {schedule[i].get('step')} and {schedule[j].get('job')} Step {schedule[j].get('step')}"
-                        if error_msg not in errors:  # Avoid duplicate error messages
-                            errors.append(error_msg)
-                        processed_pairs.add(pair_key)
-        
-        # 2. Check job precedence constraints
-        job_steps = {}
-        for entry in all_schedules:
-            job = entry.get('job')
-            if job not in job_steps:
-                job_steps[job] = []
-            job_steps[job].append(entry)
-        
-        for job, steps in job_steps.items():
-            steps.sort(key=lambda x: x.get('step', 0))
-            for i in range(len(steps)-1):
-                if steps[i].get('end', 0) > steps[i+1].get('start', 0):
-                    errors.append(f"Precedence violation in {job}: Step {steps[i].get('step')} ends after Step {steps[i+1].get('step')} starts")
-        
-        # 3. Check job completion
-        for job in jobs:
-            job_name = job['name']
-            if job_name not in job_steps or len(job_steps[job_name]) != len(job['steps']):
-                errors.append(f"Incomplete schedule for {job_name}")
-        
-        # 4. Check makespan
-        makespan = max(entry.get('end', 0) for entry in all_schedules)
-        if makespan < 10:  # UB is 10
-            errors.append(f"Makespan {makespan} is below theoretical UB of 10")
-        
-        # Print validation results
-        print("\n=== Validation Results ===")
-        if errors:
-            print("❌ Validation failed with the following errors:")
-            for error in errors:
-                print(f"- {error}")
-        else:
-            print("✅ Schedule is valid!")
-        print(f"Final Makespan: {makespan}")
-        
-        return {
-            'valid': len(errors) == 0,
-            'errors': errors,
-            'makespan': makespan
-        }
-
+# Create agents for each job
 agents = []
 for job in jobs:
     agent = JSSPAgent(
@@ -292,18 +199,9 @@ for job in jobs:
         backstory=f"Agent for {job['name']} scheduling.",
         task_description=f"Schedule steps for {job['name']} on required machines with precedence.",
         task_expected_output=f"Step schedule for {job['name']} respecting machine and precedence constraints.",
-        model_type="google"  # Changed from "openai" to "google"
+        model_type="google"  # or your preferred model
     )
     agents.append(agent)
-    
-# Add validation agent
-validation_agent = JSSPValidationAgent(
-    name="JSSP Validation Agent",
-    backstory="Validates JSSP schedules for constraint violations.",
-    task_description="Check all schedules for machine constraints, precedence constraints, and makespan validity.",
-    task_expected_output="Validation results with any detected violations.",
-    model_type="google"  # Changed from "openai" to "google"
-)
 
 # Add supervisor agent
 supervisor_agent = SupervisorAgent(
@@ -311,19 +209,15 @@ supervisor_agent = SupervisorAgent(
     backstory="Aggregates all job schedules and produces the overall minimum makespan JSSP schedule.",
     task_description="Combine all job agent schedules into a single overall minimum makespan JSSP schedule.",
     task_expected_output="Overall minimum makespan JSSP schedule as a table.",
-    model_type="google"  # Changed from "openai" to "google"
+    model_type="google"
 )
-
-agents.extend([supervisor_agent, validation_agent])
+agents.append(supervisor_agent)
 
 # Only job agents as initial nodes
 nodes = [{'agent': agent, 'dependencies': []} for agent in agents if isinstance(agent, JSSPAgent)]
 
 # Supervisor depends on all job agents
 nodes.append({'agent': supervisor_agent, 'dependencies': [agent.name for agent in agents if isinstance(agent, JSSPAgent)]})
-
-# Validation agent depends on supervisor
-nodes.append({'agent': validation_agent, 'dependencies': [supervisor_agent.name]})
 
 task_spec = {
     'nodes': nodes,

@@ -61,6 +61,7 @@ class Agent:
         task_expected_output (str, optional): The expected format or content of the task output. Defaults to "".
         tools (list[Tool] | None, optional): A list of Tool instances available to the agent. Defaults to None.
         llm (str, optional): The name of the language model to use.
+        model_type (str, optional): The type of language model to use. Defaults to "google".
     """
 
     def __init__(
@@ -70,14 +71,15 @@ class Agent:
         task_description: str,
         task_expected_output: str = "",
         tools: list[Tool] | None = None,
-        llm: str = "gpt-4o",
+        llm: str = "gemini",
+        model_type: str = "google",
     ):
         self.name = name
         self.backstory = backstory
         self.task_description = task_description
         self.task_expected_output = task_expected_output
         self.react_agent = ReactAgent(
-            model=llm, system_prompt=self.backstory, tools=tools or []
+            model=llm, system_prompt=self.backstory, tools=tools or [], model_type=model_type
         )
 
         self.dependencies: list[Agent] = []  # Agents that this agent depends on

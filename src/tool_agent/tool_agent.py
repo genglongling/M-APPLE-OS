@@ -69,17 +69,19 @@ class ToolAgent:
     Attributes:
         tools (Tool | list[Tool]): A list of tools available to the agent.
         model (str): The model to be used for generating tool calls and responses.
-        client (OpenAI): The OpenAI client used to interact with the language model.
+        client: The LLM client used to interact with the language model.
         tools_dict (dict): A dictionary mapping tool names to their corresponding Tool objects.
     """
 
     def __init__(
         self,
         tools: Tool | list[Tool],
-        model: str = "gpt-4o-mini",
+        model: str = "gemini",
+        model_type: str = "google",
     ) -> None:
-        self.client = OpenAI()
+        self.client = get_llm_client(model_type)
         self.model = model
+        self.model_type = model_type
         self.tools = tools if isinstance(tools, list) else [tools]
         self.tools_dict = {tool.name: tool for tool in self.tools}
 

@@ -138,7 +138,16 @@ class ExecutionManager:
                 executed_agents.append(agent)
                 print(Fore.GREEN + f"✅ {agent.name} completed successfully.")
 
-                # print each agent result
+                # # Print all candidate schedules for JSSPAgent if present
+                # if hasattr(agent, 'context') and isinstance(agent.context, dict) and 'candidates' in agent.context:
+                #     candidates = agent.context['candidates']
+                #     print(f"\n--- {agent.name} generated {len(candidates)} candidate schedules ---")
+                #     for idx, schedule in enumerate(candidates):
+                #         print(f"\nCandidate {idx+1}:")
+                #         for entry in schedule:
+                #             print(f"  Job: {entry['job']}, Step: {entry['step']}, Machine: {entry['machine']}, Start: {entry['start']}, End: {entry['end']}")
+
+                # # print each agent result
                 # print(Fore.CYAN + "📊 Agent Results:")
                 # if isinstance(result, dict):
                 #     for key, value in result.items():
@@ -192,15 +201,271 @@ class ExecutionManager:
     def self_validate(self):
         """
         Validates workflow execution for structural validity, constraint satisfaction, and compensation coverage.
+        Implements JSSP validation logic. If validation fails, re-run supervisor agent with error context once.
         """
-        # Placeholder: implement actual validation logic
         print("🔍 Self-Validation: Checking workflow structure, constraints, and compensation coverage...")
-        # Example checks (to be expanded):
-        # - All agents executed?
-        # - All dependencies respected?
-        # - All rollback paths available?
-        # - Any errors in context?
-        print("✅ Self-Validation complete.")
+        # Find supervisor agent
+        supervisor_agent = [a for a in self.agents if 'Supervisor' in a.name][0]
+        supervisor_output = self.context.get(supervisor_agent.name, {})
+        all_schedules = supervisor_output.get('schedule', [])
+
+        # --- Agent Output Consistency Validation ---
+        errors = []
+        # Get jobs and machine_names from context if available
+        jobs = self.context.get('jobs', None)
+        machine_names = self.context.get('machine_names', None)
+
+        # If jobs are not in context, try to load from task specification
+        if not jobs and hasattr(self, 'task_spec'):
+            jobs = self.task_spec.get('jobs', [])
+            if not jobs:
+                print("Warning: No jobs found in context or task specification")
+                return False
+
+        # Try to infer machine names if not present
+        if not machine_names and all_schedules:
+            machine_names = list({entry.get('machine') for entry in all_schedules if 'machine' in entry})
+        elif not machine_names and jobs:
+            # Extract machine names from job specifications
+            machine_indices = set()
+            for job in jobs:
+                for machine, _ in job['steps']:
+                    idx = int(machine.replace('Machine', ''))
+                    machine_indices.add(idx)
+            machine_names = [f"Machine{idx}" for idx in sorted(machine_indices)]
+
+        # 1. Check agent output consistency
+        if jobs and all_schedules:
+            # Create a mapping of job steps from input specification
+            job_specs = {}
+            for job in jobs:
+                if not job.get('steps'):
+                    print(f"Warning: No steps found for job {job['name']}")
+                    continue
+                job_specs[job['name']] = {
+                    'steps': [(machine, duration) for machine, duration in job['steps']],
+                    'total_steps': len(job['steps'])
+                }
+                print(f"Loaded specification for {job['name']}: {len(job['steps'])} steps")
+
+            # Validate each schedule entry against job specifications
+            for entry in all_schedules:
+                job_name = entry.get('job')
+                step_num = entry.get('step')
+                machine = entry.get('machine')
+                start_time = entry.get('start')
+                end_time = entry.get('end')
+
+                # Check if job exists in specification
+                if job_name not in job_specs:
+                    errors.append(f"Invalid job name in schedule: {job_name}")
+                    continue
+
+                # Check if step number is valid
+                if step_num > job_specs[job_name]['total_steps']:
+                    errors.append(f"Invalid step number for {job_name}: Step {step_num} exceeds total steps {job_specs[job_name]['total_steps']}")
+                    continue
+
+                # Check if machine matches specification
+                expected_machine, expected_duration = job_specs[job_name]['steps'][step_num - 1]
+                if machine != expected_machine:
+                    errors.append(f"Machine mismatch for {job_name} Step {step_num}: Expected {expected_machine}, got {machine}")
+
+                # Check if duration matches specification
+                actual_duration = end_time - start_time
+                if actual_duration != expected_duration:
+                    errors.append(f"Duration mismatch for {job_name} Step {step_num}: Expected {expected_duration}, got {actual_duration}")
+
+                # Check if start and end times are valid
+                if start_time < 0:
+                    errors.append(f"Invalid start time for {job_name} Step {step_num}: {start_time}")
+                if end_time <= start_time:
+                    errors.append(f"Invalid end time for {job_name} Step {step_num}: {end_time} (start: {start_time})")
+
+        # If there are consistency errors, add them to context and re-run supervisor
+        if errors:
+            print("\n=== Agent Output Consistency Validation ===")
+            print("❌ Validation failed with the following consistency errors:")
+            for error in errors:
+                print(f"- {error}")
+            self.context['validation_errors'] = errors
+            print("🔄 Re-running supervisor agent with error context...")
+            supervisor_agent.context = self.context
+            self.context[supervisor_agent.name] = supervisor_agent.run()
+            # Get updated schedule after re-run
+            supervisor_output = self.context.get(supervisor_agent.name, {})
+            all_schedules = supervisor_output.get('schedule', [])
+            errors = []  # Reset errors for next validation phase
+
+        # --- JSSP Validation Logic ---
+        # 1. Check machine constraints (no overlapping operations)
+        machine_schedules = {name: [] for name in machine_names}
+        for entry in all_schedules:
+            machine = entry.get('machine')
+            if machine in machine_schedules:
+                machine_schedules[machine].append(entry)
+        for machine, schedule in machine_schedules.items():
+            schedule.sort(key=lambda x: x.get('start', 0))
+            # Track processed pairs to avoid duplicates
+            processed_pairs = set()
+            for i in range(len(schedule)-1):
+                for j in range(i+1, len(schedule)):
+                    pair_key = (schedule[i].get('job'), schedule[i].get('step'), 
+                                schedule[j].get('job'), schedule[j].get('step'))
+                    if pair_key in processed_pairs:
+                        continue
+                    if schedule[i].get('end', 0) > schedule[j].get('start', 0):
+                        error_msg = f"Overlap detected on {machine}: {schedule[i].get('job')} Step {schedule[i].get('step')} and {schedule[j].get('job')} Step {schedule[j].get('step')}"
+                        if error_msg not in errors:
+                            errors.append(error_msg)
+                        processed_pairs.add(pair_key)
+        # 2. Check job precedence constraints
+        job_steps = {}
+        for entry in all_schedules:
+            job = entry.get('job')
+            if job not in job_steps:
+                job_steps[job] = []
+            job_steps[job].append(entry)
+        for job, steps in job_steps.items():
+            steps.sort(key=lambda x: x.get('step', 0))
+            for i in range(len(steps)-1):
+                if steps[i].get('end', 0) > steps[i+1].get('start', 0):
+                    errors.append(f"Precedence violation in {job}: Step {steps[i].get('step')} ends after Step {steps[i+1].get('step')} starts")
+        # 3. Check job completion
+        if jobs:
+            for job in jobs:
+                job_name = job['name']
+                if job_name not in job_steps or len(job_steps[job_name]) != len(job.get('steps', [])):
+                    errors.append(f"Incomplete schedule for {job_name}")
+        # 4. Check makespan
+        makespan = max(entry.get('end', 0) for entry in all_schedules) if all_schedules else None
+        # Print validation results
+        print("\n=== Validation Results ===")
+        if errors:
+            print("❌ Validation failed with the following errors:")
+            for error in errors:
+                print(f"- {error}")
+            # Add errors to context and re-run supervisor ONCE
+            self.context['validation_errors'] = errors
+            print("🔄 Re-running supervisor agent with error context...")
+            supervisor_agent.context = self.context
+            self.context[supervisor_agent.name] = supervisor_agent.run()
+            # Validate again
+            supervisor_output = self.context.get(supervisor_agent.name, {})
+            all_schedules = supervisor_output.get('schedule', [])
+            # Repeat validation logic
+            errors2 = []
+            machine_schedules = {name: [] for name in machine_names}
+            for entry in all_schedules:
+                machine = entry.get('machine')
+                if machine in machine_schedules:
+                    machine_schedules[machine].append(entry)
+            for machine, schedule in machine_schedules.items():
+                schedule.sort(key=lambda x: x.get('start', 0))
+                processed_pairs = set()
+                for i in range(len(schedule)-1):
+                    for j in range(i+1, len(schedule)):
+                        pair_key = (schedule[i].get('job'), schedule[i].get('step'), 
+                                    schedule[j].get('job'), schedule[j].get('step'))
+                        if pair_key in processed_pairs:
+                            continue
+                        if schedule[i].get('end', 0) > schedule[j].get('start', 0):
+                            error_msg = f"Overlap detected on {machine}: {schedule[i].get('job')} Step {schedule[i].get('step')} and {schedule[j].get('job')} Step {schedule[j].get('step')}"
+                            if error_msg not in errors2:
+                                errors2.append(error_msg)
+                            processed_pairs.add(pair_key)
+            job_steps = {}
+            for entry in all_schedules:
+                job = entry.get('job')
+                if job not in job_steps:
+                    job_steps[job] = []
+                job_steps[job].append(entry)
+            for job, steps in job_steps.items():
+                steps.sort(key=lambda x: x.get('step', 0))
+                for i in range(len(steps)-1):
+                    if steps[i].get('end', 0) > steps[i+1].get('start', 0):
+                        errors2.append(f"Precedence violation in {job}: Step {steps[i].get('step')} ends after Step {steps[i+1].get('step')} starts")
+            if jobs:
+                for job in jobs:
+                    job_name = job['name']
+                    if job_name not in job_steps or len(job_steps[job_name]) != len(job.get('steps', [])):
+                        errors2.append(f"Incomplete schedule for {job_name}")
+            makespan2 = max(entry.get('end', 0) for entry in all_schedules) if all_schedules else None
+            print("\n=== Validation Results (Second Attempt) ===")
+            if errors2:
+                print("❌ Validation failed again. Initiating global replanning...")
+                # Add errors to context for global replanning
+                self.context['validation_errors'] = errors2
+                self.context['global_replan'] = True
+                
+                # Reset supervisor agent's state
+                if hasattr(supervisor_agent, 'has_run'):
+                    supervisor_agent.has_run = False
+                
+                # Run supervisor agent with error context
+                print("🔄 Running supervisor agent with global replanning...")
+                supervisor_agent.context = self.context
+                self.context[supervisor_agent.name] = supervisor_agent.run()
+                
+                # Validate one final time
+                supervisor_output = self.context.get(supervisor_agent.name, {})
+                all_schedules = supervisor_output.get('schedule', [])
+                errors3 = []
+                
+                # Perform final validation
+                if all_schedules:
+                    # Check job completion
+                    job_steps = {}
+                    for entry in all_schedules:
+                        job = entry.get('job')
+                        if job not in job_steps:
+                            job_steps[job] = []
+                        job_steps[job].append(entry)
+                    
+                    for job in jobs:
+                        job_name = job['name']
+                        if job_name not in job_steps or len(job_steps[job_name]) != len(job.get('steps', [])):
+                            errors3.append(f"Incomplete schedule for {job_name}")
+                    
+                    # Check machine constraints
+                    machine_schedules = {name: [] for name in machine_names}
+                    for entry in all_schedules:
+                        machine = entry.get('machine')
+                        if machine in machine_schedules:
+                            machine_schedules[machine].append(entry)
+                    
+                    for machine, schedule in machine_schedules.items():
+                        schedule.sort(key=lambda x: x.get('start', 0))
+                        for i in range(len(schedule)-1):
+                            if schedule[i].get('end', 0) > schedule[i+1].get('start', 0):
+                                errors3.append(f"Overlap detected on {machine}: {schedule[i].get('job')} Step {schedule[i].get('step')} and {schedule[i+1].get('job')} Step {schedule[i+1].get('step')}")
+                    
+                    # Check precedence constraints
+                    for job, steps in job_steps.items():
+                        steps.sort(key=lambda x: x.get('step', 0))
+                        for i in range(len(steps)-1):
+                            if steps[i].get('end', 0) > steps[i+1].get('start', 0):
+                                errors3.append(f"Precedence violation in {job}: Step {steps[i].get('step')} ends after Step {steps[i+1].get('step')} starts")
+                
+                print("\n=== Validation Results (Final Attempt) ===")
+                if errors3:
+                    print("❌ Validation failed after global replanning. Stopping MAPLE.")
+                    for error in errors3:
+                        print(f"- {error}")
+                    return False
+                else:
+                    print("✅ Schedule is valid after global replanning!")
+                    makespan3 = max(entry.get('end', 0) for entry in all_schedules) if all_schedules else None
+                    print(f"Final Makespan: {makespan3}")
+                    return True
+            else:
+                print("✅ Schedule is valid after second attempt!")
+                print(f"Final Makespan: {makespan2}")
+                return True
+        else:
+            print("✅ Schedule is valid!")
+            print(f"Final Makespan: {makespan}")
+            return True
 
 # Main MAPLE Orchestrator
 class MAPLE:

@@ -18,7 +18,7 @@ from multi_agent.agent import Agent
 load_dotenv()
 
 # Initialize different LLM clients
-def get_llm_client(model_type="openai"):
+def get_llm_client(model_type="google"):
     if model_type == "openai":
         return OpenAI()
     elif model_type == "anthropic":
@@ -58,7 +58,7 @@ def make_placeholder_schedule(job, offset=0):
 
 # Create agents for each job, with run() returning a standardized schedule
 class JSSPAgent(Agent):
-    def __init__(self, name, backstory, task_description, task_expected_output, model_type="openai"):
+    def __init__(self, name, backstory, task_description, task_expected_output, model_type="google"):
         super().__init__(name, backstory, task_description, task_expected_output)
         self.client = get_llm_client(model_type)
         self.model_type = model_type
@@ -118,7 +118,7 @@ class JSSPAgent(Agent):
 
 # Add a final Supervisor Agent
 class SupervisorAgent(Agent):
-    def __init__(self, name, backstory, task_description, task_expected_output, model_type="openai"):
+    def __init__(self, name, backstory, task_description, task_expected_output, model_type="google"):
         super().__init__(name, backstory, task_description, task_expected_output)
         self.client = get_llm_client(model_type)
         self.model_type = model_type
@@ -229,7 +229,7 @@ class SupervisorAgent(Agent):
         return {'schedule': new_schedule}
 
 class JSSPValidationAgent(Agent):
-    def __init__(self, name, backstory, task_description, task_expected_output, model_type="openai"):
+    def __init__(self, name, backstory, task_description, task_expected_output, model_type="google"):
         super().__init__(name, backstory, task_description, task_expected_output)
         self.client = get_llm_client(model_type)
         self.model_type = model_type
@@ -312,7 +312,7 @@ for job in jobs:
         backstory=f"Agent for {job['name']} scheduling.",
         task_description=f"Schedule steps for {job['name']} on required machines with precedence.",
         task_expected_output=f"Step schedule for {job['name']} respecting machine and precedence constraints.",
-        model_type="openai"  # Can be changed to "anthropic", "google", or "deepseek"
+        model_type="google"  # Can be changed to "anthropic", "google", or "deepseek"
     )
     agents.append(agent)
 
@@ -322,7 +322,7 @@ validation_agent = JSSPValidationAgent(
     backstory="Validates JSSP schedules for constraint violations.",
     task_description="Check all schedules for machine constraints, precedence constraints, and makespan validity.",
     task_expected_output="Validation results with any detected violations.",
-    model_type="openai"  # Can be changed to "anthropic", "google", or "deepseek"
+    model_type="google"  # Can be changed to "anthropic", "google", or "deepseek"
 )
 
 # Add supervisor agent
@@ -331,7 +331,7 @@ supervisor_agent = SupervisorAgent(
     backstory="Aggregates all job schedules and produces the overall JSSP schedule.",
     task_description="Combine all job agent schedules into a single overall JSSP schedule.",
     task_expected_output="Overall JSSP schedule as a table.",
-    model_type="openai"  # Can be changed to "anthropic", "google", or "deepseek"
+    model_type="google"  # Can be changed to "anthropic", "google", or "deepseek"
 )
 
 agents.extend([supervisor_agent, validation_agent])
