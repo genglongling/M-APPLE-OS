@@ -1,8 +1,9 @@
 import os
 import re
 import csv
-import matplotlib.pyplot as plt
+import numpy as np
 import pandas as pd
+import matplotlib.pyplot as plt
 
 # Reference data from the table image
 REFERENCE_DATA = [
@@ -25,7 +26,6 @@ REFERENCE_DATA = [
     ["DMU39", "50 × 20", 8097, 8514, 7592, 8908, 6953, 6776, 6941, 7124, 6693, 6590, 5747],
 ]
 
-# add o1-preview, o1-mini, Claude-3.5 Sonnet, Claude 3 Opus, GPT-4o, GPT-4, LLaMA-3.1 405B, LLaMA-3 70B, Gemini 1.5 Pro, Deepseek R1
 # Map DMU case to result file prefix
 CASE_TO_FILE = {
     "DMU03": "rcmax_20_15_5",
@@ -46,61 +46,233 @@ CASE_TO_FILE = {
     "DMU39": "rcmax_50_20_9",
 }
 
-RESULTS_DIR = os.path.join(os.path.dirname(__file__), '../results0')
+# Get the project root directory
+current_file = os.path.abspath(__file__)
+project_root = os.path.dirname(os.path.dirname(current_file)) if 'applications' in current_file else os.path.dirname(current_file)
 
-# Extract best makespan from a result file
-def extract_best_makespan(filepath):
-    best = None
-    with open(filepath, 'r') as f:
-        for line in f:
-            m = re.search(r"Best static makespan for", line)
-            if m:
-                # Extract the number at the end
-                num = re.findall(r"\d+", line)
-                if num:
-                    best = int(num[-1])
-    return best
+# Update paths based on the new location
+RESULTS_DIR = os.path.join(project_root, 'results_baselines')
+
+# Load maple-dynamic results from validation summary
+maple_dynamic_results = {}
+maple_dynamic_dir = os.path.join(RESULTS_DIR, 'maple-multiple')
+if os.path.exists(maple_dynamic_dir):
+    validation_summary = os.path.join(maple_dynamic_dir, 'validation_summary.csv')
+    if os.path.exists(validation_summary):
+        df = pd.read_csv(validation_summary)
+        for dataset in df['dataset'].unique():
+            dataset_makespans = df[df['dataset'] == dataset]['makespan'].values
+            if len(dataset_makespans) > 0:
+                mean = np.mean(dataset_makespans)
+                std = np.std(dataset_makespans)
+                maple_dynamic_results[dataset] = f"{mean:.2f}±{std:.2f}"
 
 # Load LLM(GPT-4o) makespans from convergence_makespans_summary.csv
 llm_gpt4o_makespans = {}
-gpt4o_csv = os.path.join(os.path.dirname(__file__), '../results_baselines/GPT-4o/convergence_makespans_summary.csv')
+gpt4o_csv = os.path.join(RESULTS_DIR, 'gpt-4o-sim1', 'convergence_makespans_summary.csv')
 if os.path.exists(gpt4o_csv):
     with open(gpt4o_csv, 'r') as f:
         reader = csv.DictReader(f)
         for row in reader:
             llm_gpt4o_makespans[row['Dataset']] = int(row['Makespan_At_Convergence'])
 
+# Load MAPLE-static (Claude-3.7) makespans from convergence_makespans_summary.csv
+maple_static_claude_makespans = {}
+claude_csv = os.path.join(RESULTS_DIR, 'claude-3.7-sonnet-sim1', 'convergence_makespans_summary.csv')
+if os.path.exists(claude_csv):
+    with open(claude_csv, 'r') as f:
+        reader = csv.DictReader(f)
+        for row in reader:
+            maple_static_claude_makespans[row['Dataset']] = int(row['Makespan_At_Convergence'])
+
+# Load MAPLE-static results from validation summary
+maple_static_makespans = {}
+maple_static_csv = os.path.join(RESULTS_DIR, 'maple', 'convergence_makespans_summary.csv')
+if os.path.exists(maple_static_csv):
+    with open(maple_static_csv, 'r') as f:
+        reader = csv.DictReader(f)
+        for row in reader:
+            maple_static_makespans[row['Dataset']] = int(row['Makespan_At_Convergence'])
+
+# Load MAPLE-dynamic results from validation summary
+maple_dynamic_data = {}
+maple_dynamic_dir = os.path.join(RESULTS_DIR, 'maple-multiple')
+maple_dynamic_summary = os.path.join(maple_dynamic_dir, 'validation_summary.csv')
+
+if os.path.exists(maple_dynamic_summary):
+    with open(maple_dynamic_summary, 'r') as f:
+        reader = csv.DictReader(f)
+        for row in reader:
+            dataset = row['dataset']  # Changed from 'dataset' to 'Dataset' to match the file format
+            makespan = float(row['makespan'])  # Changed from 'makespan' to 'Makespan'
+            if dataset not in maple_dynamic_data:
+                maple_dynamic_data[dataset] = []
+            maple_dynamic_data[dataset].append(makespan)
+else:
+    print(f"Warning: Could not find validation summary file at {maple_dynamic_summary}")
+
+# Calculate mean and std for each dataset in maple-dynamic
+maple_dynamic_stats = {}
+for dataset, makespans in maple_dynamic_data.items():
+    mean = np.mean(makespans)
+    std = np.std(makespans)
+    maple_dynamic_stats[dataset] = f"{mean:.2f}±{std:.2f}"
+
+# Load makespan values from other CSV files
+llm_makespans = {}
+gpt4o_csv = os.path.join(RESULTS_DIR, 'gpt-4o-sim1', 'convergence_makespans_summary.csv')
+if os.path.exists(gpt4o_csv):
+    with open(gpt4o_csv, 'r') as f:
+        reader = csv.DictReader(f)
+        for row in reader:
+            llm_makespans[row['Dataset']] = int(row['Makespan_At_Convergence'])
+
+# Load MAPLE-dynamic results
+maple_dynamic_df = pd.read_csv(os.path.join(RESULTS_DIR, 'maple-multiple', 'validation_summary.csv'))
+
+# Handle both uppercase and lowercase column names
+dataset_col = 'Dataset' if 'Dataset' in maple_dynamic_df.columns else 'dataset'
+makespan_col = 'Makespan' if 'Makespan' in maple_dynamic_df.columns else 'makespan'
+
+# Group by dataset and calculate minimum makespan
+maple_dynamic_stats = {}
+for dataset, group in maple_dynamic_df.groupby(dataset_col):
+    makespans = group[makespan_col].astype(float)
+    maple_dynamic_stats[dataset] = {
+        'min': np.min(makespans)
+    }
+
+# Load MAPLE-static results
+maple_static_df = pd.read_csv(os.path.join(RESULTS_DIR, 'claude-3.7-sonnet-sim1', 'convergence_validation_summary.csv'))
+
+# Handle both uppercase and lowercase column names for static results
+dataset_col_static = 'Dataset' if 'Dataset' in maple_static_df.columns else 'dataset'
+makespan_col_static = 'Makespan' if 'Makespan' in maple_static_df.columns else 'makespan'
+
+# Store makespans for static results
+maple_static_makespans = {}
+for _, row in maple_static_df.iterrows():
+    dataset = row[dataset_col_static]
+    makespan = float(row[makespan_col_static])
+    maple_static_makespans[dataset] = makespan
+
 # Prepare output rows
-rows = []
-for row in REFERENCE_DATA:
-    case = row[0]
+output_rows = []
+for case_data in REFERENCE_DATA:
+    case, size, random, lpt, spt, stpt, mpsr, drl, gp, gep, seevo_glm3, seevo_gpt35, ub = case_data
     file_prefix = CASE_TO_FILE[case]
-    result_file = os.path.join(RESULTS_DIR, f"{file_prefix}_dmu.txt")
-    maple_static = extract_best_makespan(result_file) if os.path.exists(result_file) else None
-    llm_gpt4o_val = llm_gpt4o_makespans.get(file_prefix)
-    rows.append(row + [maple_static, llm_gpt4o_val])
-
-# Update header
-header = [
-    "Cases", "Size", "Random", "LPT", "SPT", "STPT", "MPSR", "DRL-Liu", "GP", "GEP",
-    "SeEvo(GLM3)", "SeEvo(GPT3.5)", "UB", "MAPLE-static (GPT-4o)", "LLM(GPT-4o)"
-]
-
-# Compute means
-means = ["Mean", ""]
-for col in range(2, len(rows[0])):
-    vals = [r[col] for r in rows if isinstance(r[col], (int, float))]
-    means.append(round(sum(vals)/len(vals), 2))
-rows.append(means)
+    
+    row = {
+        'Dataset': case,
+        'Size': size,
+        'Random': random,
+        'LPT': lpt,
+        'SPT': spt,
+        'STPT': stpt,
+        'MPSR': mpsr,
+        'DRL-Liu': drl,
+        'GP': gp,
+        'GEP': gep,
+        'SeEvo(GLM3)': seevo_glm3,
+        'SeEvo(GPT3.5)': seevo_gpt35,
+        'UB': ub,
+        'MAPLE-dynamic (Claude-3.7 heuristics)': f"{maple_dynamic_stats.get(file_prefix, {}).get('min', 'N/A')}",
+        'MAPLE-static (Claude-3.7 heuristics)': f"{maple_static_makespans.get(file_prefix, 'N/A')}"
+    }
+    output_rows.append(row)
 
 # Write to CSV
-with open(os.path.join(RESULTS_DIR, "summary_table.csv"), 'w', newline='') as f:
-    writer = csv.writer(f)
-    writer.writerow(header)
-    for row in rows:
-        writer.writerow(row)
+fieldnames = ['Dataset', 'Size', 'Random', 'LPT', 'SPT', 'STPT', 'MPSR', 'DRL-Liu', 'GP', 'GEP', 
+              'SeEvo(GLM3)', 'SeEvo(GPT3.5)', 'UB', 'MAPLE-dynamic (Claude-3.7 heuristics)', 
+              'MAPLE-static (Claude-3.7 heuristics)']
+
+with open(os.path.join(RESULTS_DIR, 'summary_table.csv'), 'w', newline='') as f:
+    writer = csv.DictWriter(f, fieldnames=fieldnames)
+    writer.writeheader()
+    writer.writerows(output_rows)
+
+# Compute means
+mean_row = {'Dataset': 'Mean', 'Size': ''}
+for field in fieldnames[2:]:  # Skip Dataset and Size
+    values = []
+    for row in output_rows:
+        if row[field] != 'N/A':
+            if isinstance(row[field], str) and '±' in row[field]:
+                # For maple-dynamic values, use the mean part
+                mean_val = float(row[field].split('±')[0])
+                values.append(mean_val)
+            else:
+                values.append(float(row[field]))
+    if values:
+        mean_row[field] = f"{sum(values) / len(values):.2f}"
+    else:
+        mean_row[field] = 'N/A'
+
+# Append mean row
+with open(os.path.join(RESULTS_DIR, 'summary_table.csv'), 'a', newline='') as f:
+    writer = csv.DictWriter(f, fieldnames=fieldnames)
+    writer.writerow(mean_row)
 
 print(f"Summary table written to {os.path.join(RESULTS_DIR, 'summary_table.csv')}")
+
+# Process data for plotting
+df = pd.read_csv(os.path.join(RESULTS_DIR, 'summary_table.csv'))
+df_no_mean = df[df['Dataset'] != 'Mean'].copy()
+
+# Calculate gaps for all methods
+methods = ['Random', 'LPT', 'SPT', 'STPT', 'MPSR', 'DRL-Liu', 'GP', 'GEP', 
+           'SeEvo(GLM3)', 'SeEvo(GPT3.5)', 'MAPLE-dynamic (Claude-3.7 heuristics)',
+           'MAPLE-static (Claude-3.7 heuristics)']
+
+for method in methods:
+    df_no_mean[f'{method}_gap'] = ((df_no_mean[method].astype(float) - df_no_mean['UB'].astype(float)) / 
+                                 df_no_mean['UB'].astype(float) * 100)
+
+# Create pivot table for plotting
+pivot_df = df_no_mean.pivot_table(
+    index='Size',
+    values=[f'{method}_gap' for method in methods],
+    aggfunc='mean'
+)
+
+# Plot line plot for all methods
+plt.figure(figsize=(12, 6))
+for method in methods:
+    plt.plot(pivot_df.index, pivot_df[f'{method}_gap'], marker='o', label=method)
+
+plt.xlabel('Problem Size')
+plt.ylabel('Gap (%)')
+plt.title('Gap to Upper Bound by Method')
+plt.legend(bbox_to_anchor=(1.05, 1), loc='upper left')
+plt.grid(True)
+plt.tight_layout()
+plt.savefig(os.path.join(RESULTS_DIR, 'gap_all_methods_lineplot.png'))
+plt.close()
+
+# Plot bar plot for mean gaps
+mean_gaps = df_no_mean[[f'{method}_gap' for method in methods]].mean()
+plt.figure(figsize=(12, 6))
+mean_gaps.plot(kind='bar')
+plt.xlabel('Method')
+plt.ylabel('Mean Gap (%)')
+plt.title('Mean Gap to Upper Bound by Method')
+plt.xticks(rotation=45, ha='right')
+plt.grid(True)
+plt.tight_layout()
+plt.savefig(os.path.join(RESULTS_DIR, 'mean_gap_all_methods.png'))
+plt.close()
+
+# Plot gap by size for each method
+for method in methods:
+    plt.figure(figsize=(10, 6))
+    pivot_df[f'{method}_gap'].plot(kind='bar')
+    plt.xlabel('Problem Size')
+    plt.ylabel('Gap (%)')
+    plt.title(f'Gap to Upper Bound by Size - {method}')
+    plt.grid(True)
+    plt.tight_layout()
+    plt.savefig(os.path.join(RESULTS_DIR, f'gap_by_size_{method.replace(" ", "_").replace("(", "").replace(")", "")}.png'))
+    plt.close()
 
 # --- Generate LaTeX Table ---
 def csv_to_latex(csv_path, tex_path):
@@ -111,20 +283,29 @@ def csv_to_latex(csv_path, tex_path):
         if row[0] == 'Mean':
             return row
         # Find the minimum among all methods (excluding UB and MAPLE-static)
-        vals = row[2:-2] + [row[-1]]  # Exclude UB, include MAPLE-static
-        try:
-            vals = [float(v) for v in vals]
-        except:
+        vals = []
+        for v in row[1:]:  # Exclude UB and MAPLE-static
+            if isinstance(v, (int, float)):
+                vals.append(float(v))
+            elif isinstance(v, str) and '±' in v:
+                # For maple-dynamic values, use the mean part
+                mean_val = float(v.split('±')[0])
+                vals.append(mean_val)
+        if not vals:
             return row
         min_val = min(vals)
         new_row = row.copy()
-        for i, v in enumerate(vals):
-            if float(v) == min_val:
-                new_row[2+i if i < len(vals)-1 else -1] = f"\\textbf{{{int(v)}}}"
+        for i, v in enumerate(row[1:]):
+            if isinstance(v, (int, float)) and float(v) == min_val:
+                new_row[i+1] = f"\\textbf{{{int(v)}}}"
+            elif isinstance(v, str) and '±' in v:
+                mean_val = float(v.split('±')[0])
+                if mean_val == min_val:
+                    new_row[i+1] = f"\\textbf{{{v}}}"
         return new_row
     df = df.apply(bold_min, axis=1)
     # Convert to LaTeX
-    latex = df.to_latex(index=False, escape=False, column_format='llcccccccccccc', longtable=False)
+    latex = df.to_latex(index=False, escape=False, column_format='ll', longtable=False)
     with open(tex_path, 'w') as f:
         f.write(latex)
     print(f"LaTeX table written to {tex_path}")
@@ -141,7 +322,7 @@ def extract_iterations(filepath):
     with open(filepath, 'r') as f:
         for line in f:
             # Look for lines like: [Tabu] Iteration 1: New best makespan found: 3639
-            m = re.search(r"Iteration (\\d+):.*makespan.*?: (\\d+)", line)
+            m = re.search(r"Iteration (\d+):.*makespan.*?: (\d+)", line)
             if m:
                 values.append(int(m.group(2)))
     return values
@@ -168,70 +349,60 @@ plt.savefig(os.path.join(RESULTS_DIR, 'maple_static_iterations.png'))
 plt.close()
 print(f"Iteration plot saved to {os.path.join(RESULTS_DIR, 'maple_static_iterations.png')}")
 
-# --- Step 3 (line plot): Gap Percentage for All Methods Across DMUs ---
-df = pd.read_csv(os.path.join(RESULTS_DIR, 'summary_table.csv'))
-df_no_mean = df[df['Cases'] != 'Mean']
-method_cols = [col for col in df.columns if col not in ['Cases', 'Size', 'UB', 'Mean', 'SeEvo(GLM3)', 'SeEvo(GPT3.5)']]
-
-ubs = df_no_mean['UB'].astype(float).tolist()
-cases = df_no_mean['Cases'].tolist()
-
-plt.figure(figsize=(12, 6))
-color_map = plt.cm.tab20.colors
-for idx, method in enumerate(method_cols):
-    vals = df_no_mean[method].astype(float).tolist()
-    gaps = [100 * (v-u)/u if u > 0 else None for v, u in zip(vals, ubs)]
-    color = 'blue' if method == 'MAPLE-static (GPT-4o)' else color_map[idx % len(color_map)]
-    plt.plot(cases, gaps, marker='o', label=method, color=color)
-
-plt.xlabel('Instance')
-plt.ylabel('Gap Percentage (%)')
-plt.title('Gap Percentage for All Methods Across DMUs')
-plt.xticks(rotation=45, ha='right')
-plt.legend()
-plt.grid(True)
-plt.tight_layout()
-plt.savefig(os.path.join(RESULTS_DIR, 'gap_all_methods_lineplot.png'))
-plt.close()
-print("Line plot of gap percentage for all methods saved as gap_all_methods_lineplot.png")
-
 # --- Figure 4: Gap Percentage by Size Group ---
-size_groups = df_no_mean.groupby('Size')
-for size, group in size_groups:
-    cases = group['Cases'].tolist()
-    ubs = group['UB'].astype(float).tolist()
-    plt.figure(figsize=(10, 5))
-    for idx, method in enumerate(method_cols):
-        vals = group[method].astype(float).tolist()
-        gaps = [100 * (v-u)/u if u > 0 else None for v, u in zip(vals, ubs)]
-        color = 'blue' if method == 'MAPLE-static (GPT-4o)' else color_map[idx % len(color_map)]
-        plt.plot(cases, gaps, marker='o', label=method, color=color)
-    plt.xlabel('Instance')
-    plt.ylabel('Gap Percentage (%)')
-    plt.title(f'Gap Percentage for Size {size}')
-    plt.xticks(rotation=45, ha='right')
-    plt.legend()
-    plt.grid(True)
-    plt.tight_layout()
-    fname = f'gap_by_size_{size.replace(" ", "x").replace("×", "x")}.png'
-    plt.savefig(os.path.join(RESULTS_DIR, fname))
-    plt.close()
-    print(f"Gap percentage plot for size {size} saved as {fname}")
+# Define size groups based on dataset names
+size_groups = {
+    '20x15': ['rcmax_20_15_5', 'rcmax_20_15_8'],
+    '20x20': ['rcmax_20_20_7', 'rcmax_20_20_8'],
+    '30x15': ['rcmax_30_15_5', 'rcmax_30_15_4'],
+    '30x20': ['rcmax_30_20_9', 'rcmax_30_20_8'],
+    '40x15': ['rcmax_40_15_10', 'rcmax_40_15_8'],
+    '40x20': ['rcmax_40_20_6', 'rcmax_40_20_2'],
+    '50x15': ['rcmax_50_15_2', 'rcmax_50_15_4'],
+    '50x20': ['rcmax_50_20_6', 'rcmax_50_20_9']
+}
 
-# Mean gap bar plot (as before)
-mean_gaps = []
-for method in method_cols:
-    vals = df_no_mean[method].astype(float).tolist()
-    ubs = df_no_mean['UB'].astype(float).tolist()
-    gaps = [100 * (v-u)/u if u > 0 else None for v, u in zip(vals, ubs)]
-    mean_gaps.append(sum(gaps)/len(gaps))
-plt.figure(figsize=(10,5))
-bar_colors = ['blue' if method == 'MAPLE-static (GPT-4o)' else color_map[idx % len(color_map)] for idx, method in enumerate(method_cols)]
-plt.bar(method_cols, mean_gaps, color=bar_colors)
-plt.ylabel('Mean Gap Percentage (%)')
-plt.title('Mean Gap Percentage for Each Method')
-plt.xticks(rotation=45, ha='right')
-plt.tight_layout()
-plt.savefig(os.path.join(RESULTS_DIR, 'mean_gap_all_methods.png'))
-plt.close()
-print("Mean gap bar plot saved for all methods.") 
+for size, datasets in size_groups.items():
+    group = df_no_mean[df_no_mean['Dataset'].isin(datasets)]
+    if group.empty:
+        continue
+        
+    cases = group['Dataset'].tolist()
+    ubs = group['MAPLE-static (Claude-3.7 heuristics)'].astype(float).tolist()
+    plt.figure(figsize=(12, 6))
+    
+    for idx, method in enumerate(methods):
+        vals = []
+        for v in group[method]:
+            if isinstance(v, (int, float)):
+                vals.append(float(v))
+            elif isinstance(v, str) and '±' in v:
+                mean_val = float(v.split('±')[0])
+                vals.append(mean_val)
+            else:
+                vals.append(None)
+        gaps = [100 * (v-u)/u if v is not None and u > 0 else None for v, u in zip(vals, ubs)]
+        
+        # Set colors for different method types
+        if 'MAPLE-dynamic' in method:
+            color = 'red'
+            linestyle = '--'
+        elif 'MAPLE-static' in method:
+            color = 'blue'
+            linestyle = '-'
+        else:
+            color = color_map[idx % len(color_map)]
+            linestyle = '-'
+        
+        plt.plot(cases, gaps, marker='o', label=method, color=color, linestyle=linestyle)
+    
+    plt.xlabel('Instance', fontsize=12)
+    plt.ylabel('Gap Percentage (%)', fontsize=12)
+    plt.title(f'Gap Percentage by Size Group ({size})', fontsize=14)
+    plt.xticks(rotation=45, ha='right')
+    plt.legend(bbox_to_anchor=(1.05, 1), loc='upper left')
+    plt.grid(True, alpha=0.3)
+    plt.tight_layout()
+    plt.savefig(os.path.join(RESULTS_DIR, f'gap_by_size_{size}.png'), bbox_inches='tight', dpi=300)
+    plt.close()
+    print(f"Gap percentage plot for size {size} saved") 
