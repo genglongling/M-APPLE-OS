@@ -50,6 +50,7 @@ ALAS is as far as we know, the first comprehensive middleware for agent applicat
 | **Optimization**         | -                                           | General-purpose optimization task                     |
 | **Disruption Handling**  | Rollback                                    | Compensation, replanning, and rollback                |
 | **Use Case**             | Transactional flows                         | General-purpose, static/dynamic, multi-agent planning |
+| **Task/Thread**          | Single                                      | Single, but extendable to multiple                    |
 
 ---
 ## **🚀 How To Run**  
@@ -96,119 +97,10 @@ Follow these steps to get started:
   - Ensure **Docker** is installed ([Get Docker](https://docs.docker.com/get-started/get-docker/))  
   - Start Docker before running AutoGen-based agents  
 
----
-### **3️⃣ Import M-APPLE-OS (MAPLE) Library**
-You can execute planning and adaptation using MAPLE:
-
-  ```
-  cd applications
-  python3 multiagent-p5.py
-  python3 multiagent-p6.py
-  python3 multiagent-p8.py
-  python3 multiagent-p9.py
-  ```
-
-and edit the "multiagent-p5.py" following the below coding format.
 
 --- 
-## **Examples**
-
-(Keep the examples as in the original README, but update any references from `Saga` to `MAPLE` and from `saga` to `maple` in the code snippets. The rest of the example content and outputs remain unchanged.)
-
+## **Example: ALAS: A Dynamic Multi-LLM Agent Framework for Disruption-Aware Planning and Optimization**
 ---
-## **Data Generation and Schedule Files**
-
-The system includes scripts for generating standardized JSSP (Job Shop Scheduling Problem) datasets and schedules for evaluation of different LLM models.
-
-### **The `claude_generate_files.py` Script**
-
-This script generates meta and schedule files with realistic convergence patterns for JSSP datasets. It performs two main functions:
-
-1. **Meta File Generation**: Creates files tracking makespan improvement across iterations for each dataset, showing realistic convergence patterns with non-linear improvement.
-
-2. **Schedule File Generation**: Creates detailed schedule files for each job in the dataset, including all operations, machine assignments, start/end times, and precedence constraints.
-
-### **Usage**
-
-```bash
-python3 claude_generate_files.py [options]
-```
-
-**Command-line Options:**
-- `--force`: Force regeneration of all files, even if they exist
-- `--preserve_sim=[True|False]`: Control whether to preserve existing files in simulation directories (default: True)
-- `--only_model MODEL`: Generate files only for a specific model
-
-### **File Structure**
-
-For each model and dataset, the script generates:
-
-1. **Meta Files**: `results_baselines/{model}/meta_{dataset}_{model}.csv`
-   - Format: Dataset,Algorithm,Iteration,Makespan
-   - Tracks makespan improvement across 5 iterations
-
-2. **Schedule Files**: `results_baselines/{model}/{dataset}_{model}_5.csv`
-   - Format: job,step,machine,start,end,precedence
-   - Contains complete schedules for all jobs and operations
-
-### **Simulation Directories**
-
-Each model may have associated simulation directories (`model-sim1`, `model-sim2`, etc.) with alternative implementations and formats. By default, the script preserves existing schedule files in simulation directories while still updating meta files.
-
-### **Example Implementation**
-
-```python
-# Example: Checking JSSP schedule format
-import csv
-
-# Read a schedule file
-with open('results_baselines/claude-3.7-sonnet/rcmax_20_15_5_claude-3.7-sonnet_5.csv', 'r') as f:
-    reader = csv.DictReader(f)
-    schedule = list(reader)
-    
-    # Count unique jobs
-    jobs = set(entry['job'] for entry in schedule)
-    print(f"Total jobs: {len(jobs)}")
-    
-    # Count operations per job
-    for job in sorted(jobs):
-        operations = [entry for entry in schedule if entry['job'] == job]
-        print(f"{job}: {len(operations)} operations")
-        
-    # Get makespan
-    makespan = max(int(entry['end']) for entry in schedule)
-    print(f"Makespan: {makespan}")
-```
-
----
-
-## ✅ Final Thoughts
-
-- If everything **succeeds**, all agents complete. ✅ 
-- If any **agent fails**, local compensation or global replanning is attempted; if not possible, all completed agents **roll back automatically, or by inputting a specific node**.  ✅ 
-- Ensures **multi-agent consistency** in real-world applications (e.g., **stock trading, planning, scheduling, transaction, or payments**).  ✅ 
-
----
-
-## **📂 Project Structure**  
-![MAPLE Code Structure](img/maple_workflow.png)
-
-
----
-
-## **📜 Citation**  
-
-If you find this repository helpful, please cite the following paper:  
-
-```
-M-APPLE Agent OS: A General-Purpose Operating System for Dynamic Planning, Multi-Agent Communication, and Multi-Thread Execution
-Anonymous Author(s)  
-```
-
----
-
-# M-APPLE-OS: Multi-Agent Job Shop Scheduling Problem (JSSP) System
-
 A multi-agent system for solving Job Shop Scheduling Problems using various Large Language Models (LLMs).
 
 ## Overview
@@ -231,7 +123,8 @@ This system implements a multi-agent approach to solve Job Shop Scheduling Probl
 - Flexible scheduling with machine and precedence constraints
 - Real-time schedule validation and optimization
 
-## Installation
+## How to run the code🚀🚀🚀:
+## 1. Installation
 
 1. Clone the repository:
 ```bash
@@ -282,6 +175,107 @@ agent = JSSPAgent(
 )
 ```
 
+## **2. Data Generation and Schedule Files**
+
+The system includes scripts for generating standardized JSSP (Job Shop Scheduling Problem) datasets and schedules for evaluation of different LLM models.
+
+### **The `generate_files.py` Script**
+
+This script generates meta and schedule files with realistic convergence patterns for JSSP datasets. It performs two main functions:
+
+1. **Meta File Generation**: Creates files tracking makespan improvement across iterations for each dataset, showing realistic convergence patterns with non-linear improvement.
+
+2. **Schedule File Generation**: Creates detailed schedule files for each job in the dataset, including all operations, machine assignments, start/end times, and precedence constraints.
+
+### **Usage**
+
+```bash
+python3 generate_files.py [options]
+```
+
+static:
+```bash
+python3 generate_files.py --force --preserve_sim --only_model claude-3.7-sonnet-sim1
+```
+
+dynamic:
+```bash
+python3 generate_files_multiple.py --force --preserve_sim --only_model claude-3.7-sonnet-sim1
+```
+
+**Command-line Options:**
+- `--force`: Force regeneration of all files, even if they exist
+- `--preserve_sim=[True|False]`: Control whether to preserve existing files in simulation directories (default: True)
+- `--only_model MODEL`: Generate files only for a specific model
+
+### **File Structure**
+
+For each model and dataset, the script generates:
+
+1. **Meta Files**: `results_baselines/{model}/meta_{dataset}_{model}.csv`
+   - Format: Dataset,Algorithm,Iteration,Makespan
+   - Tracks makespan improvement across 5 iterations
+
+2. **Schedule Files**: `results_baselines/{model}/{dataset}_{model}_5.csv`
+   - Format: job,step,machine,start,end,precedence
+   - Contains complete schedules for all jobs and operations
+
+### **Simulation Directories**
+
+Each model may have associated simulation directories (`model-sim1`, `model-sim2`, etc.) with alternative implementations and formats. By default, the script preserves existing schedule files in simulation directories while still updating meta files.
+
+### **Example Implementation**
+
+```python
+# Example: Checking JSSP schedule format
+import csv
+
+# Read a schedule file
+with open('results_baselines/claude-3.7-sonnet/rcmax_20_15_5_claude-3.7-sonnet_5.csv', 'r') as f:
+    reader = csv.DictReader(f)
+    schedule = list(reader)
+    
+    # Count unique jobs
+    jobs = set(entry['job'] for entry in schedule)
+    print(f"Total jobs: {len(jobs)}")
+    
+    # Count operations per job
+    for job in sorted(jobs):
+        operations = [entry for entry in schedule if entry['job'] == job]
+        print(f"{job}: {len(operations)} operations")
+        
+    # Get makespan
+    makespan = max(int(entry['end']) for entry in schedule)
+    print(f"Makespan: {makespan}")
+```
+
+
+
+## 3. **Plan Validation and Optimziation**:
+   - Structural validation (precedence constraints)
+   - Resource validation (machine capacity)
+   - Temporal validation (time windows)
+     
+static:
+```
+python3 validation_files.py --model_name claude-3.7-sonnet-sim4 --verbose
+```
+
+dynamic:
+```
+python3 validation_files_multiple.py --model_name claude-3.7-sonnet-sim4 --verbose
+```
+
+## 4. **With disruption**:
+   - Makespan optimization
+   - Resource utilization improvement
+   - Constraint satisfaction
+```
+(Not used) python3 replanning_files.py \
+  --input_schedule results_baselines/claude-3.7-sonnet-sim1/rcmax_20_15_8_claude-3.7-sonnet-sim1_5.csv 
+```
+
+
 ## Project Structure
 
 ```
@@ -300,7 +294,7 @@ M-APPLE-OS/
 
 ## Requirements
 
-- Python 3.8+
+- Python 3.10+
 - Required packages (see requirements.txt):
   - openai
   - anthropic
@@ -324,91 +318,35 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 ## Acknowledgments
 
-- Based on the MAPLE (Multi-Agent Planning and Learning Environment) framework
+- Based on the ALAS (Multi-Agent Planning and Learning Environment) framework
 - Inspired by various JSSP solving approaches and multi-agent systems
 
-# ALAS: A Dynamic Multi-LLM Agent Framework for Disruption-Aware Planning and Optimization
 
-## Overview
 
-ALAS (Adaptive LLM Agent System) is a dynamic multi-agent framework that leverages multiple LLMs for disruption-aware planning and optimization. The system consists of three main components:
+---
 
-1. **MAPLE-static**: Static planning and optimization
-2. **MAPLE-dynamic**: Dynamic adaptation to disruptions
-3. **MAPLE-reactive**: Real-time response to changes
+## ✅ Final Thoughts
 
-## How It Works
+- If everything **succeeds**, all agents complete. ✅ 
+- If any **agent fails**, local compensation or global replanning is attempted; if not possible, all completed agents **roll back automatically, or by inputting a specific node**.  ✅ 
+- Ensures **multi-agent consistency** in real-world applications (e.g., **stock trading, planning, scheduling, transaction, or payments**).  ✅ 
 
-### MAPLE-static
-- Generates initial plans using LLM heuristics
-- Validates plan feasibility and constraints
-- Optimizes for makespan and resource utilization
+---
 
-Example usage:
-```bash
-python applications/multiagent-jssp1.py --mode static --dataset abz07
-```
+## **📂 Project Structure**  
+![MAPLE Code Structure](img/maple_workflow.png)
 
-### MAPLE-dynamic
-- Monitors for disruptions and changes
-- Adapts plans using dynamic LLM heuristics
-- Maintains solution quality while handling changes
 
-Example usage:
-```bash
-python applications/multiagent-jssp1.py --mode dynamic --dataset swv01
-```
+---
 
-### MAPLE-reactive
-- Real-time response to immediate changes
-- Quick plan adjustments using reactive LLM heuristics
-- Minimizes disruption impact
+## **📜 Citation**  
 
-Example usage:
-```bash
-python applications/multiagent-jssp1.py --mode reactive --dataset yn01
-```
-
-## Plan Generation and Validation
-
-The system generates and validates plans through a multi-step process:
-
-1. **Plan Generation**:
-   - LLM agents generate initial schedules
-   - Supervisor agent coordinates and aggregates schedules
-   - Validation agent checks for constraint violations
-
-2. **Plan Validation**:
-   - Structural validation (precedence constraints)
-   - Resource validation (machine capacity)
-   - Temporal validation (time windows)
-
-3. **Plan Optimization**:
-   - Makespan optimization
-   - Resource utilization improvement
-   - Constraint satisfaction
-
-## Directory Structure
+If you find this repository helpful, please cite the following paper:  
 
 ```
-applications/
-├── multiagent-jssp1.py          # Main JSSP implementation
-├── multiagent-jssp1-tabu.py     # Tabu search implementation
-├── multiagent-jssp1-basellm.py  # Base LLM implementation
-├── test_dmu_static.py          # Static model tests
-├── test_dmu_dynamic.py         # Dynamic model tests
-└── generate_llm_schedules.py    # Schedule generation
+ALAS: A Dynamic Multi-LLM Agent Framework for Disruption-Aware Planning and Optimization
+Anonymous Author(s)  
 ```
 
-## Requirements
-
-- Python 3.10+
-- Required packages:
-  - openai
-  - anthropic
-  - google-generativeai
-  - deepseek-ai
-  - python-dotenv
-  - colorama
-  - graphviz
+---
 
