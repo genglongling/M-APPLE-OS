@@ -329,7 +329,7 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 - If everything **succeeds**, all agents complete. ✅ 
 - If any **agent fails**, local compensation or global replanning is attempted; if not possible, all completed agents **roll back automatically, or by inputting a specific node**.  ✅ 
-- Ensures **multi-agent consistency** in real-world applications (e.g., **stock trading, planning, scheduling, transaction, or payments**).  ✅ 
+- Ensures **multi-agent consistency** in real-world applications (e.g., **operating system, stock trading, planning, scheduling, transaction, or payments**).  ✅ 
 
 ---
 
