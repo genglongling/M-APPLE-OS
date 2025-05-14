@@ -251,7 +251,7 @@ with open('results_baselines/claude-3.7-sonnet/rcmax_20_15_5_claude-3.7-sonnet_5
 
 
 
-## 3. **Plan Validation and Optimziation**:
+## 3. **Plan Validation and Optimization**:
    - Structural validation (precedence constraints)
    - Resource validation (machine capacity)
    - Temporal validation (time windows)
