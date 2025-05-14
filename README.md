@@ -1,28 +1,29 @@
-# **M-APPLE System: A General-Purpose Multi-Agent System for Dynamic Scheduling and Optimization**
+# **ALAS: First Automated, Dynamic, General-Purpose Multi-Agent Workflow/Pipeline/Framework for Planning and Optimization**
 
 ```
-What if LLM and Agent lost track of information? Reverting back as a transaction!
-M-APPLE Agent OS os A General-Purpose Operating System for Dynamic Planning, Multi-Agent Communication, and Multi-Thread Execution**
-
---- M-APPLE-OS Authors
+A General-Purpose Operating System for Dynamic Planning, Multi-Agent Communication, Multi-Thread Job Execution and Goal optimization. **
+--- ALAS Authors
 ```
+
 <p align="center">
   ⬇️ <a href="https://github.com/genglongling/REALM-Bench?tab=readme-ov-file">Github</a>  
   📃 <a href="https://arxiv.org/abs/2502.18836">Paper</a>  
   🌐 <a href="https://example.com/project">Project Page</a>
 </p>
 
-This repository extends REALM-Bench with **M-APPLE-OS (MAPLE)**, a general-purpose, three-layer operating system for multi-agent scheduling, planning and optimization: workflow specification, agent communication, self-validation, robust execution, and dynamic adaptation. M-APPLE-OS provides:
+This repository **ALAS** provides:
 
-- **Dynamic Planning**: Supports both static and dynamic (disruption-prone) tasks.
-- **Multi-Agent Communication**: Robust inter-agent dependency management and coordination.
-- **Multi-Thread Job Execution**: Modular, concurrent, and resilient execution with rollback and adaptation.
-- **Self-Validation**: Ensures structural, constraint, and compensation soundness at every step.
+- **1) Dynamic Planning**: Supports both static and dynamic (disruption-prone) tasks.
+- **2) Multi-Agent Communication**: Robust inter-agent dependency management and coordination.
+- **3) Multi-Thread Job Execution**: Modular, concurrent, and resilient execution with rollback and adaptation.
+- **4) Self-Validation**: Ensures plan and schedule is valid by structural, constraint, and compensation soundness at every step.
+- **5) Goal Optimization**: Ensures plan and schedule get optimized with user's prompt.
+- **6) Global Replanning**: Handles stochastic, random or preset disruption.
 
-M-APPLE-OS is a comprehensive middleware for agent application layers and multi-agent databases, supporting real-world use cases in planning, scheduling, orchestration, and more.
+ALAS is as far as we know, the first comprehensive middleware for agent application layers and multi-agent databases, supporting real-world use cases in planning, scheduling, optimization, orchestration, and more.
 
 ---
-## **Key Functions of `M-APPLE-OS (MAPLE)`**
+## **Key Functions of `ALAS`**
 
 - **Three-Layer Architecture:**
   1. **Specification Construction**: Parses and builds workflow/task graphs from high-level specifications.
@@ -39,13 +40,14 @@ M-APPLE-OS is a comprehensive middleware for agent application layers and multi-
 | **Context Management**  | Query/restore agent execution context.               | `select_context`, `restore_context`     | Agent name                                     |
 
 ---
-## **🔹 Key Features of M-APPLE-OS (MAPLE) vs. Previous Saga**
+## **🔹 Key Features of ALAS vs. Previous Saga**
 
-| Feature                  | Saga                                        | M-APPLE-OS (MAPLE)                                   |
+| Feature                  | Saga                                        | ALAS                                                 |
 |--------------------------|---------------------------------------------|------------------------------------------------------|
 | **Architecture**         | Transactional, rollback                     | Three-layer: specification, coordination, execution   |
 | **Dynamic Adaptation**   | Rollback only                               | Local compensation + global replanning                |
 | **Validation**           | Manual/context-based                        | Automated self-validation at every step               |
+| **Optimization**         | -                                           | General-purpose optimization task                     |
 | **Disruption Handling**  | Rollback                                    | Compensation, replanning, and rollback                |
 | **Use Case**             | Transactional flows                         | General-purpose, static/dynamic, multi-agent planning |
 
