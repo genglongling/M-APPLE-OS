@@ -16,7 +16,7 @@ This repository extends REALM-Bench with **M-APPLE-OS (MAPLE)**, a general-purpo
 
 - **Dynamic Planning**: Supports both static and dynamic (disruption-prone) tasks.
 - **Multi-Agent Communication**: Robust inter-agent dependency management and coordination.
-- **Multi-Thread Execution**: Modular, concurrent, and resilient execution with rollback and adaptation.
+- **Multi-Thread Job Execution**: Modular, concurrent, and resilient execution with rollback and adaptation.
 - **Self-Validation**: Ensures structural, constraint, and compensation soundness at every step.
 
 M-APPLE-OS is a comprehensive middleware for agent application layers and multi-agent databases, supporting real-world use cases in planning, scheduling, orchestration, and more.
