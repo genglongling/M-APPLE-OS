@@ -9,7 +9,7 @@ labels = [
 medians = [
     0.5,  # MAPLE (Dynamic)
     0.3,  # SeEvo(GLM3)
-    0.2,  # SeEvo(GPT3.5)
+    #0.2,  # SeEvo(GPT3.5)
     2.2,  # GEP
     2.0,  # GP
     2.0,  # SPT

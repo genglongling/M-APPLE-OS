@@ -325,3 +325,88 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 - Based on the MAPLE (Multi-Agent Planning and Learning Environment) framework
 - Inspired by various JSSP solving approaches and multi-agent systems
 
+# ALAS: A Dynamic Multi-LLM Agent Framework for Disruption-Aware Planning and Optimization
+
+## Overview
+
+ALAS (Adaptive LLM Agent System) is a dynamic multi-agent framework that leverages multiple LLMs for disruption-aware planning and optimization. The system consists of three main components:
+
+1. **MAPLE-static**: Static planning and optimization
+2. **MAPLE-dynamic**: Dynamic adaptation to disruptions
+3. **MAPLE-reactive**: Real-time response to changes
+
+## How It Works
+
+### MAPLE-static
+- Generates initial plans using LLM heuristics
+- Validates plan feasibility and constraints
+- Optimizes for makespan and resource utilization
+
+Example usage:
+```bash
+python applications/multiagent-jssp1.py --mode static --dataset abz07
+```
+
+### MAPLE-dynamic
+- Monitors for disruptions and changes
+- Adapts plans using dynamic LLM heuristics
+- Maintains solution quality while handling changes
+
+Example usage:
+```bash
+python applications/multiagent-jssp1.py --mode dynamic --dataset swv01
+```
+
+### MAPLE-reactive
+- Real-time response to immediate changes
+- Quick plan adjustments using reactive LLM heuristics
+- Minimizes disruption impact
+
+Example usage:
+```bash
+python applications/multiagent-jssp1.py --mode reactive --dataset yn01
+```
+
+## Plan Generation and Validation
+
+The system generates and validates plans through a multi-step process:
+
+1. **Plan Generation**:
+   - LLM agents generate initial schedules
+   - Supervisor agent coordinates and aggregates schedules
+   - Validation agent checks for constraint violations
+
+2. **Plan Validation**:
+   - Structural validation (precedence constraints)
+   - Resource validation (machine capacity)
+   - Temporal validation (time windows)
+
+3. **Plan Optimization**:
+   - Makespan optimization
+   - Resource utilization improvement
+   - Constraint satisfaction
+
+## Directory Structure
+
+```
+applications/
+├── multiagent-jssp1.py          # Main JSSP implementation
+├── multiagent-jssp1-tabu.py     # Tabu search implementation
+├── multiagent-jssp1-basellm.py  # Base LLM implementation
+├── test_dmu_static.py          # Static model tests
+├── test_dmu_dynamic.py         # Dynamic model tests
+└── generate_llm_schedules.py    # Schedule generation
+```
+
+## Requirements
+
+- Python 3.10+
+- Required packages:
+  - openai
+  - anthropic
+  - google-generativeai
+  - deepseek-ai
+  - python-dotenv
+  - colorama
+  - graphviz
+
