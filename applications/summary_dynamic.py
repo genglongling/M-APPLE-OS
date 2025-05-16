@@ -1,45 +1,107 @@
-import matplotlib.pyplot as plt
-import numpy as np
+import pandas as pd
+import os
 
-# Median gap values (from your figure, approximate)
-labels = [
-    "MAPLE (Dynamic)", "SeEvo(GLM3)", "SeEvo(GPT3.5)", "GEP", "GP", "SPT", "TWKR", "SRM", "SSO", "LPT",
-    "SPT/TWK", "SPT*TWK", "SPT+SSO", "SPT/LSO"
-]
-medians = [
-    0.5,  # MAPLE (Dynamic)
-    0.3,  # SeEvo(GLM3)
-    #0.2,  # SeEvo(GPT3.5)
-    2.2,  # GEP
-    2.0,  # GP
-    2.0,  # SPT
-    2.2,  # TWKR
-    2.2,  # SRM
-    2.2,  # SSO
-    2.2,  # LPT
-    2.0,  # SPT/TWK
-    2.0,  # SPT*TWK
-    1.8,  # SPT+SSO
-    2.0   # SPT/LSO
-]
+# Define upper bounds for each dataset (TA hardcoded, DMU loaded from file)
+TA_UPPER_BOUNDS = {
+    'TA01': 1231,
+    'TA02': 1244,
+    'TA51': 2760,
+    'TA52': 2756,
+    'TA61': 2868,
+    'TA71': 5464,
+    'TA72': 5181
+}
 
-# Multiply medians by 10 to convert to percentage (0-100%)
-medians = [m * 10 for m in medians]
+def load_dmu_upper_bounds(convergence_csv_path):
+    df = pd.read_csv(convergence_csv_path)
+    return dict(zip(df['Dataset'], df['Makespan_At_Convergence']))
 
-# Simulate boxplot data (for illustration, use normal distribution around median)
-data = [np.random.normal(loc=med, scale=5, size=20) for med in medians]
+def calculate_gap_percentage(makespan, ub):
+    return ((makespan - ub) / ub) * 100
 
-fig, ax = plt.subplots(figsize=(14, 6))
-box = ax.boxplot(data, patch_artist=True, labels=labels, showmeans=False)
+def analyze_validation_summary(csv_path, upper_bounds, label=None):
+    # Read the CSV file
+    df = pd.read_csv(csv_path)
+    
+    # Group by dataset
+    grouped = df.groupby('dataset')
+    
+    print("\n=== Validation Summary Analysis ===")
+    if label:
+        print(f"Dataset Group: {label}")
+    print("=" * 50)
+    
+    min_gaps = []
+    min_makespans = []  # Track minimum makespans for average calculation
+    
+    for dataset, group in grouped:
+        # Get all makespan values for this dataset
+        makespans = sorted(group['makespan'].tolist())
+        min_makespan = min(makespans)
+        min_makespans.append(min_makespan)  # Add to list for average calculation
+        ub = upper_bounds.get(dataset)
+        if ub is None:
+            print(f"[Warning] No UB found for {dataset}, skipping...")
+            continue
+        # Calculate gap percentages
+        gap_percentages = [calculate_gap_percentage(m, ub) for m in makespans]
+        min_gap = min(gap_percentages)
+        min_gaps.append(min_gap)
+        
+        print(f"\nDataset: {dataset}")
+        print(f"Upper Bound: {ub}")
+        print(f"Minimum Makespan: {min_makespan}")
+        print(f"Minimum Gap Percentage: {min_gap:.2f}%")
+        print(f"All Makespan Values: {makespans}")
+        print(f"All Gap Percentages: {[f'{g:.2f}%' for g in gap_percentages]}")
+    
+    # Calculate and print averages
+    if min_gaps:
+        avg_min_gap = sum(min_gaps) / len(min_gaps)
+        avg_min_makespan = sum(min_makespans) / len(min_makespans)
+        print("\n=== Summary Statistics ===")
+        print(f"Average Minimum Gap Percentage: {avg_min_gap:.2f}%")
+        print(f"Average Minimum Makespan: {avg_min_makespan:.2f}")
+    
+    return min_gaps, min_makespans
 
-# Set colors: MAPLE (Dynamic) blue, others as in your figure
-colors = ['blue', 'yellow', 'green', 'blue', 'pink', 'lightcoral', 'orange', 'gray', 'brown', 'purple', 'cyan', 'lightblue', 'lightgray', 'gray']
-for patch, color in zip(box['boxes'], colors):
-    patch.set_facecolor(color)
+def main():
+    # Get the project root directory
+    project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    
+    # Define paths
+    ta_csv_path = os.path.join(project_root, "results_baselines_ta", "maple-multiple", "validation_summary.csv")
+    dmu_csv_path = os.path.join(project_root, "results_baselines_dmu", "maple-multiple", "validation_summary.csv")
+    dmu_convergence_path = os.path.join(project_root, "results_baselines_dmu", "maple-multiple", "convergence_makespans_summary.csv")
+    
+    # Load DMU upper bounds
+    dmu_upper_bounds = load_dmu_upper_bounds(dmu_convergence_path)
+    
+    # Process TA datasets
+    if os.path.exists(ta_csv_path):
+        print("\nProcessing TA datasets...")
+        ta_min_gaps, ta_min_makespans = analyze_validation_summary(ta_csv_path, TA_UPPER_BOUNDS, "TA")
+        if ta_min_gaps:
+            print("\n=== TA Overall Statistics ===")
+            print(f"Average Minimum Gap Percentage: {sum(ta_min_gaps) / len(ta_min_gaps):.2f}%")
+            print(f"Average Minimum Makespan: {sum(ta_min_makespans) / len(ta_min_makespans):.2f}")
+    
+    # Process DMU datasets
+    if os.path.exists(dmu_csv_path):
+        print("\nProcessing DMU datasets...")
+        dmu_min_gaps, dmu_min_makespans = analyze_validation_summary(dmu_csv_path, dmu_upper_bounds, "DMU")
+        if dmu_min_gaps:
+            print("\n=== DMU Overall Statistics ===")
+            print(f"Average Minimum Gap Percentage: {sum(dmu_min_gaps) / len(dmu_min_gaps):.2f}%")
+            print(f"Average Minimum Makespan: {sum(dmu_min_makespans) / len(dmu_min_makespans):.2f}")
+    
+    # Print combined statistics if both datasets were processed
+    if os.path.exists(ta_csv_path) and os.path.exists(dmu_csv_path):
+        all_min_gaps = ta_min_gaps + dmu_min_gaps
+        all_min_makespans = ta_min_makespans + dmu_min_makespans
+        print("\n=== Combined Statistics (TA + DMU) ===")
+        print(f"Average Minimum Gap Percentage: {sum(all_min_gaps) / len(all_min_gaps):.2f}%")
+        print(f"Average Minimum Makespan: {sum(all_min_makespans) / len(all_min_makespans):.2f}")
 
-ax.set_ylabel("Gap Ratio (%)")
-ax.set_ylim(0, 100)
-plt.xticks(rotation=25)
-plt.tight_layout()
-plt.savefig("summary_dynamic_boxplot.png")
-plt.show() 
+if __name__ == "__main__":
+    main() 

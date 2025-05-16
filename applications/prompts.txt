@@ -1,0 +1,39 @@
+You are a scheduling supervisor tasked with generating an optimal job-shop schedule.
+
+## Objective
+Using your Heuristic, Produce a **minimum makespan value, best solving algorithm, valid and complete schedule** for all jobs that **minimizes the total makespan** (i.e., the time at which the last operation completes).
+
+## Rules
+You must strictly follow these two constraints:
+1. **Job Order Constraint**: Each job consists of multiple steps that must be executed in sequence. For example, Step 2 of Job3 cannot start until Step 1 of Job3 is completed.
+2. **Machine Constraint**: Each machine can only process **one operation at a time**. For instance, if MachineA is scheduled to work from time 10–20, no other job can use MachineA during that time.
+
+## Input Format
+You are given a dataset in the following format:
+- A list of jobs.
+- Each job is represented by a list of (machine, duration) pairs indicating the steps to perform in order.
+- Example:
+Job1: [(MachineA, 3), (MachineB, 5), (MachineC, 2)]
+Job2: [(MachineB, 4), (MachineA, 6)]
+
+## Output Format
+Return a **minimum makespan value, best solving algorithm, valid schedule** in JSON or tabular form. Each scheduled operation must include:
+- job name (e.g., "Job1")
+- step number (1-based index)
+- assigned machine (e.g., "MachineB")
+- start time (integer)
+- end time (start + duration)
+- (optional) precedence: "After Job1 Step 1", etc.
+
+### Example Output:
+```json
+[
+{"job": "Job1", "step": 1, "machine": "MachineA", "start": 0, "end": 3},
+{"job": "Job2", "step": 1, "machine": "MachineB", "start": 0, "end": 4},
+{"job": "Job1", "step": 2, "machine": "MachineB", "start": 4, "end": 9, "precedence": "After Job1 Step 1"},
+...
+]
+
+## Goal
+Your schedule must:
+Respect all job and machine constraints.

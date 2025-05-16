@@ -1,0 +1,26 @@
+// MAPLE Workflow
+digraph {
+	rankdir=TB
+	node [fillcolor=lightblue shape=box style="rounded,filled"]
+	llm [label="LLM Heuristics
+(Claude 3.7)"]
+	data_synth [label="Data Synthesis
+(Best Algorithm Selection)"]
+	hardcode [label="Algorithm Hardcoding"]
+	plan_gen [label="Plan Generation"]
+	validation [label="Plan Validation
+(Validity & Optimality)"]
+	eval [label="Dataset Evaluation
+(Existing & New)"]
+	replan [label="Global Replanning
+(Disruption Handling)"]
+	llm -> data_synth
+	data_synth -> hardcode
+	hardcode -> plan_gen
+	plan_gen -> validation
+	validation -> eval
+	eval -> replan
+	validation -> plan_gen [label="Invalid Plan"]
+	eval -> plan_gen [label="Poor Performance"]
+	replan -> plan_gen [label=Disruption]
+}
