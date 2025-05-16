@@ -68,7 +68,7 @@ ALAS is as far as we know, the first comprehensive middleware for agent applicat
 ![Benchmark Comparison 2](figures/benchmark_comparisons2.png)
 *Figure 2: Mean Gap to Upper Bound comparison across two benchmark datasets.*
 
-![Benchmark Comparison 3](figures/benchmark_comparisons3.png)
+![Benchmark Comparison 3](figures/benchmark_comparison3.png)
 *Figure 3: Additional benchmark comparison results.*
 
 ### MAPLE System Algorithm Workflow
