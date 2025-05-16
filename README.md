@@ -60,13 +60,16 @@ ALAS is as far as we know, the first comprehensive middleware for agent applicat
 ### Benchmark Comparison: Mean Gap to Upper Bound
 
 #### Validity (~100%)
-#### Optimality: Demirkol-DMU Dataset and Real-world TA Dataset
+#### Optimality: 1) Demirkol-DMU Dataset (19.09%), 2) Real-world TA Dataset (0.86%), 3) Adams, Balas & Zawack Job Shop (ABZ) (0%), 4) Swv Job Shop Benchmark Set (SWZ) (0%), and 5) Yamada and Nakano Benchmark Set (YN) (0%). 
 
 ![Benchmark Comparison 1](figures/benchmark_comparisons.png)
 *Figure 1: Mean Gap to Upper Bound comparison across two benchmark datasets.*
 
 ![Benchmark Comparison 2](figures/benchmark_comparisons2.png)
-*Figure 2: Additional benchmark comparison results.*
+*Figure 2: Mean Gap to Upper Bound comparison across two benchmark datasets.*
+
+![Benchmark Comparison 3](figures/benchmark_comparisons3.png)
+*Figure 3: Additional benchmark comparison results.*
 
 ### MAPLE System Algorithm Workflow
 
