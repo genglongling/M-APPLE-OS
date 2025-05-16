@@ -53,6 +53,32 @@ ALAS is as far as we know, the first comprehensive middleware for agent applicat
 | **Task/Thread**          | Single                                      | Single, but extendable to multiple                    |
 
 ---
+
+
+## Results
+
+### Benchmark Comparison: Mean Gap to Upper Bound
+
+#### Validity (~100%)
+#### Optimality: Demirkol-DMU Dataset and Real-world TA Dataset
+
+![Benchmark Comparison 1](figures/benchmark_comparisons.png)
+*Figure 1: Mean Gap to Upper Bound comparison across two benchmark datasets.*
+
+![Benchmark Comparison 2](figures/benchmark_comparisons2.png)
+*Figure 2: Additional benchmark comparison results.*
+
+### MAPLE System Algorithm Workflow
+
+![MAPLE Algorithm](figures/algorithm.png)
+*Figure 3: MAPLE system algorithm workflow.*
+
+## **📂 Project Structure**  
+![MAPLE Code Structure](img/maple_workflow.png)
+
+---
+
+
 ## **🚀 How To Run**  
 
 ### **1️⃣ Setup Environment**  
@@ -330,11 +356,6 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 - If everything **succeeds**, all agents complete. ✅ 
 - If any **agent fails**, local compensation or global replanning is attempted; if not possible, all completed agents **roll back automatically, or by inputting a specific node**.  ✅ 
 - Ensures **multi-agent consistency** in real-world applications (e.g., **operating system, stock trading, planning, scheduling, transaction, or payments**).  ✅ 
-
----
-
-## **📂 Project Structure**  
-![MAPLE Code Structure](img/maple_workflow.png)
 
 
 ---
