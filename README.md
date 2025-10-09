@@ -206,11 +206,7 @@ graph TD
     N --> G
 ```
 
-### **MAPLE-Integrated JSSP Optimization Workflow**
-
-![MAPLE Workflow Architecture](img/maple_workflow_2.png)
-
-#### **MAPLE Workflow Example: **
+### **MAPLE-Integrated JSSP Optimization Workflow Example: **
 
 ```
 MAPLE-INTEGRATED JSSP OPTIMIZATION WORKFLOW
