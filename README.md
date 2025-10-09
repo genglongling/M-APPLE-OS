@@ -1,31 +1,34 @@
-# **ALAS: First Automated, Dynamic, General-Purpose Multi-Agent Workflow/Pipeline/Framework for Planning and Optimization**
+# **ALAS: First Automated, Dynamic, General-Purpose Multi-Agent Workflow for Planning and Optimization**
 
 ```
-A General-Purpose Operating System for Dynamic Planning, Multi-Agent Communication, Multi-Thread Job Execution and Goal optimization. **
+A General-Purpose Pipeline/Framework/Operating System for Dynamic Planning, Multi-Agent Communication, Multi-Thread Job Execution and Goal optimization. **
 --- ALAS Authors
 ```
 
 <p align="center">
   ⬇️ <a href="https://github.com/genglongling/REALM-Bench?tab=readme-ov-file">Github</a>  
-  📃 <a href="https://arxiv.org/abs/2502.18836">Paper</a>  
-  🌐 <a href="https://example.com/project">Project Page</a>
+  🌐 <a href="https://arxiv.org/abs/2502.18836">Paper</a>  
+  📃 <a href="https://github.com/genglongling/REALM-Bench">Dataset and Benchmark: REALM-Bench</a>
+  📃 <a href="https://github.com/genglongling/SagaLLM">Previous Version: SagaLLM</a>
 </p>
 
 This repository **ALAS** provides:
 
-- **1) Dynamic Planning**: Supports both static and dynamic (disruption-prone) tasks.
+- **1) Complex Planning**: Supports both static and dynamic (disruption-prone, in the future) tasks.
 - **2) Multi-Agent Communication**: Robust inter-agent dependency management and coordination.
 - **3) Multi-Thread Job Execution**: Modular, concurrent, and resilient execution with rollback and adaptation.
-- **4) Self-Validation**: Ensures plan and schedule is valid by structural, constraint, and compensation soundness at every step.
-- **5) Goal Optimization**: Ensures plan and schedule get optimized with user's prompt.
-- **6) Global Replanning**: Handles stochastic, random or preset disruption.
+- **4) Self-Validation tools**: Ensures plan and schedule is valid by structural, constraint, and compensation soundness at every step.
+- **5) Goal Optimization tools**: Ensures plan and schedule get optimized with user's prompt.
+- **6) Global Replanning tools**: Handles stochastic, random or preset disruption.
+- **7) File saving tools**.
+- **8) ALAS Workflow**.
 
 ALAS is as far as we know, the first comprehensive middleware for agent application layers and multi-agent databases, supporting real-world use cases in planning, scheduling, optimization, orchestration, and more.
 
 ---
 ## **Key Functions of `ALAS`**
 
-- **Three-Layer Architecture:**
+- **Five-Phases Architecture:**
   1. **Specification Construction**: Parses and builds workflow/task graphs from high-level specifications.
   2. **Inter-Agent Coordination**: Manages agent instantiation, dependency resolution, and communication.
   3. **Execution, Adaptation, and Validation**: Executes agents, handles disruptions with dynamic adaptation (local compensation and global replanning), supports rollback, and performs self-validation.
@@ -51,29 +54,19 @@ ALAS is as far as we know, the first comprehensive middleware for agent applicat
 | **Disruption Handling**  | Rollback                                    | Compensation, replanning, and rollback                |
 | **Use Case**             | Transactional flows                         | General-purpose, static/dynamic, multi-agent planning |
 | **Task/Thread**          | Single                                      | Single, but extendable to multiple                    |
+| **Scalability** | Limited | Highly scalable with multi-thread support |
 
 ---
 
 
-## Results
+## ALAS Design and Workflow
 
-### Benchmark Comparison: Mean Gap to Upper Bound
+### ALAS System Algorithm Workflow
 
-#### Validity (~100%)
-#### Optimality: 1) Demirkol-DMU Dataset (19.09%), 2) Real-world TA Dataset (0.86%), 3) Adams, Balas & Zawack Job Shop (ABZ) (0%), 4) Swv Job Shop Benchmark Set (SWZ) (0%), and 5) Yamada and Nakano Benchmark Set (YN) (0%). 
-
-![Benchmark Comparison 1](figures/benchmark_comparisons.png)
-
-![Benchmark Comparison 2](figures/benchmark_comparisons2.png)
-
-![Benchmark Comparison 3](figures/benchmark_comparison3.png)
-
-### MAPLE System Algorithm Workflow
-
-![MAPLE Algorithm](figures/algorithm.png)
+![ALAS Algorithm](figures/algorithm.png)
 
 ## **📂 Project Structure**  
-![MAPLE Code Structure](img/maple_workflow.png)
+![ALAS Code Structure](img/maple_workflow_2.png)
 
 ---
 
@@ -140,6 +133,25 @@ This project compares four established multi-agent frameworks with our novel ALA
 5. **Multi-LLM Support**: Seamless integration with multiple LLM providers
 6. **Real-time Adaptation**: Dynamic workflow modification based on disruptions
 
+### **Key ALAS Features**
+
+#### **Dynamic Adaptation**
+- **Local Compensation**: Fixes issues at the agent level without affecting the entire workflow
+- **Global Replanning**: Reconstructs the entire workflow when local compensation fails
+- **Rollback Support**: Automatically reverts to previous valid states
+
+#### **Self-Validation**
+- **Structural Validation**: Ensures precedence constraints are maintained
+- **Resource Validation**: Verifies machine capacity and resource availability
+- **Temporal Validation**: Checks time windows and scheduling constraints
+- **Compensation Soundness**: Validates that compensation actions don't introduce new violations
+
+#### **Multi-Agent Coordination**
+- **Dependency Management**: Handles complex inter-agent dependencies
+- **Communication Protocols**: Ensures reliable information exchange between agents
+- **Conflict Resolution**: Manages resource conflicts and scheduling conflicts
+- **Consistency Maintenance**: Ensures all agents maintain consistent state
+
 ---
 
 ## **🔧 ALAS Workflow Documentation**
@@ -198,7 +210,7 @@ graph TD
 
 ![MAPLE Workflow Architecture](img/maple_workflow_2.png)
 
-#### **MAPLE Workflow Diagram**
+#### **MAPLE Workflow Example: **
 
 ```
 MAPLE-INTEGRATED JSSP OPTIMIZATION WORKFLOW
@@ -271,37 +283,6 @@ TOTAL DATASETS: 5
 TOTAL TESTS: 30 (5 datasets × 6 methods)
 ```
 
-### **Key ALAS Features**
-
-#### **Dynamic Adaptation**
-- **Local Compensation**: Fixes issues at the agent level without affecting the entire workflow
-- **Global Replanning**: Reconstructs the entire workflow when local compensation fails
-- **Rollback Support**: Automatically reverts to previous valid states
-
-#### **Self-Validation**
-- **Structural Validation**: Ensures precedence constraints are maintained
-- **Resource Validation**: Verifies machine capacity and resource availability
-- **Temporal Validation**: Checks time windows and scheduling constraints
-- **Compensation Soundness**: Validates that compensation actions don't introduce new violations
-
-#### **Multi-Agent Coordination**
-- **Dependency Management**: Handles complex inter-agent dependencies
-- **Communication Protocols**: Ensures reliable information exchange between agents
-- **Conflict Resolution**: Manages resource conflicts and scheduling conflicts
-- **Consistency Maintenance**: Ensures all agents maintain consistent state
-
-### **ALAS vs. Traditional Saga Pattern**
-
-| Feature | Saga Pattern | ALAS |
-|---------|-------------|------|
-| **Architecture** | Transactional, rollback only | Three-layer: specification, coordination, execution |
-| **Adaptation** | Rollback only | Local compensation + global replanning |
-| **Validation** | Manual/context-based | Automated self-validation at every step |
-| **Optimization** | Not supported | General-purpose optimization tasks |
-| **Disruption Handling** | Rollback | Compensation, replanning, and rollback |
-| **Use Cases** | Transactional flows | General-purpose, static/dynamic, multi-agent planning |
-| **Scalability** | Limited | Highly scalable with multi-thread support |
-
 ### **ALAS Implementation for JSSP**
 
 The ALAS framework is specifically implemented for Job Shop Scheduling Problems (JSSP) with the following components:
@@ -357,7 +338,27 @@ maple.run(
 
 ---
 
-## **📊 Experimental Results Summary**
+## **📊 ALAS Experimental Results Summary**
+
+### **ALAS Performance Summary Table**
+
+| **Metric** | **ALAS Performance** | **Traditional Methods** | **ALAS Advantage** |
+|------------|---------------------|-------------------------|-------------------|
+| **Success Rate** | **100%** across all dataset categories | 0-100% (highly variable) | **Consistent reliability** |
+| **Optimal Rate** | **100%** for ABZ/SWV/YN<br>**99.14%** for TA<br>**80.91%** for DMU | 0-100% (inconsistent) | **Near-perfect optimization** |
+| **Execution Time** | **2.5-3.0 seconds** | 10-100+ seconds | **10-40x faster** |
+| **Error Rate** | **0%** (full workflow) | 0-100% (variable) | **Perfect error elimination** |
+| **Token Usage** | **Optimized efficiency** | High consumption (MAS)<br>Variable (single-agent) | **Better results, lower cost** |
+
+### **Dataset Category Performance**
+
+| Dataset Category | ALAS Success Rate | ALAS Optimal Rate | Best Traditional Method | ALAS Advantage |
+|------------------|-------------------|-------------------|----------------------|-----------------|
+| **DMU (Demirkol)** | 100% | 80.91% | Variable (0-100%) | **Consistent high performance** |
+| **TA (Real-world)** | 100% | 99.14% | Variable (0-100%) | **Near-optimal on real data** |
+| **ABZ (Adams-Balas-Zawack)** | 100% | 100% | Variable (0-100%) | **Perfect optimization** |
+| **SWV (Swv)** | 100% | 100% | Variable (0-100%) | **Perfect optimization** |
+| **YN (Yamada-Nakano)** | 100% | 100% | Variable (0-100%) | **Perfect optimization** |
 
 ### **Performance Metrics Overview**
 
@@ -416,26 +417,6 @@ Our comprehensive evaluation compares ALAS with traditional multi-agent framewor
   - Traditional MAS: **Highly variable** makespan results
   - Single-agent: **Inconsistent** makespan performance
   - ALAS optimization strategies significantly improve schedule quality
-
-### **Dataset Category Performance**
-
-| Dataset Category | ALAS Success Rate | ALAS Optimal Rate | Best Traditional Method | ALAS Advantage |
-|------------------|-------------------|-------------------|----------------------|-----------------|
-| **DMU (Demirkol)** | 100% | 80.91% | Variable (0-100%) | **Consistent high performance** |
-| **TA (Real-world)** | 100% | 99.14% | Variable (0-100%) | **Near-optimal on real data** |
-| **ABZ (Adams-Balas-Zawack)** | 100% | 100% | Variable (0-100%) | **Perfect optimization** |
-| **SWV (Swv)** | 100% | 100% | Variable (0-100%) | **Perfect optimization** |
-| **YN (Yamada-Nakano)** | 100% | 100% | Variable (0-100%) | **Perfect optimization** |
-
-### **ALAS Performance Summary Table**
-
-| **Metric** | **ALAS Performance** | **Traditional Methods** | **ALAS Advantage** |
-|------------|---------------------|-------------------------|-------------------|
-| **Success Rate** | **100%** across all dataset categories | 0-100% (highly variable) | **Consistent reliability** |
-| **Optimal Rate** | **100%** for ABZ/SWV/YN<br>**99.14%** for TA<br>**80.91%** for DMU | 0-100% (inconsistent) | **Near-perfect optimization** |
-| **Execution Time** | **2.5-3.0 seconds** | 10-100+ seconds | **10-40x faster** |
-| **Error Rate** | **0%** (full workflow) | 0-100% (variable) | **Perfect error elimination** |
-| **Token Usage** | **Optimized efficiency** | High consumption (MAS)<br>Variable (single-agent) | **Better results, lower cost** |
 
 ### **Key Performance Insights**
 
