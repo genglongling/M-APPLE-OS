@@ -361,28 +361,20 @@ Our comprehensive evaluation compares ALAS with traditional multi-agent framewor
 - **Metric**: Percentage of valid schedules generated
 - **Script**: `generate_success_rate_report.py`
 - **Key Findings**:
-  - ALAS workflows achieve **100% success rate** for full optimization
+  - ALAS workflows achieve average **83.7% success rate** for DMU, TA, ABZ, SWV, YN datasets
   - Traditional MAS frameworks: 0-100% (highly variable)
   - Single-agent models: 0-100% (inconsistent)
   - ALAS consistently outperforms all baselines
 
-#### **2. Error Rate Report** ✅
-- **Metric**: Error steps / total steps in schedule (lower is better)
-- **Script**: `generate_error_rate_report.py`
-- **Key Findings**:
-  - ALAS full workflow: **0% error rate** across all datasets
-  - Traditional MAS: 0-100% error rate (highly variable)
-  - Single-agent: 0-100% error rate (inconsistent)
-  - ALAS repair iterations effectively eliminate all errors
 
-#### **3. Optimal Rate Report** ✅
+#### **2. Optimal Rate Report** ✅
 - **Metric**: (makespan / upper_bound) × 100% (100% is optimal)
 - **Script**: `generate_optimal_rate_report.py`
 - **Key Findings**:
-  - ALAS achieves **100% optimal rate** for DMU, TA, ABZ, SWV, YN datasets
+  - ALAS achieves **100% optimal rate** for DMU, TA, ABZ, SWV, YN datasets for successful cases.
   - Significantly outperforms all baseline methods
 
-#### **4. Execution Time Report** ✅
+#### **3. Execution Time Report** ✅
 - **Metric**: Wall time for complete workflow execution
 - **Script**: `generate_execution_time_report.py`
 - **Key Findings**:
@@ -391,7 +383,7 @@ Our comprehensive evaluation compares ALAS with traditional multi-agent framewor
   - Single-agent: **5-50 seconds** (model dependent)
   - ALAS provides optimal balance of speed and quality
 
-#### **5. Token Usage Report** ✅
+#### **4. Token Usage Report** ✅
 - **Metric**: Token consumption and cost analysis
 - **Script**: `generate_token_number_report.py`
 - **Key Findings**:
@@ -400,7 +392,7 @@ Our comprehensive evaluation compares ALAS with traditional multi-agent framewor
   - Single-agent: **Variable token usage** (model dependent)
   - ALAS achieves better results with lower token costs
 
-#### **6. Makespan Report** ✅
+#### **5. Makespan Report** ✅
 - **Metric**: Final schedule makespan values
 - **Script**: `generate_makespan_report.py`
 - **Key Findings**:
