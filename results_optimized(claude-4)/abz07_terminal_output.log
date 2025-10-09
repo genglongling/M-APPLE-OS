@@ -1,0 +1,300 @@
+Loading dataset: abz07 from /Users/glin/Documents/GitHub/M-APPLE/M-APPLE-OS/applications/abzswvyn/abz07.txt
+Loaded 20 jobs
+
+--- Running Full Workflow ---
+
+============================================================
+Running MAPLE Full Workflow on abz07
+Description: Complete workflow with all tools
+Timestamp: 2025-09-24 15:11:31
+============================================================
+⚠️ Warning: Agent is None in node: {'agent': None, 'type': 'JSSPAgent'}
+⚠️ Warning: Agent is None in node: {'agent': None, 'type': 'JSSPValidationAgent'}
+
+=== [OPTIMIZED MAPLE] New 4-Step Workflow ===
+Nodes: ['Unknown Agent', 'Unknown Agent']
+Edges: [{'from': 0, 'to': 1}]
+Workflow: Full Workflow
+Validation: ✅
+Repair: ✅
+Optimization: ✅
+
+=== [OPTIMIZED MAPLE] Inter-Agent Coordination ===
+
+=== [OPTIMIZED MAPLE] New Workflow Execution ===
+🔄 Running new 7-step workflow: Query -> Validation -> Repair -> Re-validation -> Optimization -> Final Check -> Supervisor
+
+🔄 Starting New 4-Step Workflow...
+1️⃣ Loading pre-generated schedule from JSON file...
+📊 Loaded 244 schedule entries from abz07
+📊 Claude-Sonnet-4 makespan: 656
+📊 Initial schedule makespan: 733
+📊 Schedule entries count: 244
+📊 Sample entry: {'job': 'Job1', 'step': 1, 'machine': 'Machine2', 'start': 0, 'end': 24, 'duration': 24}
+[32m✅ Pre-generated schedule loaded successfully.
+2️⃣ ValidationTools validating schedule...
+❌ Initial validation failed: ['Job Job8: Step 4 starts before step 3 ends', 'Job Job9: Step 2 starts before step 1 ends', 'Job Job17: Step 8 starts before step 7 ends', 'Job Job17: Step 9 starts before step 8 ends', 'Job Job18: Step 9 starts before step 8 ends']
+3️⃣ RepairTools repairing schedule...
+🔧 Repair iteration 1/5
+🔧 Starting Algorithm 3: Cascading Repair and Queue Reordering
+📊 Processing 244 schedule entries
+❌ Found 5 constraint violations
+🔄 Phase I: Status Update - Identifying affected operations
+🔧 Fixing immediate constraint violations...
+🔄 Phase II: Job Precedence Repair - Fixing step ordering violations
+🔧 Repairing job precedence violations...
+🔄 Phase III: Machine Capacity Repair - Resolving machine overlaps
+🔧 Repairing machine capacity violations...
+🔄 Phase IV: Iterative Improvement - Optimizing schedule quality
+🔧 Applying iterative improvement...
+🔄 Phase V: Final validation and cleanup
+🔧 Final cleanup - ensuring valid operation times...
+⏰ Fixed invalid times for Job8 step 4
+⏰ Fixed invalid times for Job17 step 8
+✅ Algorithm 3 completed - Generated 244 schedule entries
+📊 Repair iteration 1 makespan: 733
+📊 Repair iteration 1 schedule entries: 244
+📊 Latest operations: [('Job4', 13, 733), ('Job14', 12, 720), ('Job1', 13, 715)]
+💾 Saved repair iteration 1 to: maple_optimized(claude-4)/abz07_repair_iteration_1.json
+⚠️ Repair iteration 1 reduced errors from 5 to 1 (makespan: 733)
+🔧 Repair iteration 2/5
+🔧 Starting Algorithm 3: Cascading Repair and Queue Reordering
+📊 Processing 244 schedule entries
+❌ Found 1 constraint violations
+🔄 Phase I: Status Update - Identifying affected operations
+🔧 Fixing immediate constraint violations...
+🔄 Phase II: Job Precedence Repair - Fixing step ordering violations
+🔧 Repairing job precedence violations...
+🔄 Phase III: Machine Capacity Repair - Resolving machine overlaps
+🔧 Repairing machine capacity violations...
+🔄 Phase IV: Iterative Improvement - Optimizing schedule quality
+🔧 Applying iterative improvement...
+🔄 Phase V: Final validation and cleanup
+🔧 Final cleanup - ensuring valid operation times...
+✅ Algorithm 3 completed - Generated 244 schedule entries
+📊 Repair iteration 2 makespan: 733
+📊 Repair iteration 2 schedule entries: 244
+📊 Latest operations: [('Job4', 13, 733), ('Job14', 12, 720), ('Job1', 13, 715)]
+💾 Saved repair iteration 2 to: maple_optimized(claude-4)/abz07_repair_iteration_2.json
+✅ Repair successful after 2 iterations (final makespan: 733)
+4️⃣ ValidationTools revalidating schedule...
+✅ Repair and revalidation successful
+5️⃣ OptimizationTools optimizing schedule...
+📊 Pre-optimization makespan: 733
+📊 Post-optimization makespan: 549
+✅ Optimization completed successfully.
+6️⃣ ValidationTools final check...
+⚠️ Final validation found 118 errors, but continuing with optimization result
+✅ Optimization result accepted despite validation warnings
+7️⃣ Processing final results...
+📊 Final processed schedule with 244 entries
+📊 Calculated makespan: 549
+🎯 Final makespan: 549
+✅ New workflow completed successfully.
+
+=== Optimized Validation Results ===
+✅ Using best solution found (makespan: 549)
+📊 Total operations scheduled: 244
+✅ New 4-step workflow completed successfully
+📊 Found 2 repair iterations
+  Iteration 1: makespan=733, entries=244
+  Iteration 2: makespan=733, entries=244
+
+--- Running No Repair Tools ---
+
+============================================================
+Running MAPLE No Repair Tools on abz07
+Description: Full workflow without repair tools
+Timestamp: 2025-09-24 15:11:32
+============================================================
+⚠️ Warning: Agent is None in node: {'agent': None, 'type': 'JSSPAgent'}
+⚠️ Warning: Agent is None in node: {'agent': None, 'type': 'JSSPValidationAgent'}
+
+=== [OPTIMIZED MAPLE] New 4-Step Workflow ===
+Nodes: ['Unknown Agent', 'Unknown Agent']
+Edges: [{'from': 0, 'to': 1}]
+Workflow: No Repair Tools
+Validation: ✅
+Repair: ❌
+Optimization: ✅
+
+=== [OPTIMIZED MAPLE] Inter-Agent Coordination ===
+
+=== [OPTIMIZED MAPLE] New Workflow Execution ===
+🔄 Running new 7-step workflow: Query -> Validation -> Repair -> Re-validation -> Optimization -> Final Check -> Supervisor
+
+🔄 Starting New 4-Step Workflow...
+1️⃣ Loading pre-generated schedule from JSON file...
+📊 Loaded 244 schedule entries from abz07
+📊 Claude-Sonnet-4 makespan: 656
+📊 Initial schedule makespan: 733
+📊 Schedule entries count: 244
+📊 Sample entry: {'job': 'Job1', 'step': 1, 'machine': 'Machine2', 'start': 0, 'end': 24, 'duration': 24}
+[32m✅ Pre-generated schedule loaded successfully.
+2️⃣ ValidationTools validating schedule...
+❌ Initial validation failed: ['Job Job8: Step 4 starts before step 3 ends', 'Job Job9: Step 2 starts before step 1 ends', 'Job Job17: Step 8 starts before step 7 ends', 'Job Job17: Step 9 starts before step 8 ends', 'Job Job18: Step 9 starts before step 8 ends']
+⚠️ Schedule validation failed but repair is disabled - using original schedule without optimization
+✅ Proceeding with original schedule without optimization due to validation failures
+5️⃣ OptimizationTools skipped - using original schedule due to validation failures
+5️⃣ OptimizationTools already skipped due to validation failures
+6️⃣ ValidationTools final check...
+⚠️ Final validation found 5 errors, but continuing with optimization result
+✅ Optimization result accepted despite validation warnings
+7️⃣ Processing final results...
+📊 Final processed schedule with 244 entries
+📊 Calculated makespan: 733
+🎯 Final makespan: 733
+✅ New workflow completed successfully.
+
+=== Optimized Validation Results ===
+✅ Using best solution found (makespan: 733)
+📊 Total operations scheduled: 244
+✅ New 4-step workflow completed successfully
+
+--- Running No Validation Tools ---
+
+============================================================
+Running MAPLE No Validation Tools on abz07
+Description: Full workflow without validation tools
+Timestamp: 2025-09-24 15:11:32
+============================================================
+⚠️ Warning: Agent is None in node: {'agent': None, 'type': 'JSSPAgent'}
+⚠️ Warning: Agent is None in node: {'agent': None, 'type': 'JSSPValidationAgent'}
+
+=== [OPTIMIZED MAPLE] New 4-Step Workflow ===
+Nodes: ['Unknown Agent', 'Unknown Agent']
+Edges: [{'from': 0, 'to': 1}]
+Workflow: No Validation Tools
+Validation: ❌
+Repair: ✅
+Optimization: ✅
+
+=== [OPTIMIZED MAPLE] Inter-Agent Coordination ===
+
+=== [OPTIMIZED MAPLE] New Workflow Execution ===
+🔄 Running new 7-step workflow: Query -> Validation -> Repair -> Re-validation -> Optimization -> Final Check -> Supervisor
+
+🔄 Starting New 4-Step Workflow...
+1️⃣ Loading pre-generated schedule from JSON file...
+📊 Loaded 244 schedule entries from abz07
+📊 Claude-Sonnet-4 makespan: 656
+📊 Initial schedule makespan: 733
+📊 Schedule entries count: 244
+📊 Sample entry: {'job': 'Job1', 'step': 1, 'machine': 'Machine2', 'start': 0, 'end': 24, 'duration': 24}
+[32m✅ Pre-generated schedule loaded successfully.
+2️⃣ ValidationTools disabled - skipping validation
+5️⃣ OptimizationTools optimizing schedule...
+📊 Pre-optimization makespan: 733
+📊 Post-optimization makespan: 549
+✅ Optimization completed successfully.
+6️⃣ ValidationTools disabled - skipping final validation
+7️⃣ Processing final results...
+📊 Final processed schedule with 244 entries
+📊 Calculated makespan: 549
+🎯 Final makespan: 549
+✅ New workflow completed successfully.
+
+=== Optimized Validation Results ===
+✅ Using best solution found (makespan: 549)
+📊 Total operations scheduled: 244
+✅ New 4-step workflow completed successfully
+
+--- Running No Optimization Tools ---
+
+============================================================
+Running MAPLE No Optimization Tools on abz07
+Description: Full workflow without optimization tools
+Timestamp: 2025-09-24 15:11:33
+============================================================
+⚠️ Warning: Agent is None in node: {'agent': None, 'type': 'JSSPAgent'}
+⚠️ Warning: Agent is None in node: {'agent': None, 'type': 'JSSPValidationAgent'}
+
+=== [OPTIMIZED MAPLE] New 4-Step Workflow ===
+Nodes: ['Unknown Agent', 'Unknown Agent']
+Edges: [{'from': 0, 'to': 1}]
+Workflow: No Optimization Tools
+Validation: ✅
+Repair: ✅
+Optimization: ❌
+
+=== [OPTIMIZED MAPLE] Inter-Agent Coordination ===
+
+=== [OPTIMIZED MAPLE] New Workflow Execution ===
+🔄 Running new 7-step workflow: Query -> Validation -> Repair -> Re-validation -> Optimization -> Final Check -> Supervisor
+
+🔄 Starting New 4-Step Workflow...
+1️⃣ Loading pre-generated schedule from JSON file...
+📊 Loaded 244 schedule entries from abz07
+📊 Claude-Sonnet-4 makespan: 656
+📊 Initial schedule makespan: 733
+📊 Schedule entries count: 244
+📊 Sample entry: {'job': 'Job1', 'step': 1, 'machine': 'Machine2', 'start': 0, 'end': 24, 'duration': 24}
+[32m✅ Pre-generated schedule loaded successfully.
+2️⃣ ValidationTools validating schedule...
+❌ Initial validation failed: ['Job Job8: Step 4 starts before step 3 ends', 'Job Job9: Step 2 starts before step 1 ends', 'Job Job17: Step 8 starts before step 7 ends', 'Job Job17: Step 9 starts before step 8 ends', 'Job Job18: Step 9 starts before step 8 ends']
+3️⃣ RepairTools repairing schedule...
+🔧 Repair iteration 1/5
+🔧 Starting Algorithm 3: Cascading Repair and Queue Reordering
+📊 Processing 244 schedule entries
+❌ Found 5 constraint violations
+🔄 Phase I: Status Update - Identifying affected operations
+🔧 Fixing immediate constraint violations...
+🔄 Phase II: Job Precedence Repair - Fixing step ordering violations
+🔧 Repairing job precedence violations...
+🔄 Phase III: Machine Capacity Repair - Resolving machine overlaps
+🔧 Repairing machine capacity violations...
+🔄 Phase IV: Iterative Improvement - Optimizing schedule quality
+🔧 Applying iterative improvement...
+🔄 Phase V: Final validation and cleanup
+🔧 Final cleanup - ensuring valid operation times...
+⏰ Fixed invalid times for Job8 step 4
+⏰ Fixed invalid times for Job17 step 8
+✅ Algorithm 3 completed - Generated 244 schedule entries
+📊 Repair iteration 1 makespan: 733
+📊 Repair iteration 1 schedule entries: 244
+📊 Latest operations: [('Job4', 13, 733), ('Job14', 12, 720), ('Job1', 13, 715)]
+💾 Saved repair iteration 1 to: maple_optimized(claude-4)/abz07_repair_iteration_1.json
+⚠️ Repair iteration 1 reduced errors from 5 to 1 (makespan: 733)
+🔧 Repair iteration 2/5
+🔧 Starting Algorithm 3: Cascading Repair and Queue Reordering
+📊 Processing 244 schedule entries
+❌ Found 1 constraint violations
+🔄 Phase I: Status Update - Identifying affected operations
+🔧 Fixing immediate constraint violations...
+🔄 Phase II: Job Precedence Repair - Fixing step ordering violations
+🔧 Repairing job precedence violations...
+🔄 Phase III: Machine Capacity Repair - Resolving machine overlaps
+🔧 Repairing machine capacity violations...
+🔄 Phase IV: Iterative Improvement - Optimizing schedule quality
+🔧 Applying iterative improvement...
+🔄 Phase V: Final validation and cleanup
+🔧 Final cleanup - ensuring valid operation times...
+✅ Algorithm 3 completed - Generated 244 schedule entries
+📊 Repair iteration 2 makespan: 733
+📊 Repair iteration 2 schedule entries: 244
+📊 Latest operations: [('Job4', 13, 733), ('Job14', 12, 720), ('Job1', 13, 715)]
+💾 Saved repair iteration 2 to: maple_optimized(claude-4)/abz07_repair_iteration_2.json
+✅ Repair successful after 2 iterations (final makespan: 733)
+4️⃣ ValidationTools revalidating schedule...
+✅ Repair and revalidation successful
+7️⃣ Processing final results...
+📊 Final processed schedule with 244 entries
+📊 Calculated makespan: 733
+🎯 Final makespan: 733
+✅ New workflow completed successfully.
+
+=== Optimized Validation Results ===
+✅ Using best solution found (makespan: 733)
+📊 Total operations scheduled: 244
+✅ New 4-step workflow completed successfully
+📊 Found 2 repair iterations
+  Iteration 1: makespan=733, entries=244
+  Iteration 2: makespan=733, entries=244
+
+============================================================
+WORKFLOW COMPARISON SUMMARY for abz07
+============================================================
+✅ Full Workflow        | Makespan:      549 | Time: 0.98s | Repairs: 2
+✅ No Repair Tools      | Makespan:      733 | Time: 0.00s
+✅ No Validation Tools  | Makespan:      549 | Time: 1.07s
+✅ No Optimization Tools | Makespan:      733 | Time: 0.06s | Repairs: 2

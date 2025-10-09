@@ -1,0 +1,241 @@
+Loading dataset: swv14 from /Users/glin/Documents/GitHub/M-APPLE/M-APPLE-OS/applications/abzswvyn/swv14.txt
+Loaded 50 jobs
+
+--- Running Full Workflow ---
+
+============================================================
+Running MAPLE Full Workflow on swv14
+Description: Complete workflow with all tools
+Timestamp: 2025-09-24 15:05:40
+============================================================
+⚠️ Warning: Agent is None in node: {'agent': None, 'type': 'JSSPAgent'}
+⚠️ Warning: Agent is None in node: {'agent': None, 'type': 'JSSPValidationAgent'}
+
+=== [OPTIMIZED MAPLE] New 4-Step Workflow ===
+Nodes: ['Unknown Agent', 'Unknown Agent']
+Edges: [{'from': 0, 'to': 1}]
+Workflow: Full Workflow
+Validation: ✅
+Repair: ✅
+Optimization: ✅
+
+=== [OPTIMIZED MAPLE] Inter-Agent Coordination ===
+
+=== [OPTIMIZED MAPLE] New Workflow Execution ===
+🔄 Running new 7-step workflow: Query -> Validation -> Repair -> Re-validation -> Optimization -> Final Check -> Supervisor
+
+🔄 Starting New 4-Step Workflow...
+1️⃣ Loading pre-generated schedule from JSON file...
+📊 Loaded 0 schedule entries from swv14
+📊 DeepSeek-V3 makespan: 1723
+📊 Initial schedule makespan: 0
+📊 Schedule entries count: 0
+[32m✅ Pre-generated schedule loaded successfully.
+2️⃣ ValidationTools validating schedule...
+❌ Initial validation failed: ['No schedule entries found']
+3️⃣ RepairTools repairing schedule...
+🔧 Repair iteration 1/5
+📊 Repair iteration 1 makespan: 0
+📊 Repair iteration 1 schedule entries: 0
+💾 Saved repair iteration 1 to: maple_optimized(deepseek-v3)/swv14_repair_iteration_1.json
+⚠️ Repair iteration 1 reduced errors from 1 to 1 (makespan: 0)
+🔧 Repair iteration 2/5
+📊 Repair iteration 2 makespan: 0
+📊 Repair iteration 2 schedule entries: 0
+💾 Saved repair iteration 2 to: maple_optimized(deepseek-v3)/swv14_repair_iteration_2.json
+⚠️ Repair iteration 2 reduced errors from 1 to 1 (makespan: 0)
+🔧 Repair iteration 3/5
+📊 Repair iteration 3 makespan: 0
+📊 Repair iteration 3 schedule entries: 0
+💾 Saved repair iteration 3 to: maple_optimized(deepseek-v3)/swv14_repair_iteration_3.json
+⚠️ Repair iteration 3 reduced errors from 1 to 1 (makespan: 0)
+🔧 Repair iteration 4/5
+📊 Repair iteration 4 makespan: 0
+📊 Repair iteration 4 schedule entries: 0
+💾 Saved repair iteration 4 to: maple_optimized(deepseek-v3)/swv14_repair_iteration_4.json
+⚠️ Repair iteration 4 reduced errors from 1 to 1 (makespan: 0)
+🔧 Repair iteration 5/5
+📊 Repair iteration 5 makespan: 0
+📊 Repair iteration 5 schedule entries: 0
+💾 Saved repair iteration 5 to: maple_optimized(deepseek-v3)/swv14_repair_iteration_5.json
+⚠️ Repair iteration 5 reduced errors from 1 to 1 (makespan: 0)
+⚠️ Repair completed after 5 iterations with remaining errors
+4️⃣ ValidationTools revalidating schedule...
+❌ Revalidation failed: ['No schedule entries found']
+[31m❌ ERROR in workflow: Schedule validation failed after repair
+⚡ Disruption detected in Unknown Agent: Schedule validation failed after repair
+🔄 Initiating global replanning...
+⚠️ Global replanning completed. Manual intervention may be required.
+[31m🚨 Workflow execution halted due to error.
+❌ New 4-step workflow failed
+📊 Found 5 repair iterations
+  Iteration 1: makespan=0, entries=0
+  Iteration 2: makespan=0, entries=0
+  Iteration 3: makespan=0, entries=0
+  Iteration 4: makespan=0, entries=0
+  Iteration 5: makespan=0, entries=0
+
+--- Running No Repair Tools ---
+
+============================================================
+Running MAPLE No Repair Tools on swv14
+Description: Full workflow without repair tools
+Timestamp: 2025-09-24 15:05:40
+============================================================
+⚠️ Warning: Agent is None in node: {'agent': None, 'type': 'JSSPAgent'}
+⚠️ Warning: Agent is None in node: {'agent': None, 'type': 'JSSPValidationAgent'}
+
+=== [OPTIMIZED MAPLE] New 4-Step Workflow ===
+Nodes: ['Unknown Agent', 'Unknown Agent']
+Edges: [{'from': 0, 'to': 1}]
+Workflow: No Repair Tools
+Validation: ✅
+Repair: ❌
+Optimization: ✅
+
+=== [OPTIMIZED MAPLE] Inter-Agent Coordination ===
+
+=== [OPTIMIZED MAPLE] New Workflow Execution ===
+🔄 Running new 7-step workflow: Query -> Validation -> Repair -> Re-validation -> Optimization -> Final Check -> Supervisor
+
+🔄 Starting New 4-Step Workflow...
+1️⃣ Loading pre-generated schedule from JSON file...
+📊 Loaded 0 schedule entries from swv14
+📊 DeepSeek-V3 makespan: 1723
+📊 Initial schedule makespan: 0
+📊 Schedule entries count: 0
+[32m✅ Pre-generated schedule loaded successfully.
+2️⃣ ValidationTools validating schedule...
+❌ Initial validation failed: ['No schedule entries found']
+⚠️ Schedule validation failed but repair is disabled - using original schedule without optimization
+✅ Proceeding with original schedule without optimization due to validation failures
+5️⃣ OptimizationTools skipped - using original schedule due to validation failures
+5️⃣ OptimizationTools already skipped due to validation failures
+6️⃣ ValidationTools final check...
+⚠️ Final validation found 1 errors, but continuing with optimization result
+✅ Optimization result accepted despite validation warnings
+7️⃣ Processing final results...
+❌ No schedule data found
+❌ New 4-step workflow failed
+
+--- Running No Validation Tools ---
+
+============================================================
+Running MAPLE No Validation Tools on swv14
+Description: Full workflow without validation tools
+Timestamp: 2025-09-24 15:05:40
+============================================================
+⚠️ Warning: Agent is None in node: {'agent': None, 'type': 'JSSPAgent'}
+⚠️ Warning: Agent is None in node: {'agent': None, 'type': 'JSSPValidationAgent'}
+
+=== [OPTIMIZED MAPLE] New 4-Step Workflow ===
+Nodes: ['Unknown Agent', 'Unknown Agent']
+Edges: [{'from': 0, 'to': 1}]
+Workflow: No Validation Tools
+Validation: ❌
+Repair: ✅
+Optimization: ✅
+
+=== [OPTIMIZED MAPLE] Inter-Agent Coordination ===
+
+=== [OPTIMIZED MAPLE] New Workflow Execution ===
+🔄 Running new 7-step workflow: Query -> Validation -> Repair -> Re-validation -> Optimization -> Final Check -> Supervisor
+
+🔄 Starting New 4-Step Workflow...
+1️⃣ Loading pre-generated schedule from JSON file...
+📊 Loaded 0 schedule entries from swv14
+📊 DeepSeek-V3 makespan: 1723
+📊 Initial schedule makespan: 0
+📊 Schedule entries count: 0
+[32m✅ Pre-generated schedule loaded successfully.
+2️⃣ ValidationTools disabled - skipping validation
+5️⃣ OptimizationTools optimizing schedule...
+📊 Pre-optimization makespan: 0
+📊 Post-optimization makespan: 0
+✅ Optimization completed successfully.
+6️⃣ ValidationTools disabled - skipping final validation
+7️⃣ Processing final results...
+❌ No schedule data found
+❌ New 4-step workflow failed
+
+--- Running No Optimization Tools ---
+
+============================================================
+Running MAPLE No Optimization Tools on swv14
+Description: Full workflow without optimization tools
+Timestamp: 2025-09-24 15:05:40
+============================================================
+⚠️ Warning: Agent is None in node: {'agent': None, 'type': 'JSSPAgent'}
+⚠️ Warning: Agent is None in node: {'agent': None, 'type': 'JSSPValidationAgent'}
+
+=== [OPTIMIZED MAPLE] New 4-Step Workflow ===
+Nodes: ['Unknown Agent', 'Unknown Agent']
+Edges: [{'from': 0, 'to': 1}]
+Workflow: No Optimization Tools
+Validation: ✅
+Repair: ✅
+Optimization: ❌
+
+=== [OPTIMIZED MAPLE] Inter-Agent Coordination ===
+
+=== [OPTIMIZED MAPLE] New Workflow Execution ===
+🔄 Running new 7-step workflow: Query -> Validation -> Repair -> Re-validation -> Optimization -> Final Check -> Supervisor
+
+🔄 Starting New 4-Step Workflow...
+1️⃣ Loading pre-generated schedule from JSON file...
+📊 Loaded 0 schedule entries from swv14
+📊 DeepSeek-V3 makespan: 1723
+📊 Initial schedule makespan: 0
+📊 Schedule entries count: 0
+[32m✅ Pre-generated schedule loaded successfully.
+2️⃣ ValidationTools validating schedule...
+❌ Initial validation failed: ['No schedule entries found']
+3️⃣ RepairTools repairing schedule...
+🔧 Repair iteration 1/5
+📊 Repair iteration 1 makespan: 0
+📊 Repair iteration 1 schedule entries: 0
+💾 Saved repair iteration 1 to: maple_optimized(deepseek-v3)/swv14_repair_iteration_1.json
+⚠️ Repair iteration 1 reduced errors from 1 to 1 (makespan: 0)
+🔧 Repair iteration 2/5
+📊 Repair iteration 2 makespan: 0
+📊 Repair iteration 2 schedule entries: 0
+💾 Saved repair iteration 2 to: maple_optimized(deepseek-v3)/swv14_repair_iteration_2.json
+⚠️ Repair iteration 2 reduced errors from 1 to 1 (makespan: 0)
+🔧 Repair iteration 3/5
+📊 Repair iteration 3 makespan: 0
+📊 Repair iteration 3 schedule entries: 0
+💾 Saved repair iteration 3 to: maple_optimized(deepseek-v3)/swv14_repair_iteration_3.json
+⚠️ Repair iteration 3 reduced errors from 1 to 1 (makespan: 0)
+🔧 Repair iteration 4/5
+📊 Repair iteration 4 makespan: 0
+📊 Repair iteration 4 schedule entries: 0
+💾 Saved repair iteration 4 to: maple_optimized(deepseek-v3)/swv14_repair_iteration_4.json
+⚠️ Repair iteration 4 reduced errors from 1 to 1 (makespan: 0)
+🔧 Repair iteration 5/5
+📊 Repair iteration 5 makespan: 0
+📊 Repair iteration 5 schedule entries: 0
+💾 Saved repair iteration 5 to: maple_optimized(deepseek-v3)/swv14_repair_iteration_5.json
+⚠️ Repair iteration 5 reduced errors from 1 to 1 (makespan: 0)
+⚠️ Repair completed after 5 iterations with remaining errors
+4️⃣ ValidationTools revalidating schedule...
+❌ Revalidation failed: ['No schedule entries found']
+[31m❌ ERROR in workflow: Schedule validation failed after repair
+⚡ Disruption detected in Unknown Agent: Schedule validation failed after repair
+🔄 Initiating global replanning...
+⚠️ Global replanning completed. Manual intervention may be required.
+[31m🚨 Workflow execution halted due to error.
+❌ New 4-step workflow failed
+📊 Found 5 repair iterations
+  Iteration 1: makespan=0, entries=0
+  Iteration 2: makespan=0, entries=0
+  Iteration 3: makespan=0, entries=0
+  Iteration 4: makespan=0, entries=0
+  Iteration 5: makespan=0, entries=0
+
+============================================================
+WORKFLOW COMPARISON SUMMARY for swv14
+============================================================
+❌ Full Workflow        | Makespan:      N/A | Time: 0.00s | Repairs: 5
+❌ No Repair Tools      | Makespan:      N/A | Time: 0.00s
+❌ No Validation Tools  | Makespan:      N/A | Time: 0.00s
+❌ No Optimization Tools | Makespan:      N/A | Time: 0.00s | Repairs: 5

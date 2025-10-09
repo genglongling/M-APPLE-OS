@@ -1,0 +1,179 @@
+AGENT PROMPTS AND OUTPUTS DETAILS
+==================================================
+
+🔍 LangGraph Framework Details:
+--------------------------------------------------
+
+📝 Job Scheduler Agent Prompt:
+  system_prompt: You are a Job Scheduler Agent using LangGraph workflow. Analyze job requirements and create initial schedules for all jobs.
+
+💬 Job Scheduler Agent Output:
+  === LANGGRAPH REAL AGENTS ===
+
+Job Scheduler Agent: Agent response (timeout after 120s): You are a Job Scheduler Agent specialized in JSSP problems.
+    
+        Job Shop Scheduling Problem...
+Machine Coordinator Agent: Machine Coordinator Analysis: 
+
+To resolve machine conflicts and optimize machine utilization for the JSSP dataset swv11, the following strategies can be implemented:
+
+1. **Conflict Resolution:**
+   - **Priority Scheduling:** Assign machines to tasks based on priority. The task with the highest priority is scheduled first, making the machine unavailable for the duration of that task. Once completed, the machine is assigned to the next highest priority task.
+   - **Non-Overlapping Scheduling:** Ensure that no two jobs are scheduled on the same machine at the same time by using a scheduling algorithm that respects machine availability and job precedence.
+
+2. **Optimization Strategies:**
+   - **Minimize Idle Time:** Schedule tasks back-to-back to ensure machines are constantly working, thereby increasing utilization.
+   - **Shortest Processing Time (SPT) Rule:** Prioritize tasks with the shortest processing time to decrease mean flow time and improve throughput.
+   - **Reduce Makespan:** Assign jobs to machines based on availability to minimize the overall completion time (makespan).
+   - **Job Shifting:** Move smaller jobs ahead in the queue to prevent machine idleness, especially if jobs are non-preemptive.
+   - **Continuous Evaluation:** Regularly analyze and adjust the scheduling process to enhance efficiency and minimize conflicts over time.
+
+These strategies aim to resolve scheduling conflicts and optimize machine utilization, ensuring efficient operation and reduced completion times.
+Supervisor Agent: To solve the Job Shop Scheduling Problem (JSSP) for the given dataset, we need to coordinate the schedules of all jobs while ensuring that all constraints are satisfied. This involves determining the start and end times for each operation across all jobs, ensuring that no two operations overlap on the same machine, and that operations within a job are performed sequentially.
+
+Given the complexity and size of the problem, this typically requires the use of specialized algorithms or solvers designed for JSSP, such as genetic algorithms, branch and bound, or constraint programming. These methods iteratively search for an optimal or near-optimal solution that minimizes the makespan.
+
+However, due to the constraints of this environment, I will provide a conceptual approach to solving this problem:
+
+1. **Initialize the Schedule:**
+   - Start by scheduling the first operation of each job at time 0 on their respective machines.
+   - For each subsequent operation in a job, ensure it starts only after the previous operation in the job has completed.
+
+2. **Resolve Machine Conflicts:**
+   - For each machine, ensure that operations do not overlap. If two operations are scheduled to start at the same time on the same machine, adjust the start time of one operation to begin after the other has completed.
+
+3. **Iterate to Optimize:**
+   - Use iterative improvement techniques to adjust the schedule, aiming to reduce idle times on machines and minimize the makespan.
+   - Techniques such as shifting bottleneck, tabu search, or simulated annealing can be applied to explore different scheduling configurations.
+
+4. **Calculate Makespan:**
+   - The makespan is determined by the time at which the last operation across all jobs is completed.
+
+5. **Output the Schedule:**
+   - Provide the start and end times for each operation, ensuring the format is consistent with the required output.
+
+Given the constraints of this environment, I am unable to execute complex algorithms directly. However, I can guide you on how to implement these steps using a programming language or a specialized JSSP solver.
+
+If you have access to a solver or programming environment, you can implement the above steps to find the optimal schedule and makespan. Alternatively, if you have specific questions about implementing these steps, feel free to ask!
+
+
+=== FRAMEWORK ===
+
+Framework: LangGraph with 3 Real Agents
+
+📝 Machine Coordinator Agent Prompt:
+  system_prompt: You are a Machine Coordinator Agent using LangGraph workflow. Coordinate machine usage and resolve conflicts between jobs.
+
+💬 Machine Coordinator Agent Output:
+  === LANGGRAPH REAL AGENTS ===
+
+Job Scheduler Agent: Agent response (timeout after 120s): You are a Job Scheduler Agent specialized in JSSP problems.
+    
+        Job Shop Scheduling Problem...
+Machine Coordinator Agent: Machine Coordinator Analysis: 
+
+To resolve machine conflicts and optimize machine utilization for the JSSP dataset swv11, the following strategies can be implemented:
+
+1. **Conflict Resolution:**
+   - **Priority Scheduling:** Assign machines to tasks based on priority. The task with the highest priority is scheduled first, making the machine unavailable for the duration of that task. Once completed, the machine is assigned to the next highest priority task.
+   - **Non-Overlapping Scheduling:** Ensure that no two jobs are scheduled on the same machine at the same time by using a scheduling algorithm that respects machine availability and job precedence.
+
+2. **Optimization Strategies:**
+   - **Minimize Idle Time:** Schedule tasks back-to-back to ensure machines are constantly working, thereby increasing utilization.
+   - **Shortest Processing Time (SPT) Rule:** Prioritize tasks with the shortest processing time to decrease mean flow time and improve throughput.
+   - **Reduce Makespan:** Assign jobs to machines based on availability to minimize the overall completion time (makespan).
+   - **Job Shifting:** Move smaller jobs ahead in the queue to prevent machine idleness, especially if jobs are non-preemptive.
+   - **Continuous Evaluation:** Regularly analyze and adjust the scheduling process to enhance efficiency and minimize conflicts over time.
+
+These strategies aim to resolve scheduling conflicts and optimize machine utilization, ensuring efficient operation and reduced completion times.
+Supervisor Agent: To solve the Job Shop Scheduling Problem (JSSP) for the given dataset, we need to coordinate the schedules of all jobs while ensuring that all constraints are satisfied. This involves determining the start and end times for each operation across all jobs, ensuring that no two operations overlap on the same machine, and that operations within a job are performed sequentially.
+
+Given the complexity and size of the problem, this typically requires the use of specialized algorithms or solvers designed for JSSP, such as genetic algorithms, branch and bound, or constraint programming. These methods iteratively search for an optimal or near-optimal solution that minimizes the makespan.
+
+However, due to the constraints of this environment, I will provide a conceptual approach to solving this problem:
+
+1. **Initialize the Schedule:**
+   - Start by scheduling the first operation of each job at time 0 on their respective machines.
+   - For each subsequent operation in a job, ensure it starts only after the previous operation in the job has completed.
+
+2. **Resolve Machine Conflicts:**
+   - For each machine, ensure that operations do not overlap. If two operations are scheduled to start at the same time on the same machine, adjust the start time of one operation to begin after the other has completed.
+
+3. **Iterate to Optimize:**
+   - Use iterative improvement techniques to adjust the schedule, aiming to reduce idle times on machines and minimize the makespan.
+   - Techniques such as shifting bottleneck, tabu search, or simulated annealing can be applied to explore different scheduling configurations.
+
+4. **Calculate Makespan:**
+   - The makespan is determined by the time at which the last operation across all jobs is completed.
+
+5. **Output the Schedule:**
+   - Provide the start and end times for each operation, ensuring the format is consistent with the required output.
+
+Given the constraints of this environment, I am unable to execute complex algorithms directly. However, I can guide you on how to implement these steps using a programming language or a specialized JSSP solver.
+
+If you have access to a solver or programming environment, you can implement the above steps to find the optimal schedule and makespan. Alternatively, if you have specific questions about implementing these steps, feel free to ask!
+
+
+=== FRAMEWORK ===
+
+Framework: LangGraph with 3 Real Agents
+
+📝 Supervisor Agent Prompt:
+  system_prompt: You are a Supervisor Agent using LangGraph workflow. Aggregate all job schedules and produce the overall JSSP schedule. Coordinate between all job agents to find the optimal solution.
+
+💬 Supervisor Agent Output:
+  === LANGGRAPH REAL AGENTS ===
+
+Job Scheduler Agent: Agent response (timeout after 120s): You are a Job Scheduler Agent specialized in JSSP problems.
+    
+        Job Shop Scheduling Problem...
+Machine Coordinator Agent: Machine Coordinator Analysis: 
+
+To resolve machine conflicts and optimize machine utilization for the JSSP dataset swv11, the following strategies can be implemented:
+
+1. **Conflict Resolution:**
+   - **Priority Scheduling:** Assign machines to tasks based on priority. The task with the highest priority is scheduled first, making the machine unavailable for the duration of that task. Once completed, the machine is assigned to the next highest priority task.
+   - **Non-Overlapping Scheduling:** Ensure that no two jobs are scheduled on the same machine at the same time by using a scheduling algorithm that respects machine availability and job precedence.
+
+2. **Optimization Strategies:**
+   - **Minimize Idle Time:** Schedule tasks back-to-back to ensure machines are constantly working, thereby increasing utilization.
+   - **Shortest Processing Time (SPT) Rule:** Prioritize tasks with the shortest processing time to decrease mean flow time and improve throughput.
+   - **Reduce Makespan:** Assign jobs to machines based on availability to minimize the overall completion time (makespan).
+   - **Job Shifting:** Move smaller jobs ahead in the queue to prevent machine idleness, especially if jobs are non-preemptive.
+   - **Continuous Evaluation:** Regularly analyze and adjust the scheduling process to enhance efficiency and minimize conflicts over time.
+
+These strategies aim to resolve scheduling conflicts and optimize machine utilization, ensuring efficient operation and reduced completion times.
+Supervisor Agent: To solve the Job Shop Scheduling Problem (JSSP) for the given dataset, we need to coordinate the schedules of all jobs while ensuring that all constraints are satisfied. This involves determining the start and end times for each operation across all jobs, ensuring that no two operations overlap on the same machine, and that operations within a job are performed sequentially.
+
+Given the complexity and size of the problem, this typically requires the use of specialized algorithms or solvers designed for JSSP, such as genetic algorithms, branch and bound, or constraint programming. These methods iteratively search for an optimal or near-optimal solution that minimizes the makespan.
+
+However, due to the constraints of this environment, I will provide a conceptual approach to solving this problem:
+
+1. **Initialize the Schedule:**
+   - Start by scheduling the first operation of each job at time 0 on their respective machines.
+   - For each subsequent operation in a job, ensure it starts only after the previous operation in the job has completed.
+
+2. **Resolve Machine Conflicts:**
+   - For each machine, ensure that operations do not overlap. If two operations are scheduled to start at the same time on the same machine, adjust the start time of one operation to begin after the other has completed.
+
+3. **Iterate to Optimize:**
+   - Use iterative improvement techniques to adjust the schedule, aiming to reduce idle times on machines and minimize the makespan.
+   - Techniques such as shifting bottleneck, tabu search, or simulated annealing can be applied to explore different scheduling configurations.
+
+4. **Calculate Makespan:**
+   - The makespan is determined by the time at which the last operation across all jobs is completed.
+
+5. **Output the Schedule:**
+   - Provide the start and end times for each operation, ensuring the format is consistent with the required output.
+
+Given the constraints of this environment, I am unable to execute complex algorithms directly. However, I can guide you on how to implement these steps using a programming language or a specialized JSSP solver.
+
+If you have access to a solver or programming environment, you can implement the above steps to find the optimal schedule and makespan. Alternatively, if you have specific questions about implementing these steps, feel free to ask!
+
+
+=== FRAMEWORK ===
+
+Framework: LangGraph with 3 Real Agents
+
+==================================================
+

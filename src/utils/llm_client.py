@@ -1,10 +1,10 @@
 import os
 from openai import OpenAI
-import google.generativeai as genai
+# import google.generativeai as genai  # Commented out - using OpenAI only
 from anthropic import Anthropic
 # from deepseek import Deepseek
 
-def get_llm_client(model_type="google"):
+def get_llm_client(model_type="openai"):
     """
     Initialize and return an LLM client based on the specified model type.
     
@@ -12,7 +12,7 @@ def get_llm_client(model_type="google"):
         model_type (str): The type of LLM client to initialize. Options are:
             - "openai": OpenAI client
             - "anthropic": Anthropic client
-            - "google": Google (Gemini) client
+            - "google": Google (Gemini) client (not available - will raise error)
             - "deepseek": Deepseek client
             
     Returns:
@@ -26,8 +26,9 @@ def get_llm_client(model_type="google"):
     elif model_type == "anthropic":
         return Anthropic(api_key=os.getenv("ANTHROPIC_API_KEY"))
     elif model_type == "google":
-        genai.configure(api_key=os.getenv("GOOGLE_API_KEY"))
-        return genai
+        # genai.configure(api_key=os.getenv("GOOGLE_API_KEY"))  # Commented out - using OpenAI only
+        # return genai
+        raise ValueError("Google Gemini not available - using OpenAI only")
     elif model_type == "deepseek":
         return Deepseek(api_key=os.getenv("DEEPSEEK_API_KEY"))
     else:

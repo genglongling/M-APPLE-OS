@@ -1,0 +1,74 @@
+SINGLE-AGENT LLM JSSP COMPARISON - TERMINAL OUTPUT
+============================================================
+
+Dataset: rcmax_50_15_2
+Jobs: 50
+Timestamp: 2025-09-23T18:06:28.799299
+
+🔍 GPT-4o Model Details:
+--------------------------------------------------
+✅ Status: Success
+📊 Makespan: None
+📋 Schedule Operations: 3
+⏱️ Execution Time: 29.38s
+
+🤖 Full LLM Response:
+------------------------------
+Solving a Job Shop Scheduling Problem (JSSP) with 50 jobs and 15 operations per job is a complex task that typically requires sophisticated algorithms and computational tools. However, I can provide a structured approach to tackle this problem and outline a potential solution format.
+
+### Approach to Solve the JSSP:
+
+1. **Model the Problem:**
+   - Each job has a sequence of operations.
+   - Each operation requires a specific machine and has a fixed duration.
+   - Machines can only handle one operation at a time.
+
+2. **Constraints:**
+   - **Job Precedence:** Operations within a job must be performed in the given order.
+   - **Machine Availability:** No two operations can occur simultaneously on the same machine.
+
+3. **Objective:**
+   - Minimize the makespan, which is the total time required to complete all jobs.
+
+4. **Solution Method:**
+   - Use heuristic or optimization algorithms like Genetic Algorithms, Simulated Annealing, or Integer Linear Programming to find a feasible schedule.
+   - Implement a dispatching rule or priority-based scheduling to iteratively assign start times to operations.
+
+### Example Solution Format:
+
+Given the complexity and size of the problem, a complete solution would require computational resources. Below is an example format of how the solution should be structured:
+
+```plaintext
+FINAL MAKESPAN: [Calculated Makespan]
+STRUCTURED SCHEDULE:
+- Job: Job1, Step: 1, Machine: Machine0, Start Time: 0, End Time: 128, Duration: 128
+- Job: Job1, Step: 2, Machine: Machine8, Start Time: 128, End Time: 248, Duration: 120
+- Job: Job1, Step: 3, Machine: Machine7, Start Time: 248, End Time: 261, Duration: 13
+- ...
+- Job: Job50, Step: 15, Machine: Machine5, Start Time: [Start Time], End Time: [End Time], Duration: 107
+```
+
+### Steps to Generate the Schedule:
+
+1. **Initialize:** Start with the first operation of each job and assign the earliest possible start time based on machine availability and job precedence.
+
+2. **Iterate:** For each subsequent operation, ensure that:
+   - The operation starts after the previous operation in the job is completed.
+   - The machine required is available (i.e., not occupied by another operation).
+
+3. **Adjust:** If conflicts arise (e.g., two operations require the same machine at the same time), adjust the start times to resolve the conflict.
+
+4. **Calculate Makespan:** The makespan is determined by the end time of the last operation across all jobs.
+
+### Note:
+
+Due to the complexity and size of the problem, providing a complete solution here is not feasible without computational tools. However, the outlined approach and format should guide you in implementing a solution using appropriate scheduling algorithms and software tools.
+
+📅 Structured Schedule:
+------------------------------
+Job: Job1, Step: 1, Machine: Machine0, Start: 0, End: 128, Duration: 128
+Job: Job1, Step: 2, Machine: Machine8, Start: 128, End: 248, Duration: 120
+Job: Job1, Step: 3, Machine: Machine7, Start: 248, End: 261, Duration: 13
+
+==================================================
+

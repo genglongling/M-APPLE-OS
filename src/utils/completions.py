@@ -1,9 +1,10 @@
 import time
 import random
 from openai import OpenAI, RateLimitError
-import google.generativeai as genai
+# import google.generativeai as genai
 import os
 from dotenv import load_dotenv
+from typing import Optional
 
 # Load environment variables
 load_dotenv()
@@ -119,11 +120,11 @@ def update_chat_history(history: list, msg: str, role: str):
 
 
 class ChatHistory(list):
-    def __init__(self, messages: list | None = None, total_length: int = -1):
+    def __init__(self, messages: Optional[list] = None, total_length: int = -1):
         """Initialise the queue with a fixed total length.
 
         Args:
-            messages (list | None): A list of initial messages
+            messages (Optional[list]): A list of initial messages
             total_length (int): The maximum number of messages the chat history can hold.
         """
         if messages is None:
@@ -144,11 +145,11 @@ class ChatHistory(list):
 
 
 class FixedFirstChatHistory(ChatHistory):
-    def __init__(self, messages: list | None = None, total_length: int = -1):
+    def __init__(self, messages: Optional[list] = None, total_length: int = -1):
         """Initialise the queue with a fixed total length.
 
         Args:
-            messages (list | None): A list of initial messages
+            messages (Optional[list]): A list of initial messages
             total_length (int): The maximum number of messages the chat history can hold.
         """
         super().__init__(messages, total_length)

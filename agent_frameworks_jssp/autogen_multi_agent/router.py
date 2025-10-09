@@ -5,7 +5,7 @@ import asyncio
 sys.path.insert(1, os.path.join(sys.path[0], ".."))
 
 from autogen_agentchat.agents import AssistantAgent
-from autogen_ext.models.openai import OpenAIChatCompletionClient
+from autogen_ext.models.anthropic import AnthropicChatCompletionClient
 from autogen_agentchat.tools import AgentTool
 from dotenv import load_dotenv
 
@@ -14,9 +14,9 @@ load_dotenv()
 
 def run_autogen_agents(query: str):
     """Router: Run AutoGen agents for JSSP or general tasks"""
-    model_client = OpenAIChatCompletionClient(
-        model="gpt-4o",
-        api_key=os.environ["OPENAI_API_KEY"]
+    model_client = AnthropicChatCompletionClient(
+        model="claude-sonnet-4-20250514",
+        api_key=os.environ["ANTHROPIC_API_KEY"]
     )
 
     if "Job Shop Scheduling Problem" in query or "JSSP" in query:

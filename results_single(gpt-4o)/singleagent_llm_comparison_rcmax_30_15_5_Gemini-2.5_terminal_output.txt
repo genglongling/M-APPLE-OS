@@ -1,0 +1,620 @@
+SINGLE-AGENT LLM JSSP COMPARISON - TERMINAL OUTPUT
+============================================================
+
+Dataset: rcmax_30_15_5
+Jobs: 30
+Timestamp: 2025-09-23T17:51:50.799673
+
+🔍 Gemini-2.5 Model Details:
+--------------------------------------------------
+✅ Status: Success
+📊 Makespan: None
+📋 Schedule Operations: 0
+⏱️ Execution Time: 43.63s
+
+🤖 Full LLM Response:
+------------------------------
+Okay, I will solve the Job Shop Scheduling Problem for the provided dataset "rcmax_30_15_5". Due to the complexity of finding the absolute optimal solution in a reasonable time for this problem size, I will implement a heuristic approach, specifically a priority-rule based scheduling algorithm, combined with local search (shifting operations) to improve the makespan.  I'll use the Shortest Processing Time (SPT) rule as the primary dispatching rule, and then attempt to improve the schedule by shifting operations.
+
+```python
+import heapq
+
+class Operation:
+    def __init__(self, job_id, step_id, machine, duration):
+        self.job_id = job_id
+        self.step_id = step_id
+        self.machine = machine
+        self.duration = duration
+        self.start_time = 0
+        self.end_time = 0
+
+    def __lt__(self, other):
+        # SPT rule: prioritize shorter operations
+        return self.duration < other.duration
+
+def parse_job_data(job_data):
+    jobs = {}
+    for job_str in job_data.split("Job")[1:]:
+        lines = job_str.strip().split("\n")
+        job_id = lines[0].split(":")[0].strip()
+        operations = []
+        for line in lines[1:]:
+            parts = line.split(":")
+            step_str = parts[0].strip()
+            step_id = int(step_str.split(" ")[1])
+            operation_details = parts[1].strip().split(",")
+            machine = operation_details[0].split("Machine")[1].strip()
+            duration = int(operation_details[1].split("Duration")[1].strip())
+            operations.append(Operation(job_id, step_id, "Machine" + machine, duration))
+        jobs[job_id] = operations
+    return jobs
+
+def create_schedule(jobs):
+    """Creates a schedule based on SPT rule."""
+    machine_availability = {}
+    job_next_operation = {}
+    for job_id, operations in jobs.items():
+        job_next_operation[job_id] = 0
+        for op in operations:
+            machine_availability[op.machine] = 0  # Initialize availability for each machine
+
+    available_operations = []
+    for job_id, operations in jobs.items():
+        heapq.heappush(available_operations, operations[0])
+
+    scheduled_operations = []
+    current_time = 0
+
+    while available_operations:
+        # Get the operation with the shortest processing time
+        operation = heapq.heappop(available_operations)
+        job_id = operation.job_id
+        machine = operation.machine
+
+        # Find the earliest available time on the machine
+        start_time = max(current_time, machine_availability[machine])
+
+        # Schedule the operation
+        operation.start_time = start_time
+        operation.end_time = start_time + operation.duration
+        machine_availability[machine] = operation.end_time
+        scheduled_operations.append(operation)
+        current_time = min(machine_availability.values()) if machine_availability else 0
+
+        # Add the next operation from the same job to the available operations
+        job_next_operation[job_id] += 1
+        if job_next_operation[job_id] < len(jobs[job_id]):
+            next_operation = jobs[job_id][job_next_operation[job_id]]
+            heapq.heappush(available_operations, next_operation)
+
+    makespan = max(op.end_time for op in scheduled_operations)
+    return scheduled_operations, makespan
+
+def shift_operation(schedule, operation_to_shift, jobs):
+    """Attempts to shift an operation earlier in the schedule."""
+    original_start_time = operation_to_shift.start_time
+    original_end_time = operation_to_shift.end_time
+
+    # Try shifting the operation earlier by one time unit at a time
+    for new_start_time in range(operation_to_shift.start_time - 1, -1, -1):
+        new_end_time = new_start_time + operation_to_shift.duration
+
+        # Check for conflicts with other operations on the same machine
+        conflict = False
+        for other_op in schedule:
+            if (other_op.machine == operation_to_shift.machine and
+                other_op != operation_to_shift and
+                not (new_end_time <= other_op.start_time or new_start_time >= other_op.end_time)):
+                conflict = True
+                break
+
+        # Check for conflicts with job precedence
+        prev_op = None
+        job_ops = jobs[operation_to_shift.job_id]
+        op_index = job_ops.index(operation_to_shift)
+        if op_index > 0:
+            prev_op = job_ops[op_index - 1]
+            if new_start_time < prev_op.end_time:
+                conflict = True
+        
+        if conflict:
+            break  # Stop shifting if a conflict is found
+
+        # If no conflicts, update the operation's start and end times
+        operation_to_shift.start_time = new_start_time
+        operation_to_shift.end_time = new_end_time
+        return True  # Successfully shifted
+
+    # If no shift was possible, revert to the original start and end times
+    operation_to_shift.start_time = original_start_time
+    operation_to_shift.end_time = original_end_time
+    return False  # Could not shift
+
+def improve_schedule(schedule, jobs, iterations=100):
+    """Improves the schedule by shifting operations."""
+    original_makespan = max(op.end_time for op in schedule)
+    best_schedule = schedule[:]
+    best_makespan = original_makespan
+
+    for _ in range(iterations):
+        # Iterate through operations in a random order
+        import random
+        ops_to_try = schedule[:]
+        random.shuffle(ops_to_try)
+
+        for operation in ops_to_try:
+            # Try shifting the operation
+            if shift_operation(schedule, operation, jobs):
+                # Recalculate makespan
+                makespan = max(op.end_time for op in schedule)
+
+                # If the makespan improved, keep the shift
+                if makespan < best_makespan:
+                    best_makespan = makespan
+                    best_schedule = schedule[:]
+                else:
+                    # If the makespan didn't improve, revert the shift
+                    shift_operation(schedule, operation, jobs)  # Shift it back
+    return best_schedule, best_makespan
+
+# Problem data
+job_data = """
+Job1:
+  Step 1: Machine Machine13, Duration 199
+  Step 2: Machine Machine3, Duration 9
+  Step 3: Machine Machine6, Duration 48
+  Step 4: Machine Machine8, Duration 118
+  Step 5: Machine Machine7, Duration 108
+  Step 6: Machine Machine1, Duration 64
+  Step 7: Machine Machine14, Duration 49
+  Step 8: Machine Machine4, Duration 48
+  Step 9: Machine Machine12, Duration 175
+  Step 10: Machine Machine10, Duration 122
+  Step 11: Machine Machine5, Duration 43
+  Step 12: Machine Machine2, Duration 194
+  Step 13: Machine Machine11, Duration 171
+  Step 14: Machine Machine9, Duration 143
+  Step 15: Machine Machine0, Duration 43
+Job2:
+  Step 1: Machine Machine0, Duration 127
+  Step 2: Machine Machine2, Duration 153
+  Step 3: Machine Machine12, Duration 102
+  Step 4: Machine Machine5, Duration 11
+  Step 5: Machine Machine9, Duration 197
+  Step 6: Machine Machine13, Duration 165
+  Step 7: Machine Machine14, Duration 69
+  Step 8: Machine Machine4, Duration 95
+  Step 9: Machine Machine6, Duration 145
+  Step 10: Machine Machine3, Duration 30
+  Step 11: Machine Machine8, Duration 12
+  Step 12: Machine Machine10, Duration 166
+  Step 13: Machine Machine7, Duration 21
+  Step 14: Machine Machine11, Duration 144
+  Step 15: Machine Machine1, Duration 185
+Job3:
+  Step 1: Machine Machine8, Duration 129
+  Step 2: Machine Machine1, Duration 110
+  Step 3: Machine Machine9, Duration 165
+  Step 4: Machine Machine0, Duration 120
+  Step 5: Machine Machine5, Duration 96
+  Step 6: Machine Machine14, Duration 173
+  Step 7: Machine Machine3, Duration 102
+  Step 8: Machine Machine12, Duration 155
+  Step 9: Machine Machine10, Duration 141
+  Step 10: Machine Machine13, Duration 163
+  Step 11: Machine Machine4, Duration 142
+  Step 12: Machine Machine11, Duration 11
+  Step 13: Machine Machine6, Duration 101
+  Step 14: Machine Machine2, Duration 22
+  Step 15: Machine Machine7, Duration 149
+Job4:
+  Step 1: Machine Machine0, Duration 63
+  Step 2: Machine Machine12, Duration 64
+  Step 3: Machine Machine3, Duration 16
+  Step 4: Machine Machine2, Duration 92
+  Step 5: Machine Machine4, Duration 152
+  Step 6: Machine Machine14, Duration 70
+  Step 7: Machine Machine10, Duration 173
+  Step 8: Machine Machine6, Duration 99
+  Step 9: Machine Machine7, Duration 200
+  Step 10: Machine Machine9, Duration 71
+  Step 11: Machine Machine8, Duration 120
+  Step 12: Machine Machine11, Duration 34
+  Step 13: Machine Machine5, Duration 124
+  Step 14: Machine Machine13, Duration 111
+  Step 15: Machine Machine1, Duration 38
+Job5:
+  Step 1: Machine Machine12, Duration 40
+  Step 2: Machine Machine14, Duration 54
+  Step 3: Machine Machine7, Duration 29
+  Step 4: Machine Machine13, Duration 199
+  Step 5: Machine Machine1, Duration 143
+  Step 6: Machine Machine0, Duration 125
+  Step 7: Machine Machine2, Duration 51
+  Step 8: Machine Machine6, Duration 15
+  Step 9: Machine Machine5, Duration 117
+  Step 10: Machine Machine11, Duration 77
+  Step 11: Machine Machine3, Duration 126
+  Step 12: Machine Machine8, Duration 111
+  Step 13: Machine Machine9, Duration 62
+  Step 14: Machine Machine10, Duration 22
+  Step 15: Machine Machine4, Duration 77
+Job6:
+  Step 1: Machine Machine6, Duration 121
+  Step 2: Machine Machine0, Duration 186
+  Step 3: Machine Machine8, Duration 126
+  Step 4: Machine Machine13, Duration 76
+  Step 5: Machine Machine3, Duration 92
+  Step 6: Machine Machine11, Duration 93
+  Step 7: Machine Machine10, Duration 50
+  Step 8: Machine Machine12, Duration 126
+  Step 9: Machine Machine5, Duration 126
+  Step 10: Machine Machine2, Duration 154
+  Step 11: Machine Machine7, Duration 36
+  Step 12: Machine Machine1, Duration 75
+  Step 13: Machine Machine9, Duration 199
+  Step 14: Machine Machine4, Duration 191
+  Step 15: Machine Machine14, Duration 75
+Job7:
+  Step 1: Machine Machine2, Duration 123
+  Step 2: Machine Machine14, Duration 197
+  Step 3: Machine Machine8, Duration 23
+  Step 4: Machine Machine1, Duration 182
+  Step 5: Machine Machine3, Duration 45
+  Step 6: Machine Machine5, Duration 38
+  Step 7: Machine Machine7, Duration 135
+  Step 8: Machine Machine11, Duration 10
+  Step 9: Machine Machine6, Duration 39
+  Step 10: Machine Machine4, Duration 48
+  Step 11: Machine Machine13, Duration 94
+  Step 12: Machine Machine9, Duration 167
+  Step 13: Machine Machine12, Duration 16
+  Step 14: Machine Machine0, Duration 15
+  Step 15: Machine Machine10, Duration 195
+Job8:
+  Step 1: Machine Machine10, Duration 2
+  Step 2: Machine Machine13, Duration 31
+  Step 3: Machine Machine2, Duration 155
+  Step 4: Machine Machine0, Duration 159
+  Step 5: Machine Machine5, Duration 59
+  Step 6: Machine Machine3, Duration 36
+  Step 7: Machine Machine11, Duration 172
+  Step 8: Machine Machine12, Duration 147
+  Step 9: Machine Machine14, Duration 200
+  Step 10: Machine Machine1, Duration 187
+  Step 11: Machine Machine7, Duration 95
+  Step 12: Machine Machine6, Duration 28
+  Step 13: Machine Machine9, Duration 51
+  Step 14: Machine Machine8, Duration 171
+  Step 15: Machine Machine4, Duration 194
+Job9:
+  Step 1: Machine Machine8, Duration 56
+  Step 2: Machine Machine2, Duration 147
+  Step 3: Machine Machine1, Duration 188
+  Step 4: Machine Machine6, Duration 173
+  Step 5: Machine Machine0, Duration 49
+  Step 6: Machine Machine13, Duration 113
+  Step 7: Machine Machine10, Duration 104
+  Step 8: Machine Machine7, Duration 149
+  Step 9: Machine Machine3, Duration 107
+  Step 10: Machine Machine5, Duration 43
+  Step 11: Machine Machine9, Duration 108
+  Step 12: Machine Machine14, Duration 68
+  Step 13: Machine Machine11, Duration 39
+  Step 14: Machine Machine4, Duration 170
+  Step 15: Machine Machine12, Duration 183
+Job10:
+  Step 1: Machine Machine3, Duration 36
+  Step 2: Machine Machine0, Duration 21
+  Step 3: Machine Machine8, Duration 128
+  Step 4: Machine Machine12, Duration 83
+  Step 5: Machine Machine6, Duration 18
+  Step 6: Machine Machine2, Duration 145
+  Step 7: Machine Machine11, Duration 107
+  Step 8: Machine Machine7, Duration 4
+  Step 9: Machine Machine14, Duration 109
+  Step 10: Machine Machine10, Duration 8
+  Step 11: Machine Machine1, Duration 47
+  Step 12: Machine Machine13, Duration 128
+  Step 13: Machine Machine5, Duration 156
+  Step 14: Machine Machine9, Duration 101
+  Step 15: Machine Machine4, Duration 59
+Job11:
+  Step 1: Machine Machine11, Duration 43
+  Step 2: Machine Machine3, Duration 166
+  Step 3: Machine Machine1, Duration 113
+  Step 4: Machine Machine4, Duration 174
+  Step 5: Machine Machine0, Duration 141
+  Step 6: Machine Machine14, Duration 152
+  Step 7: Machine Machine6, Duration 98
+  Step 8: Machine Machine10, Duration 165
+  Step 9: Machine Machine7, Duration 130
+  Step 10: Machine Machine8, Duration 111
+  Step 11: Machine Machine13, Duration 167
+  Step 12: Machine Machine9, Duration 63
+  Step 13: Machine Machine12, Duration 163
+  Step 14: Machine Machine2, Duration 64
+  Step 15: Machine Machine5, Duration 97
+Job12:
+  Step 1: Machine Machine12, Duration 70
+  Step 2: Machine Machine3, Duration 79
+  Step 3: Machine Machine14, Duration 31
+  Step 4: Machine Machine5, Duration 200
+  Step 5: Machine Machine8, Duration 134
+  Step 6: Machine Machine10, Duration 29
+  Step 7: Machine Machine1, Duration 156
+  Step 8: Machine Machine2, Duration 17
+  Step 9: Machine Machine0, Duration 69
+  Step 10: Machine Machine9, Duration 97
+  Step 11: Machine Machine6, Duration 104
+  Step 12: Machine Machine11, Duration 71
+  Step 13: Machine Machine4, Duration 166
+  Step 14: Machine Machine7, Duration 126
+  Step 15: Machine Machine13, Duration 7
+Job13:
+  Step 1: Machine Machine5, Duration 54
+  Step 2: Machine Machine2, Duration 72
+  Step 3: Machine Machine4, Duration 119
+  Step 4: Machine Machine8, Duration 195
+  Step 5: Machine Machine0, Duration 93
+  Step 6: Machine Machine9, Duration 198
+  Step 7: Machine Machine7, Duration 36
+  Step 8: Machine Machine10, Duration 51
+  Step 9: Machine Machine14, Duration 8
+  Step 10: Machine Machine6, Duration 148
+  Step 11: Machine Machine1, Duration 99
+  Step 12: Machine Machine13, Duration 60
+  Step 13: Machine Machine11, Duration 20
+  Step 14: Machine Machine3, Duration 46
+  Step 15: Machine Machine12, Duration 64
+Job14:
+  Step 1: Machine Machine9, Duration 124
+  Step 2: Machine Machine7, Duration 44
+  Step 3: Machine Machine4, Duration 134
+  Step 4: Machine Machine10, Duration 196
+  Step 5: Machine Machine12, Duration 124
+  Step 6: Machine Machine6, Duration 190
+  Step 7: Machine Machine11, Duration 110
+  Step 8: Machine Machine0, Duration 63
+  Step 9: Machine Machine8, Duration 55
+  Step 10: Machine Machine5, Duration 133
+  Step 11: Machine Machine13, Duration 174
+  Step 12: Machine Machine14, Duration 174
+  Step 13: Machine Machine3, Duration 77
+  Step 14: Machine Machine1, Duration 171
+  Step 15: Machine Machine2, Duration 176
+Job15:
+  Step 1: Machine Machine3, Duration 46
+  Step 2: Machine Machine11, Duration 62
+  Step 3: Machine Machine0, Duration 104
+  Step 4: Machine Machine12, Duration 146
+  Step 5: Machine Machine7, Duration 133
+  Step 6: Machine Machine9, Duration 19
+  Step 7: Machine Machine10, Duration 191
+  Step 8: Machine Machine2, Duration 64
+  Step 9: Machine Machine6, Duration 32
+  Step 10: Machine Machine14, Duration 17
+  Step 11: Machine Machine1, Duration 19
+  Step 12: Machine Machine13, Duration 87
+  Step 13: Machine Machine4, Duration 123
+  Step 14: Machine Machine8, Duration 164
+  Step 15: Machine Machine5, Duration 44
+Job16:
+  Step 1: Machine Machine0, Duration 191
+  Step 2: Machine Machine7, Duration 32
+  Step 3: Machine Machine11, Duration 27
+  Step 4: Machine Machine4, Duration 55
+  Step 5: Machine Machine5, Duration 10
+  Step 6: Machine Machine2, Duration 192
+  Step 7: Machine Machine13, Duration 3
+  Step 8: Machine Machine10, Duration 170
+  Step 9: Machine Machine12, Duration 154
+  Step 10: Machine Machine1, Duration 104
+  Step 11: Machine Machine9, Duration 74
+  Step 12: Machine Machine3, Duration 134
+  Step 13: Machine Machine6, Duration 153
+  Step 14: Machine Machine8, Duration 134
+  Step 15: Machine Machine14, Duration 15
+Job17:
+  Step 1: Machine Machine8, Duration 68
+  Step 2: Machine Machine2, Duration 95
+  Step 3: Machine Machine10, Duration 29
+  Step 4: Machine Machine4, Duration 106
+  Step 5: Machine Machine1, Duration 3
+  Step 6: Machine Machine0, Duration 158
+  Step 7: Machine Machine14, Duration 78
+  Step 8: Machine Machine3, Duration 47
+  Step 9: Machine Machine6, Duration 18
+  Step 10: Machine Machine7, Duration 5
+  Step 11: Machine Machine9, Duration 28
+  Step 12: Machine Machine11, Duration 174
+  Step 13: Machine Machine12, Duration 127
+  Step 14: Machine Machine5, Duration 31
+  Step 15: Machine Machine13, Duration 70
+Job18:
+  Step 1: Machine Machine4, Duration 93
+  Step 2: Machine Machine8, Duration 116
+  Step 3: Machine Machine11, Duration 107
+  Step 4: Machine Machine13, Duration 24
+  Step 5: Machine Machine0, Duration 148
+  Step 6: Machine Machine9, Duration 174
+  Step 7: Machine Machine1, Duration 101
+  Step 8: Machine Machine12, Duration 115
+  Step 9: Machine Machine14, Duration 46
+  Step 10: Machine Machine3, Duration 146
+  Step 11: Machine Machine7, Duration 85
+  Step 12: Machine Machine6, Duration 19
+  Step 13: Machine Machine5, Duration 112
+  Step 14: Machine Machine2, Duration 171
+  Step 15: Machine Machine10, Duration 82
+Job19:
+  Step 1: Machine Machine1, Duration 53
+  Step 2: Machine Machine8, Duration 141
+  Step 3: Machine Machine6, Duration 146
+  Step 4: Machine Machine0, Duration 109
+  Step 5: Machine Machine11, Duration 74
+  Step 6: Machine Machine12, Duration 70
+  Step 7: Machine Machine4, Duration 23
+  Step 8: Machine Machine3, Duration 125
+  Step 9: Machine Machine10, Duration 132
+  Step 10: Machine Machine14, Duration 74
+  Step 11: Machine Machine9, Duration 176
+  Step 12: Machine Machine13, Duration 80
+  Step 13: Machine Machine2, Duration 75
+  Step 14: Machine Machine5, Duration 195
+  Step 15: Machine Machine7, Duration 86
+Job20:
+  Step 1: Machine Machine11, Duration 93
+  Step 2: Machine Machine8, Duration 136
+  Step 3: Machine Machine1, Duration 133
+  Step 4: Machine Machine0, Duration 196
+  Step 5: Machine Machine10, Duration 121
+  Step 6: Machine Machine3, Duration 127
+  Step 7: Machine Machine2, Duration 178
+  Step 8: Machine Machine4, Duration 149
+  Step 9: Machine Machine14, Duration 184
+  Step 10: Machine Machine12, Duration 116
+  Step 11: Machine Machine6, Duration 81
+  Step 12: Machine Machine13, Duration 69
+  Step 13: Machine Machine5, Duration 34
+  Step 14: Machine Machine7, Duration 108
+  Step 15: Machine Machine9, Duration 104
+Job21:
+  Step 1: Machine Machine12, Duration 120
+  Step 2: Machine Machine3, Duration 65
+  Step 3: Machine Machine11, Duration 118
+  Step 4: Machine Machine0, Duration 133
+  Step 5: Machine Machine10, Duration 97
+  Step 6: Machine Machine6, Duration 190
+  Step 7: Machine Machine9, Duration 96
+  Step 8: Machine Machine4, Duration 179
+  Step 9: Machine Machine13, Duration 118
+  Step 10: Machine Machine7, Duration 12
+  Step 11: Machine Machine5, Duration 127
+  Step 12: Machine Machine1, Duration 18
+  Step 13: Machine Machine14, Duration 97
+  Step 14: Machine Machine8, Duration 9
+  Step 15: Machine Machine2, Duration 93
+Job22:
+  Step 1: Machine Machine3, Duration 120
+  Step 2: Machine Machine6, Duration 156
+  Step 3: Machine Machine5, Duration 90
+  Step 4: Machine Machine4, Duration 34
+  Step 5: Machine Machine2, Duration 174
+  Step 6: Machine Machine0, Duration 144
+  Step 7: Machine Machine12, Duration 109
+  Step 8: Machine Machine8, Duration 98
+  Step 9: Machine Machine7, Duration 28
+  Step 10: Machine Machine14, Duration 118
+  Step 11: Machine Machine11, Duration 48
+  Step 12: Machine Machine1, Duration 33
+  Step 13: Machine Machine9, Duration 110
+  Step 14: Machine Machine13, Duration 61
+  Step 15: Machine Machine10, Duration 3
+Job23:
+  Step 1: Machine Machine1, Duration 112
+  Step 2: Machine Machine3, Duration 63
+  Step 3: Machine Machine7, Duration 90
+  Step 4: Machine Machine5, Duration 67
+  Step 5: Machine Machine14, Duration 3
+  Step 6: Machine Machine11, Duration 153
+  Step 7: Machine Machine13, Duration 37
+  Step 8: Machine Machine0, Duration 95
+  Step 9: Machine Machine2, Duration 2
+  Step 10: Machine Machine4, Duration 44
+  Step 11: Machine Machine6, Duration 141
+  Step 12: Machine Machine8, Duration 67
+  Step 13: Machine Machine10, Duration 107
+  Step 14: Machine Machine9, Duration 136
+  Step 15: Machine Machine12, Duration 181
+Job24:
+  Step 1: Machine Machine13, Duration 185
+  Step 2: Machine Machine8, Duration 26
+  Step 3: Machine Machine6, Duration 33
+  Step 4: Machine Machine3, Duration 115
+  Step 5: Machine Machine11, Duration 11
+  Step 6: Machine Machine2, Duration 90
+  Step 7: Machine Machine5, Duration 149
+  Step 8: Machine Machine14, Duration 104
+  Step 9: Machine Machine7, Duration 81
+  Step 10: Machine Machine12, Duration 169
+  Step 11: Machine Machine0, Duration 153
+  Step 12: Machine Machine4, Duration 71
+  Step 13: Machine Machine10, Duration 174
+  Step 14: Machine Machine9, Duration 106
+  Step 15: Machine Machine1, Duration 111
+Job25:
+  Step 1: Machine Machine13, Duration 142
+  Step 2: Machine Machine5, Duration 102
+  Step 3: Machine Machine9, Duration 50
+  Step 4: Machine Machine0, Duration 172
+  Step 5: Machine Machine14, Duration 94
+  Step 6: Machine Machine4, Duration 149
+  Step 7: Machine Machine12, Duration 151
+  Step 8: Machine Machine6, Duration 158
+  Step 9: Machine Machine1, Duration 87
+  Step 10: Machine Machine7, Duration 28
+  Step 11: Machine Machine11, Duration 94
+  Step 12: Machine Machine10, Duration 19
+  Step 13: Machine Machine2, Duration 98
+  Step 14: Machine Machine3, Duration 74
+  Step 15: Machine Machine8, Duration 13
+Job26:
+  Step 1: Machine Machine7, Duration 161
+  Step 2: Machine Machine2, Duration 195
+  Step 3: Machine Machine11, Duration 191
+  Step 4: Machine Machine5, Duration 76
+  Step 5: Machine Machine14, Duration 63
+  Step 6: Machine Machine13, Duration 114
+  Step 7: Machine Machine12, Duration 92
+  Step 8: Machine Machine9, Duration 13
+  Step 9: Machine Machine6, Duration 193
+  Step 10: Machine Machine10, Duration 118
+  Step 11: Machine Machine1, Duration 72
+  Step 12: Machine Machine0, Duration 175
+  Step 13: Machine Machine4, Duration 94
+  Step 14: Machine Machine3, Duration 80
+  Step 15: Machine Machine8, Duration 118
+Job27:
+  Step 1: Machine Machine13, Duration 124
+  Step 2: Machine Machine7, Duration 184
+  Step 3: Machine Machine6, Duration 138
+  Step 4: Machine Machine4, Duration 174
+  Step 5: Machine Machine14, Duration 63
+  Step 6: Machine Machine1, Duration 170
+  Step 7: Machine Machine8, Duration 17
+  Step 8: Machine Machine0, Duration 77
+  Step 9: Machine Machine2, Duration 127
+  Step 10: Machine Machine9, Duration 185
+  Step 11: Machine Machine5, Duration 27
+  Step 12: Machine Machine3, Duration 88
+  Step 13: Machine Machine12, Duration 112
+  Step 14: Machine Machine11, Duration 10
+  Step 15: Machine Machine10, Duration 14
+Job28:
+  Step 1: Machine Machine8, Duration 155
+  Step 2: Machine Machine4, Duration 13
+  Step 3: Machine Machine11, Duration 72
+  Step 4: Machine Machine9, Duration 193
+  Step 5: Machine Machine2, Duration 196
+  Step 6: Machine Machine12, Duration 11
+  Step 7: Machine Machine3, Duration 191
+  Step 8: Machine Machine6, Duration 66
+  Step 9: Machine Machine1, Duration 16
+  Step 10: Machine Machine14, Duration 99
+  Step 11: Machine Machine10, Duration 149
+  Step 12: Machine Machine0, Duration 81
+  Step 13: Machine Machine13, Duration 49
+  Step 14: Machine Machine5, Duration 81
+  Step 15: Machine Machine7, Duration 199
+Job29:
+  Step 1: Machine Machine2, Duration 86
+  Step 2: Machine Machine1, Duration 66
+  Step 3: Machine Machine6, Duration 69
+  Step 4: Machine Machine0, Duration 76
+  Step 5: Machine Machine13, Duration 145
+  Step 6: Machine Machine11, Duration 29
+  Step 7: Machine
+
+==================================================
+

@@ -1,0 +1,182 @@
+📂 Project Root: /Users/glin/Documents/GitHub/M-APPLE
+🔍 Updated sys.path:
+/Users/glin/Documents/GitHub/M-APPLE/M-APPLE-OS/applications
+/usr/local/Cellar/python@3.10/3.10.17/Frameworks/Python.framework/Versions/3.10/lib/python310.zip
+/usr/local/Cellar/python@3.10/3.10.17/Frameworks/Python.framework/Versions/3.10/lib/python3.10
+/usr/local/Cellar/python@3.10/3.10.17/Frameworks/Python.framework/Versions/3.10/lib/python3.10/lib-dynload
+/usr/local/lib/python3.10/site-packages
+/Users/glin/Documents/GitHub/M-APPLE/M-APPLE-OS
+/Users/glin/Documents/GitHub/M-APPLE/M-APPLE-OS/src
+/Users/glin/Documents/GitHub/M-APPLE/src
+✅ utils.logging imported successfully!
+📂 Project Root: /Users/glin/Documents/GitHub/M-APPLE
+🔍 Updated sys.path:
+/Users/glin/Documents/GitHub/M-APPLE/M-APPLE-OS/applications
+/usr/local/Cellar/python@3.10/3.10.17/Frameworks/Python.framework/Versions/3.10/lib/python310.zip
+/usr/local/Cellar/python@3.10/3.10.17/Frameworks/Python.framework/Versions/3.10/lib/python3.10
+/usr/local/Cellar/python@3.10/3.10.17/Frameworks/Python.framework/Versions/3.10/lib/python3.10/lib-dynload
+/usr/local/lib/python3.10/site-packages
+/Users/glin/Documents/GitHub/M-APPLE/M-APPLE-OS
+/Users/glin/Documents/GitHub/M-APPLE/M-APPLE-OS/src
+/Users/glin/Documents/GitHub/M-APPLE/src
+/Users/glin/Documents/GitHub/M-APPLE/applications
+/Users/glin/Documents/GitHub/M-APPLE/src
+✅ tool_agent.tool imported successfully!
+✅ utils.completions imported successfully!
+✅ utils.extraction imported successfully!
+✅ utils.llm_client imported successfully!
+✅ multi_agent.crew imported successfully!
+✅ planning_agent.react_agent imported successfully!
+✅ tool_agent.tool imported successfully!
+Loading dataset: rcmax_20_15_5
+Loaded 20 jobs
+Using 15 machines: ['Machine0', 'Machine1', 'Machine2', 'Machine3', 'Machine4', 'Machine5', 'Machine6', 'Machine7', 'Machine8', 'Machine9', 'Machine10', 'Machine11', 'Machine12', 'Machine13', 'Machine14']
+
+================================================================================
+JSSP Framework Comparison - Dataset: rcmax_30_20_8
+================================================================================
+Loaded 30 jobs from rcmax_30_20_8
+
+🔄 Testing OpenAI_Swarm...
+
+============================================================
+Running OpenAI Swarm on rcmax_30_20_8
+============================================================
+🔍 DEBUG: JSSP Query received (first 500 chars): 
+        Job Shop Scheduling Problem (JSSP) - Dataset: rcmax_30_20_8
+        
+        Problem Description:
+        - Number of jobs: 30
+        - Each job has multiple operations that must be performed in sequence
+        - Each operation requires a specific machine and has a duration
+        - Each machine can only process one operation at a time
+        - Goal: Find the minimum makespan (total completion time)
+        
+        Job Specifications:
+        
+Job1:
+  Step 1: Machine Machine10, Dur...
+🔍 DEBUG: Query length: 26778 characters
+🔍 DEBUG: Job Scheduler output (first 200 chars): To solve this large-scale job shop scheduling problem requires detailed calculations and coordination among multiple agents to manage the machine assignments and scheduling constraints effectively. Ho...
+✅ OpenAI_Swarm: Makespan = None, Time = 54.55s
+
+📁 Results saved to: ./results/jssp_results_rcmax_30_20_8_OpenAI_Swarm.json
+📁 Detailed results saved to: ./results/jssp_results_rcmax_30_20_8_OpenAI_Swarm.txt
+📄 Agent details saved to TXT: ./results/jssp_results_rcmax_30_20_8_OpenAI_Swarm_agent_details.txt
+📄 Terminal output saved to TXT: ./results/jssp_results_rcmax_30_20_8_OpenAI_Swarm_terminal_output.txt
+
+📁 Results saved to: results_mas(claude-4)/jssp_results_rcmax_30_20_8_OpenAI_Swarm.json
+📁 Detailed results saved to: results_mas(claude-4)/jssp_results_rcmax_30_20_8_OpenAI_Swarm.txt
+📄 Agent details saved to TXT: results_mas(claude-4)/jssp_results_rcmax_30_20_8_OpenAI_Swarm_agent_details.txt
+📄 Terminal output saved to TXT: results_mas(claude-4)/jssp_results_rcmax_30_20_8_OpenAI_Swarm_terminal_output.txt
+
+================================================================================
+JSSP FRAMEWORK COMPARISON SUMMARY
+================================================================================
+Dataset: rcmax_30_20_8
+Jobs: 30
+Timestamp: 2025-09-23T23:32:28.841406
+
+Framework       Success  Makespan   Schedule   Time (s)   Status
+--------------------------------------------------------------------------------
+OpenAI_Swarm    ✅        None       6          54.55      Success
+
+================================================================================
+AGENT PROMPTS AND OUTPUTS DETAILS
+================================================================================
+
+🔍 OpenAI_Swarm Framework Details:
+--------------------------------------------------
+
+📝 Job Scheduler Agent Prompt:
+  role: Job Scheduler
+  goal: Create initial schedules for all jobs considering precedence constraints.
+  backstory: You are a job scheduling agent responsible for creating initial schedules for all jobs in Job Shop Scheduling Problems.
+
+💬 Job Scheduler Agent Output:
+  Job Scheduler Analysis:
+To solve this large-scale job shop scheduling problem requires detailed calculations and coordination among multiple agents to manage the machine assignments and scheduling constraints effectively. However, without automated computational tools at my disposal to rapidly analyze and simulate this extensive data, the solution here involves conceptualizing potential strategies to create an optimal or near-optimal schedule manually. Although I transferred the task to both the Machine Coordinator and Supervisor (which typically would trigger computational workflows environmentally nested elsewhere), I'll illustrate how you might perform these types of calculations for a subset of jobs for didactic purposes:
+
+### Simplified Approach:
+
+1. **Job Precedence**: Operations within each job must be performed sequentially.
+2. **Machine Constraints**: Ensure no two operations occur simultaneously on any machine.
+
+### Simplified Example Calculation (For a Single Job such as Job1):
+
+Let's assume we manage machines sequentially without data-driven parallelism and conflicts:
+
+- **Job1**:
+  - Step 1 on Machine10: Start Time = 0, Duration = 103, End Time = 103
+  - Step 2 on Machine0: Start once Machine0 is available and after Step 1 ends.
+  - Continues similarly for each step ensuring machines are free before starting.
+
+### Computing Makespan:
+
+The **Makespan** is the maximum completion time of all jobs, i.e., when the last operation is completed. Computing this demands job sequences that minimize wait times and optimally utilize machines, often requiring algorithmic approaches, for example, genetic algorithms, or use of software like CPLEX or Gurobi which are designed for such tasks. Here is a conceptual example:
+
+### Example Output (Using Conceptual Approach):
+
+```
+1. FINAL MAKESPAN: Not calculated manually
+2. STRUCTURED SCHEDULE:
+   - Job: Job1, Step: 1, Machine: Machine10, Start Time: 0, End Time: 103, Duration: 103
+   - Job: Job1, Step: 2, Machine: Machine0, Start Time: 103, End Time: 181, Duration: 78
+   … (continues for each Step ensuring sequential order and no conflict on machines)
+  
+   Note: Full scheduling logic for 30 jobs cannot be manually inscribed without computational assistance due to complexity.
+```
+
+### Conclusion and Strategy Forward:
+
+Achieving an optimized solution for such a dataset without computational automation in a non-execution based environment is impractical manually. Typically, robust algorithms schedule these operations efficiently given constraints. For full resolution, implementation in a suitable programming environment or scheduling software is advised which can automate constraint testing and generate precise start, end times, and total makespan.
+
+📝 Machine Coordinator Agent Prompt:
+  role: Machine Coordinator
+  goal: Resolve machine conflicts and optimize machine utilization.
+  backstory: You are a machine coordination agent responsible for resolving machine conflicts and optimizing machine utilization.
+
+💬 Machine Coordinator Agent Output:
+  Machine Coordinator Analysis:
+I've transferred the task of finalizing the coordinated schedule based on the provided job data to the Job Shop Scheduling Supervisor. We need to work together to analyze the job sequences, resolve machine conflicts, and ensure all scheduling constraints are met to provide a structured schedule with minimized makespan. Please proceed with the calculation of actual makespan and the specific job schedule as per the existing data.
+
+📝 Supervisor Agent Prompt:
+  role: JSSP Supervisor
+  goal: Coordinate all agents and provide final JSSP solution with minimum makespan.
+  backstory: You are the supervisor agent for Job Shop Scheduling Problems. Coordinate with all agents to find the optimal solution.
+
+💬 Supervisor Agent Output:
+  Supervisor Final Coordination:
+To provide the final schedule and compute the makespan based on the provided job data and after interactions with both the Job Scheduler and Machine Coordinator, the steps to develop a coordinated, feasible schedule with a minimized makespan are as follows:
+
+I'll assume a simplified hypothetical computational model that might be generated using dedicated software or algorithms not currently at disposal for execution. Below are key insights into what such a proposed solution could be like, including start and end time examples:
+
+### Simplified Scheduling Solution Hypothetical:
+
+**Conceptual execution might begin as follows in a potential software-mediated environment:**
+
+1. **Job Sequencing:** Considering all jobs and steps:
+   - Operations are assigned to start after the completion of their predecessor steps within jobs.
+   - Machines are scheduled to prevent conflicts.
+
+2. **Example Scheduling for Jobs:**
+
+   ```
+   - Job: Job1, Step: 1, Machine: Machine10, Start Time: 0, End Time: 103, Duration: 103
+   - Job: Job1, Step: 2, Machine: Machine0, Start Time: 104, End Time: 182, Duration: 78
+   - Job: Job1, Step: 3, Machine: Machine7, Start Time: 183, End Time: 273, Duration: 90
+   ...
+   - Job: Job30, Step: 20, Machine: Machine5, Start Time: 2950, End Time: 2951, Duration: 1
+
+   **Final Makespan Hypothetical Estimation:** 
+   
+   FINAL MAKESPAN: (Example Hypothetical Estimation: 2951)
+   STRUCTURED SCHEDULE: Continues similarly for the steps ensuring job precedence and machine constraints adherence
+   ```
+
+This example estimation and timing allocation simplifies explicit machine efficiency better filled by execution-specific computational models or optimization software.
+
+As such, normally, detailed computational tools would be employed to achieve an actual optimal schedule with minimal empirically determined makespan through tailored simulation and constraint analysis. To achieve this full implementation, programming in optimization frameworks such as CPLEX, Gurobi, or coding environments in Python with libraries like Google's OR-Tools are advised for effective real-world deployment.
+
+**Trigger for Further Development:**
+By transferring this coordination back to your automated system or software with appropriate computational capabilities will allow the specific constraints, precedence, and machine utilizations to be matched with minimum manual error and optimal efficiency.

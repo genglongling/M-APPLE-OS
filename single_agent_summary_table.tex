@@ -1,0 +1,117 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{booktabs}
+\usepackage{multirow}
+\usepackage{array}
+\usepackage{geometry}
+\usepackage{rotating}
+\geometry{margin=0.8in}
+
+\title{Single-Agent LLM Performance Summary for Job Shop Scheduling Problem}
+\author{Experimental Results}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\section{Performance Summary}
+
+This table presents the makespan results from single-agent LLM comparison experiments on Job Shop Scheduling Problem (JSSP) datasets. Four state-of-the-art LLM models were tested: Claude-Sonnet-4, GPT-4o, DeepSeek-V3, and Gemini-2.5.
+
+\begin{table}[h!]
+\centering
+\caption{Single-Agent LLM Makespan Results on JSSP Datasets}
+\label{tab:single_agent_results}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{@{}lcccccc@{}}
+\toprule
+\textbf{Dataset} & \textbf{Category} & \textbf{Claude-Sonnet-4} & \textbf{GPT-4o} & \textbf{DeepSeek-V3} & \textbf{Gemini-2.5} & \textbf{Best Model} \\
+\midrule
+\multicolumn{7}{c}{\textbf{ABZ Datasets}} \\
+abz07 & ABZ & \textbf{656} & 1250 & 728 & N/A & Claude-Sonnet-4 \\
+abz08 & ABZ & \textbf{665} & 1500 & 1654 & 1314 & Claude-Sonnet-4 \\
+abz09 & ABZ & 889 & N/A & \textbf{679} & 1541 & DeepSeek-V3 \\
+\midrule
+\multicolumn{7}{c}{\textbf{TA Datasets}} \\
+TA01 & TA & \textbf{1231} & N/A & 1238 & N/A & Claude-Sonnet-4 \\
+TA02 & TA & \textbf{1039} & N/A & 1168 & N/A & Claude-Sonnet-4 \\
+TA51 & TA & 1247 & \textbf{1234} & N/A & N/A & GPT-4o \\
+TA52 & TA & 1247 & \textbf{1000} & N/A & N/A & GPT-4o \\
+TA61 & TA & \textbf{1231} & 1234 & N/A & N/A & Claude-Sonnet-4 \\
+TA71 & TA & 1659 & N/A & \textbf{3} & N/A & DeepSeek-V3 \\
+TA72 & TA & \textbf{1247} & 5000 & N/A & N/A & Claude-Sonnet-4 \\
+\midrule
+\multicolumn{7}{c}{\textbf{SWV Datasets}} \\
+swv01 & SWV & \textbf{1397} & N/A & 1407 & 1408 & Claude-Sonnet-4 \\
+swv02 & SWV & 1582 & \textbf{1250} & N/A & 1447 & GPT-4o \\
+swv03 & SWV & \textbf{1268} & N/A & 1395 & 1428 & Claude-Sonnet-4 \\
+swv04 & SWV & 1464 & \textbf{616} & 1168 & 1421 & GPT-4o \\
+swv05 & SWV & \textbf{1294} & N/A & 1667 & 1414 & Claude-Sonnet-4 \\
+swv06 & SWV & \textbf{1268} & N/A & 1571 & N/A & Claude-Sonnet-4 \\
+swv07 & SWV & 1582 & 1500 & \textbf{1478} & N/A & DeepSeek-V3 \\
+swv08 & SWV & 1582 & \textbf{1500} & N/A & N/A & GPT-4o \\
+swv09 & SWV & \textbf{1659} & N/A & 1664 & N/A & Claude-Sonnet-4 \\
+swv10 & SWV & 1408 & \textbf{1234} & 1665 & N/A & GPT-4o \\
+swv11 & SWV & \textbf{1435} & 5000 & 2983 & N/A & Claude-Sonnet-4 \\
+swv12 & SWV & 2372 & 5000 & N/A & \textbf{1794} & Gemini-2.5 \\
+swv13 & SWV & \textbf{1547} & N/A & 2794 & N/A & Claude-Sonnet-4 \\
+swv14 & SWV & 1547 & \textbf{1000} & 1723 & N/A & GPT-4o \\
+swv15 & SWV & 1547 & \textbf{1000} & 2885 & N/A & GPT-4o \\
+\midrule
+\multicolumn{7}{c}{\textbf{RCMAX Datasets}} \\
+rcmax\_20\_15\_5 & RCMAX & \textbf{1928} & 3456 & N/A & N/A & Claude-Sonnet-4 \\
+rcmax\_20\_15\_8 & RCMAX & \textbf{1927} & 3456 & 3872 & N/A & Claude-Sonnet-4 \\
+rcmax\_20\_20\_7 & RCMAX & \textbf{2847} & N/A & N/A & N/A & Claude-Sonnet-4 \\
+rcmax\_20\_20\_8 & RCMAX & \textbf{2847} & N/A & 3857 & N/A & Claude-Sonnet-4 \\
+rcmax\_30\_15\_4 & RCMAX & \textbf{1873} & N/A & N/A & 2429 & Claude-Sonnet-4 \\
+rcmax\_30\_15\_5 & RCMAX & \textbf{2847} & N/A & N/A & N/A & Claude-Sonnet-4 \\
+rcmax\_30\_20\_8 & RCMAX & 2847 & N/A & \textbf{4} & 2455 & DeepSeek-V3 \\
+rcmax\_30\_20\_9 & RCMAX & \textbf{2847} & 5000 & N/A & N/A & Claude-Sonnet-4 \\
+rcmax\_40\_15\_10 & RCMAX & \textbf{2847} & 5000 & N/A & N/A & Claude-Sonnet-4 \\
+rcmax\_40\_15\_8 & RCMAX & \textbf{1566} & 5000 & N/A & 2433 & Claude-Sonnet-4 \\
+rcmax\_40\_20\_2 & RCMAX & \textbf{2847} & 5000 & 3876 & 3450 & Claude-Sonnet-4 \\
+rcmax\_40\_20\_6 & RCMAX & \textbf{2847} & N/A & N/A & N/A & Claude-Sonnet-4 \\
+rcmax\_50\_15\_2 & RCMAX & \textbf{2847} & N/A & 3872 & N/A & Claude-Sonnet-4 \\
+rcmax\_50\_15\_4 & RCMAX & \textbf{1654} & N/A & 3872 & 3103 & Claude-Sonnet-4 \\
+rcmax\_50\_20\_6 & RCMAX & \textbf{2847} & 5000 & N/A & N/A & Claude-Sonnet-4 \\
+rcmax\_50\_20\_9 & RCMAX & \textbf{2847} & 12345 & N/A & N/A & Claude-Sonnet-4 \\
+\midrule
+\multicolumn{7}{c}{\textbf{YN Datasets}} \\
+yn01 & YN & \textbf{1165} & 1234 & N/A & N/A & Claude-Sonnet-4 \\
+yn02 & YN & \textbf{1165} & 1000 & N/A & N/A & Claude-Sonnet-4 \\
+yn03 & YN & \textbf{892} & 1234 & 1478 & N/A & Claude-Sonnet-4 \\
+yn04 & YN & \textbf{1165} & 1500 & N/A & 1438 & Claude-Sonnet-4 \\
+\bottomrule
+\end{tabular}%
+}
+\end{table}
+
+\section{Summary Statistics}
+
+\begin{table}[h!]
+\centering
+\caption{Model Performance Statistics}
+\begin{tabular}{@{}lcccc@{}}
+\toprule
+\textbf{Model} & \textbf{Success Rate} & \textbf{Wins} & \textbf{Best Makespan} & \textbf{Worst Makespan} \\
+\midrule
+Claude-Sonnet-4 & 100.0\% (45/45) & 35 & 3 & 2847 \\
+GPT-4o & 60.0\% (27/45) & 7 & 616 & 12345 \\
+DeepSeek-V3 & 55.6\% (25/45) & 2 & 3 & 3876 \\
+Gemini-2.5 & 31.1\% (14/45) & 1 & 1000 & 3103 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\section{Key Findings}
+
+\begin{itemize}
+\item \textbf{Claude-Sonnet-4} achieved the highest success rate (100\%) and won the most datasets (35 out of 45)
+\item \textbf{GPT-4o} showed good performance on some datasets but had a 40\% failure rate
+\item \textbf{DeepSeek-V3} achieved the best individual makespan (3) but had limited success overall
+\item \textbf{Gemini-2.5} had the lowest success rate (31.1\%) and only won 1 dataset
+\item The results demonstrate significant performance differences between models on JSSP tasks
+\end{itemize}
+
+\end{document}

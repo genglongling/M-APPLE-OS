@@ -1,0 +1,612 @@
+Loading dataset: rcmax_40_20_6 from /Users/glin/Documents/GitHub/M-APPLE/M-APPLE-OS/applications/DMU/rcmax_40_20_6.txt
+Loaded 40 jobs
+
+--- Running Full Workflow ---
+
+============================================================
+Running MAPLE Full Workflow on rcmax_40_20_6
+Description: Complete workflow with all tools
+Timestamp: 2025-09-24 15:10:47
+============================================================
+⚠️ Warning: Agent is None in node: {'agent': None, 'type': 'JSSPAgent'}
+⚠️ Warning: Agent is None in node: {'agent': None, 'type': 'JSSPValidationAgent'}
+
+=== [OPTIMIZED MAPLE] New 4-Step Workflow ===
+Nodes: ['Unknown Agent', 'Unknown Agent']
+Edges: [{'from': 0, 'to': 1}]
+Workflow: Full Workflow
+Validation: ✅
+Repair: ✅
+Optimization: ✅
+
+=== [OPTIMIZED MAPLE] Inter-Agent Coordination ===
+
+=== [OPTIMIZED MAPLE] New Workflow Execution ===
+🔄 Running new 7-step workflow: Query -> Validation -> Repair -> Re-validation -> Optimization -> Final Check -> Supervisor
+
+🔄 Starting New 4-Step Workflow...
+1️⃣ Loading pre-generated schedule from JSON file...
+📊 Loaded 241 schedule entries from rcmax_40_20_6
+📊 Claude-Sonnet-4 makespan: 2847
+📊 Initial schedule makespan: 2511
+📊 Schedule entries count: 241
+📊 Sample entry: {'job': 'Job1', 'step': 1, 'machine': 'Machine19', 'start': 0, 'end': 21, 'duration': 21}
+[32m✅ Pre-generated schedule loaded successfully.
+2️⃣ ValidationTools validating schedule...
+❌ Initial validation failed: ['Job Job1: Step 6 starts before step 5 ends', 'Job Job2: Step 5 starts before step 4 ends', 'Job Job2: Step 6 starts before step 5 ends', 'Job Job4: Step 5 starts before step 4 ends', 'Job Job5: Step 3 starts before step 2 ends', 'Job Job5: Step 6 starts before step 5 ends', 'Job Job6: Step 4 starts before step 3 ends', 'Job Job6: Step 6 starts before step 5 ends', 'Job Job7: Step 4 starts before step 3 ends', 'Job Job7: Step 5 starts before step 4 ends', 'Job Job8: Step 6 starts before step 5 ends', 'Job Job9: Step 2 starts before step 1 ends', 'Job Job9: Step 4 starts before step 3 ends', 'Job Job10: Step 5 starts before step 4 ends', 'Job Job11: Step 4 starts before step 3 ends', 'Job Job13: Step 4 starts before step 3 ends', 'Job Job13: Step 6 starts before step 5 ends', 'Job Job14: Step 5 starts before step 4 ends', 'Job Job15: Step 4 starts before step 3 ends', 'Job Job16: Step 3 starts before step 2 ends', 'Job Job16: Step 5 starts before step 4 ends', 'Job Job16: Step 6 starts before step 5 ends', 'Job Job17: Step 2 starts before step 1 ends', 'Job Job17: Step 4 starts before step 3 ends', 'Job Job17: Step 6 starts before step 5 ends', 'Job Job19: Step 4 starts before step 3 ends', 'Job Job19: Step 6 starts before step 5 ends', 'Job Job20: Step 3 starts before step 2 ends', 'Job Job20: Step 5 starts before step 4 ends', 'Job Job21: Step 2 starts before step 1 ends', 'Job Job21: Step 5 starts before step 4 ends', 'Job Job22: Step 3 starts before step 2 ends', 'Job Job22: Step 5 starts before step 4 ends', 'Job Job23: Step 4 starts before step 3 ends', 'Job Job23: Step 6 starts before step 5 ends', 'Job Job24: Step 3 starts before step 2 ends', 'Job Job24: Step 6 starts before step 5 ends', 'Job Job25: Step 3 starts before step 2 ends', 'Job Job25: Step 5 starts before step 4 ends', 'Job Job26: Step 5 starts before step 4 ends', 'Job Job27: Step 2 starts before step 1 ends', 'Job Job27: Step 5 starts before step 4 ends', 'Job Job27: Step 6 starts before step 5 ends', 'Job Job28: Step 3 starts before step 2 ends', 'Job Job28: Step 5 starts before step 4 ends', 'Job Job28: Step 6 starts before step 5 ends', 'Job Job29: Step 3 starts before step 2 ends', 'Job Job29: Step 5 starts before step 4 ends', 'Job Job29: Step 6 starts before step 5 ends', 'Job Job30: Step 2 starts before step 1 ends', 'Job Job31: Step 3 starts before step 2 ends', 'Job Job31: Step 4 starts before step 3 ends', 'Job Job31: Step 5 starts before step 4 ends', 'Job Job32: Step 3 starts before step 2 ends', 'Job Job32: Step 5 starts before step 4 ends', 'Job Job33: Step 3 starts before step 2 ends', 'Job Job34: Step 3 starts before step 2 ends', 'Job Job34: Step 5 starts before step 4 ends', 'Job Job34: Step 6 starts before step 5 ends', 'Job Job35: Step 2 starts before step 1 ends', 'Job Job35: Step 4 starts before step 3 ends', 'Job Job35: Step 5 starts before step 4 ends', 'Job Job36: Step 6 starts before step 5 ends', 'Job Job37: Step 4 starts before step 3 ends', 'Job Job37: Step 5 starts before step 4 ends', 'Job Job38: Step 3 starts before step 2 ends', 'Job Job38: Step 5 starts before step 4 ends', 'Job Job38: Step 6 starts before step 5 ends', 'Job Job39: Step 4 starts before step 3 ends', 'Job Job39: Step 6 starts before step 5 ends', 'Job Job40: Step 4 starts before step 3 ends', 'Job Job40: Step 5 starts before step 4 ends']
+3️⃣ RepairTools repairing schedule...
+🔧 Repair iteration 1/5
+🔧 Starting Algorithm 3: Cascading Repair and Queue Reordering
+📊 Processing 241 schedule entries
+❌ Found 72 constraint violations
+🔄 Phase I: Status Update - Identifying affected operations
+🔧 Fixing immediate constraint violations...
+🔄 Phase II: Job Precedence Repair - Fixing step ordering violations
+🔧 Repairing job precedence violations...
+🔄 Phase III: Machine Capacity Repair - Resolving machine overlaps
+🔧 Repairing machine capacity violations...
+⏰ Fixed machine overlap on Machine11
+⏰ Fixed machine overlap on Machine11
+⏰ Fixed machine overlap on Machine11
+⏰ Fixed machine overlap on Machine11
+⏰ Fixed machine overlap on Machine13
+⏰ Fixed machine overlap on Machine4
+⏰ Fixed machine overlap on Machine4
+⏰ Fixed machine overlap on Machine4
+⏰ Fixed machine overlap on Machine4
+⏰ Fixed machine overlap on Machine4
+⏰ Fixed machine overlap on Machine4
+⏰ Fixed machine overlap on Machine4
+⏰ Fixed machine overlap on Machine4
+⏰ Fixed machine overlap on Machine8
+⏰ Fixed machine overlap on Machine8
+⏰ Fixed machine overlap on Machine8
+⏰ Fixed machine overlap on Machine8
+⏰ Fixed machine overlap on Machine8
+⏰ Fixed machine overlap on Machine8
+⏰ Fixed machine overlap on Machine8
+⏰ Fixed machine overlap on Machine8
+⏰ Fixed machine overlap on Machine8
+⏰ Fixed machine overlap on Machine7
+⏰ Fixed machine overlap on Machine7
+⏰ Fixed machine overlap on Machine7
+⏰ Fixed machine overlap on Machine7
+🔄 Phase IV: Iterative Improvement - Optimizing schedule quality
+🔧 Applying iterative improvement...
+🔄 Phase V: Final validation and cleanup
+🔧 Final cleanup - ensuring valid operation times...
+⏰ Fixed invalid times for Job9 step 2
+⏰ Fixed invalid times for Job16 step 3
+⏰ Fixed invalid times for Job32 step 3
+⏰ Fixed invalid times for Job5 step 3
+⏰ Fixed invalid times for Job24 step 3
+⏰ Fixed invalid times for Job28 step 3
+⏰ Fixed invalid times for Job27 step 2
+⏰ Fixed invalid times for Job30 step 2
+⏰ Fixed invalid times for Job29 step 3
+⏰ Fixed invalid times for Job21 step 2
+⏰ Fixed invalid times for Job22 step 3
+⏰ Fixed invalid times for Job33 step 3
+⏰ Fixed invalid times for Job17 step 4
+⏰ Fixed invalid times for Job14 step 5
+⏰ Fixed invalid times for Job26 step 5
+⏰ Fixed invalid times for Job25 step 5
+⏰ Fixed invalid times for Job34 step 3
+⏰ Fixed invalid times for Job31 step 5
+⏰ Fixed invalid times for Job20 step 5
+⏰ Fixed invalid times for Job6 step 4
+⏰ Fixed invalid times for Job35 step 5
+⏰ Fixed invalid times for Job1 step 6
+⏰ Fixed invalid times for Job11 step 4
+⏰ Fixed invalid times for Job13 step 4
+⏰ Fixed invalid times for Job21 step 5
+⏰ Fixed invalid times for Job35 step 4
+⏰ Fixed invalid times for Job6 step 6
+⏰ Fixed invalid times for Job28 step 6
+⏰ Fixed invalid times for Job16 step 6
+⏰ Fixed invalid times for Job23 step 4
+⏰ Fixed invalid times for Job4 step 5
+⏰ Fixed invalid times for Job22 step 5
+⏰ Fixed invalid times for Job28 step 5
+⏰ Fixed invalid times for Job17 step 6
+⏰ Fixed invalid times for Job32 step 5
+⏰ Fixed invalid times for Job10 step 5
+⏰ Fixed invalid times for Job29 step 6
+⏰ Fixed invalid times for Job8 step 6
+⏰ Fixed invalid times for Job19 step 4
+⏰ Fixed invalid times for Job34 step 6
+⏰ Fixed invalid times for Job2 step 6
+⏰ Fixed invalid times for Job31 step 4
+⏰ Fixed invalid times for Job16 step 5
+⏰ Fixed invalid times for Job38 step 6
+⏰ Fixed invalid times for Job29 step 5
+⏰ Fixed invalid times for Job23 step 6
+⏰ Fixed invalid times for Job34 step 5
+⏰ Fixed invalid times for Job2 step 5
+⏰ Fixed invalid times for Job13 step 6
+⏰ Fixed invalid times for Job39 step 6
+⏰ Fixed invalid times for Job19 step 6
+⏰ Fixed invalid times for Job36 step 6
+⏰ Fixed invalid times for Job5 step 6
+⏰ Fixed invalid times for Job38 step 5
+⏰ Fixed invalid times for Job27 step 5
+✅ Algorithm 3 completed - Generated 241 schedule entries
+📊 Repair iteration 1 makespan: 2511
+📊 Repair iteration 1 schedule entries: 241
+📊 Latest operations: [('Job15', 6, 2511), ('Job14', 6, 2336), ('Job11', 6, 2212)]
+💾 Saved repair iteration 1 to: maple_optimized(claude-4)/rcmax_40_20_6_repair_iteration_1.json
+⚠️ Repair iteration 1 reduced errors from 72 to 27 (makespan: 2511)
+🔧 Repair iteration 2/5
+🔧 Starting Algorithm 3: Cascading Repair and Queue Reordering
+📊 Processing 241 schedule entries
+❌ Found 27 constraint violations
+🔄 Phase I: Status Update - Identifying affected operations
+🔧 Fixing immediate constraint violations...
+🔄 Phase II: Job Precedence Repair - Fixing step ordering violations
+🔧 Repairing job precedence violations...
+🔄 Phase III: Machine Capacity Repair - Resolving machine overlaps
+🔧 Repairing machine capacity violations...
+⏰ Fixed machine overlap on Machine7
+⏰ Fixed machine overlap on Machine7
+⏰ Fixed machine overlap on Machine7
+⏰ Fixed machine overlap on Machine2
+⏰ Fixed machine overlap on Machine2
+🔄 Phase IV: Iterative Improvement - Optimizing schedule quality
+🔧 Applying iterative improvement...
+🔄 Phase V: Final validation and cleanup
+🔧 Final cleanup - ensuring valid operation times...
+⏰ Fixed invalid times for Job5 step 4
+⏰ Fixed invalid times for Job35 step 5
+⏰ Fixed invalid times for Job4 step 6
+⏰ Fixed invalid times for Job28 step 6
+⏰ Fixed invalid times for Job31 step 5
+⏰ Fixed invalid times for Job25 step 6
+⏰ Fixed invalid times for Job17 step 5
+⏰ Fixed invalid times for Job16 step 6
+⏰ Fixed invalid times for Job32 step 6
+⏰ Fixed invalid times for Job29 step 6
+⏰ Fixed invalid times for Job34 step 6
+⏰ Fixed invalid times for Job2 step 6
+⏰ Fixed invalid times for Job17 step 4
+⏰ Fixed invalid times for Job34 step 5
+⏰ Fixed invalid times for Job20 step 6
+⏰ Fixed invalid times for Job38 step 6
+⏰ Fixed invalid times for Job27 step 6
+⏰ Fixed invalid times for Job27 step 5
+⏰ Fixed invalid times for Job32 step 5
+⏰ Fixed invalid times for Job5 step 6
+⏰ Fixed invalid times for Job36 step 6
+✅ Algorithm 3 completed - Generated 241 schedule entries
+📊 Repair iteration 2 makespan: 2511
+📊 Repair iteration 2 schedule entries: 241
+📊 Latest operations: [('Job15', 6, 2511), ('Job14', 6, 2336), ('Job11', 6, 2212)]
+💾 Saved repair iteration 2 to: maple_optimized(claude-4)/rcmax_40_20_6_repair_iteration_2.json
+⚠️ Repair iteration 2 reduced errors from 27 to 7 (makespan: 2511)
+🔧 Repair iteration 3/5
+🔧 Starting Algorithm 3: Cascading Repair and Queue Reordering
+📊 Processing 241 schedule entries
+❌ Found 7 constraint violations
+🔄 Phase I: Status Update - Identifying affected operations
+🔧 Fixing immediate constraint violations...
+🔄 Phase II: Job Precedence Repair - Fixing step ordering violations
+🔧 Repairing job precedence violations...
+🔄 Phase III: Machine Capacity Repair - Resolving machine overlaps
+🔧 Repairing machine capacity violations...
+🔄 Phase IV: Iterative Improvement - Optimizing schedule quality
+🔧 Applying iterative improvement...
+🔄 Phase V: Final validation and cleanup
+🔧 Final cleanup - ensuring valid operation times...
+⏰ Fixed invalid times for Job35 step 6
+⏰ Fixed invalid times for Job31 step 5
+⏰ Fixed invalid times for Job17 step 6
+⏰ Fixed invalid times for Job17 step 5
+⏰ Fixed invalid times for Job34 step 6
+⏰ Fixed invalid times for Job27 step 6
+⏰ Fixed invalid times for Job32 step 6
+✅ Algorithm 3 completed - Generated 241 schedule entries
+📊 Repair iteration 3 makespan: 2511
+📊 Repair iteration 3 schedule entries: 241
+📊 Latest operations: [('Job15', 6, 2511), ('Job14', 6, 2336), ('Job11', 6, 2212)]
+💾 Saved repair iteration 3 to: maple_optimized(claude-4)/rcmax_40_20_6_repair_iteration_3.json
+⚠️ Repair iteration 3 reduced errors from 7 to 2 (makespan: 2511)
+🔧 Repair iteration 4/5
+🔧 Starting Algorithm 3: Cascading Repair and Queue Reordering
+📊 Processing 241 schedule entries
+❌ Found 2 constraint violations
+🔄 Phase I: Status Update - Identifying affected operations
+🔧 Fixing immediate constraint violations...
+🔄 Phase II: Job Precedence Repair - Fixing step ordering violations
+🔧 Repairing job precedence violations...
+🔄 Phase III: Machine Capacity Repair - Resolving machine overlaps
+🔧 Repairing machine capacity violations...
+🔄 Phase IV: Iterative Improvement - Optimizing schedule quality
+🔧 Applying iterative improvement...
+🔄 Phase V: Final validation and cleanup
+🔧 Final cleanup - ensuring valid operation times...
+⏰ Fixed invalid times for Job31 step 6
+⏰ Fixed invalid times for Job17 step 6
+✅ Algorithm 3 completed - Generated 241 schedule entries
+📊 Repair iteration 4 makespan: 2511
+📊 Repair iteration 4 schedule entries: 241
+📊 Latest operations: [('Job15', 6, 2511), ('Job14', 6, 2336), ('Job11', 6, 2212)]
+💾 Saved repair iteration 4 to: maple_optimized(claude-4)/rcmax_40_20_6_repair_iteration_4.json
+✅ Repair successful after 4 iterations (final makespan: 2511)
+4️⃣ ValidationTools revalidating schedule...
+✅ Repair and revalidation successful
+5️⃣ OptimizationTools optimizing schedule...
+📊 Pre-optimization makespan: 2511
+📊 Post-optimization makespan: 2167
+✅ Optimization completed successfully.
+6️⃣ ValidationTools final check...
+⚠️ Final validation found 105 errors, but continuing with optimization result
+✅ Optimization result accepted despite validation warnings
+7️⃣ Processing final results...
+📊 Final processed schedule with 241 entries
+📊 Calculated makespan: 2167
+🎯 Final makespan: 2167
+✅ New workflow completed successfully.
+
+=== Optimized Validation Results ===
+✅ Using best solution found (makespan: 2167)
+📊 Total operations scheduled: 241
+✅ New 4-step workflow completed successfully
+📊 Found 4 repair iterations
+  Iteration 1: makespan=2511, entries=241
+  Iteration 2: makespan=2511, entries=241
+  Iteration 3: makespan=2511, entries=241
+  Iteration 4: makespan=2511, entries=241
+
+--- Running No Repair Tools ---
+
+============================================================
+Running MAPLE No Repair Tools on rcmax_40_20_6
+Description: Full workflow without repair tools
+Timestamp: 2025-09-24 15:10:48
+============================================================
+⚠️ Warning: Agent is None in node: {'agent': None, 'type': 'JSSPAgent'}
+⚠️ Warning: Agent is None in node: {'agent': None, 'type': 'JSSPValidationAgent'}
+
+=== [OPTIMIZED MAPLE] New 4-Step Workflow ===
+Nodes: ['Unknown Agent', 'Unknown Agent']
+Edges: [{'from': 0, 'to': 1}]
+Workflow: No Repair Tools
+Validation: ✅
+Repair: ❌
+Optimization: ✅
+
+=== [OPTIMIZED MAPLE] Inter-Agent Coordination ===
+
+=== [OPTIMIZED MAPLE] New Workflow Execution ===
+🔄 Running new 7-step workflow: Query -> Validation -> Repair -> Re-validation -> Optimization -> Final Check -> Supervisor
+
+🔄 Starting New 4-Step Workflow...
+1️⃣ Loading pre-generated schedule from JSON file...
+📊 Loaded 241 schedule entries from rcmax_40_20_6
+📊 Claude-Sonnet-4 makespan: 2847
+📊 Initial schedule makespan: 2511
+📊 Schedule entries count: 241
+📊 Sample entry: {'job': 'Job1', 'step': 1, 'machine': 'Machine19', 'start': 0, 'end': 21, 'duration': 21}
+[32m✅ Pre-generated schedule loaded successfully.
+2️⃣ ValidationTools validating schedule...
+❌ Initial validation failed: ['Job Job1: Step 6 starts before step 5 ends', 'Job Job2: Step 5 starts before step 4 ends', 'Job Job2: Step 6 starts before step 5 ends', 'Job Job4: Step 5 starts before step 4 ends', 'Job Job5: Step 3 starts before step 2 ends', 'Job Job5: Step 6 starts before step 5 ends', 'Job Job6: Step 4 starts before step 3 ends', 'Job Job6: Step 6 starts before step 5 ends', 'Job Job7: Step 4 starts before step 3 ends', 'Job Job7: Step 5 starts before step 4 ends', 'Job Job8: Step 6 starts before step 5 ends', 'Job Job9: Step 2 starts before step 1 ends', 'Job Job9: Step 4 starts before step 3 ends', 'Job Job10: Step 5 starts before step 4 ends', 'Job Job11: Step 4 starts before step 3 ends', 'Job Job13: Step 4 starts before step 3 ends', 'Job Job13: Step 6 starts before step 5 ends', 'Job Job14: Step 5 starts before step 4 ends', 'Job Job15: Step 4 starts before step 3 ends', 'Job Job16: Step 3 starts before step 2 ends', 'Job Job16: Step 5 starts before step 4 ends', 'Job Job16: Step 6 starts before step 5 ends', 'Job Job17: Step 2 starts before step 1 ends', 'Job Job17: Step 4 starts before step 3 ends', 'Job Job17: Step 6 starts before step 5 ends', 'Job Job19: Step 4 starts before step 3 ends', 'Job Job19: Step 6 starts before step 5 ends', 'Job Job20: Step 3 starts before step 2 ends', 'Job Job20: Step 5 starts before step 4 ends', 'Job Job21: Step 2 starts before step 1 ends', 'Job Job21: Step 5 starts before step 4 ends', 'Job Job22: Step 3 starts before step 2 ends', 'Job Job22: Step 5 starts before step 4 ends', 'Job Job23: Step 4 starts before step 3 ends', 'Job Job23: Step 6 starts before step 5 ends', 'Job Job24: Step 3 starts before step 2 ends', 'Job Job24: Step 6 starts before step 5 ends', 'Job Job25: Step 3 starts before step 2 ends', 'Job Job25: Step 5 starts before step 4 ends', 'Job Job26: Step 5 starts before step 4 ends', 'Job Job27: Step 2 starts before step 1 ends', 'Job Job27: Step 5 starts before step 4 ends', 'Job Job27: Step 6 starts before step 5 ends', 'Job Job28: Step 3 starts before step 2 ends', 'Job Job28: Step 5 starts before step 4 ends', 'Job Job28: Step 6 starts before step 5 ends', 'Job Job29: Step 3 starts before step 2 ends', 'Job Job29: Step 5 starts before step 4 ends', 'Job Job29: Step 6 starts before step 5 ends', 'Job Job30: Step 2 starts before step 1 ends', 'Job Job31: Step 3 starts before step 2 ends', 'Job Job31: Step 4 starts before step 3 ends', 'Job Job31: Step 5 starts before step 4 ends', 'Job Job32: Step 3 starts before step 2 ends', 'Job Job32: Step 5 starts before step 4 ends', 'Job Job33: Step 3 starts before step 2 ends', 'Job Job34: Step 3 starts before step 2 ends', 'Job Job34: Step 5 starts before step 4 ends', 'Job Job34: Step 6 starts before step 5 ends', 'Job Job35: Step 2 starts before step 1 ends', 'Job Job35: Step 4 starts before step 3 ends', 'Job Job35: Step 5 starts before step 4 ends', 'Job Job36: Step 6 starts before step 5 ends', 'Job Job37: Step 4 starts before step 3 ends', 'Job Job37: Step 5 starts before step 4 ends', 'Job Job38: Step 3 starts before step 2 ends', 'Job Job38: Step 5 starts before step 4 ends', 'Job Job38: Step 6 starts before step 5 ends', 'Job Job39: Step 4 starts before step 3 ends', 'Job Job39: Step 6 starts before step 5 ends', 'Job Job40: Step 4 starts before step 3 ends', 'Job Job40: Step 5 starts before step 4 ends']
+⚠️ Schedule validation failed but repair is disabled - using original schedule without optimization
+✅ Proceeding with original schedule without optimization due to validation failures
+5️⃣ OptimizationTools skipped - using original schedule due to validation failures
+5️⃣ OptimizationTools already skipped due to validation failures
+6️⃣ ValidationTools final check...
+⚠️ Final validation found 72 errors, but continuing with optimization result
+✅ Optimization result accepted despite validation warnings
+7️⃣ Processing final results...
+📊 Final processed schedule with 241 entries
+📊 Calculated makespan: 2511
+🎯 Final makespan: 2511
+✅ New workflow completed successfully.
+
+=== Optimized Validation Results ===
+✅ Using best solution found (makespan: 2511)
+📊 Total operations scheduled: 241
+✅ New 4-step workflow completed successfully
+
+--- Running No Validation Tools ---
+
+============================================================
+Running MAPLE No Validation Tools on rcmax_40_20_6
+Description: Full workflow without validation tools
+Timestamp: 2025-09-24 15:10:48
+============================================================
+⚠️ Warning: Agent is None in node: {'agent': None, 'type': 'JSSPAgent'}
+⚠️ Warning: Agent is None in node: {'agent': None, 'type': 'JSSPValidationAgent'}
+
+=== [OPTIMIZED MAPLE] New 4-Step Workflow ===
+Nodes: ['Unknown Agent', 'Unknown Agent']
+Edges: [{'from': 0, 'to': 1}]
+Workflow: No Validation Tools
+Validation: ❌
+Repair: ✅
+Optimization: ✅
+
+=== [OPTIMIZED MAPLE] Inter-Agent Coordination ===
+
+=== [OPTIMIZED MAPLE] New Workflow Execution ===
+🔄 Running new 7-step workflow: Query -> Validation -> Repair -> Re-validation -> Optimization -> Final Check -> Supervisor
+
+🔄 Starting New 4-Step Workflow...
+1️⃣ Loading pre-generated schedule from JSON file...
+📊 Loaded 241 schedule entries from rcmax_40_20_6
+📊 Claude-Sonnet-4 makespan: 2847
+📊 Initial schedule makespan: 2511
+📊 Schedule entries count: 241
+📊 Sample entry: {'job': 'Job1', 'step': 1, 'machine': 'Machine19', 'start': 0, 'end': 21, 'duration': 21}
+[32m✅ Pre-generated schedule loaded successfully.
+2️⃣ ValidationTools disabled - skipping validation
+5️⃣ OptimizationTools optimizing schedule...
+📊 Pre-optimization makespan: 2511
+📊 Post-optimization makespan: 2177
+✅ Optimization completed successfully.
+6️⃣ ValidationTools disabled - skipping final validation
+7️⃣ Processing final results...
+📊 Final processed schedule with 241 entries
+📊 Calculated makespan: 2177
+🎯 Final makespan: 2177
+✅ New workflow completed successfully.
+
+=== Optimized Validation Results ===
+✅ Using best solution found (makespan: 2177)
+📊 Total operations scheduled: 241
+✅ New 4-step workflow completed successfully
+
+--- Running No Optimization Tools ---
+
+============================================================
+Running MAPLE No Optimization Tools on rcmax_40_20_6
+Description: Full workflow without optimization tools
+Timestamp: 2025-09-24 15:10:50
+============================================================
+⚠️ Warning: Agent is None in node: {'agent': None, 'type': 'JSSPAgent'}
+⚠️ Warning: Agent is None in node: {'agent': None, 'type': 'JSSPValidationAgent'}
+
+=== [OPTIMIZED MAPLE] New 4-Step Workflow ===
+Nodes: ['Unknown Agent', 'Unknown Agent']
+Edges: [{'from': 0, 'to': 1}]
+Workflow: No Optimization Tools
+Validation: ✅
+Repair: ✅
+Optimization: ❌
+
+=== [OPTIMIZED MAPLE] Inter-Agent Coordination ===
+
+=== [OPTIMIZED MAPLE] New Workflow Execution ===
+🔄 Running new 7-step workflow: Query -> Validation -> Repair -> Re-validation -> Optimization -> Final Check -> Supervisor
+
+🔄 Starting New 4-Step Workflow...
+1️⃣ Loading pre-generated schedule from JSON file...
+📊 Loaded 241 schedule entries from rcmax_40_20_6
+📊 Claude-Sonnet-4 makespan: 2847
+📊 Initial schedule makespan: 2511
+📊 Schedule entries count: 241
+📊 Sample entry: {'job': 'Job1', 'step': 1, 'machine': 'Machine19', 'start': 0, 'end': 21, 'duration': 21}
+[32m✅ Pre-generated schedule loaded successfully.
+2️⃣ ValidationTools validating schedule...
+❌ Initial validation failed: ['Job Job1: Step 6 starts before step 5 ends', 'Job Job2: Step 5 starts before step 4 ends', 'Job Job2: Step 6 starts before step 5 ends', 'Job Job4: Step 5 starts before step 4 ends', 'Job Job5: Step 3 starts before step 2 ends', 'Job Job5: Step 6 starts before step 5 ends', 'Job Job6: Step 4 starts before step 3 ends', 'Job Job6: Step 6 starts before step 5 ends', 'Job Job7: Step 4 starts before step 3 ends', 'Job Job7: Step 5 starts before step 4 ends', 'Job Job8: Step 6 starts before step 5 ends', 'Job Job9: Step 2 starts before step 1 ends', 'Job Job9: Step 4 starts before step 3 ends', 'Job Job10: Step 5 starts before step 4 ends', 'Job Job11: Step 4 starts before step 3 ends', 'Job Job13: Step 4 starts before step 3 ends', 'Job Job13: Step 6 starts before step 5 ends', 'Job Job14: Step 5 starts before step 4 ends', 'Job Job15: Step 4 starts before step 3 ends', 'Job Job16: Step 3 starts before step 2 ends', 'Job Job16: Step 5 starts before step 4 ends', 'Job Job16: Step 6 starts before step 5 ends', 'Job Job17: Step 2 starts before step 1 ends', 'Job Job17: Step 4 starts before step 3 ends', 'Job Job17: Step 6 starts before step 5 ends', 'Job Job19: Step 4 starts before step 3 ends', 'Job Job19: Step 6 starts before step 5 ends', 'Job Job20: Step 3 starts before step 2 ends', 'Job Job20: Step 5 starts before step 4 ends', 'Job Job21: Step 2 starts before step 1 ends', 'Job Job21: Step 5 starts before step 4 ends', 'Job Job22: Step 3 starts before step 2 ends', 'Job Job22: Step 5 starts before step 4 ends', 'Job Job23: Step 4 starts before step 3 ends', 'Job Job23: Step 6 starts before step 5 ends', 'Job Job24: Step 3 starts before step 2 ends', 'Job Job24: Step 6 starts before step 5 ends', 'Job Job25: Step 3 starts before step 2 ends', 'Job Job25: Step 5 starts before step 4 ends', 'Job Job26: Step 5 starts before step 4 ends', 'Job Job27: Step 2 starts before step 1 ends', 'Job Job27: Step 5 starts before step 4 ends', 'Job Job27: Step 6 starts before step 5 ends', 'Job Job28: Step 3 starts before step 2 ends', 'Job Job28: Step 5 starts before step 4 ends', 'Job Job28: Step 6 starts before step 5 ends', 'Job Job29: Step 3 starts before step 2 ends', 'Job Job29: Step 5 starts before step 4 ends', 'Job Job29: Step 6 starts before step 5 ends', 'Job Job30: Step 2 starts before step 1 ends', 'Job Job31: Step 3 starts before step 2 ends', 'Job Job31: Step 4 starts before step 3 ends', 'Job Job31: Step 5 starts before step 4 ends', 'Job Job32: Step 3 starts before step 2 ends', 'Job Job32: Step 5 starts before step 4 ends', 'Job Job33: Step 3 starts before step 2 ends', 'Job Job34: Step 3 starts before step 2 ends', 'Job Job34: Step 5 starts before step 4 ends', 'Job Job34: Step 6 starts before step 5 ends', 'Job Job35: Step 2 starts before step 1 ends', 'Job Job35: Step 4 starts before step 3 ends', 'Job Job35: Step 5 starts before step 4 ends', 'Job Job36: Step 6 starts before step 5 ends', 'Job Job37: Step 4 starts before step 3 ends', 'Job Job37: Step 5 starts before step 4 ends', 'Job Job38: Step 3 starts before step 2 ends', 'Job Job38: Step 5 starts before step 4 ends', 'Job Job38: Step 6 starts before step 5 ends', 'Job Job39: Step 4 starts before step 3 ends', 'Job Job39: Step 6 starts before step 5 ends', 'Job Job40: Step 4 starts before step 3 ends', 'Job Job40: Step 5 starts before step 4 ends']
+3️⃣ RepairTools repairing schedule...
+🔧 Repair iteration 1/5
+🔧 Starting Algorithm 3: Cascading Repair and Queue Reordering
+📊 Processing 241 schedule entries
+❌ Found 72 constraint violations
+🔄 Phase I: Status Update - Identifying affected operations
+🔧 Fixing immediate constraint violations...
+🔄 Phase II: Job Precedence Repair - Fixing step ordering violations
+🔧 Repairing job precedence violations...
+🔄 Phase III: Machine Capacity Repair - Resolving machine overlaps
+🔧 Repairing machine capacity violations...
+⏰ Fixed machine overlap on Machine11
+⏰ Fixed machine overlap on Machine11
+⏰ Fixed machine overlap on Machine11
+⏰ Fixed machine overlap on Machine11
+⏰ Fixed machine overlap on Machine13
+⏰ Fixed machine overlap on Machine4
+⏰ Fixed machine overlap on Machine4
+⏰ Fixed machine overlap on Machine4
+⏰ Fixed machine overlap on Machine4
+⏰ Fixed machine overlap on Machine4
+⏰ Fixed machine overlap on Machine4
+⏰ Fixed machine overlap on Machine4
+⏰ Fixed machine overlap on Machine4
+⏰ Fixed machine overlap on Machine8
+⏰ Fixed machine overlap on Machine8
+⏰ Fixed machine overlap on Machine8
+⏰ Fixed machine overlap on Machine8
+⏰ Fixed machine overlap on Machine8
+⏰ Fixed machine overlap on Machine8
+⏰ Fixed machine overlap on Machine8
+⏰ Fixed machine overlap on Machine8
+⏰ Fixed machine overlap on Machine8
+⏰ Fixed machine overlap on Machine7
+⏰ Fixed machine overlap on Machine7
+⏰ Fixed machine overlap on Machine7
+⏰ Fixed machine overlap on Machine7
+🔄 Phase IV: Iterative Improvement - Optimizing schedule quality
+🔧 Applying iterative improvement...
+🔄 Phase V: Final validation and cleanup
+🔧 Final cleanup - ensuring valid operation times...
+⏰ Fixed invalid times for Job9 step 2
+⏰ Fixed invalid times for Job16 step 3
+⏰ Fixed invalid times for Job32 step 3
+⏰ Fixed invalid times for Job5 step 3
+⏰ Fixed invalid times for Job24 step 3
+⏰ Fixed invalid times for Job28 step 3
+⏰ Fixed invalid times for Job27 step 2
+⏰ Fixed invalid times for Job30 step 2
+⏰ Fixed invalid times for Job29 step 3
+⏰ Fixed invalid times for Job21 step 2
+⏰ Fixed invalid times for Job22 step 3
+⏰ Fixed invalid times for Job33 step 3
+⏰ Fixed invalid times for Job17 step 4
+⏰ Fixed invalid times for Job14 step 5
+⏰ Fixed invalid times for Job26 step 5
+⏰ Fixed invalid times for Job25 step 5
+⏰ Fixed invalid times for Job34 step 3
+⏰ Fixed invalid times for Job31 step 5
+⏰ Fixed invalid times for Job20 step 5
+⏰ Fixed invalid times for Job6 step 4
+⏰ Fixed invalid times for Job35 step 5
+⏰ Fixed invalid times for Job1 step 6
+⏰ Fixed invalid times for Job11 step 4
+⏰ Fixed invalid times for Job13 step 4
+⏰ Fixed invalid times for Job21 step 5
+⏰ Fixed invalid times for Job35 step 4
+⏰ Fixed invalid times for Job6 step 6
+⏰ Fixed invalid times for Job28 step 6
+⏰ Fixed invalid times for Job16 step 6
+⏰ Fixed invalid times for Job23 step 4
+⏰ Fixed invalid times for Job4 step 5
+⏰ Fixed invalid times for Job22 step 5
+⏰ Fixed invalid times for Job28 step 5
+⏰ Fixed invalid times for Job17 step 6
+⏰ Fixed invalid times for Job32 step 5
+⏰ Fixed invalid times for Job10 step 5
+⏰ Fixed invalid times for Job29 step 6
+⏰ Fixed invalid times for Job8 step 6
+⏰ Fixed invalid times for Job19 step 4
+⏰ Fixed invalid times for Job34 step 6
+⏰ Fixed invalid times for Job2 step 6
+⏰ Fixed invalid times for Job31 step 4
+⏰ Fixed invalid times for Job16 step 5
+⏰ Fixed invalid times for Job38 step 6
+⏰ Fixed invalid times for Job29 step 5
+⏰ Fixed invalid times for Job23 step 6
+⏰ Fixed invalid times for Job34 step 5
+⏰ Fixed invalid times for Job2 step 5
+⏰ Fixed invalid times for Job13 step 6
+⏰ Fixed invalid times for Job39 step 6
+⏰ Fixed invalid times for Job19 step 6
+⏰ Fixed invalid times for Job36 step 6
+⏰ Fixed invalid times for Job5 step 6
+⏰ Fixed invalid times for Job38 step 5
+⏰ Fixed invalid times for Job27 step 5
+✅ Algorithm 3 completed - Generated 241 schedule entries
+📊 Repair iteration 1 makespan: 2511
+📊 Repair iteration 1 schedule entries: 241
+📊 Latest operations: [('Job15', 6, 2511), ('Job14', 6, 2336), ('Job11', 6, 2212)]
+💾 Saved repair iteration 1 to: maple_optimized(claude-4)/rcmax_40_20_6_repair_iteration_1.json
+⚠️ Repair iteration 1 reduced errors from 72 to 27 (makespan: 2511)
+🔧 Repair iteration 2/5
+🔧 Starting Algorithm 3: Cascading Repair and Queue Reordering
+📊 Processing 241 schedule entries
+❌ Found 27 constraint violations
+🔄 Phase I: Status Update - Identifying affected operations
+🔧 Fixing immediate constraint violations...
+🔄 Phase II: Job Precedence Repair - Fixing step ordering violations
+🔧 Repairing job precedence violations...
+🔄 Phase III: Machine Capacity Repair - Resolving machine overlaps
+🔧 Repairing machine capacity violations...
+⏰ Fixed machine overlap on Machine7
+⏰ Fixed machine overlap on Machine7
+⏰ Fixed machine overlap on Machine7
+⏰ Fixed machine overlap on Machine2
+⏰ Fixed machine overlap on Machine2
+🔄 Phase IV: Iterative Improvement - Optimizing schedule quality
+🔧 Applying iterative improvement...
+🔄 Phase V: Final validation and cleanup
+🔧 Final cleanup - ensuring valid operation times...
+⏰ Fixed invalid times for Job5 step 4
+⏰ Fixed invalid times for Job35 step 5
+⏰ Fixed invalid times for Job4 step 6
+⏰ Fixed invalid times for Job28 step 6
+⏰ Fixed invalid times for Job31 step 5
+⏰ Fixed invalid times for Job25 step 6
+⏰ Fixed invalid times for Job17 step 5
+⏰ Fixed invalid times for Job16 step 6
+⏰ Fixed invalid times for Job32 step 6
+⏰ Fixed invalid times for Job29 step 6
+⏰ Fixed invalid times for Job34 step 6
+⏰ Fixed invalid times for Job2 step 6
+⏰ Fixed invalid times for Job17 step 4
+⏰ Fixed invalid times for Job34 step 5
+⏰ Fixed invalid times for Job20 step 6
+⏰ Fixed invalid times for Job38 step 6
+⏰ Fixed invalid times for Job27 step 6
+⏰ Fixed invalid times for Job27 step 5
+⏰ Fixed invalid times for Job32 step 5
+⏰ Fixed invalid times for Job5 step 6
+⏰ Fixed invalid times for Job36 step 6
+✅ Algorithm 3 completed - Generated 241 schedule entries
+📊 Repair iteration 2 makespan: 2511
+📊 Repair iteration 2 schedule entries: 241
+📊 Latest operations: [('Job15', 6, 2511), ('Job14', 6, 2336), ('Job11', 6, 2212)]
+💾 Saved repair iteration 2 to: maple_optimized(claude-4)/rcmax_40_20_6_repair_iteration_2.json
+⚠️ Repair iteration 2 reduced errors from 27 to 7 (makespan: 2511)
+🔧 Repair iteration 3/5
+🔧 Starting Algorithm 3: Cascading Repair and Queue Reordering
+📊 Processing 241 schedule entries
+❌ Found 7 constraint violations
+🔄 Phase I: Status Update - Identifying affected operations
+🔧 Fixing immediate constraint violations...
+🔄 Phase II: Job Precedence Repair - Fixing step ordering violations
+🔧 Repairing job precedence violations...
+🔄 Phase III: Machine Capacity Repair - Resolving machine overlaps
+🔧 Repairing machine capacity violations...
+🔄 Phase IV: Iterative Improvement - Optimizing schedule quality
+🔧 Applying iterative improvement...
+🔄 Phase V: Final validation and cleanup
+🔧 Final cleanup - ensuring valid operation times...
+⏰ Fixed invalid times for Job35 step 6
+⏰ Fixed invalid times for Job31 step 5
+⏰ Fixed invalid times for Job17 step 6
+⏰ Fixed invalid times for Job17 step 5
+⏰ Fixed invalid times for Job34 step 6
+⏰ Fixed invalid times for Job27 step 6
+⏰ Fixed invalid times for Job32 step 6
+✅ Algorithm 3 completed - Generated 241 schedule entries
+📊 Repair iteration 3 makespan: 2511
+📊 Repair iteration 3 schedule entries: 241
+📊 Latest operations: [('Job15', 6, 2511), ('Job14', 6, 2336), ('Job11', 6, 2212)]
+💾 Saved repair iteration 3 to: maple_optimized(claude-4)/rcmax_40_20_6_repair_iteration_3.json
+⚠️ Repair iteration 3 reduced errors from 7 to 2 (makespan: 2511)
+🔧 Repair iteration 4/5
+🔧 Starting Algorithm 3: Cascading Repair and Queue Reordering
+📊 Processing 241 schedule entries
+❌ Found 2 constraint violations
+🔄 Phase I: Status Update - Identifying affected operations
+🔧 Fixing immediate constraint violations...
+🔄 Phase II: Job Precedence Repair - Fixing step ordering violations
+🔧 Repairing job precedence violations...
+🔄 Phase III: Machine Capacity Repair - Resolving machine overlaps
+🔧 Repairing machine capacity violations...
+🔄 Phase IV: Iterative Improvement - Optimizing schedule quality
+🔧 Applying iterative improvement...
+🔄 Phase V: Final validation and cleanup
+🔧 Final cleanup - ensuring valid operation times...
+⏰ Fixed invalid times for Job31 step 6
+⏰ Fixed invalid times for Job17 step 6
+✅ Algorithm 3 completed - Generated 241 schedule entries
+📊 Repair iteration 4 makespan: 2511
+📊 Repair iteration 4 schedule entries: 241
+📊 Latest operations: [('Job15', 6, 2511), ('Job14', 6, 2336), ('Job11', 6, 2212)]
+💾 Saved repair iteration 4 to: maple_optimized(claude-4)/rcmax_40_20_6_repair_iteration_4.json
+✅ Repair successful after 4 iterations (final makespan: 2511)
+4️⃣ ValidationTools revalidating schedule...
+✅ Repair and revalidation successful
+7️⃣ Processing final results...
+📊 Final processed schedule with 241 entries
+📊 Calculated makespan: 2511
+🎯 Final makespan: 2511
+✅ New workflow completed successfully.
+
+=== Optimized Validation Results ===
+✅ Using best solution found (makespan: 2511)
+📊 Total operations scheduled: 241
+✅ New 4-step workflow completed successfully
+📊 Found 4 repair iterations
+  Iteration 1: makespan=2511, entries=241
+  Iteration 2: makespan=2511, entries=241
+  Iteration 3: makespan=2511, entries=241
+  Iteration 4: makespan=2511, entries=241
+
+============================================================
+WORKFLOW COMPARISON SUMMARY for rcmax_40_20_6
+============================================================
+✅ Full Workflow        | Makespan:     2167 | Time: 1.49s | Repairs: 4
+✅ No Repair Tools      | Makespan:     2511 | Time: 0.00s
+✅ No Validation Tools  | Makespan:     2177 | Time: 1.76s
+✅ No Optimization Tools | Makespan:     2511 | Time: 0.14s | Repairs: 4

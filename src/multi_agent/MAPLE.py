@@ -38,11 +38,16 @@ class InterAgentCoordinator:
         # Ensure all agents inherit from base Agent class
         self.agents = []
         for node in nodes:
-            agent = node['agent']
+            agent = node.get('agent')
+            if agent is None:
+                print(f"⚠️ Warning: Agent is None in node: {node}")
+                continue
+                
             if not isinstance(agent, Agent):
                 # Convert to base Agent if not already
+                agent_name = getattr(agent, 'name', 'Unknown Agent')
                 base_agent = Agent(
-                    name=agent.name,
+                    name=agent_name,
                     backstory=getattr(agent, 'backstory', ''),
                     task_description=getattr(agent, 'task_description', ''),
                     task_expected_output=getattr(agent, 'task_expected_output', '')
@@ -55,15 +60,21 @@ class InterAgentCoordinator:
             else:
                 self.agents.append(agent)
         
-        self.dependencies = {node['agent'].name: [dep for dep in node.get('dependencies', [])] for node in nodes}
+        # Build dependencies safely
+        self.dependencies = {}
+        for node in nodes:
+            agent = node.get('agent')
+            if agent is not None and hasattr(agent, 'name'):
+                self.dependencies[agent.name] = node.get('dependencies', [])
         self._set_agent_dependencies()
 
     def _set_agent_dependencies(self):
         # Set dependencies and dependents for each agent
-        name_to_agent = {agent.name: agent for agent in self.agents}
+        name_to_agent = {agent.name: agent for agent in self.agents if agent is not None and hasattr(agent, 'name')}
         for agent in self.agents:
-            agent.dependencies = [name_to_agent[dep] for dep in self.dependencies.get(agent.name, [])]
-            agent.dependents = [a for a in self.agents if agent.name in self.dependencies.get(a.name, [])]
+            if agent is not None and hasattr(agent, 'name'):
+                agent.dependencies = [name_to_agent[dep] for dep in self.dependencies.get(agent.name, []) if dep in name_to_agent]
+                agent.dependents = [a for a in self.agents if a is not None and hasattr(a, 'name') and agent.name in self.dependencies.get(a.name, [])]
 
     def topological_sort(self):
         in_degree = {agent: len(agent.dependencies) for agent in self.agents}
@@ -92,29 +103,27 @@ class DynamicAdaptationManager:
         self.executor = executor
 
     def handle_disruption(self, failed_agent, error):
-        print(f"⚡ Disruption detected in {failed_agent.name}: {error}")
+        agent_name = getattr(failed_agent, 'name', 'Unknown Agent') if failed_agent is not None else 'Unknown Agent'
+        print(f"⚡ Disruption detected in {agent_name}: {error}")
         # 1. Try local compensation
-        if hasattr(failed_agent, 'compensate'):
+        if failed_agent is not None and hasattr(failed_agent, 'compensate'):
             try:
-                print(f"🛠 Attempting local compensation for {failed_agent.name}...")
+                print(f"🛠 Attempting local compensation for {agent_name}...")
                 failed_agent.compensate()
-                print(f"✅ Local compensation succeeded for {failed_agent.name}.")
+                print(f"✅ Local compensation succeeded for {agent_name}.")
                 return True
             except Exception as comp_error:
                 print(f"❌ Local compensation failed: {comp_error}")
         # 2. Global replanning
         print("🔄 Initiating global replanning...")
         # (a) Update agent states, invalidate future assignments, etc.
-        self.executor.context[failed_agent.name] = "invalid"
+        if failed_agent is not None and hasattr(failed_agent, 'name'):
+            self.executor.context[failed_agent.name] = "invalid"
         # (b) Re-run dependency resolution and agent assignment
         self.coordinator._set_agent_dependencies()
-        # (c) Optionally, re-run the workflow from the failed point or from scratch
-        try:
-            self.executor.execute(with_rollback=True, adaptation_manager=self)
-        except Exception as e:
-            print(f"🚨 Global replanning failed: {e}")
-            return False
-        return True
+        # (c) Don't recursively call execute to prevent infinite loops
+        print("⚠️ Global replanning completed. Manual intervention may be required.")
+        return False
 
 # Layer 3: Execution, Rollback, and Self-Validation
 class ExecutionManager:
@@ -131,12 +140,13 @@ class ExecutionManager:
         executed_agents = []
         try:
             for agent in sorted_agents:
-                print(f"\n🚀 Running Agent: {agent.name}")
+                agent_name = getattr(agent, 'name', 'Unknown Agent') if agent is not None else 'Unknown Agent'
+                print(f"\n🚀 Running Agent: {agent_name}")
                 # Use the base Agent's run method which includes LLM integration
                 result = agent.run()
-                self.context[agent.name] = result
+                self.context[agent_name] = result
                 executed_agents.append(agent)
-                print(Fore.GREEN + f"✅ {agent.name} completed successfully.")
+                print(Fore.GREEN + f"✅ {agent_name} completed successfully.")
 
                 # # Print all candidate schedules for JSSPAgent if present
                 # if hasattr(agent, 'context') and isinstance(agent.context, dict) and 'candidates' in agent.context:
@@ -168,7 +178,8 @@ class ExecutionManager:
                 #     print(f"  {result}")
                 # print(Fore.RESET)
         except Exception as e:
-            print(Fore.RED + f"❌ ERROR in {agent.name}: {str(e)}")
+            agent_name = getattr(agent, 'name', 'Unknown Agent') if agent is not None else 'Unknown Agent'
+            print(Fore.RED + f"❌ ERROR in {agent_name}: {str(e)}")
             if adaptation_manager:
                 adaptation_manager.handle_disruption(agent, e)
             elif with_rollback:
@@ -176,11 +187,14 @@ class ExecutionManager:
                 for completed_agent in reversed(executed_agents):
                     try:
                         completed_agent.rollback()
-                        print(Fore.BLUE + f"↩️ Rolled back: {completed_agent.name}")
+                        completed_agent_name = getattr(completed_agent, 'name', 'Unknown Agent') if completed_agent is not None else 'Unknown Agent'
+                        print(Fore.BLUE + f"↩️ Rolled back: {completed_agent_name}")
                     except AttributeError:
-                        print(Fore.RED + f"⚠️ {completed_agent.name} has no rollback method.")
+                        completed_agent_name = getattr(completed_agent, 'name', 'Unknown Agent') if completed_agent is not None else 'Unknown Agent'
+                        print(Fore.RED + f"⚠️ {completed_agent_name} has no rollback method.")
                     except Exception as rollback_error:
-                        print(Fore.RED + f"⚠️ Error rolling back {completed_agent.name}: {rollback_error}")
+                        completed_agent_name = getattr(completed_agent, 'name', 'Unknown Agent') if completed_agent is not None else 'Unknown Agent'
+                        print(Fore.RED + f"⚠️ Error rolling back {completed_agent_name}: {rollback_error}")
             print(Fore.RED + "🚨 Execution halted due to error.")
 
     def _topological_sort(self):
@@ -205,7 +219,16 @@ class ExecutionManager:
         """
         print("🔍 Self-Validation: Checking workflow structure, constraints, and compensation coverage...")
         # Find supervisor agent
-        supervisor_agent = [a for a in self.agents if 'Supervisor' in a.name][0]
+        supervisor_agent = None
+        for a in self.agents:
+            if a is not None and hasattr(a, 'name') and 'Supervisor' in a.name:
+                supervisor_agent = a
+                break
+        
+        if supervisor_agent is None:
+            print("⚠️ No supervisor agent found")
+            return
+            
         supervisor_output = self.context.get(supervisor_agent.name, {})
         all_schedules = supervisor_output.get('schedule', [])
 
@@ -511,6 +534,7 @@ class MAPLE:
                 W_exec_completed = False
                 # 3: if new task assigned to agent
                 # (Assume new task if agent.context is empty or not set)
+                # FIXED: Only run agents that haven't been executed yet
                 if not hasattr(agent, 'context') or not agent.context:
                     print(f"    New task assigned to {agent.name}, running agent...")
                     # 4: Execute role; update persistent log
@@ -523,6 +547,11 @@ class MAPLE:
                         print(f"❌ ERROR in {agent.name}: {e}")
                         agent_status[agent.name] = 'failed'
                         continue
+                else:
+                    # Agent has already been executed, skip re-execution
+                    print(f"    {agent.name} already executed, skipping...")
+                    agent_status[agent.name] = 'completed'
+                    continue
                 # 6: if disruption affects agent
                 if disruptions and agent.name in disruptions:
                     print(f"⚡ Disruption detected for {agent.name}")
@@ -579,13 +608,20 @@ class MAPLE:
 
     def run(self, with_rollback=True, validate=True):
         print("\n=== [MAPLE] Specification Construction ===")
-        print(f"Nodes: {[n['agent'].name for n in self.workflow.get_nodes()]}")
+        # Safely get agent names
+        node_names = []
+        for n in self.workflow.get_nodes():
+            if n and 'agent' in n and n['agent'] is not None and hasattr(n['agent'], 'name'):
+                node_names.append(n['agent'].name)
+            else:
+                node_names.append("Unknown Agent")
+        print(f"Nodes: {node_names}")
         print(f"Edges: {self.workflow.get_edges()}")
         print("\n=== [MAPLE] Inter-Agent Coordination ===")
         self.coordinator._set_agent_dependencies()
         print("\n=== [MAPLE] Execution & Validation ===")
         self.executor.execute(with_rollback=with_rollback, adaptation_manager=self.adaptation_manager)
         # Call LRCP protocol before self-validation
-        self.LCSR_replanning_and_optimized()
+        # self.LCSR_replanning_and_optimized()  # COMMENTED OUT: LRCP algorithm disabled
         if validate:
             self.executor.self_validate() 

@@ -1,0 +1,454 @@
+Loading dataset: swv12 from /Users/glin/Documents/GitHub/M-APPLE/M-APPLE-OS/applications/abzswvyn/swv12.txt
+Loaded 50 jobs
+
+--- Running Full Workflow ---
+
+============================================================
+Running MAPLE Full Workflow on swv12
+Description: Complete workflow with all tools
+Timestamp: 2025-09-24 15:24:05
+============================================================
+⚠️ Warning: Agent is None in node: {'agent': None, 'type': 'JSSPAgent'}
+⚠️ Warning: Agent is None in node: {'agent': None, 'type': 'JSSPValidationAgent'}
+
+=== [OPTIMIZED MAPLE] New 4-Step Workflow ===
+Nodes: ['Unknown Agent', 'Unknown Agent']
+Edges: [{'from': 0, 'to': 1}]
+Workflow: Full Workflow
+Validation: ✅
+Repair: ✅
+Optimization: ✅
+
+=== [OPTIMIZED MAPLE] Inter-Agent Coordination ===
+
+=== [OPTIMIZED MAPLE] New Workflow Execution ===
+🔄 Running new 7-step workflow: Query -> Validation -> Repair -> Re-validation -> Optimization -> Final Check -> Supervisor
+
+🔄 Starting New 4-Step Workflow...
+1️⃣ Loading pre-generated schedule from JSON file...
+📊 Loaded 97 schedule entries from swv12
+📊 Gemini-2.5 makespan: 1794
+📊 Initial schedule makespan: 946
+📊 Schedule entries count: 97
+📊 Sample entry: {'job': 'Job24', 'step': 1, 'machine': 'Machine1', 'start': 0, 'end': 1, 'duration': 1}
+[32m✅ Pre-generated schedule loaded successfully.
+2️⃣ ValidationTools validating schedule...
+❌ Initial validation failed: ['Job Job25: Step 6 starts before step 1 ends', 'Job Job10: Step 7 starts before step 1 ends', 'Job Job6: Step 3 starts before step 1 ends', 'Job Job39: Step 2 starts before step 1 ends', 'Job Job45: Step 5 starts before step 1 ends', 'Job Job2: Step 8 starts before step 3 ends', 'Job Job2: Step 9 starts before step 8 ends', 'Job Job1: Step 9 starts before step 3 ends', 'Job Job1: Step 10 starts before step 9 ends', 'Job Job17: Step 4 starts before step 1 ends', 'Job Job18: Step 7 starts before step 1 ends', 'Job Job19: Step 3 starts before step 1 ends', 'Job Job21: Step 3 starts before step 1 ends', 'Job Job3: Step 2 starts before step 1 ends', 'Machine Machine4: Operations overlap - Job47 step 1 and Job4 step 2', 'Machine Machine4: Operations overlap - Job4 step 2 and Job40 step 1', 'Machine Machine4: Operations overlap - Job40 step 1 and Job1 step 2', 'Machine Machine4: Operations overlap - Job1 step 2 and Job50 step 1', 'Machine Machine0: Operations overlap - Job4 step 1 and Job39 step 2']
+3️⃣ RepairTools repairing schedule...
+🔧 Repair iteration 1/5
+🔧 Starting Algorithm 3: Cascading Repair and Queue Reordering
+📊 Processing 97 schedule entries
+❌ Found 19 constraint violations
+🔄 Phase I: Status Update - Identifying affected operations
+🔧 Fixing immediate constraint violations...
+🔄 Phase II: Job Precedence Repair - Fixing step ordering violations
+🔧 Repairing job precedence violations...
+🔄 Phase III: Machine Capacity Repair - Resolving machine overlaps
+🔧 Repairing machine capacity violations...
+⏰ Fixed machine overlap on Machine1
+⏰ Fixed machine overlap on Machine1
+⏰ Fixed machine overlap on Machine1
+⏰ Fixed machine overlap on Machine1
+⏰ Fixed machine overlap on Machine1
+⏰ Fixed machine overlap on Machine1
+⏰ Fixed machine overlap on Machine1
+⏰ Fixed machine overlap on Machine1
+⏰ Fixed machine overlap on Machine1
+⏰ Fixed machine overlap on Machine1
+⏰ Fixed machine overlap on Machine4
+⏰ Fixed machine overlap on Machine4
+⏰ Fixed machine overlap on Machine4
+⏰ Fixed machine overlap on Machine4
+⏰ Fixed machine overlap on Machine4
+⏰ Fixed machine overlap on Machine4
+⏰ Fixed machine overlap on Machine4
+⏰ Fixed machine overlap on Machine4
+⏰ Fixed machine overlap on Machine4
+⏰ Fixed machine overlap on Machine4
+⏰ Fixed machine overlap on Machine4
+⏰ Fixed machine overlap on Machine4
+⏰ Fixed machine overlap on Machine4
+⏰ Fixed machine overlap on Machine4
+⏰ Fixed machine overlap on Machine4
+⏰ Fixed machine overlap on Machine4
+⏰ Fixed machine overlap on Machine4
+⏰ Fixed machine overlap on Machine4
+⏰ Fixed machine overlap on Machine4
+⏰ Fixed machine overlap on Machine0
+⏰ Fixed machine overlap on Machine0
+⏰ Fixed machine overlap on Machine0
+⏰ Fixed machine overlap on Machine0
+⏰ Fixed machine overlap on Machine0
+⏰ Fixed machine overlap on Machine0
+⏰ Fixed machine overlap on Machine0
+⏰ Fixed machine overlap on Machine0
+⏰ Fixed machine overlap on Machine0
+⏰ Fixed machine overlap on Machine0
+⏰ Fixed machine overlap on Machine0
+⏰ Fixed machine overlap on Machine0
+⏰ Fixed machine overlap on Machine0
+⏰ Fixed machine overlap on Machine0
+⏰ Fixed machine overlap on Machine0
+⏰ Fixed machine overlap on Machine0
+🔄 Phase IV: Iterative Improvement - Optimizing schedule quality
+🔧 Applying iterative improvement...
+🔄 Phase V: Final validation and cleanup
+🔧 Final cleanup - ensuring valid operation times...
+⏰ Fixed invalid times for Job25 step 6
+⏰ Fixed invalid times for Job2 step 8
+⏰ Fixed invalid times for Job1 step 10
+⏰ Fixed invalid times for Job18 step 7
+⏰ Fixed invalid times for Job10 step 7
+⏰ Fixed invalid times for Job1 step 9
+✅ Algorithm 3 completed - Generated 97 schedule entries
+📊 Repair iteration 1 makespan: 946
+📊 Repair iteration 1 schedule entries: 97
+📊 Latest operations: [('Job38', 2, 946), ('Job32', 2, 934), ('Job37', 2, 913)]
+💾 Saved repair iteration 1 to: maple_optimized(gemini-2.5)/swv12_repair_iteration_1.json
+⚠️ Repair iteration 1 reduced errors from 19 to 6 (makespan: 946)
+🔧 Repair iteration 2/5
+🔧 Starting Algorithm 3: Cascading Repair and Queue Reordering
+📊 Processing 97 schedule entries
+❌ Found 6 constraint violations
+🔄 Phase I: Status Update - Identifying affected operations
+🔧 Fixing immediate constraint violations...
+🔄 Phase II: Job Precedence Repair - Fixing step ordering violations
+🔧 Repairing job precedence violations...
+🔄 Phase III: Machine Capacity Repair - Resolving machine overlaps
+🔧 Repairing machine capacity violations...
+🔄 Phase IV: Iterative Improvement - Optimizing schedule quality
+🔧 Applying iterative improvement...
+🔄 Phase V: Final validation and cleanup
+🔧 Final cleanup - ensuring valid operation times...
+⏰ Fixed invalid times for Job2 step 9
+⏰ Fixed invalid times for Job17 step 6
+⏰ Fixed invalid times for Job1 step 10
+⏰ Fixed invalid times for Job1 step 9
+⏰ Fixed invalid times for Job10 step 7
+⏰ Fixed invalid times for Job25 step 6
+✅ Algorithm 3 completed - Generated 97 schedule entries
+📊 Repair iteration 2 makespan: 946
+📊 Repair iteration 2 schedule entries: 97
+📊 Latest operations: [('Job38', 2, 946), ('Job32', 2, 934), ('Job37', 2, 913)]
+💾 Saved repair iteration 2 to: maple_optimized(gemini-2.5)/swv12_repair_iteration_2.json
+⚠️ Repair iteration 2 reduced errors from 6 to 1 (makespan: 946)
+🔧 Repair iteration 3/5
+🔧 Starting Algorithm 3: Cascading Repair and Queue Reordering
+📊 Processing 97 schedule entries
+❌ Found 1 constraint violations
+🔄 Phase I: Status Update - Identifying affected operations
+🔧 Fixing immediate constraint violations...
+🔄 Phase II: Job Precedence Repair - Fixing step ordering violations
+🔧 Repairing job precedence violations...
+🔄 Phase III: Machine Capacity Repair - Resolving machine overlaps
+🔧 Repairing machine capacity violations...
+🔄 Phase IV: Iterative Improvement - Optimizing schedule quality
+🔧 Applying iterative improvement...
+🔄 Phase V: Final validation and cleanup
+🔧 Final cleanup - ensuring valid operation times...
+⏰ Fixed invalid times for Job1 step 10
+✅ Algorithm 3 completed - Generated 97 schedule entries
+📊 Repair iteration 3 makespan: 946
+📊 Repair iteration 3 schedule entries: 97
+📊 Latest operations: [('Job38', 2, 946), ('Job32', 2, 934), ('Job37', 2, 913)]
+💾 Saved repair iteration 3 to: maple_optimized(gemini-2.5)/swv12_repair_iteration_3.json
+✅ Repair successful after 3 iterations (final makespan: 946)
+4️⃣ ValidationTools revalidating schedule...
+✅ Repair and revalidation successful
+5️⃣ OptimizationTools optimizing schedule...
+📊 Pre-optimization makespan: 946
+📊 Post-optimization makespan: 946
+✅ Optimization completed successfully.
+6️⃣ ValidationTools final check...
+⚠️ Final validation found 32 errors, but continuing with optimization result
+✅ Optimization result accepted despite validation warnings
+7️⃣ Processing final results...
+📊 Final processed schedule with 97 entries
+📊 Calculated makespan: 946
+🎯 Final makespan: 946
+✅ New workflow completed successfully.
+
+=== Optimized Validation Results ===
+✅ Using best solution found (makespan: 946)
+📊 Total operations scheduled: 97
+✅ New 4-step workflow completed successfully
+📊 Found 3 repair iterations
+  Iteration 1: makespan=946, entries=97
+  Iteration 2: makespan=946, entries=97
+  Iteration 3: makespan=946, entries=97
+
+--- Running No Repair Tools ---
+
+============================================================
+Running MAPLE No Repair Tools on swv12
+Description: Full workflow without repair tools
+Timestamp: 2025-09-24 15:24:05
+============================================================
+⚠️ Warning: Agent is None in node: {'agent': None, 'type': 'JSSPAgent'}
+⚠️ Warning: Agent is None in node: {'agent': None, 'type': 'JSSPValidationAgent'}
+
+=== [OPTIMIZED MAPLE] New 4-Step Workflow ===
+Nodes: ['Unknown Agent', 'Unknown Agent']
+Edges: [{'from': 0, 'to': 1}]
+Workflow: No Repair Tools
+Validation: ✅
+Repair: ❌
+Optimization: ✅
+
+=== [OPTIMIZED MAPLE] Inter-Agent Coordination ===
+
+=== [OPTIMIZED MAPLE] New Workflow Execution ===
+🔄 Running new 7-step workflow: Query -> Validation -> Repair -> Re-validation -> Optimization -> Final Check -> Supervisor
+
+🔄 Starting New 4-Step Workflow...
+1️⃣ Loading pre-generated schedule from JSON file...
+📊 Loaded 97 schedule entries from swv12
+📊 Gemini-2.5 makespan: 1794
+📊 Initial schedule makespan: 946
+📊 Schedule entries count: 97
+📊 Sample entry: {'job': 'Job24', 'step': 1, 'machine': 'Machine1', 'start': 0, 'end': 1, 'duration': 1}
+[32m✅ Pre-generated schedule loaded successfully.
+2️⃣ ValidationTools validating schedule...
+❌ Initial validation failed: ['Job Job25: Step 6 starts before step 1 ends', 'Job Job10: Step 7 starts before step 1 ends', 'Job Job6: Step 3 starts before step 1 ends', 'Job Job39: Step 2 starts before step 1 ends', 'Job Job45: Step 5 starts before step 1 ends', 'Job Job2: Step 8 starts before step 3 ends', 'Job Job2: Step 9 starts before step 8 ends', 'Job Job1: Step 9 starts before step 3 ends', 'Job Job1: Step 10 starts before step 9 ends', 'Job Job17: Step 4 starts before step 1 ends', 'Job Job18: Step 7 starts before step 1 ends', 'Job Job19: Step 3 starts before step 1 ends', 'Job Job21: Step 3 starts before step 1 ends', 'Job Job3: Step 2 starts before step 1 ends', 'Machine Machine4: Operations overlap - Job47 step 1 and Job4 step 2', 'Machine Machine4: Operations overlap - Job4 step 2 and Job40 step 1', 'Machine Machine4: Operations overlap - Job40 step 1 and Job1 step 2', 'Machine Machine4: Operations overlap - Job1 step 2 and Job50 step 1', 'Machine Machine0: Operations overlap - Job4 step 1 and Job39 step 2']
+⚠️ Schedule validation failed but repair is disabled - using original schedule without optimization
+✅ Proceeding with original schedule without optimization due to validation failures
+5️⃣ OptimizationTools skipped - using original schedule due to validation failures
+5️⃣ OptimizationTools already skipped due to validation failures
+6️⃣ ValidationTools final check...
+⚠️ Final validation found 19 errors, but continuing with optimization result
+✅ Optimization result accepted despite validation warnings
+7️⃣ Processing final results...
+📊 Final processed schedule with 97 entries
+📊 Calculated makespan: 946
+🎯 Final makespan: 946
+✅ New workflow completed successfully.
+
+=== Optimized Validation Results ===
+✅ Using best solution found (makespan: 946)
+📊 Total operations scheduled: 97
+✅ New 4-step workflow completed successfully
+
+--- Running No Validation Tools ---
+
+============================================================
+Running MAPLE No Validation Tools on swv12
+Description: Full workflow without validation tools
+Timestamp: 2025-09-24 15:24:05
+============================================================
+⚠️ Warning: Agent is None in node: {'agent': None, 'type': 'JSSPAgent'}
+⚠️ Warning: Agent is None in node: {'agent': None, 'type': 'JSSPValidationAgent'}
+
+=== [OPTIMIZED MAPLE] New 4-Step Workflow ===
+Nodes: ['Unknown Agent', 'Unknown Agent']
+Edges: [{'from': 0, 'to': 1}]
+Workflow: No Validation Tools
+Validation: ❌
+Repair: ✅
+Optimization: ✅
+
+=== [OPTIMIZED MAPLE] Inter-Agent Coordination ===
+
+=== [OPTIMIZED MAPLE] New Workflow Execution ===
+🔄 Running new 7-step workflow: Query -> Validation -> Repair -> Re-validation -> Optimization -> Final Check -> Supervisor
+
+🔄 Starting New 4-Step Workflow...
+1️⃣ Loading pre-generated schedule from JSON file...
+📊 Loaded 97 schedule entries from swv12
+📊 Gemini-2.5 makespan: 1794
+📊 Initial schedule makespan: 946
+📊 Schedule entries count: 97
+📊 Sample entry: {'job': 'Job24', 'step': 1, 'machine': 'Machine1', 'start': 0, 'end': 1, 'duration': 1}
+[32m✅ Pre-generated schedule loaded successfully.
+2️⃣ ValidationTools disabled - skipping validation
+5️⃣ OptimizationTools optimizing schedule...
+📊 Pre-optimization makespan: 946
+📊 Post-optimization makespan: 946
+✅ Optimization completed successfully.
+6️⃣ ValidationTools disabled - skipping final validation
+7️⃣ Processing final results...
+📊 Final processed schedule with 97 entries
+📊 Calculated makespan: 946
+🎯 Final makespan: 946
+✅ New workflow completed successfully.
+
+=== Optimized Validation Results ===
+✅ Using best solution found (makespan: 946)
+📊 Total operations scheduled: 97
+✅ New 4-step workflow completed successfully
+
+--- Running No Optimization Tools ---
+
+============================================================
+Running MAPLE No Optimization Tools on swv12
+Description: Full workflow without optimization tools
+Timestamp: 2025-09-24 15:24:05
+============================================================
+⚠️ Warning: Agent is None in node: {'agent': None, 'type': 'JSSPAgent'}
+⚠️ Warning: Agent is None in node: {'agent': None, 'type': 'JSSPValidationAgent'}
+
+=== [OPTIMIZED MAPLE] New 4-Step Workflow ===
+Nodes: ['Unknown Agent', 'Unknown Agent']
+Edges: [{'from': 0, 'to': 1}]
+Workflow: No Optimization Tools
+Validation: ✅
+Repair: ✅
+Optimization: ❌
+
+=== [OPTIMIZED MAPLE] Inter-Agent Coordination ===
+
+=== [OPTIMIZED MAPLE] New Workflow Execution ===
+🔄 Running new 7-step workflow: Query -> Validation -> Repair -> Re-validation -> Optimization -> Final Check -> Supervisor
+
+🔄 Starting New 4-Step Workflow...
+1️⃣ Loading pre-generated schedule from JSON file...
+📊 Loaded 97 schedule entries from swv12
+📊 Gemini-2.5 makespan: 1794
+📊 Initial schedule makespan: 946
+📊 Schedule entries count: 97
+📊 Sample entry: {'job': 'Job24', 'step': 1, 'machine': 'Machine1', 'start': 0, 'end': 1, 'duration': 1}
+[32m✅ Pre-generated schedule loaded successfully.
+2️⃣ ValidationTools validating schedule...
+❌ Initial validation failed: ['Job Job25: Step 6 starts before step 1 ends', 'Job Job10: Step 7 starts before step 1 ends', 'Job Job6: Step 3 starts before step 1 ends', 'Job Job39: Step 2 starts before step 1 ends', 'Job Job45: Step 5 starts before step 1 ends', 'Job Job2: Step 8 starts before step 3 ends', 'Job Job2: Step 9 starts before step 8 ends', 'Job Job1: Step 9 starts before step 3 ends', 'Job Job1: Step 10 starts before step 9 ends', 'Job Job17: Step 4 starts before step 1 ends', 'Job Job18: Step 7 starts before step 1 ends', 'Job Job19: Step 3 starts before step 1 ends', 'Job Job21: Step 3 starts before step 1 ends', 'Job Job3: Step 2 starts before step 1 ends', 'Machine Machine4: Operations overlap - Job47 step 1 and Job4 step 2', 'Machine Machine4: Operations overlap - Job4 step 2 and Job40 step 1', 'Machine Machine4: Operations overlap - Job40 step 1 and Job1 step 2', 'Machine Machine4: Operations overlap - Job1 step 2 and Job50 step 1', 'Machine Machine0: Operations overlap - Job4 step 1 and Job39 step 2']
+3️⃣ RepairTools repairing schedule...
+🔧 Repair iteration 1/5
+🔧 Starting Algorithm 3: Cascading Repair and Queue Reordering
+📊 Processing 97 schedule entries
+❌ Found 19 constraint violations
+🔄 Phase I: Status Update - Identifying affected operations
+🔧 Fixing immediate constraint violations...
+🔄 Phase II: Job Precedence Repair - Fixing step ordering violations
+🔧 Repairing job precedence violations...
+🔄 Phase III: Machine Capacity Repair - Resolving machine overlaps
+🔧 Repairing machine capacity violations...
+⏰ Fixed machine overlap on Machine1
+⏰ Fixed machine overlap on Machine1
+⏰ Fixed machine overlap on Machine1
+⏰ Fixed machine overlap on Machine1
+⏰ Fixed machine overlap on Machine1
+⏰ Fixed machine overlap on Machine1
+⏰ Fixed machine overlap on Machine1
+⏰ Fixed machine overlap on Machine1
+⏰ Fixed machine overlap on Machine1
+⏰ Fixed machine overlap on Machine1
+⏰ Fixed machine overlap on Machine4
+⏰ Fixed machine overlap on Machine4
+⏰ Fixed machine overlap on Machine4
+⏰ Fixed machine overlap on Machine4
+⏰ Fixed machine overlap on Machine4
+⏰ Fixed machine overlap on Machine4
+⏰ Fixed machine overlap on Machine4
+⏰ Fixed machine overlap on Machine4
+⏰ Fixed machine overlap on Machine4
+⏰ Fixed machine overlap on Machine4
+⏰ Fixed machine overlap on Machine4
+⏰ Fixed machine overlap on Machine4
+⏰ Fixed machine overlap on Machine4
+⏰ Fixed machine overlap on Machine4
+⏰ Fixed machine overlap on Machine4
+⏰ Fixed machine overlap on Machine4
+⏰ Fixed machine overlap on Machine4
+⏰ Fixed machine overlap on Machine4
+⏰ Fixed machine overlap on Machine4
+⏰ Fixed machine overlap on Machine0
+⏰ Fixed machine overlap on Machine0
+⏰ Fixed machine overlap on Machine0
+⏰ Fixed machine overlap on Machine0
+⏰ Fixed machine overlap on Machine0
+⏰ Fixed machine overlap on Machine0
+⏰ Fixed machine overlap on Machine0
+⏰ Fixed machine overlap on Machine0
+⏰ Fixed machine overlap on Machine0
+⏰ Fixed machine overlap on Machine0
+⏰ Fixed machine overlap on Machine0
+⏰ Fixed machine overlap on Machine0
+⏰ Fixed machine overlap on Machine0
+⏰ Fixed machine overlap on Machine0
+⏰ Fixed machine overlap on Machine0
+⏰ Fixed machine overlap on Machine0
+🔄 Phase IV: Iterative Improvement - Optimizing schedule quality
+🔧 Applying iterative improvement...
+🔄 Phase V: Final validation and cleanup
+🔧 Final cleanup - ensuring valid operation times...
+⏰ Fixed invalid times for Job25 step 6
+⏰ Fixed invalid times for Job2 step 8
+⏰ Fixed invalid times for Job1 step 10
+⏰ Fixed invalid times for Job18 step 7
+⏰ Fixed invalid times for Job10 step 7
+⏰ Fixed invalid times for Job1 step 9
+✅ Algorithm 3 completed - Generated 97 schedule entries
+📊 Repair iteration 1 makespan: 946
+📊 Repair iteration 1 schedule entries: 97
+📊 Latest operations: [('Job38', 2, 946), ('Job32', 2, 934), ('Job37', 2, 913)]
+💾 Saved repair iteration 1 to: maple_optimized(gemini-2.5)/swv12_repair_iteration_1.json
+⚠️ Repair iteration 1 reduced errors from 19 to 6 (makespan: 946)
+🔧 Repair iteration 2/5
+🔧 Starting Algorithm 3: Cascading Repair and Queue Reordering
+📊 Processing 97 schedule entries
+❌ Found 6 constraint violations
+🔄 Phase I: Status Update - Identifying affected operations
+🔧 Fixing immediate constraint violations...
+🔄 Phase II: Job Precedence Repair - Fixing step ordering violations
+🔧 Repairing job precedence violations...
+🔄 Phase III: Machine Capacity Repair - Resolving machine overlaps
+🔧 Repairing machine capacity violations...
+🔄 Phase IV: Iterative Improvement - Optimizing schedule quality
+🔧 Applying iterative improvement...
+🔄 Phase V: Final validation and cleanup
+🔧 Final cleanup - ensuring valid operation times...
+⏰ Fixed invalid times for Job2 step 9
+⏰ Fixed invalid times for Job17 step 6
+⏰ Fixed invalid times for Job1 step 10
+⏰ Fixed invalid times for Job1 step 9
+⏰ Fixed invalid times for Job10 step 7
+⏰ Fixed invalid times for Job25 step 6
+✅ Algorithm 3 completed - Generated 97 schedule entries
+📊 Repair iteration 2 makespan: 946
+📊 Repair iteration 2 schedule entries: 97
+📊 Latest operations: [('Job38', 2, 946), ('Job32', 2, 934), ('Job37', 2, 913)]
+💾 Saved repair iteration 2 to: maple_optimized(gemini-2.5)/swv12_repair_iteration_2.json
+⚠️ Repair iteration 2 reduced errors from 6 to 1 (makespan: 946)
+🔧 Repair iteration 3/5
+🔧 Starting Algorithm 3: Cascading Repair and Queue Reordering
+📊 Processing 97 schedule entries
+❌ Found 1 constraint violations
+🔄 Phase I: Status Update - Identifying affected operations
+🔧 Fixing immediate constraint violations...
+🔄 Phase II: Job Precedence Repair - Fixing step ordering violations
+🔧 Repairing job precedence violations...
+🔄 Phase III: Machine Capacity Repair - Resolving machine overlaps
+🔧 Repairing machine capacity violations...
+🔄 Phase IV: Iterative Improvement - Optimizing schedule quality
+🔧 Applying iterative improvement...
+🔄 Phase V: Final validation and cleanup
+🔧 Final cleanup - ensuring valid operation times...
+⏰ Fixed invalid times for Job1 step 10
+✅ Algorithm 3 completed - Generated 97 schedule entries
+📊 Repair iteration 3 makespan: 946
+📊 Repair iteration 3 schedule entries: 97
+📊 Latest operations: [('Job38', 2, 946), ('Job32', 2, 934), ('Job37', 2, 913)]
+💾 Saved repair iteration 3 to: maple_optimized(gemini-2.5)/swv12_repair_iteration_3.json
+✅ Repair successful after 3 iterations (final makespan: 946)
+4️⃣ ValidationTools revalidating schedule...
+✅ Repair and revalidation successful
+7️⃣ Processing final results...
+📊 Final processed schedule with 97 entries
+📊 Calculated makespan: 946
+🎯 Final makespan: 946
+✅ New workflow completed successfully.
+
+=== Optimized Validation Results ===
+✅ Using best solution found (makespan: 946)
+📊 Total operations scheduled: 97
+✅ New 4-step workflow completed successfully
+📊 Found 3 repair iterations
+  Iteration 1: makespan=946, entries=97
+  Iteration 2: makespan=946, entries=97
+  Iteration 3: makespan=946, entries=97
+
+============================================================
+WORKFLOW COMPARISON SUMMARY for swv12
+============================================================
+✅ Full Workflow        | Makespan:      946 | Time: 0.08s | Repairs: 3
+✅ No Repair Tools      | Makespan:      946 | Time: 0.00s
+✅ No Validation Tools  | Makespan:      946 | Time: 0.05s
+✅ No Optimization Tools | Makespan:      946 | Time: 0.01s | Repairs: 3

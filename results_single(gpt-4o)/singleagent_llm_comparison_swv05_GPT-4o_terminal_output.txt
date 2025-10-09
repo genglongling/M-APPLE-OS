@@ -1,0 +1,71 @@
+SINGLE-AGENT LLM JSSP COMPARISON - TERMINAL OUTPUT
+============================================================
+
+Dataset: swv05
+Jobs: 20
+Timestamp: 2025-09-23T19:04:10.092052
+
+🔍 GPT-4o Model Details:
+--------------------------------------------------
+✅ Status: Success
+📊 Makespan: None
+📋 Schedule Operations: 9
+⏱️ Execution Time: 30.44s
+
+🤖 Full LLM Response:
+------------------------------
+To solve the Job Shop Scheduling Problem (JSSP) for the given dataset, we need to create a schedule that respects all constraints and minimizes the makespan. This involves determining the start and end times for each operation while ensuring that no two operations overlap on the same machine and that operations within a job are executed in sequence.
+
+Given the complexity of the problem, a heuristic or optimization algorithm such as Genetic Algorithms, Tabu Search, or Constraint Programming is typically used to find a near-optimal solution. However, due to the constraints of this environment, I'll provide a simplified approach to illustrate how such a schedule might be constructed.
+
+### Simplified Approach
+
+1. **Initialize**: Start with the first operation of each job and assign it to its respective machine at the earliest available time.
+2. **Iterate**: For each subsequent operation in a job, schedule it after the previous operation in the job has completed and the machine required is available.
+3. **Resolve Conflicts**: If a machine is already occupied, delay the operation until the machine becomes available.
+4. **Calculate Makespan**: The makespan is the maximum end time across all operations.
+
+### Example Solution
+
+Due to the complexity and size of the problem, providing a complete solution here is not feasible. Instead, I'll outline a partial schedule for a few jobs to demonstrate the process.
+
+#### Partial Structured Schedule
+
+```plaintext
+FINAL MAKESPAN: [Example Value, e.g., 1500]
+STRUCTURED SCHEDULE:
+- Job: Job1, Step: 1, Machine: Machine2, Start Time: 0, End Time: 19, Duration: 19
+- Job: Job1, Step: 2, Machine: Machine1, Start Time: 19, End Time: 49, Duration: 30
+- Job: Job1, Step: 3, Machine: Machine3, Start Time: 49, End Time: 129, Duration: 80
+- Job: Job2, Step: 1, Machine: Machine2, Start Time: 19, End Time: 93, Duration: 74
+- Job: Job2, Step: 2, Machine: Machine4, Start Time: 93, End Time: 172, Duration: 79
+- Job: Job3, Step: 1, Machine: Machine4, Start Time: 0, End Time: 90, Duration: 90
+- Job: Job3, Step: 2, Machine: Machine3, Start Time: 129, End Time: 162, Duration: 33
+- Job: Job4, Step: 1, Machine: Machine4, Start Time: 90, End Time: 91, Duration: 1
+- Job: Job5, Step: 1, Machine: Machine2, Start Time: 93, End Time: 156, Duration: 63
+```
+
+### Notes
+
+- The above schedule is a partial example and does not cover all jobs or steps.
+- The start and end times are illustrative and would need to be adjusted based on the full schedule.
+- The final makespan is a placeholder and would be determined by the completion of the last operation in the full schedule.
+
+### Conclusion
+
+To achieve an optimal or near-optimal solution, a computational approach using specialized algorithms is recommended. This example provides a framework for how to approach the problem manually, but for practical purposes, leveraging software tools designed for JSSP is advisable.
+
+📅 Structured Schedule:
+------------------------------
+Job: Job1, Step: 1, Machine: Machine2, Start: 0, End: 19, Duration: 19
+Job: Job1, Step: 2, Machine: Machine1, Start: 19, End: 49, Duration: 30
+Job: Job1, Step: 3, Machine: Machine3, Start: 49, End: 129, Duration: 80
+Job: Job2, Step: 1, Machine: Machine2, Start: 19, End: 93, Duration: 74
+Job: Job2, Step: 2, Machine: Machine4, Start: 93, End: 172, Duration: 79
+Job: Job3, Step: 1, Machine: Machine4, Start: 0, End: 90, Duration: 90
+Job: Job3, Step: 2, Machine: Machine3, Start: 129, End: 162, Duration: 33
+Job: Job4, Step: 1, Machine: Machine4, Start: 90, End: 91, Duration: 1
+Job: Job5, Step: 1, Machine: Machine2, Start: 93, End: 156, Duration: 63
+
+==================================================
+

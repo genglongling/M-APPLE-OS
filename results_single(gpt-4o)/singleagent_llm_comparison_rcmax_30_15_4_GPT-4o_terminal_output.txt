@@ -1,0 +1,76 @@
+SINGLE-AGENT LLM JSSP COMPARISON - TERMINAL OUTPUT
+============================================================
+
+Dataset: rcmax_30_15_4
+Jobs: 30
+Timestamp: 2025-09-23T17:53:36.510880
+
+🔍 GPT-4o Model Details:
+--------------------------------------------------
+✅ Status: Success
+📊 Makespan: None
+📋 Schedule Operations: 3
+⏱️ Execution Time: 18.21s
+
+🤖 Full LLM Response:
+------------------------------
+Solving a Job Shop Scheduling Problem (JSSP) with 30 jobs and multiple operations per job is a complex task that involves finding a schedule that minimizes the makespan while respecting job precedence and machine constraints. Here's a structured approach to solving this problem:
+
+### Approach:
+
+1. **Model the Problem:**
+   - Each job consists of a sequence of operations.
+   - Each operation requires a specific machine and has a fixed duration.
+   - Machines can only handle one operation at a time.
+
+2. **Constraints:**
+   - **Job Precedence:** Operations within a job must be performed in sequence.
+   - **Machine Availability:** No two operations can overlap on the same machine.
+
+3. **Objective:**
+   - Minimize the makespan, which is the total time required to complete all jobs.
+
+### Solution Strategy:
+
+1. **Initial Schedule:**
+   - Use a heuristic or algorithm (e.g., Greedy, Genetic Algorithm, Tabu Search) to generate an initial feasible schedule.
+   - Ensure that all operations respect job precedence and machine constraints.
+
+2. **Optimization:**
+   - Apply optimization techniques to improve the initial schedule.
+   - Techniques like local search, simulated annealing, or branch and bound can be used to explore better schedules.
+
+3. **Validation:**
+   - Check the final schedule to ensure all constraints are satisfied.
+   - Calculate the makespan based on the end time of the last operation.
+
+### Example Solution:
+
+Given the complexity and size of the problem, a detailed solution with exact start and end times for each operation is typically generated using specialized software or algorithms. However, I can provide a conceptual outline of how the solution might look:
+
+```plaintext
+FINAL MAKESPAN: [Calculated Makespan]
+STRUCTURED SCHEDULE:
+- Job: Job1, Step: 1, Machine: Machine5, Start Time: 0, End Time: 51, Duration: 51
+- Job: Job1, Step: 2, Machine: Machine11, Start Time: 51, End Time: 190, Duration: 139
+- Job: Job1, Step: 3, Machine: Machine13, Start Time: 190, End Time: 244, Duration: 54
+- ...
+- Job: Job30, Step: 15, Machine: Machine13, Start Time: [Start Time], End Time: [End Time], Duration: 116
+```
+
+### Note:
+
+- The actual start and end times depend on the specific scheduling algorithm used.
+- The makespan is the maximum end time across all jobs.
+- This example is illustrative; generating a precise schedule requires computational tools and iterative refinement.
+
+For a real-world solution, you would typically use a scheduling software or a custom algorithm implemented in a programming language like Python, using libraries such as OR-Tools or PuLP, to compute the exact schedule and makespan.
+
+📅 Structured Schedule:
+------------------------------
+Job: Job1, Step: 1, Machine: Machine5, Start: 0, End: 51, Duration: 51
+Job: Job1, Step: 2, Machine: Machine11, Start: 51, End: 190, Duration: 139
+Job: Job1, Step: 3, Machine: Machine13, Start: 190, End: 244, Duration: 54
+
+==================================================
+

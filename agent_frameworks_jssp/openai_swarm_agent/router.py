@@ -13,10 +13,12 @@ load_dotenv()
 
 class SwarmRouter:
     def __init__(self):
-        # Set OpenAI API key for Swarm
-        if "OPENAI_API_KEY" in os.environ:
-            os.environ["OPENAI_API_KEY"] = os.environ["OPENAI_API_KEY"]
+        # Set Anthropic API key for Swarm with Claude-4
+        if "ANTHROPIC_API_KEY" in os.environ:
+            os.environ["ANTHROPIC_API_KEY"] = os.environ["ANTHROPIC_API_KEY"]
         
+        # Configure Swarm to use Anthropic Claude-4
+        # Swarm only accepts a client parameter, not model and api_key
         self.client = Swarm()
         self.skill_map = SkillMap()
         

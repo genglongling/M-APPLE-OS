@@ -1,0 +1,130 @@
+📂 Project Root: /Users/glin/Documents/GitHub/M-APPLE
+🔍 Updated sys.path:
+/Users/glin/Documents/GitHub/M-APPLE/M-APPLE-OS/applications
+/usr/local/Cellar/python@3.10/3.10.17/Frameworks/Python.framework/Versions/3.10/lib/python310.zip
+/usr/local/Cellar/python@3.10/3.10.17/Frameworks/Python.framework/Versions/3.10/lib/python3.10
+/usr/local/Cellar/python@3.10/3.10.17/Frameworks/Python.framework/Versions/3.10/lib/python3.10/lib-dynload
+/usr/local/lib/python3.10/site-packages
+/Users/glin/Documents/GitHub/M-APPLE/M-APPLE-OS
+/Users/glin/Documents/GitHub/M-APPLE/M-APPLE-OS/src
+/Users/glin/Documents/GitHub/M-APPLE/src
+✅ utils.logging imported successfully!
+📂 Project Root: /Users/glin/Documents/GitHub/M-APPLE
+🔍 Updated sys.path:
+/Users/glin/Documents/GitHub/M-APPLE/M-APPLE-OS/applications
+/usr/local/Cellar/python@3.10/3.10.17/Frameworks/Python.framework/Versions/3.10/lib/python310.zip
+/usr/local/Cellar/python@3.10/3.10.17/Frameworks/Python.framework/Versions/3.10/lib/python3.10
+/usr/local/Cellar/python@3.10/3.10.17/Frameworks/Python.framework/Versions/3.10/lib/python3.10/lib-dynload
+/usr/local/lib/python3.10/site-packages
+/Users/glin/Documents/GitHub/M-APPLE/M-APPLE-OS
+/Users/glin/Documents/GitHub/M-APPLE/M-APPLE-OS/src
+/Users/glin/Documents/GitHub/M-APPLE/src
+/Users/glin/Documents/GitHub/M-APPLE/applications
+/Users/glin/Documents/GitHub/M-APPLE/src
+✅ tool_agent.tool imported successfully!
+✅ utils.completions imported successfully!
+✅ utils.extraction imported successfully!
+✅ utils.llm_client imported successfully!
+✅ multi_agent.crew imported successfully!
+✅ planning_agent.react_agent imported successfully!
+✅ tool_agent.tool imported successfully!
+Loading dataset: rcmax_20_15_5
+Loaded 20 jobs
+Using 15 machines: ['Machine0', 'Machine1', 'Machine2', 'Machine3', 'Machine4', 'Machine5', 'Machine6', 'Machine7', 'Machine8', 'Machine9', 'Machine10', 'Machine11', 'Machine12', 'Machine13', 'Machine14']
+
+================================================================================
+JSSP Framework Comparison - Dataset: TA72
+================================================================================
+Loaded 100 jobs from TA72
+
+🔄 Testing OpenAI_Swarm...
+
+============================================================
+Running OpenAI Swarm on TA72
+============================================================
+🔍 DEBUG: JSSP Query received (first 500 chars): 
+        Job Shop Scheduling Problem (JSSP) - Dataset: TA72
+        
+        Problem Description:
+        - Number of jobs: 100
+        - Each job has multiple operations that must be performed in sequence
+        - Each operation requires a specific machine and has a duration
+        - Each machine can only process one operation at a time
+        - Goal: Find the minimum makespan (total completion time)
+        
+        Job Specifications:
+        
+Job1:
+  Step 1: Machine Machine53, Duration 40...
+🔍 DEBUG: Query length: 43272 characters
+🔍 DEBUG: Job Scheduler output (first 200 chars): Given the complexity of job shop scheduling with 100 jobs and many operations per job, a comprehensive analysis is required to ensure optimal scheduling. Unfortunately, it's not feasible to manually p...
+✅ OpenAI_Swarm: Makespan = None, Time = 37.26s
+
+📁 Results saved to: ./results/jssp_results_TA72_OpenAI_Swarm.json
+📁 Detailed results saved to: ./results/jssp_results_TA72_OpenAI_Swarm.txt
+📄 Agent details saved to TXT: ./results/jssp_results_TA72_OpenAI_Swarm_agent_details.txt
+📄 Terminal output saved to TXT: ./results/jssp_results_TA72_OpenAI_Swarm_terminal_output.txt
+
+📁 Results saved to: results_mas(claude-4)/jssp_results_TA72_OpenAI_Swarm.json
+📁 Detailed results saved to: results_mas(claude-4)/jssp_results_TA72_OpenAI_Swarm.txt
+📄 Agent details saved to TXT: results_mas(claude-4)/jssp_results_TA72_OpenAI_Swarm_agent_details.txt
+📄 Terminal output saved to TXT: results_mas(claude-4)/jssp_results_TA72_OpenAI_Swarm_terminal_output.txt
+
+================================================================================
+JSSP FRAMEWORK COMPARISON SUMMARY
+================================================================================
+Dataset: TA72
+Jobs: 100
+Timestamp: 2025-09-24T02:07:02.812438
+
+Framework       Success  Makespan   Schedule   Time (s)   Status
+--------------------------------------------------------------------------------
+OpenAI_Swarm    ✅        None       0          37.26      Success
+
+================================================================================
+AGENT PROMPTS AND OUTPUTS DETAILS
+================================================================================
+
+🔍 OpenAI_Swarm Framework Details:
+--------------------------------------------------
+
+📝 Job Scheduler Agent Prompt:
+  role: Job Scheduler
+  goal: Create initial schedules for all jobs considering precedence constraints.
+  backstory: You are a job scheduling agent responsible for creating initial schedules for all jobs in Job Shop Scheduling Problems.
+
+💬 Job Scheduler Agent Output:
+  Job Scheduler Analysis:
+Given the complexity of job shop scheduling with 100 jobs and many operations per job, a comprehensive analysis is required to ensure optimal scheduling. Unfortunately, it's not feasible to manually provide a complete schedule and makespan calculation within this response.
+
+For such large-scale scheduling, the use of specialized software or algorithms is recommended. These tools can handle the complexity and compute the optimal schedule that satisfies all constraints—jobs performed in sequence, no overlapping operations on shared machines, and minimal makespan efficiently.
+
+If you have access to scheduling software, tools such as Gurobi, CPLEX, or specialized job shop scheduling algorithms like Tabu Search or Genetic Algorithms, they would be ideal for this problem.
+
+If you're interested in this analysis being carried out precisely with advanced computing, contact a specialization team or deploy scheduling algorithms in a computational environment.
+
+📝 Machine Coordinator Agent Prompt:
+  role: Machine Coordinator
+  goal: Resolve machine conflicts and optimize machine utilization.
+  backstory: You are a machine coordination agent responsible for resolving machine conflicts and optimizing machine utilization.
+
+💬 Machine Coordinator Agent Output:
+  Machine Coordinator Analysis:
+The complexity of your Job Shop Scheduling Problem involving the coordination of 100 jobs is quite substantial. Given the high volume and intricate detail required to properly analyze machine assignments, durations, and potential conflicts, this requires sophisticated computational tools.
+
+For detailed scheduling, it's ideal to utilize algorithmic scheduling software or specialized solvers like Gurobi, CPLEX, or use job shop scheduling algorithms (e.g., Tabu Search, Genetic Algorithms) to compute the optimal schedule and makespan. These tools efficiently handle the inherent complexity of such large-scale scheduling problems, ensuring all constraints are respected and an optimized schedule is provided.
+
+As a Machine Coordinator, I recommend contacting scheduling specialists who can leverage these computational tools to generate the required scheduling output accurately and efficiently.
+
+📝 Supervisor Agent Prompt:
+  role: JSSP Supervisor
+  goal: Coordinate all agents and provide final JSSP solution with minimum makespan.
+  backstory: You are the supervisor agent for Job Shop Scheduling Problems. Coordinate with all agents to find the optimal solution.
+
+💬 Supervisor Agent Output:
+  Supervisor Final Coordination:
+Due to the complexity and scale of this Job Shop Scheduling Problem, involving 100 jobs and numerous operations, I recommend utilizing specialized scheduling software or contacting scheduling specialists who can deploy such tools. This problem would benefit from algorithms like Gurobi, CPLEX, Tabu Search, or Genetic Algorithms to compute the optimal schedule and makespan efficiently.
+
+These tools are designed to handle the complicated constraints of job shop scheduling, ensuring job precedence and machine constraints are adhered to without overlap. For precise results, please connect with an expert in scheduling solutions or deploy such algorithms within a computational environment.
+
+If advanced analysis and computation are desired, please consult scheduling specialists for further assistance.

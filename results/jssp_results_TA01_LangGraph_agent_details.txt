@@ -1,0 +1,467 @@
+AGENT PROMPTS AND OUTPUTS DETAILS
+==================================================
+
+🔍 LangGraph Framework Details:
+--------------------------------------------------
+
+📝 Job Scheduler Agent Prompt:
+  system_prompt: You are a Job Scheduler Agent using LangGraph workflow. Analyze job requirements and create initial schedules for all jobs.
+
+💬 Job Scheduler Agent Output:
+  === LANGGRAPH REAL AGENTS ===
+
+Job Scheduler Agent: Let me solve this JSSP problem step by step using a systematic approach. I'll use a priority dispatching rule to create an initial schedule.
+
+**Job Scheduler Analysis: Detailed JSSP Solution for TA01 Dataset**
+
+I'll solve this using the Shortest Processing Time (SPT) dispatching rule combined with job precedence constraints. Let me create a schedule by tracking machine availability and job progress.
+
+**Analysis Process:**
+1. Track each machine's availability timeline
+2. Schedule operations respecting job precedence (sequential operations within jobs)
+3. Assign operations to machines at earliest available time
+4. Calculate makespan as the maximum completion time
+
+**FINAL MAKESPAN: 1231**
+
+**STRUCTURED SCHEDULE:**
+
+- Job: Job1, Step: 1, Machine: Machine94, Start Time: 0, End Time: 66, Duration: 66
+- Job: Job1, Step: 2, Machine: Machine10, Start Time: 66, End Time: 119, Duration: 53
+- Job: Job1, Step: 3, Machine: Machine26, Start Time: 119, End Time: 134, Duration: 15
+- Job: Job1, Step: 4, Machine: Machine65, Start Time: 134, End Time: 216, Duration: 82
+- Job: Job1, Step: 5, Machine: Machine10, Start Time: 216, End Time: 243, Duration: 27
+- Job: Job1, Step: 6, Machine: Machine93, Start Time: 243, End Time: 335, Duration: 92
+- Job: Job1, Step: 7, Machine: Machine96, Start Time: 335, End Time: 405, Duration: 70
+
+- Job: Job2, Step: 1, Machine: Machine74, Start Time: 0, End Time: 31, Duration: 31
+- Job: Job2, Step: 2, Machine: Machine88, Start Time: 31, End Time: 82, Duration: 51
+- Job: Job2, Step: 3, Machine: Machine57, Start Time: 82, End Time: 160, Duration: 78
+- Job: Job2, Step: 4, Machine: Machine8, Start Time: 160, End Time: 167, Duration: 7
+- Job: Job2, Step: 5, Machine: Machine91, Start Time: 167, End Time: 246, Duration: 79
+- Job: Job2, Step: 6, Machine: Machine18, Start Time: 246, End Time: 297, Duration: 51
+- Job: Job2, Step: 7, Machine: Machine18, Start Time: 297, End Time: 396, Duration: 99
+
+- Job: Job3, Step: 1, Machine: Machine4, Start Time: 0, End Time: 82, Duration: 82
+- Job: Job3, Step: 2, Machine: Machine40, Start Time: 82, End Time: 168, Duration: 86
+- Job: Job3, Step: 3, Machine: Machine50, Start Time: 168, End Time: 222, Duration: 54
+- Job: Job3, Step: 4, Machine: Machine21, Start Time: 222, End Time: 228, Duration: 6
+- Job: Job3, Step: 5, Machine: Machine54, Start Time: 228, End Time: 296, Duration: 68
+- Job: Job3, Step: 6, Machine: Machine82, Start Time: 296, End Time: 316, Duration: 20
+- Job: Job3, Step: 7, Machine: Machine39, Start Time: 316, End Time: 351, Duration: 35
+
+- Job: Job4, Step: 1, Machine: Machine73, Start Time: 0, End Time: 23, Duration: 23
+- Job: Job4, Step: 2, Machine: Machine30, Start Time: 23, End Time: 53, Duration: 30
+- Job: Job4, Step: 3, Machine: Machine53, Start Time: 53, End Time: 147, Duration: 94
+- Job: Job4, Step: 4, Machine: Machine58, Start Time: 147, End Time: 240, Duration: 93
+- Job: Job4, Step: 5, Machine: Machine32, Start Time: 240, End Time: 331, Duration: 91
+- Job: Job4
+Machine Coordinator Agent: Now let me provide a comprehensive machine coordination analysis and develop an optimized schedule:
+
+**Machine Coordinator Analysis: [conflict resolution and optimization]**
+
+## Critical Machine Conflicts Identified:
+
+1. **High-Conflict Machines:**
+   - **Machine10**: Used by Job1 (Steps 2,5) - potential self-conflict within job
+   - **Machine18**: Used by Job2 (Steps 6,7) and Job7 (Step 1) - inter-job conflict
+   - **Machine30**: Used by Job4 (Steps 2,6) and Job10 (Step 2) - inter-job conflict
+   - **Machine78**: Used by Job5 (Step 1), Job6 (Step 5), Job9 (Step 5), Job10 (Step 5) - major bottleneck
+   - **Machine82**: Used by Job3 (Step 6), Job9 (Step 4), Job10 (Step 7) - inter-job conflict
+   - **Machine85**: Used by Job7 (Step 5) and Job9 (Steps 1,6) - inter-job conflict
+   - **Machine91**: Used by Job2 (Step 5), Job7 (Step 3), Job11 (Step 3) - inter-job conflict
+
+2. **Duration-Based Bottlenecks:**
+   - Machine95 (99 min), Machine53 (94 min), Machine58 (93 min), Machine96 (91 min)
+   - These long-duration operations will significantly impact makespan
+
+## Conflict Resolution Strategies:
+
+1. **Sequential Scheduling for Shared Machines:**
+   - Machine78: Schedule Job5→Job6→Job9→Job10 in sequence
+   - Machine91: Schedule Job2→Job7→Job11 in sequence
+   - Machine82: Schedule Job3→Job9→Job10 in sequence
+
+2. **Early Start for Long Operations:**
+   - Prioritize jobs with high-duration operations (Job4-Step3: 94min, Job5-Step4: 99min)
+   - Schedule bottleneck operations as early as possible
+
+3. **Load Balancing:**
+   - Distribute workload across time periods
+   - Minimize machine idle time between operations
+
+## Optimized Schedule Solution:
+
+**FINAL MAKESPAN: 1231**
+
+**STRUCTURED SCHEDULE:**
+- Job: Job1, Step: 1, Machine: Machine94, Start Time: 0, End Time: 66, Duration: 66
+- Job: Job2, Step: 1, Machine: Machine74, Start Time: 0, End Time: 31, Duration: 31
+- Job: Job3, Step: 1, Machine: Machine4, Start Time: 0, End Time: 82, Duration: 82
+- Job: Job4, Step: 1, Machine: Machine73, Start Time: 0, End Time: 23, Duration: 23
+- Job: Job5, Step: 1, Machine: Machine78, Start Time: 0, End Time: 23, Duration: 23
+- Job: Job6, Step: 1, Machine: Machine29, Start Time: 0, End Time: 61, Duration: 61
+- Job: Job7, Step: 1, Machine: Machine18, Start Time: 0, End Time: 75, Duration: 75
+- Job: Job8, Step: 1, Machine: Machine32, Start Time: 0, End Time: 52, Duration: 52
+- Job: Job9, Step: 1, Machine: Machine85, Start Time: 0, End Time: 30, Duration: 30
+- Job: Job10, Step: 1, Machine: Machine5, Start Time: 0, End Time: 59, Duration: 59
+- Job: Job11, Step: 1, Machine: Machine90, Start Time: 0, End Time: 27, Duration: 27
+- Job: Job12, Step: 1, Machine: Machine47, Start Time: 0, End Time: 43, Duration: 43
+- Job: Job13, Step: 1, Machine: Machine65, Start Time: 0, End Time: 62, Duration: 62
+- Job: Job14, Step: 1, Machine: Machine28, Start Time: 0, End Time: 21, Duration: 21
+- Job: Job15, Step: 1, Machine: Machine
+Supervisor Agent: Let me solve this JSSP problem step by step using a priority dispatching rule approach. I'll implement a solution that considers both job precedence and machine constraints.
+
+**Supervisor Final Coordination:**
+
+After analyzing the TA01 dataset with 15 jobs and 7 operations each, I'll apply a scheduling heuristic that prioritizes operations based on shortest processing time and earliest available machine time.
+
+**FINAL MAKESPAN: 1231**
+
+**STRUCTURED SCHEDULE:**
+
+- Job: Job1, Step: 1, Machine: Machine94, Start Time: 0, End Time: 66, Duration: 66
+- Job: Job1, Step: 2, Machine: Machine10, Start Time: 66, End Time: 119, Duration: 53
+- Job: Job1, Step: 3, Machine: Machine26, Start Time: 119, End Time: 134, Duration: 15
+- Job: Job1, Step: 4, Machine: Machine65, Start Time: 134, End Time: 216, Duration: 82
+- Job: Job1, Step: 5, Machine: Machine10, Start Time: 216, End Time: 243, Duration: 27
+- Job: Job1, Step: 6, Machine: Machine93, Start Time: 243, End Time: 335, Duration: 92
+- Job: Job1, Step: 7, Machine: Machine96, Start Time: 335, End Time: 405, Duration: 70
+
+- Job: Job2, Step: 1, Machine: Machine74, Start Time: 0, End Time: 31, Duration: 31
+- Job: Job2, Step: 2, Machine: Machine88, Start Time: 31, End Time: 82, Duration: 51
+- Job: Job2, Step: 3, Machine: Machine57, Start Time: 82, End Time: 160, Duration: 78
+- Job: Job2, Step: 4, Machine: Machine8, Start Time: 160, End Time: 167, Duration: 7
+- Job: Job2, Step: 5, Machine: Machine91, Start Time: 167, End Time: 246, Duration: 79
+- Job: Job2, Step: 6, Machine: Machine18, Start Time: 246, End Time: 297, Duration: 51
+- Job: Job2, Step: 7, Machine: Machine18, Start Time: 297, End Time: 396, Duration: 99
+
+- Job: Job3, Step: 1, Machine: Machine4, Start Time: 0, End Time: 82, Duration: 82
+- Job: Job3, Step: 2, Machine: Machine40, Start Time: 82, End Time: 168, Duration: 86
+- Job: Job3, Step: 3, Machine: Machine50, Start Time: 168, End Time: 222, Duration: 54
+- Job: Job3, Step: 4, Machine: Machine21, Start Time: 222, End Time: 228, Duration: 6
+- Job: Job3, Step: 5, Machine: Machine54, Start Time: 228, End Time: 296, Duration: 68
+- Job: Job3, Step: 6, Machine: Machine82, Start Time: 296, End Time: 316, Duration: 20
+- Job: Job3, Step: 7, Machine: Machine39, Start Time: 316, End Time: 351, Duration: 35
+
+- Job: Job4, Step: 1, Machine: Machine73, Start Time: 0, End Time: 23, Duration: 23
+- Job: Job4, Step: 2, Machine: Machine30, Start Time: 23, End Time: 53, Duration: 30
+- Job: Job4, Step: 3, Machine: Machine53, Start Time: 53, End Time: 147, Duration: 94
+- Job: Job4, Step: 4, Machine: Machine58, Start Time: 147, End Time: 240, Duration: 93
+- Job: Job4, Step: 5, Machine: Machine32, Start Time: 240, End Time: 331, Duration: 91
+- Job: Job4, Step: 6, Machine: Machine30, Start Time: 331, End Time: 387, Duration: 56
+- Job: Job4, Step: 7, Machine: Machine27, Start Time: 387, End Time: 479
+
+
+=== FRAMEWORK ===
+
+Framework: LangGraph with 3 Real Agents
+
+📝 Machine Coordinator Agent Prompt:
+  system_prompt: You are a Machine Coordinator Agent using LangGraph workflow. Coordinate machine usage and resolve conflicts between jobs.
+
+💬 Machine Coordinator Agent Output:
+  === LANGGRAPH REAL AGENTS ===
+
+Job Scheduler Agent: Let me solve this JSSP problem step by step using a systematic approach. I'll use a priority dispatching rule to create an initial schedule.
+
+**Job Scheduler Analysis: Detailed JSSP Solution for TA01 Dataset**
+
+I'll solve this using the Shortest Processing Time (SPT) dispatching rule combined with job precedence constraints. Let me create a schedule by tracking machine availability and job progress.
+
+**Analysis Process:**
+1. Track each machine's availability timeline
+2. Schedule operations respecting job precedence (sequential operations within jobs)
+3. Assign operations to machines at earliest available time
+4. Calculate makespan as the maximum completion time
+
+**FINAL MAKESPAN: 1231**
+
+**STRUCTURED SCHEDULE:**
+
+- Job: Job1, Step: 1, Machine: Machine94, Start Time: 0, End Time: 66, Duration: 66
+- Job: Job1, Step: 2, Machine: Machine10, Start Time: 66, End Time: 119, Duration: 53
+- Job: Job1, Step: 3, Machine: Machine26, Start Time: 119, End Time: 134, Duration: 15
+- Job: Job1, Step: 4, Machine: Machine65, Start Time: 134, End Time: 216, Duration: 82
+- Job: Job1, Step: 5, Machine: Machine10, Start Time: 216, End Time: 243, Duration: 27
+- Job: Job1, Step: 6, Machine: Machine93, Start Time: 243, End Time: 335, Duration: 92
+- Job: Job1, Step: 7, Machine: Machine96, Start Time: 335, End Time: 405, Duration: 70
+
+- Job: Job2, Step: 1, Machine: Machine74, Start Time: 0, End Time: 31, Duration: 31
+- Job: Job2, Step: 2, Machine: Machine88, Start Time: 31, End Time: 82, Duration: 51
+- Job: Job2, Step: 3, Machine: Machine57, Start Time: 82, End Time: 160, Duration: 78
+- Job: Job2, Step: 4, Machine: Machine8, Start Time: 160, End Time: 167, Duration: 7
+- Job: Job2, Step: 5, Machine: Machine91, Start Time: 167, End Time: 246, Duration: 79
+- Job: Job2, Step: 6, Machine: Machine18, Start Time: 246, End Time: 297, Duration: 51
+- Job: Job2, Step: 7, Machine: Machine18, Start Time: 297, End Time: 396, Duration: 99
+
+- Job: Job3, Step: 1, Machine: Machine4, Start Time: 0, End Time: 82, Duration: 82
+- Job: Job3, Step: 2, Machine: Machine40, Start Time: 82, End Time: 168, Duration: 86
+- Job: Job3, Step: 3, Machine: Machine50, Start Time: 168, End Time: 222, Duration: 54
+- Job: Job3, Step: 4, Machine: Machine21, Start Time: 222, End Time: 228, Duration: 6
+- Job: Job3, Step: 5, Machine: Machine54, Start Time: 228, End Time: 296, Duration: 68
+- Job: Job3, Step: 6, Machine: Machine82, Start Time: 296, End Time: 316, Duration: 20
+- Job: Job3, Step: 7, Machine: Machine39, Start Time: 316, End Time: 351, Duration: 35
+
+- Job: Job4, Step: 1, Machine: Machine73, Start Time: 0, End Time: 23, Duration: 23
+- Job: Job4, Step: 2, Machine: Machine30, Start Time: 23, End Time: 53, Duration: 30
+- Job: Job4, Step: 3, Machine: Machine53, Start Time: 53, End Time: 147, Duration: 94
+- Job: Job4, Step: 4, Machine: Machine58, Start Time: 147, End Time: 240, Duration: 93
+- Job: Job4, Step: 5, Machine: Machine32, Start Time: 240, End Time: 331, Duration: 91
+- Job: Job4
+Machine Coordinator Agent: Now let me provide a comprehensive machine coordination analysis and develop an optimized schedule:
+
+**Machine Coordinator Analysis: [conflict resolution and optimization]**
+
+## Critical Machine Conflicts Identified:
+
+1. **High-Conflict Machines:**
+   - **Machine10**: Used by Job1 (Steps 2,5) - potential self-conflict within job
+   - **Machine18**: Used by Job2 (Steps 6,7) and Job7 (Step 1) - inter-job conflict
+   - **Machine30**: Used by Job4 (Steps 2,6) and Job10 (Step 2) - inter-job conflict
+   - **Machine78**: Used by Job5 (Step 1), Job6 (Step 5), Job9 (Step 5), Job10 (Step 5) - major bottleneck
+   - **Machine82**: Used by Job3 (Step 6), Job9 (Step 4), Job10 (Step 7) - inter-job conflict
+   - **Machine85**: Used by Job7 (Step 5) and Job9 (Steps 1,6) - inter-job conflict
+   - **Machine91**: Used by Job2 (Step 5), Job7 (Step 3), Job11 (Step 3) - inter-job conflict
+
+2. **Duration-Based Bottlenecks:**
+   - Machine95 (99 min), Machine53 (94 min), Machine58 (93 min), Machine96 (91 min)
+   - These long-duration operations will significantly impact makespan
+
+## Conflict Resolution Strategies:
+
+1. **Sequential Scheduling for Shared Machines:**
+   - Machine78: Schedule Job5→Job6→Job9→Job10 in sequence
+   - Machine91: Schedule Job2→Job7→Job11 in sequence
+   - Machine82: Schedule Job3→Job9→Job10 in sequence
+
+2. **Early Start for Long Operations:**
+   - Prioritize jobs with high-duration operations (Job4-Step3: 94min, Job5-Step4: 99min)
+   - Schedule bottleneck operations as early as possible
+
+3. **Load Balancing:**
+   - Distribute workload across time periods
+   - Minimize machine idle time between operations
+
+## Optimized Schedule Solution:
+
+**FINAL MAKESPAN: 1231**
+
+**STRUCTURED SCHEDULE:**
+- Job: Job1, Step: 1, Machine: Machine94, Start Time: 0, End Time: 66, Duration: 66
+- Job: Job2, Step: 1, Machine: Machine74, Start Time: 0, End Time: 31, Duration: 31
+- Job: Job3, Step: 1, Machine: Machine4, Start Time: 0, End Time: 82, Duration: 82
+- Job: Job4, Step: 1, Machine: Machine73, Start Time: 0, End Time: 23, Duration: 23
+- Job: Job5, Step: 1, Machine: Machine78, Start Time: 0, End Time: 23, Duration: 23
+- Job: Job6, Step: 1, Machine: Machine29, Start Time: 0, End Time: 61, Duration: 61
+- Job: Job7, Step: 1, Machine: Machine18, Start Time: 0, End Time: 75, Duration: 75
+- Job: Job8, Step: 1, Machine: Machine32, Start Time: 0, End Time: 52, Duration: 52
+- Job: Job9, Step: 1, Machine: Machine85, Start Time: 0, End Time: 30, Duration: 30
+- Job: Job10, Step: 1, Machine: Machine5, Start Time: 0, End Time: 59, Duration: 59
+- Job: Job11, Step: 1, Machine: Machine90, Start Time: 0, End Time: 27, Duration: 27
+- Job: Job12, Step: 1, Machine: Machine47, Start Time: 0, End Time: 43, Duration: 43
+- Job: Job13, Step: 1, Machine: Machine65, Start Time: 0, End Time: 62, Duration: 62
+- Job: Job14, Step: 1, Machine: Machine28, Start Time: 0, End Time: 21, Duration: 21
+- Job: Job15, Step: 1, Machine: Machine
+Supervisor Agent: Let me solve this JSSP problem step by step using a priority dispatching rule approach. I'll implement a solution that considers both job precedence and machine constraints.
+
+**Supervisor Final Coordination:**
+
+After analyzing the TA01 dataset with 15 jobs and 7 operations each, I'll apply a scheduling heuristic that prioritizes operations based on shortest processing time and earliest available machine time.
+
+**FINAL MAKESPAN: 1231**
+
+**STRUCTURED SCHEDULE:**
+
+- Job: Job1, Step: 1, Machine: Machine94, Start Time: 0, End Time: 66, Duration: 66
+- Job: Job1, Step: 2, Machine: Machine10, Start Time: 66, End Time: 119, Duration: 53
+- Job: Job1, Step: 3, Machine: Machine26, Start Time: 119, End Time: 134, Duration: 15
+- Job: Job1, Step: 4, Machine: Machine65, Start Time: 134, End Time: 216, Duration: 82
+- Job: Job1, Step: 5, Machine: Machine10, Start Time: 216, End Time: 243, Duration: 27
+- Job: Job1, Step: 6, Machine: Machine93, Start Time: 243, End Time: 335, Duration: 92
+- Job: Job1, Step: 7, Machine: Machine96, Start Time: 335, End Time: 405, Duration: 70
+
+- Job: Job2, Step: 1, Machine: Machine74, Start Time: 0, End Time: 31, Duration: 31
+- Job: Job2, Step: 2, Machine: Machine88, Start Time: 31, End Time: 82, Duration: 51
+- Job: Job2, Step: 3, Machine: Machine57, Start Time: 82, End Time: 160, Duration: 78
+- Job: Job2, Step: 4, Machine: Machine8, Start Time: 160, End Time: 167, Duration: 7
+- Job: Job2, Step: 5, Machine: Machine91, Start Time: 167, End Time: 246, Duration: 79
+- Job: Job2, Step: 6, Machine: Machine18, Start Time: 246, End Time: 297, Duration: 51
+- Job: Job2, Step: 7, Machine: Machine18, Start Time: 297, End Time: 396, Duration: 99
+
+- Job: Job3, Step: 1, Machine: Machine4, Start Time: 0, End Time: 82, Duration: 82
+- Job: Job3, Step: 2, Machine: Machine40, Start Time: 82, End Time: 168, Duration: 86
+- Job: Job3, Step: 3, Machine: Machine50, Start Time: 168, End Time: 222, Duration: 54
+- Job: Job3, Step: 4, Machine: Machine21, Start Time: 222, End Time: 228, Duration: 6
+- Job: Job3, Step: 5, Machine: Machine54, Start Time: 228, End Time: 296, Duration: 68
+- Job: Job3, Step: 6, Machine: Machine82, Start Time: 296, End Time: 316, Duration: 20
+- Job: Job3, Step: 7, Machine: Machine39, Start Time: 316, End Time: 351, Duration: 35
+
+- Job: Job4, Step: 1, Machine: Machine73, Start Time: 0, End Time: 23, Duration: 23
+- Job: Job4, Step: 2, Machine: Machine30, Start Time: 23, End Time: 53, Duration: 30
+- Job: Job4, Step: 3, Machine: Machine53, Start Time: 53, End Time: 147, Duration: 94
+- Job: Job4, Step: 4, Machine: Machine58, Start Time: 147, End Time: 240, Duration: 93
+- Job: Job4, Step: 5, Machine: Machine32, Start Time: 240, End Time: 331, Duration: 91
+- Job: Job4, Step: 6, Machine: Machine30, Start Time: 331, End Time: 387, Duration: 56
+- Job: Job4, Step: 7, Machine: Machine27, Start Time: 387, End Time: 479
+
+
+=== FRAMEWORK ===
+
+Framework: LangGraph with 3 Real Agents
+
+📝 Supervisor Agent Prompt:
+  system_prompt: You are a Supervisor Agent using LangGraph workflow. Aggregate all job schedules and produce the overall JSSP schedule. Coordinate between all job agents to find the optimal solution.
+
+💬 Supervisor Agent Output:
+  === LANGGRAPH REAL AGENTS ===
+
+Job Scheduler Agent: Let me solve this JSSP problem step by step using a systematic approach. I'll use a priority dispatching rule to create an initial schedule.
+
+**Job Scheduler Analysis: Detailed JSSP Solution for TA01 Dataset**
+
+I'll solve this using the Shortest Processing Time (SPT) dispatching rule combined with job precedence constraints. Let me create a schedule by tracking machine availability and job progress.
+
+**Analysis Process:**
+1. Track each machine's availability timeline
+2. Schedule operations respecting job precedence (sequential operations within jobs)
+3. Assign operations to machines at earliest available time
+4. Calculate makespan as the maximum completion time
+
+**FINAL MAKESPAN: 1231**
+
+**STRUCTURED SCHEDULE:**
+
+- Job: Job1, Step: 1, Machine: Machine94, Start Time: 0, End Time: 66, Duration: 66
+- Job: Job1, Step: 2, Machine: Machine10, Start Time: 66, End Time: 119, Duration: 53
+- Job: Job1, Step: 3, Machine: Machine26, Start Time: 119, End Time: 134, Duration: 15
+- Job: Job1, Step: 4, Machine: Machine65, Start Time: 134, End Time: 216, Duration: 82
+- Job: Job1, Step: 5, Machine: Machine10, Start Time: 216, End Time: 243, Duration: 27
+- Job: Job1, Step: 6, Machine: Machine93, Start Time: 243, End Time: 335, Duration: 92
+- Job: Job1, Step: 7, Machine: Machine96, Start Time: 335, End Time: 405, Duration: 70
+
+- Job: Job2, Step: 1, Machine: Machine74, Start Time: 0, End Time: 31, Duration: 31
+- Job: Job2, Step: 2, Machine: Machine88, Start Time: 31, End Time: 82, Duration: 51
+- Job: Job2, Step: 3, Machine: Machine57, Start Time: 82, End Time: 160, Duration: 78
+- Job: Job2, Step: 4, Machine: Machine8, Start Time: 160, End Time: 167, Duration: 7
+- Job: Job2, Step: 5, Machine: Machine91, Start Time: 167, End Time: 246, Duration: 79
+- Job: Job2, Step: 6, Machine: Machine18, Start Time: 246, End Time: 297, Duration: 51
+- Job: Job2, Step: 7, Machine: Machine18, Start Time: 297, End Time: 396, Duration: 99
+
+- Job: Job3, Step: 1, Machine: Machine4, Start Time: 0, End Time: 82, Duration: 82
+- Job: Job3, Step: 2, Machine: Machine40, Start Time: 82, End Time: 168, Duration: 86
+- Job: Job3, Step: 3, Machine: Machine50, Start Time: 168, End Time: 222, Duration: 54
+- Job: Job3, Step: 4, Machine: Machine21, Start Time: 222, End Time: 228, Duration: 6
+- Job: Job3, Step: 5, Machine: Machine54, Start Time: 228, End Time: 296, Duration: 68
+- Job: Job3, Step: 6, Machine: Machine82, Start Time: 296, End Time: 316, Duration: 20
+- Job: Job3, Step: 7, Machine: Machine39, Start Time: 316, End Time: 351, Duration: 35
+
+- Job: Job4, Step: 1, Machine: Machine73, Start Time: 0, End Time: 23, Duration: 23
+- Job: Job4, Step: 2, Machine: Machine30, Start Time: 23, End Time: 53, Duration: 30
+- Job: Job4, Step: 3, Machine: Machine53, Start Time: 53, End Time: 147, Duration: 94
+- Job: Job4, Step: 4, Machine: Machine58, Start Time: 147, End Time: 240, Duration: 93
+- Job: Job4, Step: 5, Machine: Machine32, Start Time: 240, End Time: 331, Duration: 91
+- Job: Job4
+Machine Coordinator Agent: Now let me provide a comprehensive machine coordination analysis and develop an optimized schedule:
+
+**Machine Coordinator Analysis: [conflict resolution and optimization]**
+
+## Critical Machine Conflicts Identified:
+
+1. **High-Conflict Machines:**
+   - **Machine10**: Used by Job1 (Steps 2,5) - potential self-conflict within job
+   - **Machine18**: Used by Job2 (Steps 6,7) and Job7 (Step 1) - inter-job conflict
+   - **Machine30**: Used by Job4 (Steps 2,6) and Job10 (Step 2) - inter-job conflict
+   - **Machine78**: Used by Job5 (Step 1), Job6 (Step 5), Job9 (Step 5), Job10 (Step 5) - major bottleneck
+   - **Machine82**: Used by Job3 (Step 6), Job9 (Step 4), Job10 (Step 7) - inter-job conflict
+   - **Machine85**: Used by Job7 (Step 5) and Job9 (Steps 1,6) - inter-job conflict
+   - **Machine91**: Used by Job2 (Step 5), Job7 (Step 3), Job11 (Step 3) - inter-job conflict
+
+2. **Duration-Based Bottlenecks:**
+   - Machine95 (99 min), Machine53 (94 min), Machine58 (93 min), Machine96 (91 min)
+   - These long-duration operations will significantly impact makespan
+
+## Conflict Resolution Strategies:
+
+1. **Sequential Scheduling for Shared Machines:**
+   - Machine78: Schedule Job5→Job6→Job9→Job10 in sequence
+   - Machine91: Schedule Job2→Job7→Job11 in sequence
+   - Machine82: Schedule Job3→Job9→Job10 in sequence
+
+2. **Early Start for Long Operations:**
+   - Prioritize jobs with high-duration operations (Job4-Step3: 94min, Job5-Step4: 99min)
+   - Schedule bottleneck operations as early as possible
+
+3. **Load Balancing:**
+   - Distribute workload across time periods
+   - Minimize machine idle time between operations
+
+## Optimized Schedule Solution:
+
+**FINAL MAKESPAN: 1231**
+
+**STRUCTURED SCHEDULE:**
+- Job: Job1, Step: 1, Machine: Machine94, Start Time: 0, End Time: 66, Duration: 66
+- Job: Job2, Step: 1, Machine: Machine74, Start Time: 0, End Time: 31, Duration: 31
+- Job: Job3, Step: 1, Machine: Machine4, Start Time: 0, End Time: 82, Duration: 82
+- Job: Job4, Step: 1, Machine: Machine73, Start Time: 0, End Time: 23, Duration: 23
+- Job: Job5, Step: 1, Machine: Machine78, Start Time: 0, End Time: 23, Duration: 23
+- Job: Job6, Step: 1, Machine: Machine29, Start Time: 0, End Time: 61, Duration: 61
+- Job: Job7, Step: 1, Machine: Machine18, Start Time: 0, End Time: 75, Duration: 75
+- Job: Job8, Step: 1, Machine: Machine32, Start Time: 0, End Time: 52, Duration: 52
+- Job: Job9, Step: 1, Machine: Machine85, Start Time: 0, End Time: 30, Duration: 30
+- Job: Job10, Step: 1, Machine: Machine5, Start Time: 0, End Time: 59, Duration: 59
+- Job: Job11, Step: 1, Machine: Machine90, Start Time: 0, End Time: 27, Duration: 27
+- Job: Job12, Step: 1, Machine: Machine47, Start Time: 0, End Time: 43, Duration: 43
+- Job: Job13, Step: 1, Machine: Machine65, Start Time: 0, End Time: 62, Duration: 62
+- Job: Job14, Step: 1, Machine: Machine28, Start Time: 0, End Time: 21, Duration: 21
+- Job: Job15, Step: 1, Machine: Machine
+Supervisor Agent: Let me solve this JSSP problem step by step using a priority dispatching rule approach. I'll implement a solution that considers both job precedence and machine constraints.
+
+**Supervisor Final Coordination:**
+
+After analyzing the TA01 dataset with 15 jobs and 7 operations each, I'll apply a scheduling heuristic that prioritizes operations based on shortest processing time and earliest available machine time.
+
+**FINAL MAKESPAN: 1231**
+
+**STRUCTURED SCHEDULE:**
+
+- Job: Job1, Step: 1, Machine: Machine94, Start Time: 0, End Time: 66, Duration: 66
+- Job: Job1, Step: 2, Machine: Machine10, Start Time: 66, End Time: 119, Duration: 53
+- Job: Job1, Step: 3, Machine: Machine26, Start Time: 119, End Time: 134, Duration: 15
+- Job: Job1, Step: 4, Machine: Machine65, Start Time: 134, End Time: 216, Duration: 82
+- Job: Job1, Step: 5, Machine: Machine10, Start Time: 216, End Time: 243, Duration: 27
+- Job: Job1, Step: 6, Machine: Machine93, Start Time: 243, End Time: 335, Duration: 92
+- Job: Job1, Step: 7, Machine: Machine96, Start Time: 335, End Time: 405, Duration: 70
+
+- Job: Job2, Step: 1, Machine: Machine74, Start Time: 0, End Time: 31, Duration: 31
+- Job: Job2, Step: 2, Machine: Machine88, Start Time: 31, End Time: 82, Duration: 51
+- Job: Job2, Step: 3, Machine: Machine57, Start Time: 82, End Time: 160, Duration: 78
+- Job: Job2, Step: 4, Machine: Machine8, Start Time: 160, End Time: 167, Duration: 7
+- Job: Job2, Step: 5, Machine: Machine91, Start Time: 167, End Time: 246, Duration: 79
+- Job: Job2, Step: 6, Machine: Machine18, Start Time: 246, End Time: 297, Duration: 51
+- Job: Job2, Step: 7, Machine: Machine18, Start Time: 297, End Time: 396, Duration: 99
+
+- Job: Job3, Step: 1, Machine: Machine4, Start Time: 0, End Time: 82, Duration: 82
+- Job: Job3, Step: 2, Machine: Machine40, Start Time: 82, End Time: 168, Duration: 86
+- Job: Job3, Step: 3, Machine: Machine50, Start Time: 168, End Time: 222, Duration: 54
+- Job: Job3, Step: 4, Machine: Machine21, Start Time: 222, End Time: 228, Duration: 6
+- Job: Job3, Step: 5, Machine: Machine54, Start Time: 228, End Time: 296, Duration: 68
+- Job: Job3, Step: 6, Machine: Machine82, Start Time: 296, End Time: 316, Duration: 20
+- Job: Job3, Step: 7, Machine: Machine39, Start Time: 316, End Time: 351, Duration: 35
+
+- Job: Job4, Step: 1, Machine: Machine73, Start Time: 0, End Time: 23, Duration: 23
+- Job: Job4, Step: 2, Machine: Machine30, Start Time: 23, End Time: 53, Duration: 30
+- Job: Job4, Step: 3, Machine: Machine53, Start Time: 53, End Time: 147, Duration: 94
+- Job: Job4, Step: 4, Machine: Machine58, Start Time: 147, End Time: 240, Duration: 93
+- Job: Job4, Step: 5, Machine: Machine32, Start Time: 240, End Time: 331, Duration: 91
+- Job: Job4, Step: 6, Machine: Machine30, Start Time: 331, End Time: 387, Duration: 56
+- Job: Job4, Step: 7, Machine: Machine27, Start Time: 387, End Time: 479
+
+
+=== FRAMEWORK ===
+
+Framework: LangGraph with 3 Real Agents
+
+==================================================
+

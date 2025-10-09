@@ -1,0 +1,254 @@
+Loading dataset: yn02 from /Users/glin/Documents/GitHub/M-APPLE/M-APPLE-OS/applications/abzswvyn/yn02.txt
+Loaded 20 jobs
+
+--- Running Full Workflow ---
+
+============================================================
+Running MAPLE Full Workflow on yn02
+Description: Complete workflow with all tools
+Timestamp: 2025-09-24 15:12:33
+============================================================
+⚠️ Warning: Agent is None in node: {'agent': None, 'type': 'JSSPAgent'}
+⚠️ Warning: Agent is None in node: {'agent': None, 'type': 'JSSPValidationAgent'}
+
+=== [OPTIMIZED MAPLE] New 4-Step Workflow ===
+Nodes: ['Unknown Agent', 'Unknown Agent']
+Edges: [{'from': 0, 'to': 1}]
+Workflow: Full Workflow
+Validation: ✅
+Repair: ✅
+Optimization: ✅
+
+=== [OPTIMIZED MAPLE] Inter-Agent Coordination ===
+
+=== [OPTIMIZED MAPLE] New Workflow Execution ===
+🔄 Running new 7-step workflow: Query -> Validation -> Repair -> Re-validation -> Optimization -> Final Check -> Supervisor
+
+🔄 Starting New 4-Step Workflow...
+1️⃣ Loading pre-generated schedule from JSON file...
+📊 Loaded 244 schedule entries from yn02
+📊 Claude-Sonnet-4 makespan: 1165
+📊 Initial schedule makespan: 801
+📊 Schedule entries count: 244
+📊 Sample entry: {'job': 'Job1', 'step': 1, 'machine': 'Machine17', 'start': 0, 'end': 15, 'duration': 15}
+[32m✅ Pre-generated schedule loaded successfully.
+2️⃣ ValidationTools validating schedule...
+❌ Initial validation failed: ['Job Job16: Step 2 starts before step 1 ends', 'Job Job17: Step 2 starts before step 1 ends']
+3️⃣ RepairTools repairing schedule...
+🔧 Repair iteration 1/5
+🔧 Starting Algorithm 3: Cascading Repair and Queue Reordering
+📊 Processing 244 schedule entries
+❌ Found 2 constraint violations
+🔄 Phase I: Status Update - Identifying affected operations
+🔧 Fixing immediate constraint violations...
+🔄 Phase II: Job Precedence Repair - Fixing step ordering violations
+🔧 Repairing job precedence violations...
+🔄 Phase III: Machine Capacity Repair - Resolving machine overlaps
+🔧 Repairing machine capacity violations...
+🔄 Phase IV: Iterative Improvement - Optimizing schedule quality
+🔧 Applying iterative improvement...
+🔄 Phase V: Final validation and cleanup
+🔧 Final cleanup - ensuring valid operation times...
+✅ Algorithm 3 completed - Generated 244 schedule entries
+📊 Repair iteration 1 makespan: 801
+📊 Repair iteration 1 schedule entries: 244
+📊 Latest operations: [('Job4', 13, 801), ('Job3', 13, 796), ('Job19', 12, 795)]
+💾 Saved repair iteration 1 to: maple_optimized(claude-4)/yn02_repair_iteration_1.json
+✅ Repair successful after 1 iterations (final makespan: 801)
+4️⃣ ValidationTools revalidating schedule...
+✅ Repair and revalidation successful
+5️⃣ OptimizationTools optimizing schedule...
+📊 Pre-optimization makespan: 801
+📊 Post-optimization makespan: 532
+✅ Optimization completed successfully.
+6️⃣ ValidationTools final check...
+⚠️ Final validation found 127 errors, but continuing with optimization result
+✅ Optimization result accepted despite validation warnings
+7️⃣ Processing final results...
+📊 Final processed schedule with 244 entries
+📊 Calculated makespan: 532
+🎯 Final makespan: 532
+✅ New workflow completed successfully.
+
+=== Optimized Validation Results ===
+✅ Using best solution found (makespan: 532)
+📊 Total operations scheduled: 244
+✅ New 4-step workflow completed successfully
+📊 Found 1 repair iterations
+  Iteration 1: makespan=801, entries=244
+
+--- Running No Repair Tools ---
+
+============================================================
+Running MAPLE No Repair Tools on yn02
+Description: Full workflow without repair tools
+Timestamp: 2025-09-24 15:12:33
+============================================================
+⚠️ Warning: Agent is None in node: {'agent': None, 'type': 'JSSPAgent'}
+⚠️ Warning: Agent is None in node: {'agent': None, 'type': 'JSSPValidationAgent'}
+
+=== [OPTIMIZED MAPLE] New 4-Step Workflow ===
+Nodes: ['Unknown Agent', 'Unknown Agent']
+Edges: [{'from': 0, 'to': 1}]
+Workflow: No Repair Tools
+Validation: ✅
+Repair: ❌
+Optimization: ✅
+
+=== [OPTIMIZED MAPLE] Inter-Agent Coordination ===
+
+=== [OPTIMIZED MAPLE] New Workflow Execution ===
+🔄 Running new 7-step workflow: Query -> Validation -> Repair -> Re-validation -> Optimization -> Final Check -> Supervisor
+
+🔄 Starting New 4-Step Workflow...
+1️⃣ Loading pre-generated schedule from JSON file...
+📊 Loaded 244 schedule entries from yn02
+📊 Claude-Sonnet-4 makespan: 1165
+📊 Initial schedule makespan: 801
+📊 Schedule entries count: 244
+📊 Sample entry: {'job': 'Job1', 'step': 1, 'machine': 'Machine17', 'start': 0, 'end': 15, 'duration': 15}
+[32m✅ Pre-generated schedule loaded successfully.
+2️⃣ ValidationTools validating schedule...
+❌ Initial validation failed: ['Job Job16: Step 2 starts before step 1 ends', 'Job Job17: Step 2 starts before step 1 ends']
+⚠️ Schedule validation failed but repair is disabled - using original schedule without optimization
+✅ Proceeding with original schedule without optimization due to validation failures
+5️⃣ OptimizationTools skipped - using original schedule due to validation failures
+5️⃣ OptimizationTools already skipped due to validation failures
+6️⃣ ValidationTools final check...
+⚠️ Final validation found 2 errors, but continuing with optimization result
+✅ Optimization result accepted despite validation warnings
+7️⃣ Processing final results...
+📊 Final processed schedule with 244 entries
+📊 Calculated makespan: 801
+🎯 Final makespan: 801
+✅ New workflow completed successfully.
+
+=== Optimized Validation Results ===
+✅ Using best solution found (makespan: 801)
+📊 Total operations scheduled: 244
+✅ New 4-step workflow completed successfully
+
+--- Running No Validation Tools ---
+
+============================================================
+Running MAPLE No Validation Tools on yn02
+Description: Full workflow without validation tools
+Timestamp: 2025-09-24 15:12:33
+============================================================
+⚠️ Warning: Agent is None in node: {'agent': None, 'type': 'JSSPAgent'}
+⚠️ Warning: Agent is None in node: {'agent': None, 'type': 'JSSPValidationAgent'}
+
+=== [OPTIMIZED MAPLE] New 4-Step Workflow ===
+Nodes: ['Unknown Agent', 'Unknown Agent']
+Edges: [{'from': 0, 'to': 1}]
+Workflow: No Validation Tools
+Validation: ❌
+Repair: ✅
+Optimization: ✅
+
+=== [OPTIMIZED MAPLE] Inter-Agent Coordination ===
+
+=== [OPTIMIZED MAPLE] New Workflow Execution ===
+🔄 Running new 7-step workflow: Query -> Validation -> Repair -> Re-validation -> Optimization -> Final Check -> Supervisor
+
+🔄 Starting New 4-Step Workflow...
+1️⃣ Loading pre-generated schedule from JSON file...
+📊 Loaded 244 schedule entries from yn02
+📊 Claude-Sonnet-4 makespan: 1165
+📊 Initial schedule makespan: 801
+📊 Schedule entries count: 244
+📊 Sample entry: {'job': 'Job1', 'step': 1, 'machine': 'Machine17', 'start': 0, 'end': 15, 'duration': 15}
+[32m✅ Pre-generated schedule loaded successfully.
+2️⃣ ValidationTools disabled - skipping validation
+5️⃣ OptimizationTools optimizing schedule...
+📊 Pre-optimization makespan: 801
+📊 Post-optimization makespan: 532
+✅ Optimization completed successfully.
+6️⃣ ValidationTools disabled - skipping final validation
+7️⃣ Processing final results...
+📊 Final processed schedule with 244 entries
+📊 Calculated makespan: 532
+🎯 Final makespan: 532
+✅ New workflow completed successfully.
+
+=== Optimized Validation Results ===
+✅ Using best solution found (makespan: 532)
+📊 Total operations scheduled: 244
+✅ New 4-step workflow completed successfully
+
+--- Running No Optimization Tools ---
+
+============================================================
+Running MAPLE No Optimization Tools on yn02
+Description: Full workflow without optimization tools
+Timestamp: 2025-09-24 15:12:34
+============================================================
+⚠️ Warning: Agent is None in node: {'agent': None, 'type': 'JSSPAgent'}
+⚠️ Warning: Agent is None in node: {'agent': None, 'type': 'JSSPValidationAgent'}
+
+=== [OPTIMIZED MAPLE] New 4-Step Workflow ===
+Nodes: ['Unknown Agent', 'Unknown Agent']
+Edges: [{'from': 0, 'to': 1}]
+Workflow: No Optimization Tools
+Validation: ✅
+Repair: ✅
+Optimization: ❌
+
+=== [OPTIMIZED MAPLE] Inter-Agent Coordination ===
+
+=== [OPTIMIZED MAPLE] New Workflow Execution ===
+🔄 Running new 7-step workflow: Query -> Validation -> Repair -> Re-validation -> Optimization -> Final Check -> Supervisor
+
+🔄 Starting New 4-Step Workflow...
+1️⃣ Loading pre-generated schedule from JSON file...
+📊 Loaded 244 schedule entries from yn02
+📊 Claude-Sonnet-4 makespan: 1165
+📊 Initial schedule makespan: 801
+📊 Schedule entries count: 244
+📊 Sample entry: {'job': 'Job1', 'step': 1, 'machine': 'Machine17', 'start': 0, 'end': 15, 'duration': 15}
+[32m✅ Pre-generated schedule loaded successfully.
+2️⃣ ValidationTools validating schedule...
+❌ Initial validation failed: ['Job Job16: Step 2 starts before step 1 ends', 'Job Job17: Step 2 starts before step 1 ends']
+3️⃣ RepairTools repairing schedule...
+🔧 Repair iteration 1/5
+🔧 Starting Algorithm 3: Cascading Repair and Queue Reordering
+📊 Processing 244 schedule entries
+❌ Found 2 constraint violations
+🔄 Phase I: Status Update - Identifying affected operations
+🔧 Fixing immediate constraint violations...
+🔄 Phase II: Job Precedence Repair - Fixing step ordering violations
+🔧 Repairing job precedence violations...
+🔄 Phase III: Machine Capacity Repair - Resolving machine overlaps
+🔧 Repairing machine capacity violations...
+🔄 Phase IV: Iterative Improvement - Optimizing schedule quality
+🔧 Applying iterative improvement...
+🔄 Phase V: Final validation and cleanup
+🔧 Final cleanup - ensuring valid operation times...
+✅ Algorithm 3 completed - Generated 244 schedule entries
+📊 Repair iteration 1 makespan: 801
+📊 Repair iteration 1 schedule entries: 244
+📊 Latest operations: [('Job4', 13, 801), ('Job3', 13, 796), ('Job19', 12, 795)]
+💾 Saved repair iteration 1 to: maple_optimized(claude-4)/yn02_repair_iteration_1.json
+✅ Repair successful after 1 iterations (final makespan: 801)
+4️⃣ ValidationTools revalidating schedule...
+✅ Repair and revalidation successful
+7️⃣ Processing final results...
+📊 Final processed schedule with 244 entries
+📊 Calculated makespan: 801
+🎯 Final makespan: 801
+✅ New workflow completed successfully.
+
+=== Optimized Validation Results ===
+✅ Using best solution found (makespan: 801)
+📊 Total operations scheduled: 244
+✅ New 4-step workflow completed successfully
+📊 Found 1 repair iterations
+  Iteration 1: makespan=801, entries=244
+
+============================================================
+WORKFLOW COMPARISON SUMMARY for yn02
+============================================================
+✅ Full Workflow        | Makespan:      532 | Time: 0.79s | Repairs: 1
+✅ No Repair Tools      | Makespan:      801 | Time: 0.00s
+✅ No Validation Tools  | Makespan:      532 | Time: 0.84s
+✅ No Optimization Tools | Makespan:      801 | Time: 0.02s | Repairs: 1

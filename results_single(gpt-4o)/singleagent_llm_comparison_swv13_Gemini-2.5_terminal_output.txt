@@ -1,0 +1,615 @@
+SINGLE-AGENT LLM JSSP COMPARISON - TERMINAL OUTPUT
+============================================================
+
+Dataset: swv13
+Jobs: 50
+Timestamp: 2025-09-23T19:29:23.328934
+
+🔍 Gemini-2.5 Model Details:
+--------------------------------------------------
+✅ Status: Success
+📊 Makespan: None
+📋 Schedule Operations: 0
+⏱️ Execution Time: 41.89s
+
+🤖 Full LLM Response:
+------------------------------
+Okay, I will solve the Job Shop Scheduling Problem for the provided "swv13" dataset. Due to the complexity of finding the absolute optimal solution for a 50-job, 10-machine problem within a reasonable timeframe, I will implement a heuristic approach. This approach will prioritize operations based on a combination of factors, including job order and operation duration, to generate a feasible schedule with a relatively low makespan.  I will use a dispatching rule-based approach, specifically the Shortest Processing Time (SPT) rule with some modifications to consider job order.
+
+Here's the breakdown of the approach and the resulting schedule:
+
+**1. Approach:**
+
+*   **Initialization:**
+    *   Create a list of all operations, ordered by job and step.
+    *   Initialize machine availability times to 0 for all machines.
+    *   Initialize job completion times to 0 for all jobs.
+*   **Scheduling Loop:**
+    *   Iterate until all operations are scheduled.
+    *   Identify eligible operations: Operations whose preceding operation in the same job has been completed.
+    *   **Priority Rule:**  For eligible operations, calculate a priority score. The primary factor will be the Shortest Processing Time (SPT), but we'll also consider the job number to maintain some semblance of the original job order.  A simple formula could be: `Priority = Duration + (JobNumber / 100)`. This adds a small bias towards earlier jobs.
+    *   Select the operation with the highest priority.
+    *   Schedule the operation on the required machine at the earliest available time, considering the machine's availability and the job's completion time.
+    *   Update the machine's availability time and the job's completion time.
+    *   Remove the scheduled operation from the list of unscheduled operations.
+*   **Makespan Calculation:** The makespan is the maximum completion time of all jobs.
+
+**2. Python Implementation:**
+
+```python
+class Operation:
+    def __init__(self, job, step, machine, duration):
+        self.job = job
+        self.step = step
+        self.machine = machine
+        self.duration = duration
+        self.start_time = 0
+        self.end_time = 0
+
+def solve_jssp(job_specifications):
+    machines = {f"Machine{i}" for i in range(10)}
+    jobs = list(job_specifications.keys())
+    num_jobs = len(jobs)
+
+    operations = []
+    for job_name, job_data in job_specifications.items():
+        for i, step_data in enumerate(job_data):
+            machine = step_data['machine']
+            duration = step_data['duration']
+            operations.append(Operation(job_name, i + 1, machine, duration))
+
+    machine_availability = {machine: 0 for machine in machines}
+    job_completion_times = {job: 0 for job in jobs}
+    scheduled_operations = []
+
+    while operations:
+        eligible_operations = []
+        for op in operations:
+            # Check if the previous step in the job is complete
+            is_eligible = True
+            for scheduled_op in scheduled_operations:
+                if scheduled_op.job == op.job and scheduled_op.step == op.step - 1:
+                    break  # Previous step found, so eligible
+            else:
+                if op.step > 1:
+                    is_eligible = False # Not the first step and previous step not found
+
+            if is_eligible:
+                eligible_operations.append(op)
+
+        if not eligible_operations:
+            break  # No eligible operations, likely an error
+
+        # Priority Rule: SPT + Job Order
+        best_op = None
+        best_priority = float('inf')
+        for op in eligible_operations:
+            job_number = int(op.job[3:])  # Extract job number from "JobX"
+            priority = op.duration + (job_number / 100)
+            if priority < best_priority:
+                best_priority = priority
+                best_op = op
+
+        # Schedule the best operation
+        start_time = max(machine_availability[best_op.machine], job_completion_times[best_op.job])
+        best_op.start_time = start_time
+        best_op.end_time = start_time + best_op.duration
+        best_op.duration = best_op.duration
+
+        machine_availability[best_op.machine] = best_op.end_time
+        job_completion_times[best_op.job] = best_op.end_time
+
+        scheduled_operations.append(best_op)
+        operations.remove(best_op)
+
+    makespan = max(job_completion_times.values())
+
+    # Format the output
+    schedule_output = "STRUCTURED SCHEDULE:\n"
+    for op in sorted(scheduled_operations, key=lambda x: x.start_time):
+        schedule_output += (
+            f"- Job: {op.job}, Step: {op.step}, Machine: {op.machine}, "
+            f"Start Time: {op.start_time}, End Time: {op.end_time}, Duration: {op.duration}\n"
+        )
+
+    return makespan, schedule_output
+
+# Data input (Job Specifications):
+job_specifications = {
+    "Job1": [
+        {"machine": "Machine4", "duration": 68},
+        {"machine": "Machine1", "duration": 39},
+        {"machine": "Machine2", "duration": 79},
+        {"machine": "Machine0", "duration": 72},
+        {"machine": "Machine3", "duration": 65},
+        {"machine": "Machine5", "duration": 82},
+        {"machine": "Machine7", "duration": 33},
+        {"machine": "Machine6", "duration": 82},
+        {"machine": "Machine8", "duration": 66},
+        {"machine": "Machine9", "duration": 55},
+    ],
+    "Job2": [
+        {"machine": "Machine2", "duration": 14},
+        {"machine": "Machine3", "duration": 45},
+        {"machine": "Machine0", "duration": 18},
+        {"machine": "Machine4", "duration": 72},
+        {"machine": "Machine1", "duration": 27},
+        {"machine": "Machine7", "duration": 57},
+        {"machine": "Machine6", "duration": 90},
+        {"machine": "Machine8", "duration": 19},
+        {"machine": "Machine9", "duration": 19},
+        {"machine": "Machine5", "duration": 50},
+    ],
+    "Job3": [
+        {"machine": "Machine4", "duration": 25},
+        {"machine": "Machine1", "duration": 77},
+        {"machine": "Machine0", "duration": 64},
+        {"machine": "Machine3", "duration": 18},
+        {"machine": "Machine2", "duration": 19},
+        {"machine": "Machine8", "duration": 27},
+        {"machine": "Machine6", "duration": 97},
+        {"machine": "Machine9", "duration": 81},
+        {"machine": "Machine7", "duration": 65},
+        {"machine": "Machine5", "duration": 11},
+    ],
+    "Job4": [
+        {"machine": "Machine3", "duration": 70},
+        {"machine": "Machine0", "duration": 29},
+        {"machine": "Machine2", "duration": 31},
+        {"machine": "Machine1", "duration": 39},
+        {"machine": "Machine4", "duration": 62},
+        {"machine": "Machine8", "duration": 12},
+        {"machine": "Machine9", "duration": 2},
+        {"machine": "Machine5", "duration": 91},
+        {"machine": "Machine7", "duration": 98},
+        {"machine": "Machine6", "duration": 91},
+    ],
+    "Job5": [
+        {"machine": "Machine2", "duration": 90},
+        {"machine": "Machine4", "duration": 51},
+        {"machine": "Machine3", "duration": 38},
+        {"machine": "Machine1", "duration": 27},
+        {"machine": "Machine0", "duration": 29},
+        {"machine": "Machine6", "duration": 67},
+        {"machine": "Machine8", "duration": 95},
+        {"machine": "Machine9", "duration": 60},
+        {"machine": "Machine7", "duration": 86},
+        {"machine": "Machine5", "duration": 64},
+    ],
+    "Job6": [
+        {"machine": "Machine4", "duration": 90},
+        {"machine": "Machine0", "duration": 55},
+        {"machine": "Machine3", "duration": 69},
+        {"machine": "Machine1", "duration": 76},
+        {"machine": "Machine2", "duration": 97},
+        {"machine": "Machine7", "duration": 94},
+        {"machine": "Machine5", "duration": 57},
+        {"machine": "Machine8", "duration": 65},
+        {"machine": "Machine9", "duration": 80},
+        {"machine": "Machine6", "duration": 24},
+    ],
+    "Job7": [
+        {"machine": "Machine1", "duration": 23},
+        {"machine": "Machine4", "duration": 13},
+        {"machine": "Machine0", "duration": 90},
+        {"machine": "Machine3", "duration": 24},
+        {"machine": "Machine2", "duration": 41},
+        {"machine": "Machine8", "duration": 69},
+        {"machine": "Machine7", "duration": 8},
+        {"machine": "Machine5", "duration": 81},
+        {"machine": "Machine6", "duration": 94},
+        {"machine": "Machine9", "duration": 76},
+    ],
+    "Job8": [
+        {"machine": "Machine3", "duration": 19},
+        {"machine": "Machine1", "duration": 37},
+        {"machine": "Machine0", "duration": 16},
+        {"machine": "Machine4", "duration": 4},
+        {"machine": "Machine2", "duration": 68},
+        {"machine": "Machine6", "duration": 45},
+        {"machine": "Machine8", "duration": 79},
+        {"machine": "Machine9", "duration": 4},
+        {"machine": "Machine7", "duration": 30},
+        {"machine": "Machine5", "duration": 33},
+    ],
+    "Job9": [
+        {"machine": "Machine2", "duration": 36},
+        {"machine": "Machine0", "duration": 76},
+        {"machine": "Machine3", "duration": 97},
+        {"machine": "Machine4", "duration": 71},
+        {"machine": "Machine1", "duration": 19},
+        {"machine": "Machine9", "duration": 87},
+        {"machine": "Machine6", "duration": 97},
+        {"machine": "Machine8", "duration": 64},
+        {"machine": "Machine5", "duration": 84},
+        {"machine": "Machine7", "duration": 43},
+    ],
+    "Job10": [
+        {"machine": "Machine2", "duration": 20},
+        {"machine": "Machine1", "duration": 77},
+        {"machine": "Machine0", "duration": 71},
+        {"machine": "Machine3", "duration": 73},
+        {"machine": "Machine4", "duration": 47},
+        {"machine": "Machine7", "duration": 88},
+        {"machine": "Machine5", "duration": 100},
+        {"machine": "Machine9", "duration": 16},
+        {"machine": "Machine8", "duration": 69},
+        {"machine": "Machine6", "duration": 77},
+    ],
+    "Job11": [
+        {"machine": "Machine3", "duration": 55},
+        {"machine": "Machine4", "duration": 96},
+        {"machine": "Machine0", "duration": 8},
+        {"machine": "Machine2", "duration": 61},
+        {"machine": "Machine1", "duration": 40},
+        {"machine": "Machine8", "duration": 46},
+        {"machine": "Machine7", "duration": 29},
+        {"machine": "Machine9", "duration": 71},
+        {"machine": "Machine5", "duration": 89},
+        {"machine": "Machine6", "duration": 59},
+    ],
+    "Job12": [
+        {"machine": "Machine2", "duration": 21},
+        {"machine": "Machine0", "duration": 18},
+        {"machine": "Machine3", "duration": 37},
+        {"machine": "Machine4", "duration": 97},
+        {"machine": "Machine1", "duration": 59},
+        {"machine": "Machine7", "duration": 79},
+        {"machine": "Machine6", "duration": 2},
+        {"machine": "Machine5", "duration": 80},
+        {"machine": "Machine8", "duration": 85},
+        {"machine": "Machine9", "duration": 59},
+    ],
+    "Job13": [
+        {"machine": "Machine4", "duration": 19},
+        {"machine": "Machine1", "duration": 83},
+        {"machine": "Machine2", "duration": 1},
+        {"machine": "Machine0", "duration": 95},
+        {"machine": "Machine3", "duration": 48},
+        {"machine": "Machine9", "duration": 37},
+        {"machine": "Machine7", "duration": 59},
+        {"machine": "Machine5", "duration": 56},
+        {"machine": "Machine8", "duration": 57},
+        {"machine": "Machine6", "duration": 81},
+    ],
+    "Job14": [
+        {"machine": "Machine0", "duration": 8},
+        {"machine": "Machine1", "duration": 60},
+        {"machine": "Machine4", "duration": 91},
+        {"machine": "Machine3", "duration": 85},
+        {"machine": "Machine2", "duration": 27},
+        {"machine": "Machine9", "duration": 39},
+        {"machine": "Machine5", "duration": 31},
+        {"machine": "Machine6", "duration": 62},
+        {"machine": "Machine7", "duration": 94},
+        {"machine": "Machine8", "duration": 12},
+    ],
+    "Job15": [
+        {"machine": "Machine4", "duration": 2},
+        {"machine": "Machine3", "duration": 10},
+        {"machine": "Machine0", "duration": 17},
+        {"machine": "Machine1", "duration": 38},
+        {"machine": "Machine2", "duration": 96},
+        {"machine": "Machine6", "duration": 21},
+        {"machine": "Machine9", "duration": 81},
+        {"machine": "Machine8", "duration": 64},
+        {"machine": "Machine5", "duration": 76},
+        {"machine": "Machine7", "duration": 46},
+    ],
+    "Job16": [
+        {"machine": "Machine2", "duration": 46},
+        {"machine": "Machine1", "duration": 4},
+        {"machine": "Machine4", "duration": 25},
+        {"machine": "Machine3", "duration": 41},
+        {"machine": "Machine0", "duration": 11},
+        {"machine": "Machine5", "duration": 96},
+        {"machine": "Machine9", "duration": 56},
+        {"machine": "Machine6", "duration": 10},
+        {"machine": "Machine7", "duration": 25},
+        {"machine": "Machine8", "duration": 32},
+    ],
+    "Job17": [
+        {"machine": "Machine0", "duration": 21},
+        {"machine": "Machine1", "duration": 77},
+        {"machine": "Machine4", "duration": 22},
+        {"machine": "Machine2", "duration": 72},
+        {"machine": "Machine3", "duration": 53},
+        {"machine": "Machine9", "duration": 28},
+        {"machine": "Machine7", "duration": 23},
+        {"machine": "Machine5", "duration": 2},
+        {"machine": "Machine8", "duration": 52},
+        {"machine": "Machine6", "duration": 83},
+    ],
+    "Job18": [
+        {"machine": "Machine3", "duration": 9},
+        {"machine": "Machine4", "duration": 37},
+        {"machine": "Machine0", "duration": 2},
+        {"machine": "Machine2", "duration": 74},
+        {"machine": "Machine1", "duration": 15},
+        {"machine": "Machine8", "duration": 26},
+        {"machine": "Machine5", "duration": 83},
+        {"machine": "Machine6", "duration": 90},
+        {"machine": "Machine7", "duration": 51},
+        {"machine": "Machine9", "duration": 80},
+    ],
+    "Job19": [
+        {"machine": "Machine3", "duration": 6},
+        {"machine": "Machine1", "duration": 7},
+        {"machine": "Machine0", "duration": 57},
+        {"machine": "Machine2", "duration": 4},
+        {"machine": "Machine4", "duration": 56},
+        {"machine": "Machine7", "duration": 11},
+        {"machine": "Machine5", "duration": 57},
+        {"machine": "Machine8", "duration": 12},
+        {"machine": "Machine6", "duration": 94},
+        {"machine": "Machine9", "duration": 29},
+    ],
+    "Job20": [
+        {"machine": "Machine1", "duration": 40},
+        {"machine": "Machine2", "duration": 93},
+        {"machine": "Machine3", "duration": 65},
+        {"machine": "Machine4", "duration": 66},
+        {"machine": "Machine0", "duration": 96},
+        {"machine": "Machine9", "duration": 5},
+        {"machine": "Machine7", "duration": 32},
+        {"machine": "Machine8", "duration": 85},
+        {"machine": "Machine5", "duration": 93},
+        {"machine": "Machine6", "duration": 94},
+    ],
+    "Job21": [
+        {"machine": "Machine1", "duration": 38},
+        {"machine": "Machine2", "duration": 19},
+        {"machine": "Machine4", "duration": 22},
+        {"machine": "Machine0", "duration": 73},
+        {"machine": "Machine3", "duration": 7},
+        {"machine": "Machine5", "duration": 63},
+        {"machine": "Machine8", "duration": 28},
+        {"machine": "Machine6", "duration": 23},
+        {"machine": "Machine9", "duration": 11},
+        {"machine": "Machine7", "duration": 84},
+    ],
+    "Job22": [
+        {"machine": "Machine1", "duration": 96},
+        {"machine": "Machine4", "duration": 10},
+        {"machine": "Machine0", "duration": 29},
+        {"machine": "Machine3", "duration": 59},
+        {"machine": "Machine2", "duration": 94},
+        {"machine": "Machine5", "duration": 26},
+        {"machine": "Machine7", "duration": 22},
+        {"machine": "Machine8", "duration": 52},
+        {"machine": "Machine6", "duration": 37},
+        {"machine": "Machine9", "duration": 50},
+    ],
+    "Job23": [
+        {"machine": "Machine1", "duration": 38},
+        {"machine": "Machine3", "duration": 31},
+        {"machine": "Machine2", "duration": 76},
+        {"machine": "Machine0", "duration": 8},
+        {"machine": "Machine4", "duration": 8},
+        {"machine": "Machine6", "duration": 50},
+        {"machine": "Machine5", "duration": 95},
+        {"machine": "Machine8", "duration": 5},
+        {"machine": "Machine9", "duration": 25},
+        {"machine": "Machine7", "duration": 62},
+    ],
+    "Job24": [
+        {"machine": "Machine0", "duration": 15},
+        {"machine": "Machine2", "duration": 84},
+        {"machine": "Machine4", "duration": 100},
+        {"machine": "Machine3", "duration": 76},
+        {"machine": "Machine1", "duration": 66},
+        {"machine": "Machine7", "duration": 56},
+        {"machine": "Machine5", "duration": 95},
+        {"machine": "Machine8", "duration": 94},
+        {"machine": "Machine6", "duration": 56},
+        {"machine": "Machine9", "duration": 85},
+    ],
+    "Job25": [
+        {"machine": "Machine3", "duration": 73},
+        {"machine": "Machine2", "duration": 38},
+        {"machine": "Machine1", "duration": 84},
+        {"machine": "Machine0", "duration": 42},
+        {"machine": "Machine4", "duration": 37},
+        {"machine": "Machine5", "duration": 16},
+        {"machine": "Machine7", "duration": 24},
+        {"machine": "Machine9", "duration": 59},
+        {"machine": "Machine6", "duration": 60},
+        {"machine": "Machine8", "duration": 23},
+    ],
+    "Job26": [
+        {"machine": "Machine3", "duration": 43},
+        {"machine": "Machine1", "duration": 79},
+        {"machine": "Machine0", "duration": 80},
+        {"machine": "Machine2", "duration": 44},
+        {"machine": "Machine4", "duration": 65},
+        {"machine": "Machine5", "duration": 81},
+        {"machine": "Machine7", "duration": 7},
+        {"machine": "Machine8", "duration": 93},
+        {"machine": "Machine6", "duration": 55},
+        {"machine": "Machine9", "duration": 34},
+    ],
+    "Job27": [
+        {"machine": "Machine2", "duration": 8},
+        {"machine": "Machine4", "duration": 2},
+        {"machine": "Machine0", "duration": 12},
+        {"machine": "Machine3", "duration": 55},
+        {"machine": "Machine1", "duration": 60},
+        {"machine": "Machine9", "duration": 91},
+        {"machine": "Machine6", "duration": 6},
+        {"machine": "Machine5", "duration": 83},
+        {"machine": "Machine8", "duration": 31},
+        {"machine": "Machine7", "duration": 91},
+    ],
+    "Job28": [
+        {"machine": "Machine0", "duration": 8},
+        {"machine": "Machine4", "duration": 46},
+        {"machine": "Machine3", "duration": 47},
+        {"machine": "Machine2", "duration": 57},
+        {"machine": "Machine1", "duration": 47},
+        {"machine": "Machine9", "duration": 55},
+        {"machine": "Machine8", "duration": 74},
+        {"machine": "Machine7", "duration": 98},
+        {"machine": "Machine6", "duration": 54},
+        {"machine": "Machine5", "duration": 51},
+    ],
+    "Job29": [
+        {"machine": "Machine2", "duration": 56},
+        {"machine": "Machine4", "duration": 90},
+        {"machine": "Machine1", "duration": 41},
+        {"machine": "Machine0", "duration": 35},
+        {"machine": "Machine3", "duration": 62},
+        {"machine": "Machine7", "duration": 4},
+        {"machine": "Machine5", "duration": 15},
+        {"machine": "Machine9", "duration": 89},
+        {"machine": "Machine6", "duration": 73},
+        {"machine": "Machine8", "duration": 66},
+    ],
+    "Job30": [
+        {"machine": "Machine0", "duration": 2},
+        {"machine": "Machine4", "duration": 39},
+        {"machine": "Machine3", "duration": 44},
+        {"machine": "Machine1", "duration": 68},
+        {"machine": "Machine2", "duration": 54},
+        {"machine": "Machine7", "duration": 7},
+        {"machine": "Machine8", "duration": 76},
+        {"machine": "Machine9", "duration": 29},
+        {"machine": "Machine5", "duration": 90},
+        {"machine": "Machine6", "duration": 53},
+    ],
+    "Job31": [
+        {"machine": "Machine2", "duration": 34},
+        {"machine": "Machine0", "duration": 94},
+        {"machine": "Machine3", "duration": 1},
+        {"machine": "Machine1", "duration": 23},
+        {"machine": "Machine4", "duration": 45},
+        {"machine": "Machine8", "duration": 83},
+        {"machine": "Machine7", "duration": 84},
+        {"machine": "Machine5", "duration": 49},
+        {"machine": "Machine6", "duration": 67},
+        {"machine": "Machine9", "duration": 49},
+    ],
+    "Job32": [
+        {"machine": "Machine4", "duration": 4},
+        {"machine": "Machine2", "duration": 70},
+        {"machine": "Machine1", "duration": 19},
+        {"machine": "Machine0", "duration": 19},
+        {"machine": "Machine3", "duration": 92},
+        {"machine": "Machine5", "duration": 70},
+        {"machine": "Machine7", "duration": 33},
+        {"machine": "Machine9", "duration": 50},
+        {"machine": "Machine8", "duration": 82},
+        {"machine": "Machine6", "duration": 48},
+    ],
+    "Job33": [
+        {"machine": "Machine4", "duration": 64},
+        {"machine": "Machine2", "duration": 76},
+        {"machine": "Machine0", "duration": 70},
+        {"machine": "Machine3", "duration": 83},
+        {"machine": "Machine1", "duration": 91},
+        {"machine": "Machine7", "duration": 98},
+        {"machine": "Machine8", "duration": 37},
+        {"machine": "Machine5", "duration": 3},
+        {"machine": "Machine9", "duration": 75},
+        {"machine": "Machine6", "duration": 92},
+    ],
+    "Job34": [
+        {"machine": "Machine3", "duration": 96},
+        {"machine": "Machine1", "duration": 17},
+        {"machine": "Machine0", "duration": 20},
+        {"machine": "Machine4", "duration": 13},
+        {"machine": "Machine2", "duration": 28},
+        {"machine": "Machine7", "duration": 21},
+        {"machine": "Machine9", "duration": 65},
+        {"machine": "Machine5", "duration": 87},
+        {"machine": "Machine6", "duration": 54},
+        {"machine": "Machine8", "duration": 98},
+    ],
+    "Job35": [
+        {"machine": "Machine0", "duration": 68},
+        {"machine": "Machine4", "duration": 40},
+        {"machine": "Machine3", "duration": 98},
+        {"machine": "Machine2", "duration": 90},
+        {"machine": "Machine1", "duration": 38},
+        {"machine": "Machine7", "duration": 45},
+        {"machine": "Machine8", "duration": 21},
+        {"machine": "Machine5", "duration": 9},
+        {"machine": "Machine9", "duration": 3},
+        {"machine": "Machine6", "duration": 47},
+    ],
+    "Job36": [
+        {"machine": "Machine0", "duration": 58},
+        {"machine": "Machine4", "duration": 19},
+        {"machine": "Machine2", "duration": 16},
+        {"machine": "Machine3", "duration": 74},
+        {"machine": "Machine1", "duration": 32},
+        {"machine": "Machine9", "duration": 32},
+        {"machine": "Machine5", "duration": 58},
+        {"machine": "Machine6", "duration": 93},
+        {"machine": "Machine7", "duration": 1},
+        {"machine": "Machine8", "duration": 80},
+    ],
+    "Job37": [
+        {"machine": "Machine0", "duration": 32},
+        {"machine": "Machine2", "duration": 99},
+        {"machine": "Machine1", "duration": 95},
+        {"machine": "Machine3", "duration": 2},
+        {"machine": "Machine4", "duration": 8},
+        {"machine": "Machine9", "duration": 55},
+        {"machine": "Machine6", "duration": 32},
+        {"machine": "Machine8", "duration": 26},
+        {"machine": "Machine5", "duration": 6},
+        {"machine": "Machine7", "duration": 68},
+    ],
+    "Job38": [
+        {"machine": "Machine3", "duration": 7},
+        {"machine": "Machine4", "duration": 45},
+        {"machine": "Machine2", "duration": 19},
+        {"machine": "Machine0", "duration": 97},
+        {"machine": "Machine1", "duration": 56},
+        {"machine": "Machine7", "duration": 22},
+        {"machine": "Machine9", "duration": 72},
+        {"machine": "Machine8", "duration": 98},
+        {"machine": "Machine5", "duration": 59},
+        {"machine": "Machine6", "duration": 20},
+    ],
+    "Job39": [
+        {"machine": "Machine2", "duration": 97},
+        {"machine": "Machine4", "duration": 98},
+        {"machine": "Machine3", "duration": 43},
+        {"machine": "Machine0", "duration": 28},
+        {"machine": "Machine1", "duration": 23},
+        {"machine": "Machine5", "duration": 3},
+        {"machine": "Machine8", "duration": 75},
+        {"machine": "Machine9", "duration": 43},
+        {"machine": "Machine7", "duration": 58},
+        {"machine": "Machine6", "duration": 71},
+    ],
+    "Job40": [
+        {"machine": "Machine3", "duration": 31},
+        {"machine": "Machine0", "duration": 88},
+        {"machine": "Machine2", "duration": 88},
+        {"machine": "Machine1", "duration": 82},
+        {"machine": "Machine4", "duration": 65},
+        {"machine": "Machine5", "duration": 53},
+        {"machine": "Machine9", "duration": 15},
+        {"machine": "Machine7", "duration": 68},
+        {"machine": "Machine6", "duration": 60},
+        {"machine": "Machine8", "duration": 99},
+    ],
+    "Job41": [
+        {"machine": "Machine4", "duration": 4},
+        {"machine": "Machine0", "duration": 100},
+        {"machine": "Machine2", "duration": 95},
+        {"machine": "Machine1", "duration": 11},
+        {"machine": "Machine3", "duration": 28},
+        {"machine": "Machine5", "duration": 80},
+        {"machine": "Machine7", "duration": 25},
+        {"machine": "Machine9", "duration": 87},
+        {"machine": "Machine6", "duration": 25},
+        {"machine": "Machine8", "duration": 9},
+    ],
+    "Job42": [
+        {"machine": "Machine0",
+
+==================================================
+

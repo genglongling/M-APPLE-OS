@@ -1,0 +1,838 @@
+JSSP FRAMEWORK COMPARISON RESULTS
+==================================================
+
+Dataset: swv03
+Jobs: 20
+Timestamp: 2025-09-24T03:14:17.336005
+
+FRAMEWORK PERFORMANCE SUMMARY
+----------------------------------------
+AutoGen: ✅ Makespan=25, Schedule_Ops=1054, Time=258.00s, Status=Success
+
+
+DETAILED AGENT PROMPTS AND OUTPUTS
+==================================================
+
+🔍 AutoGen Framework Details:
+--------------------------------------------------
+
+📝 Job Scheduler Agent Prompt:
+  system_message: You are a Job Scheduler Agent responsible for analyzing job requirements and creating initial schedules.
+  query: 
+        Job Shop Scheduling Problem (JSSP) - Dataset: swv03
+        
+        Problem Description:
+        - Number of jobs: 20
+        - Each job has multiple operations that must be performed in sequence
+        - Each operation requires a specific machine and has a duration
+        - Each machine can only process one operation at a time
+        - Goal: Find the minimum makespan (total completion time)
+        
+        Job Specifications:
+        
+Job1:
+  Step 1: Machine Machine2, Duration 19
+  Step 2: Machine Machine0, Duration 30
+  Step 3: Machine Machine1, Duration 68
+  Step 4: Machine Machine4, Duration 55
+  Step 5: Machine Machine3, Duration 24
+  Step 6: Machine Machine8, Duration 34
+  Step 7: Machine Machine7, Duration 72
+  Step 8: Machine Machine5, Duration 32
+  Step 9: Machine Machine9, Duration 62
+  Step 10: Machine Machine6, Duration 45
+Job2:
+  Step 1: Machine Machine2, Duration 63
+  Step 2: Machine Machine1, Duration 11
+  Step 3: Machine Machine4, Duration 65
+  Step 4: Machine Machine3, Duration 16
+  Step 5: Machine Machine0, Duration 67
+  Step 6: Machine Machine9, Duration 95
+  Step 7: Machine Machine8, Duration 23
+  Step 8: Machine Machine7, Duration 82
+  Step 9: Machine Machine6, Duration 52
+  Step 10: Machine Machine5, Duration 53
+Job3:
+  Step 1: Machine Machine2, Duration 19
+  Step 2: Machine Machine4, Duration 17
+  Step 3: Machine Machine1, Duration 79
+  Step 4: Machine Machine3, Duration 49
+  Step 5: Machine Machine0, Duration 12
+  Step 6: Machine Machine7, Duration 41
+  Step 7: Machine Machine9, Duration 67
+  Step 8: Machine Machine8, Duration 40
+  Step 9: Machine Machine6, Duration 25
+  Step 10: Machine Machine5, Duration 42
+Job4:
+  Step 1: Machine Machine0, Duration 42
+  Step 2: Machine Machine2, Duration 71
+  Step 3: Machine Machine3, Duration 27
+  Step 4: Machine Machine4, Duration 95
+  Step 5: Machine Machine1, Duration 19
+  Step 6: Machine Machine5, Duration 48
+  Step 7: Machine Machine8, Duration 100
+  Step 8: Machine Machine6, Duration 31
+  Step 9: Machine Machine7, Duration 25
+  Step 10: Machine Machine9, Duration 38
+Job5:
+  Step 1: Machine Machine3, Duration 1
+  Step 2: Machine Machine1, Duration 100
+  Step 3: Machine Machine4, Duration 68
+  Step 4: Machine Machine0, Duration 94
+  Step 5: Machine Machine2, Duration 89
+  Step 6: Machine Machine5, Duration 86
+  Step 7: Machine Machine7, Duration 35
+  Step 8: Machine Machine9, Duration 29
+  Step 9: Machine Machine8, Duration 56
+  Step 10: Machine Machine6, Duration 55
+Job6:
+  Step 1: Machine Machine4, Duration 93
+  Step 2: Machine Machine1, Duration 53
+  Step 3: Machine Machine2, Duration 4
+  Step 4: Machine Machine3, Duration 48
+  Step 5: Machine Machine0, Duration 57
+  Step 6: Machine Machine8, Duration 99
+  Step 7: Machine Machine7, Duration 67
+  Step 8: Machine Machine5, Duration 86
+  Step 9: Machine Machine6, Duration 80
+  Step 10: Machine Machine9, Duration 60
+Job7:
+  Step 1: Machine Machine4, Duration 82
+  Step 2: Machine Machine1, Duration 95
+  Step 3: Machine Machine2, Duration 12
+  Step 4: Machine Machine0, Duration 60
+  Step 5: Machine Machine3, Duration 80
+  Step 6: Machine Machine8, Duration 88
+  Step 7: Machine Machine7, Duration 5
+  Step 8: Machine Machine6, Duration 81
+  Step 9: Machine Machine9, Duration 52
+  Step 10: Machine Machine5, Duration 69
+Job8:
+  Step 1: Machine Machine3, Duration 79
+  Step 2: Machine Machine1, Duration 31
+  Step 3: Machine Machine4, Duration 63
+  Step 4: Machine Machine0, Duration 28
+  Step 5: Machine Machine2, Duration 64
+  Step 6: Machine Machine8, Duration 63
+  Step 7: Machine Machine5, Duration 29
+  Step 8: Machine Machine7, Duration 75
+  Step 9: Machine Machine9, Duration 18
+  Step 10: Machine Machine6, Duration 33
+Job9:
+  Step 1: Machine Machine4, Duration 9
+  Step 2: Machine Machine1, Duration 64
+  Step 3: Machine Machine2, Duration 31
+  Step 4: Machine Machine0, Duration 13
+  Step 5: Machine Machine3, Duration 33
+  Step 6: Machine Machine9, Duration 82
+  Step 7: Machine Machine6, Duration 79
+  Step 8: Machine Machine5, Duration 30
+  Step 9: Machine Machine7, Duration 84
+  Step 10: Machine Machine8, Duration 20
+Job10:
+  Step 1: Machine Machine2, Duration 14
+  Step 2: Machine Machine0, Duration 56
+  Step 3: Machine Machine1, Duration 95
+  Step 4: Machine Machine4, Duration 34
+  Step 5: Machine Machine3, Duration 13
+  Step 6: Machine Machine6, Duration 16
+  Step 7: Machine Machine5, Duration 44
+  Step 8: Machine Machine7, Duration 45
+  Step 9: Machine Machine8, Duration 62
+  Step 10: Machine Machine9, Duration 86
+Job11:
+  Step 1: Machine Machine4, Duration 66
+  Step 2: Machine Machine3, Duration 9
+  Step 3: Machine Machine2, Duration 66
+  Step 4: Machine Machine1, Duration 46
+  Step 5: Machine Machine0, Duration 12
+  Step 6: Machine Machine5, Duration 10
+  Step 7: Machine Machine7, Duration 58
+  Step 8: Machine Machine6, Duration 6
+  Step 9: Machine Machine8, Duration 62
+  Step 10: Machine Machine9, Duration 17
+Job12:
+  Step 1: Machine Machine4, Duration 89
+  Step 2: Machine Machine1, Duration 52
+  Step 3: Machine Machine2, Duration 37
+  Step 4: Machine Machine3, Duration 74
+  Step 5: Machine Machine0, Duration 7
+  Step 6: Machine Machine8, Duration 43
+  Step 7: Machine Machine5, Duration 96
+  Step 8: Machine Machine7, Duration 89
+  Step 9: Machine Machine6, Duration 21
+  Step 10: Machine Machine9, Duration 66
+Job13:
+  Step 1: Machine Machine1, Duration 73
+  Step 2: Machine Machine3, Duration 68
+  Step 3: Machine Machine2, Duration 5
+  Step 4: Machine Machine4, Duration 49
+  Step 5: Machine Machine0, Duration 67
+  Step 6: Machine Machine9, Duration 23
+  Step 7: Machine Machine7, Duration 7
+  Step 8: Machine Machine5, Duration 44
+  Step 9: Machine Machine8, Duration 30
+  Step 10: Machine Machine6, Duration 29
+Job14:
+  Step 1: Machine Machine2, Duration 21
+  Step 2: Machine Machine0, Duration 68
+  Step 3: Machine Machine1, Duration 88
+  Step 4: Machine Machine4, Duration 75
+  Step 5: Machine Machine3, Duration 64
+  Step 6: Machine Machine6, Duration 6
+  Step 7: Machine Machine8, Duration 72
+  Step 8: Machine Machine7, Duration 66
+  Step 9: Machine Machine9, Duration 66
+  Step 10: Machine Machine5, Duration 56
+Job15:
+  Step 1: Machine Machine1, Duration 24
+  Step 2: Machine Machine4, Duration 25
+  Step 3: Machine Machine2, Duration 69
+  Step 4: Machine Machine0, Duration 27
+  Step 5: Machine Machine3, Duration 51
+  Step 6: Machine Machine9, Duration 60
+  Step 7: Machine Machine8, Duration 26
+  Step 8: Machine Machine6, Duration 45
+  Step 9: Machine Machine5, Duration 77
+  Step 10: Machine Machine7, Duration 93
+Job16:
+  Step 1: Machine Machine2, Duration 19
+  Step 2: Machine Machine3, Duration 17
+  Step 3: Machine Machine1, Duration 82
+  Step 4: Machine Machine4, Duration 75
+  Step 5: Machine Machine0, Duration 34
+  Step 6: Machine Machine5, Duration 67
+  Step 7: Machine Machine9, Duration 89
+  Step 8: Machine Machine6, Duration 91
+  Step 9: Machine Machine7, Duration 13
+  Step 10: Machine Machine8, Duration 35
+Job17:
+  Step 1: Machine Machine4, Duration 2
+  Step 2: Machine Machine0, Duration 21
+  Step 3: Machine Machine3, Duration 83
+  Step 4: Machine Machine1, Duration 19
+  Step 5: Machine Machine2, Duration 65
+  Step 6: Machine Machine6, Duration 65
+  Step 7: Machine Machine8, Duration 8
+  Step 8: Machine Machine9, Duration 68
+  Step 9: Machine Machine7, Duration 60
+  Step 10: Machine Machine5, Duration 7
+Job18:
+  Step 1: Machine Machine1, Duration 63
+  Step 2: Machine Machine3, Duration 49
+  Step 3: Machine Machine2, Duration 4
+  Step 4: Machine Machine4, Duration 2
+  Step 5: Machine Machine0, Duration 50
+  Step 6: Machine Machine9, Duration 99
+  Step 7: Machine Machine5, Duration 27
+  Step 8: Machine Machine6, Duration 68
+  Step 9: Machine Machine8, Duration 46
+  Step 10: Machine Machine7, Duration 89
+Job19:
+  Step 1: Machine Machine0, Duration 48
+  Step 2: Machine Machine4, Duration 45
+  Step 3: Machine Machine3, Duration 100
+  Step 4: Machine Machine2, Duration 66
+  Step 5: Machine Machine1, Duration 30
+  Step 6: Machine Machine6, Duration 58
+  Step 7: Machine Machine7, Duration 73
+  Step 8: Machine Machine9, Duration 94
+  Step 9: Machine Machine5, Duration 36
+  Step 10: Machine Machine8, Duration 5
+Job20:
+  Step 1: Machine Machine2, Duration 36
+  Step 2: Machine Machine0, Duration 53
+  Step 3: Machine Machine4, Duration 56
+  Step 4: Machine Machine3, Duration 57
+  Step 5: Machine Machine1, Duration 77
+  Step 6: Machine Machine9, Duration 7
+  Step 7: Machine Machine6, Duration 59
+  Step 8: Machine Machine8, Duration 8
+  Step 9: Machine Machine5, Duration 15
+  Step 10: Machine Machine7, Duration 23
+        
+        REQUIRED OUTPUT FORMAT:
+        You must provide your solution in the following exact format:
+        
+        1. FINAL MAKESPAN: [integer value]
+        2. STRUCTURED SCHEDULE:
+           For each operation, provide:
+           - Job: [job_name]
+           - Step: [step_number]
+           - Machine: [machine_name]
+           - Start Time: [start_time]
+           - End Time: [end_time]
+           - Duration: [duration]
+        
+        Example format:
+        FINAL MAKESPAN: 25
+        STRUCTURED SCHEDULE:
+        - Job: Job1, Step: 1, Machine: Machine0, Start Time: 0, End Time: 3, Duration: 3
+        - Job: Job1, Step: 2, Machine: Machine1, Start Time: 3, End Time: 7, Duration: 4
+        - Job: Job2, Step: 1, Machine: Machine1, Start Time: 7, End Time: 10, Duration: 3
+        
+        Please solve this Job Shop Scheduling Problem and provide:
+        1. A valid schedule with start and end times for each operation
+        2. The minimum makespan (total completion time)
+        3. Ensure all constraints are satisfied:
+           - Job precedence: operations within a job must be sequential
+           - Machine constraints: no overlapping operations on the same machine
+        
+
+💬 Job Scheduler Agent Output:
+  \n        Job Shop Scheduling Problem (JSSP) - Dataset: swv03\n        \n        Problem Description:\n        - Number of jobs: 20\n        - Each job has multiple operations that must be performed in sequence\n        - Each operation requires a specific machine and has a duration\n        - Each machine can only process one operation at a time\n        - Goal: Find the minimum makespan (total completion time)\n        \n        Job Specifications:\n        \nJob1:\n  Step 1: Machine Machine2, Duration 19\n  Step 2: Machine Machine0, Duration 30\n  Step 3: Machine Machine1, Duration 68\n  Step 4: Machine Machine4, Duration 55\n  Step 5: Machine Machine3, Duration 24\n  Step 6: Machine Machine8, Duration 34\n  Step 7: Machine Machine7, Duration 72\n  Step 8: Machine Machine5, Duration 32\n  Step 9: Machine Machine9, Duration 62\n  Step 10: Machine Machine6, Duration 45\nJob2:\n  Step 1: Machine Machine2, Duration 63\n  Step 2: Machine Machine1, Duration 11\n  Step 3: Machine Machine4, Duration 65\n  Step 4: Machine Machine3, Duration 16\n  Step 5: Machine Machine0, Duration 67\n  Step 6: Machine Machine9, Duration 95\n  Step 7: Machine Machine8, Duration 23\n  Step 8: Machine Machine7, Duration 82\n  Step 9: Machine Machine6, Duration 52\n  Step 10: Machine Machine5, Duration 53\nJob3:\n  Step 1: Machine Machine2, Duration 19\n  Step 2: Machine Machine4, Duration 17\n  Step 3: Machine Machine1, Duration 79\n  Step 4: Machine Machine3, Duration 49\n  Step 5: Machine Machine0, Duration 12\n  Step 6: Machine Machine7, Duration 41\n  Step 7: Machine Machine9, Duration 67\n  Step 8: Machine Machine8, Duration 40\n  Step 9: Machine Machine6, Duration 25\n  Step 10: Machine Machine5, Duration 42\nJob4:\n  Step 1: Machine Machine0, Duration 42\n  Step 2: Machine Machine2, Duration 71\n  Step 3: Machine Machine3, Duration 27\n  Step 4: Machine Machine4, Duration 95\n  Step 5: Machine Machine1, Duration 19\n  Step 6: Machine Machine5, Duration 48\n  Step 7: Machine Machine8, Duration 100\n  Step 8: Machine Machine6, Duration 31\n  Step 9: Machine Machine7, Duration 25\n  Step 10: Machine Machine9, Duration 38\nJob5:\n  Step 1: Machine Machine3, Duration 1\n  Step 2: Machine Machine1, Duration 100\n  Step 3: Machine Machine4, Duration 68\n  Step 4: Machine Machine0, Duration 94\n  Step 5: Machine Machine2, Duration 89\n  Step 6: Machine Machine5, Duration 86\n  Step 7: Machine Machine7, Duration 35\n  Step 8: Machine Machine9, Duration 29\n  Step 9: Machine Machine8, Duration 56\n  Step 10: Machine Machine6, Duration 55\nJob6:\n  Step 1: Machine Machine4, Duration 93\n  Step 2: Machine Machine1, Duration 53\n  Step 3: Machine Machine2, Duration 4\n  Step 4: Machine Machine3, Duration 48\n  Step 5: Machine Machine0, Duration 57\n  Step 6: Machine Machine8, Duration 99\n  Step 7: Machine Machine7, Duration 67\n  Step 8: Machine Machine5, Duration 86\n  Step 9: Machine Machine6, Duration 80\n  Step 10: Machine Machine9, Duration 60\nJob7:\n  Step 1: Machine Machine4, Duration 82\n  Step 2: Machine Machine1, Duration 95\n  Step 3: Machine Machine2, Duration 12\n  Step 4: Machine Machine0, Duration 60\n  Step 5: Machine Machine3, Duration 80\n  Step 6: Machine Machine8, Duration 88\n  Step 7: Machine Machine7, Duration 5\n  Step 8: Machine Machine6, Duration 81\n  Step 9: Machine Machine9, Duration 52\n  Step 10: Machine Machine5, Duration 69\nJob8:\n  Step 1: Machine Machine3, Duration 79\n  Step 2: Machine Machine1, Duration 31\n  Step 3: Machine Machine4, Duration 63\n  Step 4: Machine Machine0, Duration 28\n  Step 5: Machine Machine2, Duration 64\n  Step 6: Machine Machine8, Duration 63\n  Step 7: Machine Machine5, Duration 29\n  Step 8: Machine Machine7, Duration 75\n  Step 9: Machine Machine9, Duration 18\n  Step 10: Machine Machine6, Duration 33\nJob9:\n  Step 1: Machine Machine4, Duration 9\n  Step 2: Machine Machine1, Duration 64\n  Step 3: Machine Machine2, Duration 31\n  Step 4: Machine Machine0, Duration 13\n  Step 5: Machine Machine3, Duration 33\n  Step 6: Machine Machine9, Duration 82\n  Step 7: Machine Machine6, Duration 79\n  Step 8: Machine Machine5, Duration 30\n  Step 9: Machine Machine7, Duration 84\n  Step 10: Machine Machine8, Duration 20\nJob10:\n  Step 1: Machine Machine2, Duration 14\n  Step 2: Machine Machine0, Duration 56\n  Step 3: Machine Machine1, Duration 95\n  Step 4: Machine Machine4, Duration 34\n  Step 5: Machine Machine3, Duration 13\n  Step 6: Machine Machine6, Duration 16\n  Step 7: Machine Machine5, Duration 44\n  Step 8: Machine Machine7, Duration 45\n  Step 9: Machine Machine8, Duration 62\n  Step 10: Machine Machine9, Duration 86\nJob11:\n  Step 1: Machine Machine4, Duration 66\n  Step 2: Machine Machine3, Duration 9\n  Step 3: Machine Machine2, Duration 66\n  Step 4: Machine Machine1, Duration 46\n  Step 5: Machine Machine0, Duration 12\n  Step 6: Machine Machine5, Duration 10\n  Step 7: Machine Machine7, Duration 58\n  Step 8: Machine Machine6, Duration 6\n  Step 9: Machine Machine8, Duration 62\n  Step 10: Machine Machine9, Duration 17\nJob12:\n  Step 1: Machine Machine4, Duration 89\n  Step 2: Machine Machine1, Duration 52\n  Step 3: Machine Machine2, Duration 37\n  Step 4: Machine Machine3, Duration 74\n  Step 5: Machine Machine0, Duration 7\n  Step 6: Machine Machine8, Duration 43\n  Step 7: Machine Machine5, Duration 96\n  Step 8: Machine Machine7, Duration 89\n  Step 9: Machine Machine6, Duration 21\n  Step 10: Machine Machine9, Duration 66\nJob13:\n  Step 1: Machine Machine1, Duration 73\n  Step 2: Machine Machine3, Duration 68\n  Step 3: Machine Machine2, Duration 5\n  Step 4: Machine Machine4, Duration 49\n  Step 5: Machine Machine0, Duration 67\n  Step 6: Machine Machine9, Duration 23\n  Step 7: Machine Machine7, Duration 7\n  Step 8: Machine Machine5, Duration 44\n  Step 9: Machine Machine8, Duration 30\n  Step 10: Machine Machine6, Duration 29\nJob14:\n  Step 1: Machine Machine2, Duration 21\n  Step 2: Machine Machine0, Duration 68\n  Step 3: Machine Machine1, Duration 88\n  Step 4: Machine Machine4, Duration 75\n  Step 5: Machine Machine3, Duration 64\n  Step 6: Machine Machine6, Duration 6\n  Step 7: Machine Machine8, Duration 72\n  Step 8: Machine Machine7, Duration 66\n  Step 9: Machine Machine9, Duration 66\n  Step 10: Machine Machine5, Duration 56\nJob15:\n  Step 1: Machine Machine1, Duration 24\n  Step 2: Machine Machine4, Duration 25\n  Step 3: Machine Machine2, Duration 69\n  Step 4: Machine Machine0, Duration 27\n  Step 5: Machine Machine3, Duration 51\n  Step 6: Machine Machine9, Duration 60\n  Step 7: Machine Machine8, Duration 26\n  Step 8: Machine Machine6, Duration 45\n  Step 9: Machine Machine5, Duration 77\n  Step 10: Machine Machine7, Duration 93\nJob16:\n  Step 1: Machine Machine2, Duration 19\n  Step 2: Machine Machine3, Duration 17\n  Step 3: Machine Machine1, Duration 82\n  Step 4: Machine Machine4, Duration 75\n  Step 5: Machine Machine0, Duration 34\n  Step 6: Machine Machine5, Duration 67\n  Step 7: Machine Machine9, Duration 89\n  Step 8: Machine Machine6, Duration 91\n  Step 9: Machine Machine7, Duration 13\n  Step 10: Machine Machine8, Duration 35\nJob17:\n  Step 1: Machine Machine4, Duration 2\n  Step 2: Machine Machine0, Duration 21\n  Step 3: Machine Machine3, Duration 83\n  Step 4: Machine Machine1, Duration 19\n  Step 5: Machine Machine2, Duration 65\n  Step 6: Machine Machine6, Duration 65\n  Step 7: Machine Machine8, Duration 8\n  Step 8: Machine Machine9, Duration 68\n  Step 9: Machine Machine7, Duration 60\n  Step 10: Machine Machine5, Duration 7\nJob18:\n  Step 1: Machine Machine1, Duration 63\n  Step 2: Machine Machine3, Duration 49\n  Step 3: Machine Machine2, Duration 4\n  Step 4: Machine Machine4, Duration 2\n  Step 5: Machine Machine0, Duration 50\n  Step 6: Machine Machine9, Duration 99\n  Step 7: Machine Machine5, Duration 27\n  Step 8: Machine Machine6, Duration 68\n  Step 9: Machine Machine8, Duration 46\n  Step 10: Machine Machine7, Duration 89\nJob19:\n  Step 1: Machine Machine0, Duration 48\n  Step 2: Machine Machine4, Duration 45\n  Step 3: Machine Machine3, Duration 100\n  Step 4: Machine Machine2, Duration 66\n  Step 5: Machine Machine1, Duration 30\n  Step 6: Machine Machine6, Duration 58\n  Step 7: Machine Machine7, Duration 73\n  Step 8: Machine Machine9, Duration 94\n  Step 9: Machine Machine5, Duration 36\n  Step 10: Machine Machine8, Duration 5\nJob20:\n  Step 1: Machine Machine2, Duration 36\n  Step 2: Machine Machine0, Duration 53\n  Step 3: Machine Machine4, Duration 56\n  Step 4: Machine Machine3, Duration 57\n  Step 5: Machine Machine1, Duration 77\n  Step 6: Machine Machine9, Duration 7\n  Step 7: Machine Machine6, Duration 59\n  Step 8: Machine Machine8, Duration 8\n  Step 9: Machine Machine5, Duration 15\n  Step 10: Machine Machine7, Duration 23\n        \n        REQUIRED OUTPUT FORMAT:\n        You must provide your solution in the following exact format:\n        \n        1. FINAL MAKESPAN: [integer value]\n        2. STRUCTURED SCHEDULE:\n           For each operation, provide:\n           - Job: [job_name]\n           - Step: [step_number]\n           - Machine: [machine_name]\n           - Start Time: [start_time]\n           - End Time: [end_time]\n           - Duration: [duration]\n        \n        Example format:\n        FINAL MAKESPAN: 25\n        STRUCTURED SCHEDULE:\n        - Job: Job1, Step: 1, Machine: Machine0, Start Time: 0, End Time: 3, Duration: 3\n        - Job: Job1, Step: 2, Machine: Machine1, Start Time: 3, End Time: 7, Duration: 4\n        - Job: Job2, Step: 1, Machine: Machine1, Start Time: 7, End Time: 10, Duration: 3\n        \n        Please solve this Job Shop Scheduling Problem and provide:\n        1. A valid schedule with start and end times for each operation\n        2. The minimum makespan (total completion time)\n        3. Ensure all constraints are satisfied:\n           - Job precedence: operations within a job must be sequential\n           - Machine constraints: no overlapping operations on the same machine\n        
+
+📝 Machine Coordinator Agent Prompt:
+  system_message: You are a Machine Coordinator Agent responsible for coordinating machine usage and resolving conflicts.
+  query: 
+        Job Shop Scheduling Problem (JSSP) - Dataset: swv03
+        
+        Problem Description:
+        - Number of jobs: 20
+        - Each job has multiple operations that must be performed in sequence
+        - Each operation requires a specific machine and has a duration
+        - Each machine can only process one operation at a time
+        - Goal: Find the minimum makespan (total completion time)
+        
+        Job Specifications:
+        
+Job1:
+  Step 1: Machine Machine2, Duration 19
+  Step 2: Machine Machine0, Duration 30
+  Step 3: Machine Machine1, Duration 68
+  Step 4: Machine Machine4, Duration 55
+  Step 5: Machine Machine3, Duration 24
+  Step 6: Machine Machine8, Duration 34
+  Step 7: Machine Machine7, Duration 72
+  Step 8: Machine Machine5, Duration 32
+  Step 9: Machine Machine9, Duration 62
+  Step 10: Machine Machine6, Duration 45
+Job2:
+  Step 1: Machine Machine2, Duration 63
+  Step 2: Machine Machine1, Duration 11
+  Step 3: Machine Machine4, Duration 65
+  Step 4: Machine Machine3, Duration 16
+  Step 5: Machine Machine0, Duration 67
+  Step 6: Machine Machine9, Duration 95
+  Step 7: Machine Machine8, Duration 23
+  Step 8: Machine Machine7, Duration 82
+  Step 9: Machine Machine6, Duration 52
+  Step 10: Machine Machine5, Duration 53
+Job3:
+  Step 1: Machine Machine2, Duration 19
+  Step 2: Machine Machine4, Duration 17
+  Step 3: Machine Machine1, Duration 79
+  Step 4: Machine Machine3, Duration 49
+  Step 5: Machine Machine0, Duration 12
+  Step 6: Machine Machine7, Duration 41
+  Step 7: Machine Machine9, Duration 67
+  Step 8: Machine Machine8, Duration 40
+  Step 9: Machine Machine6, Duration 25
+  Step 10: Machine Machine5, Duration 42
+Job4:
+  Step 1: Machine Machine0, Duration 42
+  Step 2: Machine Machine2, Duration 71
+  Step 3: Machine Machine3, Duration 27
+  Step 4: Machine Machine4, Duration 95
+  Step 5: Machine Machine1, Duration 19
+  Step 6: Machine Machine5, Duration 48
+  Step 7: Machine Machine8, Duration 100
+  Step 8: Machine Machine6, Duration 31
+  Step 9: Machine Machine7, Duration 25
+  Step 10: Machine Machine9, Duration 38
+Job5:
+  Step 1: Machine Machine3, Duration 1
+  Step 2: Machine Machine1, Duration 100
+  Step 3: Machine Machine4, Duration 68
+  Step 4: Machine Machine0, Duration 94
+  Step 5: Machine Machine2, Duration 89
+  Step 6: Machine Machine5, Duration 86
+  Step 7: Machine Machine7, Duration 35
+  Step 8: Machine Machine9, Duration 29
+  Step 9: Machine Machine8, Duration 56
+  Step 10: Machine Machine6, Duration 55
+Job6:
+  Step 1: Machine Machine4, Duration 93
+  Step 2: Machine Machine1, Duration 53
+  Step 3: Machine Machine2, Duration 4
+  Step 4: Machine Machine3, Duration 48
+  Step 5: Machine Machine0, Duration 57
+  Step 6: Machine Machine8, Duration 99
+  Step 7: Machine Machine7, Duration 67
+  Step 8: Machine Machine5, Duration 86
+  Step 9: Machine Machine6, Duration 80
+  Step 10: Machine Machine9, Duration 60
+Job7:
+  Step 1: Machine Machine4, Duration 82
+  Step 2: Machine Machine1, Duration 95
+  Step 3: Machine Machine2, Duration 12
+  Step 4: Machine Machine0, Duration 60
+  Step 5: Machine Machine3, Duration 80
+  Step 6: Machine Machine8, Duration 88
+  Step 7: Machine Machine7, Duration 5
+  Step 8: Machine Machine6, Duration 81
+  Step 9: Machine Machine9, Duration 52
+  Step 10: Machine Machine5, Duration 69
+Job8:
+  Step 1: Machine Machine3, Duration 79
+  Step 2: Machine Machine1, Duration 31
+  Step 3: Machine Machine4, Duration 63
+  Step 4: Machine Machine0, Duration 28
+  Step 5: Machine Machine2, Duration 64
+  Step 6: Machine Machine8, Duration 63
+  Step 7: Machine Machine5, Duration 29
+  Step 8: Machine Machine7, Duration 75
+  Step 9: Machine Machine9, Duration 18
+  Step 10: Machine Machine6, Duration 33
+Job9:
+  Step 1: Machine Machine4, Duration 9
+  Step 2: Machine Machine1, Duration 64
+  Step 3: Machine Machine2, Duration 31
+  Step 4: Machine Machine0, Duration 13
+  Step 5: Machine Machine3, Duration 33
+  Step 6: Machine Machine9, Duration 82
+  Step 7: Machine Machine6, Duration 79
+  Step 8: Machine Machine5, Duration 30
+  Step 9: Machine Machine7, Duration 84
+  Step 10: Machine Machine8, Duration 20
+Job10:
+  Step 1: Machine Machine2, Duration 14
+  Step 2: Machine Machine0, Duration 56
+  Step 3: Machine Machine1, Duration 95
+  Step 4: Machine Machine4, Duration 34
+  Step 5: Machine Machine3, Duration 13
+  Step 6: Machine Machine6, Duration 16
+  Step 7: Machine Machine5, Duration 44
+  Step 8: Machine Machine7, Duration 45
+  Step 9: Machine Machine8, Duration 62
+  Step 10: Machine Machine9, Duration 86
+Job11:
+  Step 1: Machine Machine4, Duration 66
+  Step 2: Machine Machine3, Duration 9
+  Step 3: Machine Machine2, Duration 66
+  Step 4: Machine Machine1, Duration 46
+  Step 5: Machine Machine0, Duration 12
+  Step 6: Machine Machine5, Duration 10
+  Step 7: Machine Machine7, Duration 58
+  Step 8: Machine Machine6, Duration 6
+  Step 9: Machine Machine8, Duration 62
+  Step 10: Machine Machine9, Duration 17
+Job12:
+  Step 1: Machine Machine4, Duration 89
+  Step 2: Machine Machine1, Duration 52
+  Step 3: Machine Machine2, Duration 37
+  Step 4: Machine Machine3, Duration 74
+  Step 5: Machine Machine0, Duration 7
+  Step 6: Machine Machine8, Duration 43
+  Step 7: Machine Machine5, Duration 96
+  Step 8: Machine Machine7, Duration 89
+  Step 9: Machine Machine6, Duration 21
+  Step 10: Machine Machine9, Duration 66
+Job13:
+  Step 1: Machine Machine1, Duration 73
+  Step 2: Machine Machine3, Duration 68
+  Step 3: Machine Machine2, Duration 5
+  Step 4: Machine Machine4, Duration 49
+  Step 5: Machine Machine0, Duration 67
+  Step 6: Machine Machine9, Duration 23
+  Step 7: Machine Machine7, Duration 7
+  Step 8: Machine Machine5, Duration 44
+  Step 9: Machine Machine8, Duration 30
+  Step 10: Machine Machine6, Duration 29
+Job14:
+  Step 1: Machine Machine2, Duration 21
+  Step 2: Machine Machine0, Duration 68
+  Step 3: Machine Machine1, Duration 88
+  Step 4: Machine Machine4, Duration 75
+  Step 5: Machine Machine3, Duration 64
+  Step 6: Machine Machine6, Duration 6
+  Step 7: Machine Machine8, Duration 72
+  Step 8: Machine Machine7, Duration 66
+  Step 9: Machine Machine9, Duration 66
+  Step 10: Machine Machine5, Duration 56
+Job15:
+  Step 1: Machine Machine1, Duration 24
+  Step 2: Machine Machine4, Duration 25
+  Step 3: Machine Machine2, Duration 69
+  Step 4: Machine Machine0, Duration 27
+  Step 5: Machine Machine3, Duration 51
+  Step 6: Machine Machine9, Duration 60
+  Step 7: Machine Machine8, Duration 26
+  Step 8: Machine Machine6, Duration 45
+  Step 9: Machine Machine5, Duration 77
+  Step 10: Machine Machine7, Duration 93
+Job16:
+  Step 1: Machine Machine2, Duration 19
+  Step 2: Machine Machine3, Duration 17
+  Step 3: Machine Machine1, Duration 82
+  Step 4: Machine Machine4, Duration 75
+  Step 5: Machine Machine0, Duration 34
+  Step 6: Machine Machine5, Duration 67
+  Step 7: Machine Machine9, Duration 89
+  Step 8: Machine Machine6, Duration 91
+  Step 9: Machine Machine7, Duration 13
+  Step 10: Machine Machine8, Duration 35
+Job17:
+  Step 1: Machine Machine4, Duration 2
+  Step 2: Machine Machine0, Duration 21
+  Step 3: Machine Machine3, Duration 83
+  Step 4: Machine Machine1, Duration 19
+  Step 5: Machine Machine2, Duration 65
+  Step 6: Machine Machine6, Duration 65
+  Step 7: Machine Machine8, Duration 8
+  Step 8: Machine Machine9, Duration 68
+  Step 9: Machine Machine7, Duration 60
+  Step 10: Machine Machine5, Duration 7
+Job18:
+  Step 1: Machine Machine1, Duration 63
+  Step 2: Machine Machine3, Duration 49
+  Step 3: Machine Machine2, Duration 4
+  Step 4: Machine Machine4, Duration 2
+  Step 5: Machine Machine0, Duration 50
+  Step 6: Machine Machine9, Duration 99
+  Step 7: Machine Machine5, Duration 27
+  Step 8: Machine Machine6, Duration 68
+  Step 9: Machine Machine8, Duration 46
+  Step 10: Machine Machine7, Duration 89
+Job19:
+  Step 1: Machine Machine0, Duration 48
+  Step 2: Machine Machine4, Duration 45
+  Step 3: Machine Machine3, Duration 100
+  Step 4: Machine Machine2, Duration 66
+  Step 5: Machine Machine1, Duration 30
+  Step 6: Machine Machine6, Duration 58
+  Step 7: Machine Machine7, Duration 73
+  Step 8: Machine Machine9, Duration 94
+  Step 9: Machine Machine5, Duration 36
+  Step 10: Machine Machine8, Duration 5
+Job20:
+  Step 1: Machine Machine2, Duration 36
+  Step 2: Machine Machine0, Duration 53
+  Step 3: Machine Machine4, Duration 56
+  Step 4: Machine Machine3, Duration 57
+  Step 5: Machine Machine1, Duration 77
+  Step 6: Machine Machine9, Duration 7
+  Step 7: Machine Machine6, Duration 59
+  Step 8: Machine Machine8, Duration 8
+  Step 9: Machine Machine5, Duration 15
+  Step 10: Machine Machine7, Duration 23
+        
+        REQUIRED OUTPUT FORMAT:
+        You must provide your solution in the following exact format:
+        
+        1. FINAL MAKESPAN: [integer value]
+        2. STRUCTURED SCHEDULE:
+           For each operation, provide:
+           - Job: [job_name]
+           - Step: [step_number]
+           - Machine: [machine_name]
+           - Start Time: [start_time]
+           - End Time: [end_time]
+           - Duration: [duration]
+        
+        Example format:
+        FINAL MAKESPAN: 25
+        STRUCTURED SCHEDULE:
+        - Job: Job1, Step: 1, Machine: Machine0, Start Time: 0, End Time: 3, Duration: 3
+        - Job: Job1, Step: 2, Machine: Machine1, Start Time: 3, End Time: 7, Duration: 4
+        - Job: Job2, Step: 1, Machine: Machine1, Start Time: 7, End Time: 10, Duration: 3
+        
+        Please solve this Job Shop Scheduling Problem and provide:
+        1. A valid schedule with start and end times for each operation
+        2. The minimum makespan (total completion time)
+        3. Ensure all constraints are satisfied:
+           - Job precedence: operations within a job must be sequential
+           - Machine constraints: no overlapping operations on the same machine
+        
+
+💬 Machine Coordinator Agent Output:
+  \n        Job Shop Scheduling Problem (JSSP) - Dataset: swv03\n        \n        Problem Description:\n        - Number of jobs: 20\n        - Each job has multiple operations that must be performed in sequence\n        - Each operation requires a specific machine and has a duration\n        - Each machine can only process one operation at a time\n        - Goal: Find the minimum makespan (total completion time)\n        \n        Job Specifications:\n        \nJob1:\n  Step 1: Machine Machine2, Duration 19\n  Step 2: Machine Machine0, Duration 30\n  Step 3: Machine Machine1, Duration 68\n  Step 4: Machine Machine4, Duration 55\n  Step 5: Machine Machine3, Duration 24\n  Step 6: Machine Machine8, Duration 34\n  Step 7: Machine Machine7, Duration 72\n  Step 8: Machine Machine5, Duration 32\n  Step 9: Machine Machine9, Duration 62\n  Step 10: Machine Machine6, Duration 45\nJob2:\n  Step 1: Machine Machine2, Duration 63\n  Step 2: Machine Machine1, Duration 11\n  Step 3: Machine Machine4, Duration 65\n  Step 4: Machine Machine3, Duration 16\n  Step 5: Machine Machine0, Duration 67\n  Step 6: Machine Machine9, Duration 95\n  Step 7: Machine Machine8, Duration 23\n  Step 8: Machine Machine7, Duration 82\n  Step 9: Machine Machine6, Duration 52\n  Step 10: Machine Machine5, Duration 53\nJob3:\n  Step 1: Machine Machine2, Duration 19\n  Step 2: Machine Machine4, Duration 17\n  Step 3: Machine Machine1, Duration 79\n  Step 4: Machine Machine3, Duration 49\n  Step 5: Machine Machine0, Duration 12\n  Step 6: Machine Machine7, Duration 41\n  Step 7: Machine Machine9, Duration 67\n  Step 8: Machine Machine8, Duration 40\n  Step 9: Machine Machine6, Duration 25\n  Step 10: Machine Machine5, Duration 42\nJob4:\n  Step 1: Machine Machine0, Duration 42\n  Step 2: Machine Machine2, Duration 71\n  Step 3: Machine Machine3, Duration 27\n  Step 4: Machine Machine4, Duration 95\n  Step 5: Machine Machine1, Duration 19\n  Step 6: Machine Machine5, Duration 48\n  Step 7: Machine Machine8, Duration 100\n  Step 8: Machine Machine6, Duration 31\n  Step 9: Machine Machine7, Duration 25\n  Step 10: Machine Machine9, Duration 38\nJob5:\n  Step 1: Machine Machine3, Duration 1\n  Step 2: Machine Machine1, Duration 100\n  Step 3: Machine Machine4, Duration 68\n  Step 4: Machine Machine0, Duration 94\n  Step 5: Machine Machine2, Duration 89\n  Step 6: Machine Machine5, Duration 86\n  Step 7: Machine Machine7, Duration 35\n  Step 8: Machine Machine9, Duration 29\n  Step 9: Machine Machine8, Duration 56\n  Step 10: Machine Machine6, Duration 55\nJob6:\n  Step 1: Machine Machine4, Duration 93\n  Step 2: Machine Machine1, Duration 53\n  Step 3: Machine Machine2, Duration 4\n  Step 4: Machine Machine3, Duration 48\n  Step 5: Machine Machine0, Duration 57\n  Step 6: Machine Machine8, Duration 99\n  Step 7: Machine Machine7, Duration 67\n  Step 8: Machine Machine5, Duration 86\n  Step 9: Machine Machine6, Duration 80\n  Step 10: Machine Machine9, Duration 60\nJob7:\n  Step 1: Machine Machine4, Duration 82\n  Step 2: Machine Machine1, Duration 95\n  Step 3: Machine Machine2, Duration 12\n  Step 4: Machine Machine0, Duration 60\n  Step 5: Machine Machine3, Duration 80\n  Step 6: Machine Machine8, Duration 88\n  Step 7: Machine Machine7, Duration 5\n  Step 8: Machine Machine6, Duration 81\n  Step 9: Machine Machine9, Duration 52\n  Step 10: Machine Machine5, Duration 69\nJob8:\n  Step 1: Machine Machine3, Duration 79\n  Step 2: Machine Machine1, Duration 31\n  Step 3: Machine Machine4, Duration 63\n  Step 4: Machine Machine0, Duration 28\n  Step 5: Machine Machine2, Duration 64\n  Step 6: Machine Machine8, Duration 63\n  Step 7: Machine Machine5, Duration 29\n  Step 8: Machine Machine7, Duration 75\n  Step 9: Machine Machine9, Duration 18\n  Step 10: Machine Machine6, Duration 33\nJob9:\n  Step 1: Machine Machine4, Duration 9\n  Step 2: Machine Machine1, Duration 64\n  Step 3: Machine Machine2, Duration 31\n  Step 4: Machine Machine0, Duration 13\n  Step 5: Machine Machine3, Duration 33\n  Step 6: Machine Machine9, Duration 82\n  Step 7: Machine Machine6, Duration 79\n  Step 8: Machine Machine5, Duration 30\n  Step 9: Machine Machine7, Duration 84\n  Step 10: Machine Machine8, Duration 20\nJob10:\n  Step 1: Machine Machine2, Duration 14\n  Step 2: Machine Machine0, Duration 56\n  Step 3: Machine Machine1, Duration 95\n  Step 4: Machine Machine4, Duration 34\n  Step 5: Machine Machine3, Duration 13\n  Step 6: Machine Machine6, Duration 16\n  Step 7: Machine Machine5, Duration 44\n  Step 8: Machine Machine7, Duration 45\n  Step 9: Machine Machine8, Duration 62\n  Step 10: Machine Machine9, Duration 86\nJob11:\n  Step 1: Machine Machine4, Duration 66\n  Step 2: Machine Machine3, Duration 9\n  Step 3: Machine Machine2, Duration 66\n  Step 4: Machine Machine1, Duration 46\n  Step 5: Machine Machine0, Duration 12\n  Step 6: Machine Machine5, Duration 10\n  Step 7: Machine Machine7, Duration 58\n  Step 8: Machine Machine6, Duration 6\n  Step 9: Machine Machine8, Duration 62\n  Step 10: Machine Machine9, Duration 17\nJob12:\n  Step 1: Machine Machine4, Duration 89\n  Step 2: Machine Machine1, Duration 52\n  Step 3: Machine Machine2, Duration 37\n  Step 4: Machine Machine3, Duration 74\n  Step 5: Machine Machine0, Duration 7\n  Step 6: Machine Machine8, Duration 43\n  Step 7: Machine Machine5, Duration 96\n  Step 8: Machine Machine7, Duration 89\n  Step 9: Machine Machine6, Duration 21\n  Step 10: Machine Machine9, Duration 66\nJob13:\n  Step 1: Machine Machine1, Duration 73\n  Step 2: Machine Machine3, Duration 68\n  Step 3: Machine Machine2, Duration 5\n  Step 4: Machine Machine4, Duration 49\n  Step 5: Machine Machine0, Duration 67\n  Step 6: Machine Machine9, Duration 23\n  Step 7: Machine Machine7, Duration 7\n  Step 8: Machine Machine5, Duration 44\n  Step 9: Machine Machine8, Duration 30\n  Step 10: Machine Machine6, Duration 29\nJob14:\n  Step 1: Machine Machine2, Duration 21\n  Step 2: Machine Machine0, Duration 68\n  Step 3: Machine Machine1, Duration 88\n  Step 4: Machine Machine4, Duration 75\n  Step 5: Machine Machine3, Duration 64\n  Step 6: Machine Machine6, Duration 6\n  Step 7: Machine Machine8, Duration 72\n  Step 8: Machine Machine7, Duration 66\n  Step 9: Machine Machine9, Duration 66\n  Step 10: Machine Machine5, Duration 56\nJob15:\n  Step 1: Machine Machine1, Duration 24\n  Step 2: Machine Machine4, Duration 25\n  Step 3: Machine Machine2, Duration 69\n  Step 4: Machine Machine0, Duration 27\n  Step 5: Machine Machine3, Duration 51\n  Step 6: Machine Machine9, Duration 60\n  Step 7: Machine Machine8, Duration 26\n  Step 8: Machine Machine6, Duration 45\n  Step 9: Machine Machine5, Duration 77\n  Step 10: Machine Machine7, Duration 93\nJob16:\n  Step 1: Machine Machine2, Duration 19\n  Step 2: Machine Machine3, Duration 17\n  Step 3: Machine Machine1, Duration 82\n  Step 4: Machine Machine4, Duration 75\n  Step 5: Machine Machine0, Duration 34\n  Step 6: Machine Machine5, Duration 67\n  Step 7: Machine Machine9, Duration 89\n  Step 8: Machine Machine6, Duration 91\n  Step 9: Machine Machine7, Duration 13\n  Step 10: Machine Machine8, Duration 35\nJob17:\n  Step 1: Machine Machine4, Duration 2\n  Step 2: Machine Machine0, Duration 21\n  Step 3: Machine Machine3, Duration 83\n  Step 4: Machine Machine1, Duration 19\n  Step 5: Machine Machine2, Duration 65\n  Step 6: Machine Machine6, Duration 65\n  Step 7: Machine Machine8, Duration 8\n  Step 8: Machine Machine9, Duration 68\n  Step 9: Machine Machine7, Duration 60\n  Step 10: Machine Machine5, Duration 7\nJob18:\n  Step 1: Machine Machine1, Duration 63\n  Step 2: Machine Machine3, Duration 49\n  Step 3: Machine Machine2, Duration 4\n  Step 4: Machine Machine4, Duration 2\n  Step 5: Machine Machine0, Duration 50\n  Step 6: Machine Machine9, Duration 99\n  Step 7: Machine Machine5, Duration 27\n  Step 8: Machine Machine6, Duration 68\n  Step 9: Machine Machine8, Duration 46\n  Step 10: Machine Machine7, Duration 89\nJob19:\n  Step 1: Machine Machine0, Duration 48\n  Step 2: Machine Machine4, Duration 45\n  Step 3: Machine Machine3, Duration 100\n  Step 4: Machine Machine2, Duration 66\n  Step 5: Machine Machine1, Duration 30\n  Step 6: Machine Machine6, Duration 58\n  Step 7: Machine Machine7, Duration 73\n  Step 8: Machine Machine9, Duration 94\n  Step 9: Machine Machine5, Duration 36\n  Step 10: Machine Machine8, Duration 5\nJob20:\n  Step 1: Machine Machine2, Duration 36\n  Step 2: Machine Machine0, Duration 53\n  Step 3: Machine Machine4, Duration 56\n  Step 4: Machine Machine3, Duration 57\n  Step 5: Machine Machine1, Duration 77\n  Step 6: Machine Machine9, Duration 7\n  Step 7: Machine Machine6, Duration 59\n  Step 8: Machine Machine8, Duration 8\n  Step 9: Machine Machine5, Duration 15\n  Step 10: Machine Machine7, Duration 23\n        \n        REQUIRED OUTPUT FORMAT:\n        You must provide your solution in the following exact format:\n        \n        1. FINAL MAKESPAN: [integer value]\n        2. STRUCTURED SCHEDULE:\n           For each operation, provide:\n           - Job: [job_name]\n           - Step: [step_number]\n           - Machine: [machine_name]\n           - Start Time: [start_time]\n           - End Time: [end_time]\n           - Duration: [duration]\n        \n        Example format:\n        FINAL MAKESPAN: 25\n        STRUCTURED SCHEDULE:\n        - Job: Job1, Step: 1, Machine: Machine0, Start Time: 0, End Time: 3, Duration: 3\n        - Job: Job1, Step: 2, Machine: Machine1, Start Time: 3, End Time: 7, Duration: 4\n        - Job: Job2, Step: 1, Machine: Machine1, Start Time: 7, End Time: 10, Duration: 3\n        \n        Please solve this Job Shop Scheduling Problem and provide:\n        1. A valid schedule with start and end times for each operation\n        2. The minimum makespan (total completion time)\n        3. Ensure all constraints are satisfied:\n           - Job precedence: operations within a job must be sequential\n           - Machine constraints: no overlapping operations on the same machine\n        
+
+📝 Supervisor Agent Prompt:
+  system_message: You are a Supervisor Agent responsible for final coordination and optimization.
+  query: 
+        Job Shop Scheduling Problem (JSSP) - Dataset: swv03
+        
+        Problem Description:
+        - Number of jobs: 20
+        - Each job has multiple operations that must be performed in sequence
+        - Each operation requires a specific machine and has a duration
+        - Each machine can only process one operation at a time
+        - Goal: Find the minimum makespan (total completion time)
+        
+        Job Specifications:
+        
+Job1:
+  Step 1: Machine Machine2, Duration 19
+  Step 2: Machine Machine0, Duration 30
+  Step 3: Machine Machine1, Duration 68
+  Step 4: Machine Machine4, Duration 55
+  Step 5: Machine Machine3, Duration 24
+  Step 6: Machine Machine8, Duration 34
+  Step 7: Machine Machine7, Duration 72
+  Step 8: Machine Machine5, Duration 32
+  Step 9: Machine Machine9, Duration 62
+  Step 10: Machine Machine6, Duration 45
+Job2:
+  Step 1: Machine Machine2, Duration 63
+  Step 2: Machine Machine1, Duration 11
+  Step 3: Machine Machine4, Duration 65
+  Step 4: Machine Machine3, Duration 16
+  Step 5: Machine Machine0, Duration 67
+  Step 6: Machine Machine9, Duration 95
+  Step 7: Machine Machine8, Duration 23
+  Step 8: Machine Machine7, Duration 82
+  Step 9: Machine Machine6, Duration 52
+  Step 10: Machine Machine5, Duration 53
+Job3:
+  Step 1: Machine Machine2, Duration 19
+  Step 2: Machine Machine4, Duration 17
+  Step 3: Machine Machine1, Duration 79
+  Step 4: Machine Machine3, Duration 49
+  Step 5: Machine Machine0, Duration 12
+  Step 6: Machine Machine7, Duration 41
+  Step 7: Machine Machine9, Duration 67
+  Step 8: Machine Machine8, Duration 40
+  Step 9: Machine Machine6, Duration 25
+  Step 10: Machine Machine5, Duration 42
+Job4:
+  Step 1: Machine Machine0, Duration 42
+  Step 2: Machine Machine2, Duration 71
+  Step 3: Machine Machine3, Duration 27
+  Step 4: Machine Machine4, Duration 95
+  Step 5: Machine Machine1, Duration 19
+  Step 6: Machine Machine5, Duration 48
+  Step 7: Machine Machine8, Duration 100
+  Step 8: Machine Machine6, Duration 31
+  Step 9: Machine Machine7, Duration 25
+  Step 10: Machine Machine9, Duration 38
+Job5:
+  Step 1: Machine Machine3, Duration 1
+  Step 2: Machine Machine1, Duration 100
+  Step 3: Machine Machine4, Duration 68
+  Step 4: Machine Machine0, Duration 94
+  Step 5: Machine Machine2, Duration 89
+  Step 6: Machine Machine5, Duration 86
+  Step 7: Machine Machine7, Duration 35
+  Step 8: Machine Machine9, Duration 29
+  Step 9: Machine Machine8, Duration 56
+  Step 10: Machine Machine6, Duration 55
+Job6:
+  Step 1: Machine Machine4, Duration 93
+  Step 2: Machine Machine1, Duration 53
+  Step 3: Machine Machine2, Duration 4
+  Step 4: Machine Machine3, Duration 48
+  Step 5: Machine Machine0, Duration 57
+  Step 6: Machine Machine8, Duration 99
+  Step 7: Machine Machine7, Duration 67
+  Step 8: Machine Machine5, Duration 86
+  Step 9: Machine Machine6, Duration 80
+  Step 10: Machine Machine9, Duration 60
+Job7:
+  Step 1: Machine Machine4, Duration 82
+  Step 2: Machine Machine1, Duration 95
+  Step 3: Machine Machine2, Duration 12
+  Step 4: Machine Machine0, Duration 60
+  Step 5: Machine Machine3, Duration 80
+  Step 6: Machine Machine8, Duration 88
+  Step 7: Machine Machine7, Duration 5
+  Step 8: Machine Machine6, Duration 81
+  Step 9: Machine Machine9, Duration 52
+  Step 10: Machine Machine5, Duration 69
+Job8:
+  Step 1: Machine Machine3, Duration 79
+  Step 2: Machine Machine1, Duration 31
+  Step 3: Machine Machine4, Duration 63
+  Step 4: Machine Machine0, Duration 28
+  Step 5: Machine Machine2, Duration 64
+  Step 6: Machine Machine8, Duration 63
+  Step 7: Machine Machine5, Duration 29
+  Step 8: Machine Machine7, Duration 75
+  Step 9: Machine Machine9, Duration 18
+  Step 10: Machine Machine6, Duration 33
+Job9:
+  Step 1: Machine Machine4, Duration 9
+  Step 2: Machine Machine1, Duration 64
+  Step 3: Machine Machine2, Duration 31
+  Step 4: Machine Machine0, Duration 13
+  Step 5: Machine Machine3, Duration 33
+  Step 6: Machine Machine9, Duration 82
+  Step 7: Machine Machine6, Duration 79
+  Step 8: Machine Machine5, Duration 30
+  Step 9: Machine Machine7, Duration 84
+  Step 10: Machine Machine8, Duration 20
+Job10:
+  Step 1: Machine Machine2, Duration 14
+  Step 2: Machine Machine0, Duration 56
+  Step 3: Machine Machine1, Duration 95
+  Step 4: Machine Machine4, Duration 34
+  Step 5: Machine Machine3, Duration 13
+  Step 6: Machine Machine6, Duration 16
+  Step 7: Machine Machine5, Duration 44
+  Step 8: Machine Machine7, Duration 45
+  Step 9: Machine Machine8, Duration 62
+  Step 10: Machine Machine9, Duration 86
+Job11:
+  Step 1: Machine Machine4, Duration 66
+  Step 2: Machine Machine3, Duration 9
+  Step 3: Machine Machine2, Duration 66
+  Step 4: Machine Machine1, Duration 46
+  Step 5: Machine Machine0, Duration 12
+  Step 6: Machine Machine5, Duration 10
+  Step 7: Machine Machine7, Duration 58
+  Step 8: Machine Machine6, Duration 6
+  Step 9: Machine Machine8, Duration 62
+  Step 10: Machine Machine9, Duration 17
+Job12:
+  Step 1: Machine Machine4, Duration 89
+  Step 2: Machine Machine1, Duration 52
+  Step 3: Machine Machine2, Duration 37
+  Step 4: Machine Machine3, Duration 74
+  Step 5: Machine Machine0, Duration 7
+  Step 6: Machine Machine8, Duration 43
+  Step 7: Machine Machine5, Duration 96
+  Step 8: Machine Machine7, Duration 89
+  Step 9: Machine Machine6, Duration 21
+  Step 10: Machine Machine9, Duration 66
+Job13:
+  Step 1: Machine Machine1, Duration 73
+  Step 2: Machine Machine3, Duration 68
+  Step 3: Machine Machine2, Duration 5
+  Step 4: Machine Machine4, Duration 49
+  Step 5: Machine Machine0, Duration 67
+  Step 6: Machine Machine9, Duration 23
+  Step 7: Machine Machine7, Duration 7
+  Step 8: Machine Machine5, Duration 44
+  Step 9: Machine Machine8, Duration 30
+  Step 10: Machine Machine6, Duration 29
+Job14:
+  Step 1: Machine Machine2, Duration 21
+  Step 2: Machine Machine0, Duration 68
+  Step 3: Machine Machine1, Duration 88
+  Step 4: Machine Machine4, Duration 75
+  Step 5: Machine Machine3, Duration 64
+  Step 6: Machine Machine6, Duration 6
+  Step 7: Machine Machine8, Duration 72
+  Step 8: Machine Machine7, Duration 66
+  Step 9: Machine Machine9, Duration 66
+  Step 10: Machine Machine5, Duration 56
+Job15:
+  Step 1: Machine Machine1, Duration 24
+  Step 2: Machine Machine4, Duration 25
+  Step 3: Machine Machine2, Duration 69
+  Step 4: Machine Machine0, Duration 27
+  Step 5: Machine Machine3, Duration 51
+  Step 6: Machine Machine9, Duration 60
+  Step 7: Machine Machine8, Duration 26
+  Step 8: Machine Machine6, Duration 45
+  Step 9: Machine Machine5, Duration 77
+  Step 10: Machine Machine7, Duration 93
+Job16:
+  Step 1: Machine Machine2, Duration 19
+  Step 2: Machine Machine3, Duration 17
+  Step 3: Machine Machine1, Duration 82
+  Step 4: Machine Machine4, Duration 75
+  Step 5: Machine Machine0, Duration 34
+  Step 6: Machine Machine5, Duration 67
+  Step 7: Machine Machine9, Duration 89
+  Step 8: Machine Machine6, Duration 91
+  Step 9: Machine Machine7, Duration 13
+  Step 10: Machine Machine8, Duration 35
+Job17:
+  Step 1: Machine Machine4, Duration 2
+  Step 2: Machine Machine0, Duration 21
+  Step 3: Machine Machine3, Duration 83
+  Step 4: Machine Machine1, Duration 19
+  Step 5: Machine Machine2, Duration 65
+  Step 6: Machine Machine6, Duration 65
+  Step 7: Machine Machine8, Duration 8
+  Step 8: Machine Machine9, Duration 68
+  Step 9: Machine Machine7, Duration 60
+  Step 10: Machine Machine5, Duration 7
+Job18:
+  Step 1: Machine Machine1, Duration 63
+  Step 2: Machine Machine3, Duration 49
+  Step 3: Machine Machine2, Duration 4
+  Step 4: Machine Machine4, Duration 2
+  Step 5: Machine Machine0, Duration 50
+  Step 6: Machine Machine9, Duration 99
+  Step 7: Machine Machine5, Duration 27
+  Step 8: Machine Machine6, Duration 68
+  Step 9: Machine Machine8, Duration 46
+  Step 10: Machine Machine7, Duration 89
+Job19:
+  Step 1: Machine Machine0, Duration 48
+  Step 2: Machine Machine4, Duration 45
+  Step 3: Machine Machine3, Duration 100
+  Step 4: Machine Machine2, Duration 66
+  Step 5: Machine Machine1, Duration 30
+  Step 6: Machine Machine6, Duration 58
+  Step 7: Machine Machine7, Duration 73
+  Step 8: Machine Machine9, Duration 94
+  Step 9: Machine Machine5, Duration 36
+  Step 10: Machine Machine8, Duration 5
+Job20:
+  Step 1: Machine Machine2, Duration 36
+  Step 2: Machine Machine0, Duration 53
+  Step 3: Machine Machine4, Duration 56
+  Step 4: Machine Machine3, Duration 57
+  Step 5: Machine Machine1, Duration 77
+  Step 6: Machine Machine9, Duration 7
+  Step 7: Machine Machine6, Duration 59
+  Step 8: Machine Machine8, Duration 8
+  Step 9: Machine Machine5, Duration 15
+  Step 10: Machine Machine7, Duration 23
+        
+        REQUIRED OUTPUT FORMAT:
+        You must provide your solution in the following exact format:
+        
+        1. FINAL MAKESPAN: [integer value]
+        2. STRUCTURED SCHEDULE:
+           For each operation, provide:
+           - Job: [job_name]
+           - Step: [step_number]
+           - Machine: [machine_name]
+           - Start Time: [start_time]
+           - End Time: [end_time]
+           - Duration: [duration]
+        
+        Example format:
+        FINAL MAKESPAN: 25
+        STRUCTURED SCHEDULE:
+        - Job: Job1, Step: 1, Machine: Machine0, Start Time: 0, End Time: 3, Duration: 3
+        - Job: Job1, Step: 2, Machine: Machine1, Start Time: 3, End Time: 7, Duration: 4
+        - Job: Job2, Step: 1, Machine: Machine1, Start Time: 7, End Time: 10, Duration: 3
+        
+        Please solve this Job Shop Scheduling Problem and provide:
+        1. A valid schedule with start and end times for each operation
+        2. The minimum makespan (total completion time)
+        3. Ensure all constraints are satisfied:
+           - Job precedence: operations within a job must be sequential
+           - Machine constraints: no overlapping operations on the same machine
+        
+
+💬 Supervisor Agent Output:
+  \n        Job Shop Scheduling Problem (JSSP) - Dataset: swv03\n        \n        Problem Description:\n        - Number of jobs: 20\n        - Each job has multiple operations that must be performed in sequence\n        - Each operation requires a specific machine and has a duration\n        - Each machine can only process one operation at a time\n        - Goal: Find the minimum makespan (total completion time)\n        \n        Job Specifications:\n        \nJob1:\n  Step 1: Machine Machine2, Duration 19\n  Step 2: Machine Machine0, Duration 30\n  Step 3: Machine Machine1, Duration 68\n  Step 4: Machine Machine4, Duration 55\n  Step 5: Machine Machine3, Duration 24\n  Step 6: Machine Machine8, Duration 34\n  Step 7: Machine Machine7, Duration 72\n  Step 8: Machine Machine5, Duration 32\n  Step 9: Machine Machine9, Duration 62\n  Step 10: Machine Machine6, Duration 45\nJob2:\n  Step 1: Machine Machine2, Duration 63\n  Step 2: Machine Machine1, Duration 11\n  Step 3: Machine Machine4, Duration 65\n  Step 4: Machine Machine3, Duration 16\n  Step 5: Machine Machine0, Duration 67\n  Step 6: Machine Machine9, Duration 95\n  Step 7: Machine Machine8, Duration 23\n  Step 8: Machine Machine7, Duration 82\n  Step 9: Machine Machine6, Duration 52\n  Step 10: Machine Machine5, Duration 53\nJob3:\n  Step 1: Machine Machine2, Duration 19\n  Step 2: Machine Machine4, Duration 17\n  Step 3: Machine Machine1, Duration 79\n  Step 4: Machine Machine3, Duration 49\n  Step 5: Machine Machine0, Duration 12\n  Step 6: Machine Machine7, Duration 41\n  Step 7: Machine Machine9, Duration 67\n  Step 8: Machine Machine8, Duration 40\n  Step 9: Machine Machine6, Duration 25\n  Step 10: Machine Machine5, Duration 42\nJob4:\n  Step 1: Machine Machine0, Duration 42\n  Step 2: Machine Machine2, Duration 71\n  Step 3: Machine Machine3, Duration 27\n  Step 4: Machine Machine4, Duration 95\n  Step 5: Machine Machine1, Duration 19\n  Step 6: Machine Machine5, Duration 48\n  Step 7: Machine Machine8, Duration 100\n  Step 8: Machine Machine6, Duration 31\n  Step 9: Machine Machine7, Duration 25\n  Step 10: Machine Machine9, Duration 38\nJob5:\n  Step 1: Machine Machine3, Duration 1\n  Step 2: Machine Machine1, Duration 100\n  Step 3: Machine Machine4, Duration 68\n  Step 4: Machine Machine0, Duration 94\n  Step 5: Machine Machine2, Duration 89\n  Step 6: Machine Machine5, Duration 86\n  Step 7: Machine Machine7, Duration 35\n  Step 8: Machine Machine9, Duration 29\n  Step 9: Machine Machine8, Duration 56\n  Step 10: Machine Machine6, Duration 55\nJob6:\n  Step 1: Machine Machine4, Duration 93\n  Step 2: Machine Machine1, Duration 53\n  Step 3: Machine Machine2, Duration 4\n  Step 4: Machine Machine3, Duration 48\n  Step 5: Machine Machine0, Duration 57\n  Step 6: Machine Machine8, Duration 99\n  Step 7: Machine Machine7, Duration 67\n  Step 8: Machine Machine5, Duration 86\n  Step 9: Machine Machine6, Duration 80\n  Step 10: Machine Machine9, Duration 60\nJob7:\n  Step 1: Machine Machine4, Duration 82\n  Step 2: Machine Machine1, Duration 95\n  Step 3: Machine Machine2, Duration 12\n  Step 4: Machine Machine0, Duration 60\n  Step 5: Machine Machine3, Duration 80\n  Step 6: Machine Machine8, Duration 88\n  Step 7: Machine Machine7, Duration 5\n  Step 8: Machine Machine6, Duration 81\n  Step 9: Machine Machine9, Duration 52\n  Step 10: Machine Machine5, Duration 69\nJob8:\n  Step 1: Machine Machine3, Duration 79\n  Step 2: Machine Machine1, Duration 31\n  Step 3: Machine Machine4, Duration 63\n  Step 4: Machine Machine0, Duration 28\n  Step 5: Machine Machine2, Duration 64\n  Step 6: Machine Machine8, Duration 63\n  Step 7: Machine Machine5, Duration 29\n  Step 8: Machine Machine7, Duration 75\n  Step 9: Machine Machine9, Duration 18\n  Step 10: Machine Machine6, Duration 33\nJob9:\n  Step 1: Machine Machine4, Duration 9\n  Step 2: Machine Machine1, Duration 64\n  Step 3: Machine Machine2, Duration 31\n  Step 4: Machine Machine0, Duration 13\n  Step 5: Machine Machine3, Duration 33\n  Step 6: Machine Machine9, Duration 82\n  Step 7: Machine Machine6, Duration 79\n  Step 8: Machine Machine5, Duration 30\n  Step 9: Machine Machine7, Duration 84\n  Step 10: Machine Machine8, Duration 20\nJob10:\n  Step 1: Machine Machine2, Duration 14\n  Step 2: Machine Machine0, Duration 56\n  Step 3: Machine Machine1, Duration 95\n  Step 4: Machine Machine4, Duration 34\n  Step 5: Machine Machine3, Duration 13\n  Step 6: Machine Machine6, Duration 16\n  Step 7: Machine Machine5, Duration 44\n  Step 8: Machine Machine7, Duration 45\n  Step 9: Machine Machine8, Duration 62\n  Step 10: Machine Machine9, Duration 86\nJob11:\n  Step 1: Machine Machine4, Duration 66\n  Step 2: Machine Machine3, Duration 9\n  Step 3: Machine Machine2, Duration 66\n  Step 4: Machine Machine1, Duration 46\n  Step 5: Machine Machine0, Duration 12\n  Step 6: Machine Machine5, Duration 10\n  Step 7: Machine Machine7, Duration 58\n  Step 8: Machine Machine6, Duration 6\n  Step 9: Machine Machine8, Duration 62\n  Step 10: Machine Machine9, Duration 17\nJob12:\n  Step 1: Machine Machine4, Duration 89\n  Step 2: Machine Machine1, Duration 52\n  Step 3: Machine Machine2, Duration 37\n  Step 4: Machine Machine3, Duration 74\n  Step 5: Machine Machine0, Duration 7\n  Step 6: Machine Machine8, Duration 43\n  Step 7: Machine Machine5, Duration 96\n  Step 8: Machine Machine7, Duration 89\n  Step 9: Machine Machine6, Duration 21\n  Step 10: Machine Machine9, Duration 66\nJob13:\n  Step 1: Machine Machine1, Duration 73\n  Step 2: Machine Machine3, Duration 68\n  Step 3: Machine Machine2, Duration 5\n  Step 4: Machine Machine4, Duration 49\n  Step 5: Machine Machine0, Duration 67\n  Step 6: Machine Machine9, Duration 23\n  Step 7: Machine Machine7, Duration 7\n  Step 8: Machine Machine5, Duration 44\n  Step 9: Machine Machine8, Duration 30\n  Step 10: Machine Machine6, Duration 29\nJob14:\n  Step 1: Machine Machine2, Duration 21\n  Step 2: Machine Machine0, Duration 68\n  Step 3: Machine Machine1, Duration 88\n  Step 4: Machine Machine4, Duration 75\n  Step 5: Machine Machine3, Duration 64\n  Step 6: Machine Machine6, Duration 6\n  Step 7: Machine Machine8, Duration 72\n  Step 8: Machine Machine7, Duration 66\n  Step 9: Machine Machine9, Duration 66\n  Step 10: Machine Machine5, Duration 56\nJob15:\n  Step 1: Machine Machine1, Duration 24\n  Step 2: Machine Machine4, Duration 25\n  Step 3: Machine Machine2, Duration 69\n  Step 4: Machine Machine0, Duration 27\n  Step 5: Machine Machine3, Duration 51\n  Step 6: Machine Machine9, Duration 60\n  Step 7: Machine Machine8, Duration 26\n  Step 8: Machine Machine6, Duration 45\n  Step 9: Machine Machine5, Duration 77\n  Step 10: Machine Machine7, Duration 93\nJob16:\n  Step 1: Machine Machine2, Duration 19\n  Step 2: Machine Machine3, Duration 17\n  Step 3: Machine Machine1, Duration 82\n  Step 4: Machine Machine4, Duration 75\n  Step 5: Machine Machine0, Duration 34\n  Step 6: Machine Machine5, Duration 67\n  Step 7: Machine Machine9, Duration 89\n  Step 8: Machine Machine6, Duration 91\n  Step 9: Machine Machine7, Duration 13\n  Step 10: Machine Machine8, Duration 35\nJob17:\n  Step 1: Machine Machine4, Duration 2\n  Step 2: Machine Machine0, Duration 21\n  Step 3: Machine Machine3, Duration 83\n  Step 4: Machine Machine1, Duration 19\n  Step 5: Machine Machine2, Duration 65\n  Step 6: Machine Machine6, Duration 65\n  Step 7: Machine Machine8, Duration 8\n  Step 8: Machine Machine9, Duration 68\n  Step 9: Machine Machine7, Duration 60\n  Step 10: Machine Machine5, Duration 7\nJob18:\n  Step 1: Machine Machine1, Duration 63\n  Step 2: Machine Machine3, Duration 49\n  Step 3: Machine Machine2, Duration 4\n  Step 4: Machine Machine4, Duration 2\n  Step 5: Machine Machine0, Duration 50\n  Step 6: Machine Machine9, Duration 99\n  Step 7: Machine Machine5, Duration 27\n  Step 8: Machine Machine6, Duration 68\n  Step 9: Machine Machine8, Duration 46\n  Step 10: Machine Machine7, Duration 89\nJob19:\n  Step 1: Machine Machine0, Duration 48\n  Step 2: Machine Machine4, Duration 45\n  Step 3: Machine Machine3, Duration 100\n  Step 4: Machine Machine2, Duration 66\n  Step 5: Machine Machine1, Duration 30\n  Step 6: Machine Machine6, Duration 58\n  Step 7: Machine Machine7, Duration 73\n  Step 8: Machine Machine9, Duration 94\n  Step 9: Machine Machine5, Duration 36\n  Step 10: Machine Machine8, Duration 5\nJob20:\n  Step 1: Machine Machine2, Duration 36\n  Step 2: Machine Machine0, Duration 53\n  Step 3: Machine Machine4, Duration 56\n  Step 4: Machine Machine3, Duration 57\n  Step 5: Machine Machine1, Duration 77\n  Step 6: Machine Machine9, Duration 7\n  Step 7: Machine Machine6, Duration 59\n  Step 8: Machine Machine8, Duration 8\n  Step 9: Machine Machine5, Duration 15\n  Step 10: Machine Machine7, Duration 23\n        \n        REQUIRED OUTPUT FORMAT:\n        You must provide your solution in the following exact format:\n        \n        1. FINAL MAKESPAN: [integer value]\n        2. STRUCTURED SCHEDULE:\n           For each operation, provide:\n           - Job: [job_name]\n           - Step: [step_number]\n           - Machine: [machine_name]\n           - Start Time: [start_time]\n           - End Time: [end_time]\n           - Duration: [duration]\n        \n        Example format:\n        FINAL MAKESPAN: 25\n        STRUCTURED SCHEDULE:\n        - Job: Job1, Step: 1, Machine: Machine0, Start Time: 0, End Time: 3, Duration: 3\n        - Job: Job1, Step: 2, Machine: Machine1, Start Time: 3, End Time: 7, Duration: 4\n        - Job: Job2, Step: 1, Machine: Machine1, Start Time: 7, End Time: 10, Duration: 3\n        \n        Please solve this Job Shop Scheduling Problem and provide:\n        1. A valid schedule with start and end times for each operation\n        2. The minimum makespan (total completion time)\n        3. Ensure all constraints are satisfied:\n           - Job precedence: operations within a job must be sequential\n           - Machine constraints: no overlapping operations on the same machine\n        
+
+📅 Structured Schedule (1054 operations):
+  1. Job: [job_name]
+           - Step: [step_number]
+           - Machine: [machine_name]
+           - Start Time: [start_time]
+           - End Time: [end_time]
+           - Duration: [duration]
+        
+        Example format:
+        FINAL MAKESPAN: 25
+        STRUCTURED SCHEDULE:
+        - Job: Job1, Step: 1, Machine: Machine0, Start: 0, End: 3, Duration: 3
+  2. Job: Job1, Step: 2, Machine: Machine1, Start: 3, End: 7, Duration: 4
+  3. Job: Job2, Step: 1, Machine: Machine1, Start: 7, End: 10, Duration: 3
+  4. Job: Job1, Step: 1, Machine: Machine2, Start: 0, End: 19, Duration: 19
+  5. Job: Job1, Step: 2, Machine: Machine0, Start: 19, End: 49, Duration: 30
+  6. Job: Job1, Step: 3, Machine: Machine1, Start: 49, End: 117, Duration: 68
+  7. Job: Job1, Step: 4, Machine: Machine4, Start: 117, End: 172, Duration: 55
+  8. Job: Job1, Step: 5, Machine: Machine3, Start: 172, End: 196, Duration: 24
+  9. Job: Job1, Step: 6, Machine: Machine8, Start: 196, End: 230, Duration: 34
+  10. Job: Job1, Step: 7, Machine: Machine7, Start: 230, End: 302, Duration: 72
+  ... and 1044 more operations

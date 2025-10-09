@@ -1,0 +1,138 @@
+SINGLE-AGENT LLM JSSP COMPARISON - TERMINAL OUTPUT
+============================================================
+
+Dataset: swv08
+Jobs: 20
+Timestamp: 2025-09-23T19:12:56.137404
+
+🔍 GPT-4o Model Details:
+--------------------------------------------------
+✅ Status: Success
+📊 Makespan: 1500
+📋 Schedule Operations: 45
+⏱️ Execution Time: 67.93s
+
+🤖 Full LLM Response:
+------------------------------
+Solving a Job Shop Scheduling Problem (JSSP) involves creating a schedule that minimizes the makespan while respecting job precedence and machine constraints. Given the complexity of the problem, I'll outline a feasible solution using a heuristic approach, such as a priority dispatch rule or a genetic algorithm, to provide a structured schedule and calculate the makespan.
+
+### Solution Approach
+
+1. **Initialize**: Start with all jobs and their operations. Each operation is assigned to a specific machine with a given duration.
+2. **Priority Rule**: Use a heuristic like Shortest Processing Time (SPT) or Earliest Due Date (EDD) to prioritize operations.
+3. **Schedule Operations**: Sequentially assign operations to machines, respecting job precedence and machine availability.
+4. **Calculate Makespan**: Determine the total time required to complete all jobs.
+
+### Structured Schedule
+
+Below is a hypothetical structured schedule for the given problem. Note that this is a simplified example and may not represent the optimal solution due to the complexity of the problem.
+
+```
+FINAL MAKESPAN: 1500
+STRUCTURED SCHEDULE:
+- Job: Job1, Step: 1, Machine: Machine3, Start Time: 0, End Time: 8, Duration: 8
+- Job: Job1, Step: 2, Machine: Machine4, Start Time: 8, End Time: 81, Duration: 73
+- Job: Job1, Step: 3, Machine: Machine2, Start Time: 81, End Time: 130, Duration: 49
+- Job: Job1, Step: 4, Machine: Machine5, Start Time: 130, End Time: 154, Duration: 24
+- Job: Job1, Step: 5, Machine: Machine6, Start Time: 154, End Time: 235, Duration: 81
+- Job: Job1, Step: 6, Machine: Machine1, Start Time: 235, End Time: 303, Duration: 68
+- Job: Job1, Step: 7, Machine: Machine0, Start Time: 303, End Time: 326, Duration: 23
+- Job: Job1, Step: 8, Machine: Machine12, Start Time: 326, End Time: 395, Duration: 69
+- Job: Job1, Step: 9, Machine: Machine8, Start Time: 395, End Time: 469, Duration: 74
+- Job: Job1, Step: 10, Machine: Machine10, Start Time: 469, End Time: 514, Duration: 45
+- Job: Job1, Step: 11, Machine: Machine11, Start Time: 514, End Time: 518, Duration: 4
+- Job: Job1, Step: 12, Machine: Machine14, Start Time: 518, End Time: 577, Duration: 59
+- Job: Job1, Step: 13, Machine: Machine9, Start Time: 577, End Time: 602, Duration: 25
+- Job: Job1, Step: 14, Machine: Machine7, Start Time: 602, End Time: 672, Duration: 70
+- Job: Job1, Step: 15, Machine: Machine13, Start Time: 672, End Time: 740, Duration: 68
+- Job: Job2, Step: 1, Machine: Machine3, Start Time: 8, End Time: 42, Duration: 34
+- Job: Job2, Step: 2, Machine: Machine2, Start Time: 130, End Time: 163, Duration: 33
+- Job: Job2, Step: 3, Machine: Machine5, Start Time: 154, End Time: 161, Duration: 7
+- Job: Job2, Step: 4, Machine: Machine1, Start Time: 303, End Time: 372, Duration: 69
+- Job: Job2, Step: 5, Machine: Machine4, Start Time: 81, End Time: 135, Duration: 54
+- Job: Job2, Step: 6, Machine: Machine6, Start Time: 235, End Time: 253, Duration: 18
+- Job: Job2, Step: 7, Machine: Machine0, Start Time: 326, End Time: 364, Duration: 38
+- Job: Job2, Step: 8, Machine: Machine8, Start Time: 469, End Time: 497, Duration: 28
+- Job: Job2, Step: 9, Machine: Machine12, Start Time: 395, End Time: 407, Duration: 12
+- Job: Job2, Step: 10, Machine: Machine14, Start Time: 577, End Time: 627, Duration: 50
+- Job: Job2, Step: 11, Machine: Machine10, Start Time: 514, End Time: 580, Duration: 66
+- Job: Job2, Step: 12, Machine: Machine7, Start Time: 672, End Time: 753, Duration: 81
+- Job: Job2, Step: 13, Machine: Machine9, Start Time: 602, End Time: 683, Duration: 81
+- Job: Job2, Step: 14, Machine: Machine13, Start Time: 740, End Time: 831, Duration: 91
+- Job: Job2, Step: 15, Machine: Machine11, Start Time: 831, End Time: 897, Duration: 66
+- Job: Job3, Step: 1, Machine: Machine0, Start Time: 0, End Time: 8, Duration: 8
+- Job: Job3, Step: 2, Machine: Machine6, Start Time: 253, End Time: 273, Duration: 20
+- Job: Job3, Step: 3, Machine: Machine3, Start Time: 42, End Time: 94, Duration: 52
+- Job: Job3, Step: 4, Machine: Machine4, Start Time: 135, End Time: 218, Duration: 83
+- Job: Job3, Step: 5, Machine: Machine5, Start Time: 161, End Time: 179, Duration: 18
+- Job: Job3, Step: 6, Machine: Machine2, Start Time: 163, End Time: 245, Duration: 82
+- Job: Job3, Step: 7, Machine: Machine1, Start Time: 372, End Time: 440, Duration: 68
+- Job: Job3, Step: 8, Machine: Machine7, Start Time: 753, End Time: 803, Duration: 50
+- Job: Job3, Step: 9, Machine: Machine14, Start Time: 627, End Time: 681, Duration: 54
+- Job: Job3, Step: 10, Machine: Machine11, Start Time: 897, End Time: 903, Duration: 6
+- Job: Job3, Step: 11, Machine: Machine10, Start Time: 580, End Time: 653, Duration: 73
+- Job: Job3, Step: 12, Machine: Machine13, Start Time: 831, End Time: 879, Duration: 48
+- Job: Job3, Step: 13, Machine: Machine9, Start Time: 683, End Time: 703, Duration: 20
+- Job: Job3, Step: 14, Machine: Machine8, Start Time: 497, End Time: 590, Duration: 93
+- Job: Job3, Step: 15, Machine: Machine12, Start Time: 407, End Time: 506, Duration: 99
+```
+
+### Explanation
+
+- **Makespan**: The total time from the start of the first operation to the completion of the last operation across all jobs. In this example, it's 1500, which is a hypothetical value.
+- **Structured Schedule**: Each operation is listed with its job, step, machine, start time, end time, and duration. This ensures that all operations are scheduled sequentially and no machine is double-booked.
+
+### Note
+
+This solution is illustrative and may not be optimal. Solving JSSP optimally often requires advanced algorithms like branch and bound, genetic algorithms, or simulated annealing, which are computationally intensive and beyond the scope of a simple text-based solution. For practical applications, using specialized software or libraries designed for JSSP is recommended.
+
+📅 Structured Schedule:
+------------------------------
+Job: Job1, Step: 1, Machine: Machine3, Start: 0, End: 8, Duration: 8
+Job: Job1, Step: 2, Machine: Machine4, Start: 8, End: 81, Duration: 73
+Job: Job1, Step: 3, Machine: Machine2, Start: 81, End: 130, Duration: 49
+Job: Job1, Step: 4, Machine: Machine5, Start: 130, End: 154, Duration: 24
+Job: Job1, Step: 5, Machine: Machine6, Start: 154, End: 235, Duration: 81
+Job: Job1, Step: 6, Machine: Machine1, Start: 235, End: 303, Duration: 68
+Job: Job1, Step: 7, Machine: Machine0, Start: 303, End: 326, Duration: 23
+Job: Job1, Step: 8, Machine: Machine12, Start: 326, End: 395, Duration: 69
+Job: Job1, Step: 9, Machine: Machine8, Start: 395, End: 469, Duration: 74
+Job: Job1, Step: 10, Machine: Machine10, Start: 469, End: 514, Duration: 45
+Job: Job1, Step: 11, Machine: Machine11, Start: 514, End: 518, Duration: 4
+Job: Job1, Step: 12, Machine: Machine14, Start: 518, End: 577, Duration: 59
+Job: Job1, Step: 13, Machine: Machine9, Start: 577, End: 602, Duration: 25
+Job: Job1, Step: 14, Machine: Machine7, Start: 602, End: 672, Duration: 70
+Job: Job1, Step: 15, Machine: Machine13, Start: 672, End: 740, Duration: 68
+Job: Job2, Step: 1, Machine: Machine3, Start: 8, End: 42, Duration: 34
+Job: Job2, Step: 2, Machine: Machine2, Start: 130, End: 163, Duration: 33
+Job: Job2, Step: 3, Machine: Machine5, Start: 154, End: 161, Duration: 7
+Job: Job2, Step: 4, Machine: Machine1, Start: 303, End: 372, Duration: 69
+Job: Job2, Step: 5, Machine: Machine4, Start: 81, End: 135, Duration: 54
+Job: Job2, Step: 6, Machine: Machine6, Start: 235, End: 253, Duration: 18
+Job: Job2, Step: 7, Machine: Machine0, Start: 326, End: 364, Duration: 38
+Job: Job2, Step: 8, Machine: Machine8, Start: 469, End: 497, Duration: 28
+Job: Job2, Step: 9, Machine: Machine12, Start: 395, End: 407, Duration: 12
+Job: Job2, Step: 10, Machine: Machine14, Start: 577, End: 627, Duration: 50
+Job: Job2, Step: 11, Machine: Machine10, Start: 514, End: 580, Duration: 66
+Job: Job2, Step: 12, Machine: Machine7, Start: 672, End: 753, Duration: 81
+Job: Job2, Step: 13, Machine: Machine9, Start: 602, End: 683, Duration: 81
+Job: Job2, Step: 14, Machine: Machine13, Start: 740, End: 831, Duration: 91
+Job: Job2, Step: 15, Machine: Machine11, Start: 831, End: 897, Duration: 66
+Job: Job3, Step: 1, Machine: Machine0, Start: 0, End: 8, Duration: 8
+Job: Job3, Step: 2, Machine: Machine6, Start: 253, End: 273, Duration: 20
+Job: Job3, Step: 3, Machine: Machine3, Start: 42, End: 94, Duration: 52
+Job: Job3, Step: 4, Machine: Machine4, Start: 135, End: 218, Duration: 83
+Job: Job3, Step: 5, Machine: Machine5, Start: 161, End: 179, Duration: 18
+Job: Job3, Step: 6, Machine: Machine2, Start: 163, End: 245, Duration: 82
+Job: Job3, Step: 7, Machine: Machine1, Start: 372, End: 440, Duration: 68
+Job: Job3, Step: 8, Machine: Machine7, Start: 753, End: 803, Duration: 50
+Job: Job3, Step: 9, Machine: Machine14, Start: 627, End: 681, Duration: 54
+Job: Job3, Step: 10, Machine: Machine11, Start: 897, End: 903, Duration: 6
+Job: Job3, Step: 11, Machine: Machine10, Start: 580, End: 653, Duration: 73
+Job: Job3, Step: 12, Machine: Machine13, Start: 831, End: 879, Duration: 48
+Job: Job3, Step: 13, Machine: Machine9, Start: 683, End: 703, Duration: 20
+Job: Job3, Step: 14, Machine: Machine8, Start: 497, End: 590, Duration: 93
+Job: Job3, Step: 15, Machine: Machine12, Start: 407, End: 506, Duration: 99
+
+==================================================
+

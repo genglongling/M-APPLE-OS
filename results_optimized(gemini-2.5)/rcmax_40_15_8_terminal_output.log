@@ -1,0 +1,753 @@
+Loading dataset: rcmax_40_15_8 from /Users/glin/Documents/GitHub/M-APPLE/M-APPLE-OS/applications/DMU/rcmax_40_15_8.txt
+Loaded 40 jobs
+
+--- Running Full Workflow ---
+
+============================================================
+Running MAPLE Full Workflow on rcmax_40_15_8
+Description: Complete workflow with all tools
+Timestamp: 2025-09-24 15:23:04
+============================================================
+⚠️ Warning: Agent is None in node: {'agent': None, 'type': 'JSSPAgent'}
+⚠️ Warning: Agent is None in node: {'agent': None, 'type': 'JSSPValidationAgent'}
+
+=== [OPTIMIZED MAPLE] New 4-Step Workflow ===
+Nodes: ['Unknown Agent', 'Unknown Agent']
+Edges: [{'from': 0, 'to': 1}]
+Workflow: Full Workflow
+Validation: ✅
+Repair: ✅
+Optimization: ✅
+
+=== [OPTIMIZED MAPLE] Inter-Agent Coordination ===
+
+=== [OPTIMIZED MAPLE] New Workflow Execution ===
+🔄 Running new 7-step workflow: Query -> Validation -> Repair -> Re-validation -> Optimization -> Final Check -> Supervisor
+
+🔄 Starting New 4-Step Workflow...
+1️⃣ Loading pre-generated schedule from JSON file...
+📊 Loaded 199 schedule entries from rcmax_40_15_8
+📊 Gemini-2.5 makespan: 2433
+📊 Initial schedule makespan: 2433
+📊 Schedule entries count: 199
+📊 Sample entry: {'job': 'Job1', 'step': 1, 'machine': 'Machine5', 'start': 0, 'end': 83, 'duration': 83}
+[32m✅ Pre-generated schedule loaded successfully.
+2️⃣ ValidationTools validating schedule...
+❌ Initial validation failed: ['Job Job6: Step 15 starts before step 14 ends', 'Job Job8: Step 4 starts before step 3 ends', 'Job Job11: Step 2 starts before step 1 ends', 'Machine Machine5: Operations overlap - Job12 step 1 and Job8 step 2', 'Machine Machine5: Operations overlap - Job8 step 2 and Job2 step 3', 'Machine Machine5: Operations overlap - Job2 step 3 and Job10 step 2', 'Machine Machine5: Operations overlap - Job7 step 8 and Job5 step 12', 'Machine Machine11: Operations overlap - Job11 step 5 and Job9 step 3', 'Machine Machine11: Operations overlap - Job5 step 8 and Job12 step 5', 'Machine Machine11: Operations overlap - Job12 step 5 and Job6 step 6', 'Machine Machine11: Operations overlap - Job3 step 12 and Job10 step 9', 'Machine Machine3: Operations overlap - Job8 step 4 and Job9 step 6', 'Machine Machine3: Operations overlap - Job9 step 6 and Job10 step 3', 'Machine Machine3: Operations overlap - Job7 step 5 and Job3 step 8', 'Machine Machine7: Operations overlap - Job14 step 2 and Job1 step 4', 'Machine Machine7: Operations overlap - Job9 step 11 and Job3 step 11', 'Machine Machine7: Operations overlap - Job12 step 7 and Job5 step 10', 'Machine Machine7: Operations overlap - Job10 step 12 and Job2 step 13', 'Machine Machine13: Operations overlap - Job4 step 5 and Job13 step 2', 'Machine Machine13: Operations overlap - Job11 step 8 and Job8 step 9', 'Machine Machine13: Operations overlap - Job8 step 9 and Job10 step 7', 'Machine Machine13: Operations overlap - Job5 step 15 and Job7 step 12', 'Machine Machine8: Operations overlap - Job8 step 1 and Job2 step 2', 'Machine Machine8: Operations overlap - Job6 step 1 and Job5 step 4', 'Machine Machine8: Operations overlap - Job11 step 12 and Job12 step 13', 'Machine Machine2: Operations overlap - Job3 step 6 and Job1 step 7', 'Machine Machine2: Operations overlap - Job1 step 7 and Job5 step 7', 'Machine Machine2: Operations overlap - Job5 step 7 and Job2 step 8', 'Machine Machine2: Operations overlap - Job2 step 8 and Job9 step 8', 'Machine Machine2: Operations overlap - Job9 step 8 and Job4 step 6', 'Machine Machine2: Operations overlap - Job4 step 6 and Job11 step 9', 'Machine Machine2: Operations overlap - Job7 step 11 and Job10 step 13', 'Machine Machine2: Operations overlap - Job10 step 13 and Job8 step 14', 'Machine Machine0: Operations overlap - Job10 step 4 and Job2 step 7', 'Machine Machine0: Operations overlap - Job7 step 7 and Job4 step 8', 'Machine Machine0: Operations overlap - Job4 step 8 and Job8 step 10', 'Machine Machine0: Operations overlap - Job13 step 7 and Job6 step 10', 'Machine Machine4: Operations overlap - Job7 step 2 and Job11 step 4', 'Machine Machine4: Operations overlap - Job12 step 2 and Job14 step 4', 'Machine Machine9: Operations overlap - Job3 step 4 and Job11 step 6', 'Machine Machine9: Operations overlap - Job11 step 6 and Job7 step 3', 'Machine Machine9: Operations overlap - Job7 step 3 and Job13 step 1', 'Machine Machine9: Operations overlap - Job12 step 3 and Job10 step 5', 'Machine Machine9: Operations overlap - Job10 step 5 and Job8 step 7', 'Machine Machine12: Operations overlap - Job2 step 5 and Job8 step 5', 'Machine Machine12: Operations overlap - Job6 step 15 and Job10 step 14', 'Machine Machine6: Operations overlap - Job10 step 6 and Job2 step 9', 'Machine Machine6: Operations overlap - Job2 step 9 and Job13 step 4', 'Machine Machine6: Operations overlap - Job13 step 4 and Job9 step 10', 'Machine Machine10: Operations overlap - Job1 step 13 and Job4 step 9', 'Machine Machine10: Operations overlap - Job11 step 10 and Job10 step 10', 'Machine Machine10: Operations overlap - Job10 step 10 and Job8 step 12', 'Machine Machine10: Operations overlap - Job8 step 12 and Job2 step 12', 'Machine Machine10: Operations overlap - Job12 step 14 and Job7 step 14', 'Machine Machine14: Operations overlap - Job5 step 6 and Job9 step 7', 'Machine Machine14: Operations overlap - Job8 step 8 and Job3 step 9', 'Machine Machine14: Operations overlap - Job3 step 9 and Job12 step 4', 'Machine Machine14: Operations overlap - Job7 step 15 and Job10 step 15', "Missing jobs in schedule: ['Job40', 'Job33', 'Job38', 'Job22', 'Job37', 'Job23', 'Job32', 'Job27', 'Job19', 'Job15', 'Job18', 'Job29', 'Job21', 'Job16', 'Job34', 'Job17', 'Job36', 'Job24', 'Job25', 'Job26', 'Job28', 'Job30', 'Job31', 'Job20', 'Job39', 'Job35']"]
+3️⃣ RepairTools repairing schedule...
+🔧 Repair iteration 1/5
+🔧 Starting Algorithm 3: Cascading Repair and Queue Reordering
+📊 Processing 199 schedule entries
+❌ Found 59 constraint violations
+🔄 Phase I: Status Update - Identifying affected operations
+🔧 Fixing immediate constraint violations...
+🔄 Phase II: Job Precedence Repair - Fixing step ordering violations
+🔧 Repairing job precedence violations...
+🔄 Phase III: Machine Capacity Repair - Resolving machine overlaps
+🔧 Repairing machine capacity violations...
+⏰ Fixed machine overlap on Machine5
+⏰ Fixed machine overlap on Machine5
+⏰ Fixed machine overlap on Machine5
+⏰ Fixed machine overlap on Machine5
+⏰ Fixed machine overlap on Machine5
+⏰ Fixed machine overlap on Machine5
+⏰ Fixed machine overlap on Machine5
+⏰ Fixed machine overlap on Machine5
+⏰ Fixed machine overlap on Machine9
+⏰ Fixed machine overlap on Machine9
+⏰ Fixed machine overlap on Machine9
+⏰ Fixed machine overlap on Machine9
+⏰ Fixed machine overlap on Machine9
+⏰ Fixed machine overlap on Machine9
+⏰ Fixed machine overlap on Machine9
+⏰ Fixed machine overlap on Machine7
+⏰ Fixed machine overlap on Machine7
+⏰ Fixed machine overlap on Machine7
+⏰ Fixed machine overlap on Machine7
+⏰ Fixed machine overlap on Machine7
+⏰ Fixed machine overlap on Machine12
+⏰ Fixed machine overlap on Machine8
+⏰ Fixed machine overlap on Machine8
+⏰ Fixed machine overlap on Machine8
+⏰ Fixed machine overlap on Machine8
+⏰ Fixed machine overlap on Machine8
+⏰ Fixed machine overlap on Machine8
+⏰ Fixed machine overlap on Machine13
+⏰ Fixed machine overlap on Machine13
+⏰ Fixed machine overlap on Machine13
+⏰ Fixed machine overlap on Machine13
+⏰ Fixed machine overlap on Machine13
+⏰ Fixed machine overlap on Machine13
+⏰ Fixed machine overlap on Machine13
+⏰ Fixed machine overlap on Machine13
+⏰ Fixed machine overlap on Machine6
+⏰ Fixed machine overlap on Machine6
+⏰ Fixed machine overlap on Machine6
+⏰ Fixed machine overlap on Machine6
+⏰ Fixed machine overlap on Machine6
+⏰ Fixed machine overlap on Machine6
+⏰ Fixed machine overlap on Machine2
+⏰ Fixed machine overlap on Machine2
+⏰ Fixed machine overlap on Machine2
+⏰ Fixed machine overlap on Machine2
+⏰ Fixed machine overlap on Machine2
+⏰ Fixed machine overlap on Machine2
+⏰ Fixed machine overlap on Machine2
+⏰ Fixed machine overlap on Machine2
+⏰ Fixed machine overlap on Machine2
+⏰ Fixed machine overlap on Machine2
+⏰ Fixed machine overlap on Machine2
+⏰ Fixed machine overlap on Machine2
+⏰ Fixed machine overlap on Machine0
+⏰ Fixed machine overlap on Machine0
+⏰ Fixed machine overlap on Machine0
+⏰ Fixed machine overlap on Machine0
+⏰ Fixed machine overlap on Machine0
+⏰ Fixed machine overlap on Machine11
+⏰ Fixed machine overlap on Machine11
+⏰ Fixed machine overlap on Machine11
+⏰ Fixed machine overlap on Machine11
+⏰ Fixed machine overlap on Machine11
+⏰ Fixed machine overlap on Machine4
+⏰ Fixed machine overlap on Machine4
+⏰ Fixed machine overlap on Machine4
+⏰ Fixed machine overlap on Machine3
+⏰ Fixed machine overlap on Machine3
+⏰ Fixed machine overlap on Machine3
+⏰ Fixed machine overlap on Machine3
+⏰ Fixed machine overlap on Machine3
+⏰ Fixed machine overlap on Machine14
+⏰ Fixed machine overlap on Machine14
+⏰ Fixed machine overlap on Machine14
+⏰ Fixed machine overlap on Machine14
+⏰ Fixed machine overlap on Machine14
+⏰ Fixed machine overlap on Machine14
+⏰ Fixed machine overlap on Machine14
+⏰ Fixed machine overlap on Machine14
+⏰ Fixed machine overlap on Machine14
+⏰ Fixed machine overlap on Machine10
+⏰ Fixed machine overlap on Machine10
+⏰ Fixed machine overlap on Machine10
+⏰ Fixed machine overlap on Machine10
+⏰ Fixed machine overlap on Machine10
+⏰ Fixed machine overlap on Machine10
+⏰ Fixed machine overlap on Machine10
+⏰ Fixed machine overlap on Machine10
+⏰ Fixed machine overlap on Machine10
+🔄 Phase IV: Iterative Improvement - Optimizing schedule quality
+🔧 Applying iterative improvement...
+🔄 Phase V: Final validation and cleanup
+🔧 Final cleanup - ensuring valid operation times...
+⏰ Fixed invalid times for Job6 step 15
+✅ Algorithm 3 completed - Generated 199 schedule entries
+📊 Repair iteration 1 makespan: 2434
+📊 Repair iteration 1 schedule entries: 199
+📊 Latest operations: [('Job6', 15, 2434), ('Job13', 15, 2433), ('Job6', 14, 2433)]
+💾 Saved repair iteration 1 to: maple_optimized(gemini-2.5)/rcmax_40_15_8_repair_iteration_1.json
+⚠️ Repair iteration 1 reduced errors from 59 to 65 (makespan: 2434)
+🔧 Repair iteration 2/5
+🔧 Starting Algorithm 3: Cascading Repair and Queue Reordering
+📊 Processing 199 schedule entries
+❌ Found 65 constraint violations
+🔄 Phase I: Status Update - Identifying affected operations
+🔧 Fixing immediate constraint violations...
+🔄 Phase II: Job Precedence Repair - Fixing step ordering violations
+🔧 Repairing job precedence violations...
+🔄 Phase III: Machine Capacity Repair - Resolving machine overlaps
+🔧 Repairing machine capacity violations...
+⏰ Fixed machine overlap on Machine5
+⏰ Fixed machine overlap on Machine5
+⏰ Fixed machine overlap on Machine5
+⏰ Fixed machine overlap on Machine7
+⏰ Fixed machine overlap on Machine12
+⏰ Fixed machine overlap on Machine8
+⏰ Fixed machine overlap on Machine8
+⏰ Fixed machine overlap on Machine8
+⏰ Fixed machine overlap on Machine13
+⏰ Fixed machine overlap on Machine13
+⏰ Fixed machine overlap on Machine13
+⏰ Fixed machine overlap on Machine13
+⏰ Fixed machine overlap on Machine13
+⏰ Fixed machine overlap on Machine13
+⏰ Fixed machine overlap on Machine6
+⏰ Fixed machine overlap on Machine6
+⏰ Fixed machine overlap on Machine6
+⏰ Fixed machine overlap on Machine6
+⏰ Fixed machine overlap on Machine0
+⏰ Fixed machine overlap on Machine0
+⏰ Fixed machine overlap on Machine0
+⏰ Fixed machine overlap on Machine0
+⏰ Fixed machine overlap on Machine0
+⏰ Fixed machine overlap on Machine11
+⏰ Fixed machine overlap on Machine11
+⏰ Fixed machine overlap on Machine4
+⏰ Fixed machine overlap on Machine3
+⏰ Fixed machine overlap on Machine3
+⏰ Fixed machine overlap on Machine3
+⏰ Fixed machine overlap on Machine3
+⏰ Fixed machine overlap on Machine14
+⏰ Fixed machine overlap on Machine10
+🔄 Phase IV: Iterative Improvement - Optimizing schedule quality
+🔧 Applying iterative improvement...
+🔄 Phase V: Final validation and cleanup
+🔧 Final cleanup - ensuring valid operation times...
+⏰ Fixed invalid times for Job11 step 5
+⏰ Fixed invalid times for Job9 step 4
+⏰ Fixed invalid times for Job2 step 4
+⏰ Fixed invalid times for Job8 step 5
+⏰ Fixed invalid times for Job7 step 4
+⏰ Fixed invalid times for Job8 step 8
+⏰ Fixed invalid times for Job9 step 9
+⏰ Fixed invalid times for Job3 step 10
+⏰ Fixed invalid times for Job10 step 8
+⏰ Fixed invalid times for Job1 step 11
+⏰ Fixed invalid times for Job1 step 13
+⏰ Fixed invalid times for Job10 step 11
+⏰ Fixed invalid times for Job8 step 13
+⏰ Fixed invalid times for Job5 step 15
+⏰ Fixed invalid times for Job2 step 13
+⏰ Fixed invalid times for Job8 step 15
+⏰ Fixed invalid times for Job13 step 12
+✅ Algorithm 3 completed - Generated 199 schedule entries
+📊 Repair iteration 2 makespan: 2434
+📊 Repair iteration 2 schedule entries: 199
+📊 Latest operations: [('Job6', 15, 2434), ('Job13', 15, 2433), ('Job6', 14, 2433)]
+💾 Saved repair iteration 2 to: maple_optimized(gemini-2.5)/rcmax_40_15_8_repair_iteration_2.json
+⚠️ Repair iteration 2 reduced errors from 65 to 32 (makespan: 2434)
+🔧 Repair iteration 3/5
+🔧 Starting Algorithm 3: Cascading Repair and Queue Reordering
+📊 Processing 199 schedule entries
+❌ Found 32 constraint violations
+🔄 Phase I: Status Update - Identifying affected operations
+🔧 Fixing immediate constraint violations...
+🔄 Phase II: Job Precedence Repair - Fixing step ordering violations
+🔧 Repairing job precedence violations...
+🔄 Phase III: Machine Capacity Repair - Resolving machine overlaps
+🔧 Repairing machine capacity violations...
+⏰ Fixed machine overlap on Machine13
+⏰ Fixed machine overlap on Machine13
+⏰ Fixed machine overlap on Machine13
+⏰ Fixed machine overlap on Machine6
+⏰ Fixed machine overlap on Machine6
+⏰ Fixed machine overlap on Machine0
+⏰ Fixed machine overlap on Machine3
+⏰ Fixed machine overlap on Machine14
+⏰ Fixed machine overlap on Machine1
+🔄 Phase IV: Iterative Improvement - Optimizing schedule quality
+🔧 Applying iterative improvement...
+🔄 Phase V: Final validation and cleanup
+🔧 Final cleanup - ensuring valid operation times...
+⏰ Fixed invalid times for Job2 step 5
+⏰ Fixed invalid times for Job8 step 6
+⏰ Fixed invalid times for Job6 step 3
+⏰ Fixed invalid times for Job10 step 3
+⏰ Fixed invalid times for Job8 step 5
+⏰ Fixed invalid times for Job13 step 3
+⏰ Fixed invalid times for Job12 step 6
+⏰ Fixed invalid times for Job4 step 9
+⏰ Fixed invalid times for Job10 step 8
+⏰ Fixed invalid times for Job1 step 13
+⏰ Fixed invalid times for Job5 step 12
+⏰ Fixed invalid times for Job2 step 14
+⏰ Fixed invalid times for Job13 step 13
+✅ Algorithm 3 completed - Generated 199 schedule entries
+📊 Repair iteration 3 makespan: 2434
+📊 Repair iteration 3 schedule entries: 199
+📊 Latest operations: [('Job6', 15, 2434), ('Job13', 15, 2433), ('Job6', 14, 2433)]
+💾 Saved repair iteration 3 to: maple_optimized(gemini-2.5)/rcmax_40_15_8_repair_iteration_3.json
+⚠️ Repair iteration 3 reduced errors from 32 to 15 (makespan: 2434)
+🔧 Repair iteration 4/5
+🔧 Starting Algorithm 3: Cascading Repair and Queue Reordering
+📊 Processing 199 schedule entries
+❌ Found 15 constraint violations
+🔄 Phase I: Status Update - Identifying affected operations
+🔧 Fixing immediate constraint violations...
+🔄 Phase II: Job Precedence Repair - Fixing step ordering violations
+🔧 Repairing job precedence violations...
+🔄 Phase III: Machine Capacity Repair - Resolving machine overlaps
+🔧 Repairing machine capacity violations...
+🔄 Phase IV: Iterative Improvement - Optimizing schedule quality
+🔧 Applying iterative improvement...
+🔄 Phase V: Final validation and cleanup
+🔧 Final cleanup - ensuring valid operation times...
+⏰ Fixed invalid times for Job2 step 6
+⏰ Fixed invalid times for Job8 step 6
+⏰ Fixed invalid times for Job10 step 8
+⏰ Fixed invalid times for Job9 step 13
+⏰ Fixed invalid times for Job1 step 15
+⏰ Fixed invalid times for Job12 step 10
+⏰ Fixed invalid times for Job5 step 13
+⏰ Fixed invalid times for Job5 step 12
+⏰ Fixed invalid times for Job2 step 15
+✅ Algorithm 3 completed - Generated 199 schedule entries
+📊 Repair iteration 4 makespan: 2434
+📊 Repair iteration 4 schedule entries: 199
+📊 Latest operations: [('Job6', 15, 2434), ('Job13', 15, 2433), ('Job6', 14, 2433)]
+💾 Saved repair iteration 4 to: maple_optimized(gemini-2.5)/rcmax_40_15_8_repair_iteration_4.json
+⚠️ Repair iteration 4 reduced errors from 15 to 4 (makespan: 2434)
+🔧 Repair iteration 5/5
+🔧 Starting Algorithm 3: Cascading Repair and Queue Reordering
+📊 Processing 199 schedule entries
+❌ Found 4 constraint violations
+🔄 Phase I: Status Update - Identifying affected operations
+🔧 Fixing immediate constraint violations...
+🔄 Phase II: Job Precedence Repair - Fixing step ordering violations
+🔧 Repairing job precedence violations...
+🔄 Phase III: Machine Capacity Repair - Resolving machine overlaps
+🔧 Repairing machine capacity violations...
+🔄 Phase IV: Iterative Improvement - Optimizing schedule quality
+🔧 Applying iterative improvement...
+🔄 Phase V: Final validation and cleanup
+🔧 Final cleanup - ensuring valid operation times...
+⏰ Fixed invalid times for Job9 step 14
+⏰ Fixed invalid times for Job5 step 13
+✅ Algorithm 3 completed - Generated 199 schedule entries
+📊 Repair iteration 5 makespan: 2434
+📊 Repair iteration 5 schedule entries: 199
+📊 Latest operations: [('Job6', 15, 2434), ('Job13', 15, 2433), ('Job6', 14, 2433)]
+💾 Saved repair iteration 5 to: maple_optimized(gemini-2.5)/rcmax_40_15_8_repair_iteration_5.json
+⚠️ Repair iteration 5 reduced errors from 4 to 2 (makespan: 2434)
+⚠️ Repair completed after 5 iterations with remaining errors
+4️⃣ ValidationTools revalidating schedule...
+❌ Revalidation failed: ['Job Job9: Step 15 starts before step 14 ends', "Missing jobs in schedule: ['Job40', 'Job33', 'Job38', 'Job22', 'Job37', 'Job23', 'Job32', 'Job27', 'Job19', 'Job15', 'Job18', 'Job29', 'Job21', 'Job16', 'Job34', 'Job17', 'Job36', 'Job24', 'Job25', 'Job26', 'Job28', 'Job30', 'Job31', 'Job20', 'Job39', 'Job35']"]
+[31m❌ ERROR in workflow: Schedule validation failed after repair
+⚡ Disruption detected in Unknown Agent: Schedule validation failed after repair
+🔄 Initiating global replanning...
+⚠️ Global replanning completed. Manual intervention may be required.
+[31m🚨 Workflow execution halted due to error.
+❌ New 4-step workflow failed
+📊 Found 5 repair iterations
+  Iteration 1: makespan=2434, entries=199
+  Iteration 2: makespan=2434, entries=199
+  Iteration 3: makespan=2434, entries=199
+  Iteration 4: makespan=2434, entries=199
+  Iteration 5: makespan=2434, entries=199
+
+--- Running No Repair Tools ---
+
+============================================================
+Running MAPLE No Repair Tools on rcmax_40_15_8
+Description: Full workflow without repair tools
+Timestamp: 2025-09-24 15:23:04
+============================================================
+⚠️ Warning: Agent is None in node: {'agent': None, 'type': 'JSSPAgent'}
+⚠️ Warning: Agent is None in node: {'agent': None, 'type': 'JSSPValidationAgent'}
+
+=== [OPTIMIZED MAPLE] New 4-Step Workflow ===
+Nodes: ['Unknown Agent', 'Unknown Agent']
+Edges: [{'from': 0, 'to': 1}]
+Workflow: No Repair Tools
+Validation: ✅
+Repair: ❌
+Optimization: ✅
+
+=== [OPTIMIZED MAPLE] Inter-Agent Coordination ===
+
+=== [OPTIMIZED MAPLE] New Workflow Execution ===
+🔄 Running new 7-step workflow: Query -> Validation -> Repair -> Re-validation -> Optimization -> Final Check -> Supervisor
+
+🔄 Starting New 4-Step Workflow...
+1️⃣ Loading pre-generated schedule from JSON file...
+📊 Loaded 199 schedule entries from rcmax_40_15_8
+📊 Gemini-2.5 makespan: 2433
+📊 Initial schedule makespan: 2433
+📊 Schedule entries count: 199
+📊 Sample entry: {'job': 'Job1', 'step': 1, 'machine': 'Machine5', 'start': 0, 'end': 83, 'duration': 83}
+[32m✅ Pre-generated schedule loaded successfully.
+2️⃣ ValidationTools validating schedule...
+❌ Initial validation failed: ['Job Job6: Step 15 starts before step 14 ends', 'Job Job8: Step 4 starts before step 3 ends', 'Job Job11: Step 2 starts before step 1 ends', 'Machine Machine5: Operations overlap - Job12 step 1 and Job8 step 2', 'Machine Machine5: Operations overlap - Job8 step 2 and Job2 step 3', 'Machine Machine5: Operations overlap - Job2 step 3 and Job10 step 2', 'Machine Machine5: Operations overlap - Job7 step 8 and Job5 step 12', 'Machine Machine11: Operations overlap - Job11 step 5 and Job9 step 3', 'Machine Machine11: Operations overlap - Job5 step 8 and Job12 step 5', 'Machine Machine11: Operations overlap - Job12 step 5 and Job6 step 6', 'Machine Machine11: Operations overlap - Job3 step 12 and Job10 step 9', 'Machine Machine3: Operations overlap - Job8 step 4 and Job9 step 6', 'Machine Machine3: Operations overlap - Job9 step 6 and Job10 step 3', 'Machine Machine3: Operations overlap - Job7 step 5 and Job3 step 8', 'Machine Machine7: Operations overlap - Job14 step 2 and Job1 step 4', 'Machine Machine7: Operations overlap - Job9 step 11 and Job3 step 11', 'Machine Machine7: Operations overlap - Job12 step 7 and Job5 step 10', 'Machine Machine7: Operations overlap - Job10 step 12 and Job2 step 13', 'Machine Machine13: Operations overlap - Job4 step 5 and Job13 step 2', 'Machine Machine13: Operations overlap - Job11 step 8 and Job8 step 9', 'Machine Machine13: Operations overlap - Job8 step 9 and Job10 step 7', 'Machine Machine13: Operations overlap - Job5 step 15 and Job7 step 12', 'Machine Machine8: Operations overlap - Job8 step 1 and Job2 step 2', 'Machine Machine8: Operations overlap - Job6 step 1 and Job5 step 4', 'Machine Machine8: Operations overlap - Job11 step 12 and Job12 step 13', 'Machine Machine2: Operations overlap - Job3 step 6 and Job1 step 7', 'Machine Machine2: Operations overlap - Job1 step 7 and Job5 step 7', 'Machine Machine2: Operations overlap - Job5 step 7 and Job2 step 8', 'Machine Machine2: Operations overlap - Job2 step 8 and Job9 step 8', 'Machine Machine2: Operations overlap - Job9 step 8 and Job4 step 6', 'Machine Machine2: Operations overlap - Job4 step 6 and Job11 step 9', 'Machine Machine2: Operations overlap - Job7 step 11 and Job10 step 13', 'Machine Machine2: Operations overlap - Job10 step 13 and Job8 step 14', 'Machine Machine0: Operations overlap - Job10 step 4 and Job2 step 7', 'Machine Machine0: Operations overlap - Job7 step 7 and Job4 step 8', 'Machine Machine0: Operations overlap - Job4 step 8 and Job8 step 10', 'Machine Machine0: Operations overlap - Job13 step 7 and Job6 step 10', 'Machine Machine4: Operations overlap - Job7 step 2 and Job11 step 4', 'Machine Machine4: Operations overlap - Job12 step 2 and Job14 step 4', 'Machine Machine9: Operations overlap - Job3 step 4 and Job11 step 6', 'Machine Machine9: Operations overlap - Job11 step 6 and Job7 step 3', 'Machine Machine9: Operations overlap - Job7 step 3 and Job13 step 1', 'Machine Machine9: Operations overlap - Job12 step 3 and Job10 step 5', 'Machine Machine9: Operations overlap - Job10 step 5 and Job8 step 7', 'Machine Machine12: Operations overlap - Job2 step 5 and Job8 step 5', 'Machine Machine12: Operations overlap - Job6 step 15 and Job10 step 14', 'Machine Machine6: Operations overlap - Job10 step 6 and Job2 step 9', 'Machine Machine6: Operations overlap - Job2 step 9 and Job13 step 4', 'Machine Machine6: Operations overlap - Job13 step 4 and Job9 step 10', 'Machine Machine10: Operations overlap - Job1 step 13 and Job4 step 9', 'Machine Machine10: Operations overlap - Job11 step 10 and Job10 step 10', 'Machine Machine10: Operations overlap - Job10 step 10 and Job8 step 12', 'Machine Machine10: Operations overlap - Job8 step 12 and Job2 step 12', 'Machine Machine10: Operations overlap - Job12 step 14 and Job7 step 14', 'Machine Machine14: Operations overlap - Job5 step 6 and Job9 step 7', 'Machine Machine14: Operations overlap - Job8 step 8 and Job3 step 9', 'Machine Machine14: Operations overlap - Job3 step 9 and Job12 step 4', 'Machine Machine14: Operations overlap - Job7 step 15 and Job10 step 15', "Missing jobs in schedule: ['Job40', 'Job33', 'Job38', 'Job22', 'Job37', 'Job23', 'Job32', 'Job27', 'Job19', 'Job15', 'Job18', 'Job29', 'Job21', 'Job16', 'Job34', 'Job17', 'Job36', 'Job24', 'Job25', 'Job26', 'Job28', 'Job30', 'Job31', 'Job20', 'Job39', 'Job35']"]
+⚠️ Schedule validation failed but repair is disabled - using original schedule without optimization
+✅ Proceeding with original schedule without optimization due to validation failures
+5️⃣ OptimizationTools skipped - using original schedule due to validation failures
+5️⃣ OptimizationTools already skipped due to validation failures
+6️⃣ ValidationTools final check...
+⚠️ Final validation found 59 errors, but continuing with optimization result
+✅ Optimization result accepted despite validation warnings
+7️⃣ Processing final results...
+📊 Final processed schedule with 199 entries
+📊 Calculated makespan: 2433
+🎯 Final makespan: 2433
+✅ New workflow completed successfully.
+
+=== Optimized Validation Results ===
+✅ Using best solution found (makespan: 2433)
+📊 Total operations scheduled: 199
+✅ New 4-step workflow completed successfully
+
+--- Running No Validation Tools ---
+
+============================================================
+Running MAPLE No Validation Tools on rcmax_40_15_8
+Description: Full workflow without validation tools
+Timestamp: 2025-09-24 15:23:04
+============================================================
+⚠️ Warning: Agent is None in node: {'agent': None, 'type': 'JSSPAgent'}
+⚠️ Warning: Agent is None in node: {'agent': None, 'type': 'JSSPValidationAgent'}
+
+=== [OPTIMIZED MAPLE] New 4-Step Workflow ===
+Nodes: ['Unknown Agent', 'Unknown Agent']
+Edges: [{'from': 0, 'to': 1}]
+Workflow: No Validation Tools
+Validation: ❌
+Repair: ✅
+Optimization: ✅
+
+=== [OPTIMIZED MAPLE] Inter-Agent Coordination ===
+
+=== [OPTIMIZED MAPLE] New Workflow Execution ===
+🔄 Running new 7-step workflow: Query -> Validation -> Repair -> Re-validation -> Optimization -> Final Check -> Supervisor
+
+🔄 Starting New 4-Step Workflow...
+1️⃣ Loading pre-generated schedule from JSON file...
+📊 Loaded 199 schedule entries from rcmax_40_15_8
+📊 Gemini-2.5 makespan: 2433
+📊 Initial schedule makespan: 2433
+📊 Schedule entries count: 199
+📊 Sample entry: {'job': 'Job1', 'step': 1, 'machine': 'Machine5', 'start': 0, 'end': 83, 'duration': 83}
+[32m✅ Pre-generated schedule loaded successfully.
+2️⃣ ValidationTools disabled - skipping validation
+5️⃣ OptimizationTools optimizing schedule...
+📊 Pre-optimization makespan: 2433
+📊 Post-optimization makespan: 1684
+✅ Optimization completed successfully.
+6️⃣ ValidationTools disabled - skipping final validation
+7️⃣ Processing final results...
+📊 Final processed schedule with 199 entries
+📊 Calculated makespan: 1684
+🎯 Final makespan: 1684
+✅ New workflow completed successfully.
+
+=== Optimized Validation Results ===
+✅ Using best solution found (makespan: 1684)
+📊 Total operations scheduled: 199
+✅ New 4-step workflow completed successfully
+
+--- Running No Optimization Tools ---
+
+============================================================
+Running MAPLE No Optimization Tools on rcmax_40_15_8
+Description: Full workflow without optimization tools
+Timestamp: 2025-09-24 15:23:04
+============================================================
+⚠️ Warning: Agent is None in node: {'agent': None, 'type': 'JSSPAgent'}
+⚠️ Warning: Agent is None in node: {'agent': None, 'type': 'JSSPValidationAgent'}
+
+=== [OPTIMIZED MAPLE] New 4-Step Workflow ===
+Nodes: ['Unknown Agent', 'Unknown Agent']
+Edges: [{'from': 0, 'to': 1}]
+Workflow: No Optimization Tools
+Validation: ✅
+Repair: ✅
+Optimization: ❌
+
+=== [OPTIMIZED MAPLE] Inter-Agent Coordination ===
+
+=== [OPTIMIZED MAPLE] New Workflow Execution ===
+🔄 Running new 7-step workflow: Query -> Validation -> Repair -> Re-validation -> Optimization -> Final Check -> Supervisor
+
+🔄 Starting New 4-Step Workflow...
+1️⃣ Loading pre-generated schedule from JSON file...
+📊 Loaded 199 schedule entries from rcmax_40_15_8
+📊 Gemini-2.5 makespan: 2433
+📊 Initial schedule makespan: 2433
+📊 Schedule entries count: 199
+📊 Sample entry: {'job': 'Job1', 'step': 1, 'machine': 'Machine5', 'start': 0, 'end': 83, 'duration': 83}
+[32m✅ Pre-generated schedule loaded successfully.
+2️⃣ ValidationTools validating schedule...
+❌ Initial validation failed: ['Job Job6: Step 15 starts before step 14 ends', 'Job Job8: Step 4 starts before step 3 ends', 'Job Job11: Step 2 starts before step 1 ends', 'Machine Machine5: Operations overlap - Job12 step 1 and Job8 step 2', 'Machine Machine5: Operations overlap - Job8 step 2 and Job2 step 3', 'Machine Machine5: Operations overlap - Job2 step 3 and Job10 step 2', 'Machine Machine5: Operations overlap - Job7 step 8 and Job5 step 12', 'Machine Machine11: Operations overlap - Job11 step 5 and Job9 step 3', 'Machine Machine11: Operations overlap - Job5 step 8 and Job12 step 5', 'Machine Machine11: Operations overlap - Job12 step 5 and Job6 step 6', 'Machine Machine11: Operations overlap - Job3 step 12 and Job10 step 9', 'Machine Machine3: Operations overlap - Job8 step 4 and Job9 step 6', 'Machine Machine3: Operations overlap - Job9 step 6 and Job10 step 3', 'Machine Machine3: Operations overlap - Job7 step 5 and Job3 step 8', 'Machine Machine7: Operations overlap - Job14 step 2 and Job1 step 4', 'Machine Machine7: Operations overlap - Job9 step 11 and Job3 step 11', 'Machine Machine7: Operations overlap - Job12 step 7 and Job5 step 10', 'Machine Machine7: Operations overlap - Job10 step 12 and Job2 step 13', 'Machine Machine13: Operations overlap - Job4 step 5 and Job13 step 2', 'Machine Machine13: Operations overlap - Job11 step 8 and Job8 step 9', 'Machine Machine13: Operations overlap - Job8 step 9 and Job10 step 7', 'Machine Machine13: Operations overlap - Job5 step 15 and Job7 step 12', 'Machine Machine8: Operations overlap - Job8 step 1 and Job2 step 2', 'Machine Machine8: Operations overlap - Job6 step 1 and Job5 step 4', 'Machine Machine8: Operations overlap - Job11 step 12 and Job12 step 13', 'Machine Machine2: Operations overlap - Job3 step 6 and Job1 step 7', 'Machine Machine2: Operations overlap - Job1 step 7 and Job5 step 7', 'Machine Machine2: Operations overlap - Job5 step 7 and Job2 step 8', 'Machine Machine2: Operations overlap - Job2 step 8 and Job9 step 8', 'Machine Machine2: Operations overlap - Job9 step 8 and Job4 step 6', 'Machine Machine2: Operations overlap - Job4 step 6 and Job11 step 9', 'Machine Machine2: Operations overlap - Job7 step 11 and Job10 step 13', 'Machine Machine2: Operations overlap - Job10 step 13 and Job8 step 14', 'Machine Machine0: Operations overlap - Job10 step 4 and Job2 step 7', 'Machine Machine0: Operations overlap - Job7 step 7 and Job4 step 8', 'Machine Machine0: Operations overlap - Job4 step 8 and Job8 step 10', 'Machine Machine0: Operations overlap - Job13 step 7 and Job6 step 10', 'Machine Machine4: Operations overlap - Job7 step 2 and Job11 step 4', 'Machine Machine4: Operations overlap - Job12 step 2 and Job14 step 4', 'Machine Machine9: Operations overlap - Job3 step 4 and Job11 step 6', 'Machine Machine9: Operations overlap - Job11 step 6 and Job7 step 3', 'Machine Machine9: Operations overlap - Job7 step 3 and Job13 step 1', 'Machine Machine9: Operations overlap - Job12 step 3 and Job10 step 5', 'Machine Machine9: Operations overlap - Job10 step 5 and Job8 step 7', 'Machine Machine12: Operations overlap - Job2 step 5 and Job8 step 5', 'Machine Machine12: Operations overlap - Job6 step 15 and Job10 step 14', 'Machine Machine6: Operations overlap - Job10 step 6 and Job2 step 9', 'Machine Machine6: Operations overlap - Job2 step 9 and Job13 step 4', 'Machine Machine6: Operations overlap - Job13 step 4 and Job9 step 10', 'Machine Machine10: Operations overlap - Job1 step 13 and Job4 step 9', 'Machine Machine10: Operations overlap - Job11 step 10 and Job10 step 10', 'Machine Machine10: Operations overlap - Job10 step 10 and Job8 step 12', 'Machine Machine10: Operations overlap - Job8 step 12 and Job2 step 12', 'Machine Machine10: Operations overlap - Job12 step 14 and Job7 step 14', 'Machine Machine14: Operations overlap - Job5 step 6 and Job9 step 7', 'Machine Machine14: Operations overlap - Job8 step 8 and Job3 step 9', 'Machine Machine14: Operations overlap - Job3 step 9 and Job12 step 4', 'Machine Machine14: Operations overlap - Job7 step 15 and Job10 step 15', "Missing jobs in schedule: ['Job40', 'Job33', 'Job38', 'Job22', 'Job37', 'Job23', 'Job32', 'Job27', 'Job19', 'Job15', 'Job18', 'Job29', 'Job21', 'Job16', 'Job34', 'Job17', 'Job36', 'Job24', 'Job25', 'Job26', 'Job28', 'Job30', 'Job31', 'Job20', 'Job39', 'Job35']"]
+3️⃣ RepairTools repairing schedule...
+🔧 Repair iteration 1/5
+🔧 Starting Algorithm 3: Cascading Repair and Queue Reordering
+📊 Processing 199 schedule entries
+❌ Found 59 constraint violations
+🔄 Phase I: Status Update - Identifying affected operations
+🔧 Fixing immediate constraint violations...
+🔄 Phase II: Job Precedence Repair - Fixing step ordering violations
+🔧 Repairing job precedence violations...
+🔄 Phase III: Machine Capacity Repair - Resolving machine overlaps
+🔧 Repairing machine capacity violations...
+⏰ Fixed machine overlap on Machine5
+⏰ Fixed machine overlap on Machine5
+⏰ Fixed machine overlap on Machine5
+⏰ Fixed machine overlap on Machine5
+⏰ Fixed machine overlap on Machine5
+⏰ Fixed machine overlap on Machine5
+⏰ Fixed machine overlap on Machine5
+⏰ Fixed machine overlap on Machine5
+⏰ Fixed machine overlap on Machine9
+⏰ Fixed machine overlap on Machine9
+⏰ Fixed machine overlap on Machine9
+⏰ Fixed machine overlap on Machine9
+⏰ Fixed machine overlap on Machine9
+⏰ Fixed machine overlap on Machine9
+⏰ Fixed machine overlap on Machine9
+⏰ Fixed machine overlap on Machine7
+⏰ Fixed machine overlap on Machine7
+⏰ Fixed machine overlap on Machine7
+⏰ Fixed machine overlap on Machine7
+⏰ Fixed machine overlap on Machine7
+⏰ Fixed machine overlap on Machine12
+⏰ Fixed machine overlap on Machine8
+⏰ Fixed machine overlap on Machine8
+⏰ Fixed machine overlap on Machine8
+⏰ Fixed machine overlap on Machine8
+⏰ Fixed machine overlap on Machine8
+⏰ Fixed machine overlap on Machine8
+⏰ Fixed machine overlap on Machine13
+⏰ Fixed machine overlap on Machine13
+⏰ Fixed machine overlap on Machine13
+⏰ Fixed machine overlap on Machine13
+⏰ Fixed machine overlap on Machine13
+⏰ Fixed machine overlap on Machine13
+⏰ Fixed machine overlap on Machine13
+⏰ Fixed machine overlap on Machine13
+⏰ Fixed machine overlap on Machine6
+⏰ Fixed machine overlap on Machine6
+⏰ Fixed machine overlap on Machine6
+⏰ Fixed machine overlap on Machine6
+⏰ Fixed machine overlap on Machine6
+⏰ Fixed machine overlap on Machine6
+⏰ Fixed machine overlap on Machine2
+⏰ Fixed machine overlap on Machine2
+⏰ Fixed machine overlap on Machine2
+⏰ Fixed machine overlap on Machine2
+⏰ Fixed machine overlap on Machine2
+⏰ Fixed machine overlap on Machine2
+⏰ Fixed machine overlap on Machine2
+⏰ Fixed machine overlap on Machine2
+⏰ Fixed machine overlap on Machine2
+⏰ Fixed machine overlap on Machine2
+⏰ Fixed machine overlap on Machine2
+⏰ Fixed machine overlap on Machine2
+⏰ Fixed machine overlap on Machine0
+⏰ Fixed machine overlap on Machine0
+⏰ Fixed machine overlap on Machine0
+⏰ Fixed machine overlap on Machine0
+⏰ Fixed machine overlap on Machine0
+⏰ Fixed machine overlap on Machine11
+⏰ Fixed machine overlap on Machine11
+⏰ Fixed machine overlap on Machine11
+⏰ Fixed machine overlap on Machine11
+⏰ Fixed machine overlap on Machine11
+⏰ Fixed machine overlap on Machine4
+⏰ Fixed machine overlap on Machine4
+⏰ Fixed machine overlap on Machine4
+⏰ Fixed machine overlap on Machine3
+⏰ Fixed machine overlap on Machine3
+⏰ Fixed machine overlap on Machine3
+⏰ Fixed machine overlap on Machine3
+⏰ Fixed machine overlap on Machine3
+⏰ Fixed machine overlap on Machine14
+⏰ Fixed machine overlap on Machine14
+⏰ Fixed machine overlap on Machine14
+⏰ Fixed machine overlap on Machine14
+⏰ Fixed machine overlap on Machine14
+⏰ Fixed machine overlap on Machine14
+⏰ Fixed machine overlap on Machine14
+⏰ Fixed machine overlap on Machine14
+⏰ Fixed machine overlap on Machine14
+⏰ Fixed machine overlap on Machine10
+⏰ Fixed machine overlap on Machine10
+⏰ Fixed machine overlap on Machine10
+⏰ Fixed machine overlap on Machine10
+⏰ Fixed machine overlap on Machine10
+⏰ Fixed machine overlap on Machine10
+⏰ Fixed machine overlap on Machine10
+⏰ Fixed machine overlap on Machine10
+⏰ Fixed machine overlap on Machine10
+🔄 Phase IV: Iterative Improvement - Optimizing schedule quality
+🔧 Applying iterative improvement...
+🔄 Phase V: Final validation and cleanup
+🔧 Final cleanup - ensuring valid operation times...
+⏰ Fixed invalid times for Job6 step 15
+✅ Algorithm 3 completed - Generated 199 schedule entries
+📊 Repair iteration 1 makespan: 2434
+📊 Repair iteration 1 schedule entries: 199
+📊 Latest operations: [('Job6', 15, 2434), ('Job13', 15, 2433), ('Job6', 14, 2433)]
+💾 Saved repair iteration 1 to: maple_optimized(gemini-2.5)/rcmax_40_15_8_repair_iteration_1.json
+⚠️ Repair iteration 1 reduced errors from 59 to 65 (makespan: 2434)
+🔧 Repair iteration 2/5
+🔧 Starting Algorithm 3: Cascading Repair and Queue Reordering
+📊 Processing 199 schedule entries
+❌ Found 65 constraint violations
+🔄 Phase I: Status Update - Identifying affected operations
+🔧 Fixing immediate constraint violations...
+🔄 Phase II: Job Precedence Repair - Fixing step ordering violations
+🔧 Repairing job precedence violations...
+🔄 Phase III: Machine Capacity Repair - Resolving machine overlaps
+🔧 Repairing machine capacity violations...
+⏰ Fixed machine overlap on Machine5
+⏰ Fixed machine overlap on Machine5
+⏰ Fixed machine overlap on Machine5
+⏰ Fixed machine overlap on Machine7
+⏰ Fixed machine overlap on Machine12
+⏰ Fixed machine overlap on Machine8
+⏰ Fixed machine overlap on Machine8
+⏰ Fixed machine overlap on Machine8
+⏰ Fixed machine overlap on Machine13
+⏰ Fixed machine overlap on Machine13
+⏰ Fixed machine overlap on Machine13
+⏰ Fixed machine overlap on Machine13
+⏰ Fixed machine overlap on Machine13
+⏰ Fixed machine overlap on Machine13
+⏰ Fixed machine overlap on Machine6
+⏰ Fixed machine overlap on Machine6
+⏰ Fixed machine overlap on Machine6
+⏰ Fixed machine overlap on Machine6
+⏰ Fixed machine overlap on Machine0
+⏰ Fixed machine overlap on Machine0
+⏰ Fixed machine overlap on Machine0
+⏰ Fixed machine overlap on Machine0
+⏰ Fixed machine overlap on Machine0
+⏰ Fixed machine overlap on Machine11
+⏰ Fixed machine overlap on Machine11
+⏰ Fixed machine overlap on Machine4
+⏰ Fixed machine overlap on Machine3
+⏰ Fixed machine overlap on Machine3
+⏰ Fixed machine overlap on Machine3
+⏰ Fixed machine overlap on Machine3
+⏰ Fixed machine overlap on Machine14
+⏰ Fixed machine overlap on Machine10
+🔄 Phase IV: Iterative Improvement - Optimizing schedule quality
+🔧 Applying iterative improvement...
+🔄 Phase V: Final validation and cleanup
+🔧 Final cleanup - ensuring valid operation times...
+⏰ Fixed invalid times for Job11 step 5
+⏰ Fixed invalid times for Job9 step 4
+⏰ Fixed invalid times for Job2 step 4
+⏰ Fixed invalid times for Job8 step 5
+⏰ Fixed invalid times for Job7 step 4
+⏰ Fixed invalid times for Job8 step 8
+⏰ Fixed invalid times for Job9 step 9
+⏰ Fixed invalid times for Job3 step 10
+⏰ Fixed invalid times for Job10 step 8
+⏰ Fixed invalid times for Job1 step 11
+⏰ Fixed invalid times for Job1 step 13
+⏰ Fixed invalid times for Job10 step 11
+⏰ Fixed invalid times for Job8 step 13
+⏰ Fixed invalid times for Job5 step 15
+⏰ Fixed invalid times for Job2 step 13
+⏰ Fixed invalid times for Job8 step 15
+⏰ Fixed invalid times for Job13 step 12
+✅ Algorithm 3 completed - Generated 199 schedule entries
+📊 Repair iteration 2 makespan: 2434
+📊 Repair iteration 2 schedule entries: 199
+📊 Latest operations: [('Job6', 15, 2434), ('Job13', 15, 2433), ('Job6', 14, 2433)]
+💾 Saved repair iteration 2 to: maple_optimized(gemini-2.5)/rcmax_40_15_8_repair_iteration_2.json
+⚠️ Repair iteration 2 reduced errors from 65 to 32 (makespan: 2434)
+🔧 Repair iteration 3/5
+🔧 Starting Algorithm 3: Cascading Repair and Queue Reordering
+📊 Processing 199 schedule entries
+❌ Found 32 constraint violations
+🔄 Phase I: Status Update - Identifying affected operations
+🔧 Fixing immediate constraint violations...
+🔄 Phase II: Job Precedence Repair - Fixing step ordering violations
+🔧 Repairing job precedence violations...
+🔄 Phase III: Machine Capacity Repair - Resolving machine overlaps
+🔧 Repairing machine capacity violations...
+⏰ Fixed machine overlap on Machine13
+⏰ Fixed machine overlap on Machine13
+⏰ Fixed machine overlap on Machine13
+⏰ Fixed machine overlap on Machine6
+⏰ Fixed machine overlap on Machine6
+⏰ Fixed machine overlap on Machine0
+⏰ Fixed machine overlap on Machine3
+⏰ Fixed machine overlap on Machine14
+⏰ Fixed machine overlap on Machine1
+🔄 Phase IV: Iterative Improvement - Optimizing schedule quality
+🔧 Applying iterative improvement...
+🔄 Phase V: Final validation and cleanup
+🔧 Final cleanup - ensuring valid operation times...
+⏰ Fixed invalid times for Job2 step 5
+⏰ Fixed invalid times for Job8 step 6
+⏰ Fixed invalid times for Job6 step 3
+⏰ Fixed invalid times for Job10 step 3
+⏰ Fixed invalid times for Job8 step 5
+⏰ Fixed invalid times for Job13 step 3
+⏰ Fixed invalid times for Job12 step 6
+⏰ Fixed invalid times for Job4 step 9
+⏰ Fixed invalid times for Job10 step 8
+⏰ Fixed invalid times for Job1 step 13
+⏰ Fixed invalid times for Job5 step 12
+⏰ Fixed invalid times for Job2 step 14
+⏰ Fixed invalid times for Job13 step 13
+✅ Algorithm 3 completed - Generated 199 schedule entries
+📊 Repair iteration 3 makespan: 2434
+📊 Repair iteration 3 schedule entries: 199
+📊 Latest operations: [('Job6', 15, 2434), ('Job13', 15, 2433), ('Job6', 14, 2433)]
+💾 Saved repair iteration 3 to: maple_optimized(gemini-2.5)/rcmax_40_15_8_repair_iteration_3.json
+⚠️ Repair iteration 3 reduced errors from 32 to 15 (makespan: 2434)
+🔧 Repair iteration 4/5
+🔧 Starting Algorithm 3: Cascading Repair and Queue Reordering
+📊 Processing 199 schedule entries
+❌ Found 15 constraint violations
+🔄 Phase I: Status Update - Identifying affected operations
+🔧 Fixing immediate constraint violations...
+🔄 Phase II: Job Precedence Repair - Fixing step ordering violations
+🔧 Repairing job precedence violations...
+🔄 Phase III: Machine Capacity Repair - Resolving machine overlaps
+🔧 Repairing machine capacity violations...
+🔄 Phase IV: Iterative Improvement - Optimizing schedule quality
+🔧 Applying iterative improvement...
+🔄 Phase V: Final validation and cleanup
+🔧 Final cleanup - ensuring valid operation times...
+⏰ Fixed invalid times for Job2 step 6
+⏰ Fixed invalid times for Job8 step 6
+⏰ Fixed invalid times for Job10 step 8
+⏰ Fixed invalid times for Job9 step 13
+⏰ Fixed invalid times for Job1 step 15
+⏰ Fixed invalid times for Job12 step 10
+⏰ Fixed invalid times for Job5 step 13
+⏰ Fixed invalid times for Job5 step 12
+⏰ Fixed invalid times for Job2 step 15
+✅ Algorithm 3 completed - Generated 199 schedule entries
+📊 Repair iteration 4 makespan: 2434
+📊 Repair iteration 4 schedule entries: 199
+📊 Latest operations: [('Job6', 15, 2434), ('Job13', 15, 2433), ('Job6', 14, 2433)]
+💾 Saved repair iteration 4 to: maple_optimized(gemini-2.5)/rcmax_40_15_8_repair_iteration_4.json
+⚠️ Repair iteration 4 reduced errors from 15 to 4 (makespan: 2434)
+🔧 Repair iteration 5/5
+🔧 Starting Algorithm 3: Cascading Repair and Queue Reordering
+📊 Processing 199 schedule entries
+❌ Found 4 constraint violations
+🔄 Phase I: Status Update - Identifying affected operations
+🔧 Fixing immediate constraint violations...
+🔄 Phase II: Job Precedence Repair - Fixing step ordering violations
+🔧 Repairing job precedence violations...
+🔄 Phase III: Machine Capacity Repair - Resolving machine overlaps
+🔧 Repairing machine capacity violations...
+🔄 Phase IV: Iterative Improvement - Optimizing schedule quality
+🔧 Applying iterative improvement...
+🔄 Phase V: Final validation and cleanup
+🔧 Final cleanup - ensuring valid operation times...
+⏰ Fixed invalid times for Job9 step 14
+⏰ Fixed invalid times for Job5 step 13
+✅ Algorithm 3 completed - Generated 199 schedule entries
+📊 Repair iteration 5 makespan: 2434
+📊 Repair iteration 5 schedule entries: 199
+📊 Latest operations: [('Job6', 15, 2434), ('Job13', 15, 2433), ('Job6', 14, 2433)]
+💾 Saved repair iteration 5 to: maple_optimized(gemini-2.5)/rcmax_40_15_8_repair_iteration_5.json
+⚠️ Repair iteration 5 reduced errors from 4 to 2 (makespan: 2434)
+⚠️ Repair completed after 5 iterations with remaining errors
+4️⃣ ValidationTools revalidating schedule...
+❌ Revalidation failed: ['Job Job9: Step 15 starts before step 14 ends', "Missing jobs in schedule: ['Job40', 'Job33', 'Job38', 'Job22', 'Job37', 'Job23', 'Job32', 'Job27', 'Job19', 'Job15', 'Job18', 'Job29', 'Job21', 'Job16', 'Job34', 'Job17', 'Job36', 'Job24', 'Job25', 'Job26', 'Job28', 'Job30', 'Job31', 'Job20', 'Job39', 'Job35']"]
+[31m❌ ERROR in workflow: Schedule validation failed after repair
+⚡ Disruption detected in Unknown Agent: Schedule validation failed after repair
+🔄 Initiating global replanning...
+⚠️ Global replanning completed. Manual intervention may be required.
+[31m🚨 Workflow execution halted due to error.
+❌ New 4-step workflow failed
+📊 Found 5 repair iterations
+  Iteration 1: makespan=2434, entries=199
+  Iteration 2: makespan=2434, entries=199
+  Iteration 3: makespan=2434, entries=199
+  Iteration 4: makespan=2434, entries=199
+  Iteration 5: makespan=2434, entries=199
+
+============================================================
+WORKFLOW COMPARISON SUMMARY for rcmax_40_15_8
+============================================================
+❌ Full Workflow        | Makespan:      N/A | Time: 0.07s | Repairs: 5
+✅ No Repair Tools      | Makespan:     2433 | Time: 0.00s
+✅ No Validation Tools  | Makespan:     1684 | Time: 0.44s
+❌ No Optimization Tools | Makespan:      N/A | Time: 0.06s | Repairs: 5

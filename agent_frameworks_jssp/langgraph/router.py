@@ -5,7 +5,7 @@ sys.path.insert(1, os.path.join(sys.path[0], ".."))
 
 from dotenv import load_dotenv
 from langchain_core.messages import HumanMessage, SystemMessage
-from langchain_openai import ChatOpenAI
+from langchain_anthropic import ChatAnthropic
 from .analyze_data import data_analyzer
 from langgraph.checkpoint.memory import MemorySaver
 from .generate_sql_query import generate_and_run_sql_query
@@ -16,11 +16,11 @@ from ..prompt_templates.router_template import SYSTEM_PROMPT
 load_dotenv()
 
 tools = [generate_and_run_sql_query, data_analyzer]
-# Set OpenAI API key for LangGraph
-if "OPENAI_API_KEY" in os.environ:
-    model = ChatOpenAI(model="gpt-4o", temperature=0, openai_api_key=os.environ["OPENAI_API_KEY"]).bind_tools(tools)
+# Set Anthropic API key for LangGraph with Claude-4
+if "ANTHROPIC_API_KEY" in os.environ:
+    model = ChatAnthropic(model="claude-sonnet-4-20250514", temperature=0, anthropic_api_key=os.environ["ANTHROPIC_API_KEY"]).bind_tools(tools)
 else:
-    model = ChatOpenAI(model="gpt-4o", temperature=0).bind_tools(tools)
+    model = ChatAnthropic(model="claude-sonnet-4-20250514", temperature=0).bind_tools(tools)
 
 
 # if the last message has a tool call, then we continue to the tools node

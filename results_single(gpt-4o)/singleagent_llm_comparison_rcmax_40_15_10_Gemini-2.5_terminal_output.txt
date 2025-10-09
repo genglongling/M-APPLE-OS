@@ -1,0 +1,597 @@
+SINGLE-AGENT LLM JSSP COMPARISON - TERMINAL OUTPUT
+============================================================
+
+Dataset: rcmax_40_15_10
+Jobs: 40
+Timestamp: 2025-09-23T17:58:15.070029
+
+🔍 Gemini-2.5 Model Details:
+--------------------------------------------------
+✅ Status: Success
+📊 Makespan: None
+📋 Schedule Operations: 0
+⏱️ Execution Time: 43.33s
+
+🤖 Full LLM Response:
+------------------------------
+Okay, I will analyze the provided JSSP instance (rcmax_40_15_10) and generate a schedule that minimizes the makespan while adhering to all constraints. Due to the complexity of the problem, I will use a heuristic approach, specifically a priority-rule based scheduling algorithm, combined with local search to improve the solution.  I will prioritize operations based on the Most Work Remaining (MWR) rule, which tends to perform well in JSSP.  I will then use pairwise swap of operations on the same machine as a local search strategy.
+
+Here's the approach:
+
+1.  **Initialization:**
+    *   Create a list of all operations, sorted by job and step.
+    *   Initialize the start and end times of all operations to 0.
+    *   Create a data structure to track the availability of each machine.
+
+2.  **Priority Rule Scheduling (MWR):**
+    *   Calculate the total remaining processing time for each job (sum of durations of remaining operations).
+    *   Iterate through the operations, considering them in order of MWR.
+    *   For each operation:
+        *   Find the earliest time the required machine is available (considering previously scheduled operations).
+        *   Ensure the operation's start time is not earlier than the end time of the previous operation in the same job.
+        *   Schedule the operation on the machine, updating its start and end times and the machine's availability.
+
+3.  **Local Search (Pairwise Swap):**
+    *   Iterate through each machine.
+    *   For each pair of operations on the machine, tentatively swap their order.
+    *   Calculate the makespan of the resulting schedule.
+    *   If the new makespan is lower than the current makespan, accept the swap.
+    *   Repeat the pairwise swap process for a fixed number of iterations or until no further improvement is found.
+
+4.  **Makespan Calculation:**
+    *   The makespan is the maximum end time of all operations.
+
+5.  **Output:**
+    *   Format the schedule and makespan as requested.
+
+```python
+import copy
+
+def solve_jssp(job_specifications):
+    """Solves the Job Shop Scheduling Problem using a heuristic approach."""
+
+    num_jobs = len(job_specifications)
+    num_machines = 15  # Assuming 15 machines based on the problem description
+
+    # 1. Initialization
+    operations = []
+    for job_name, job_data in job_specifications.items():
+        for i, step_data in enumerate(job_data):
+            operations.append({
+                'Job': job_name,
+                'Step': i + 1,
+                'Machine': step_data['Machine'],
+                'Duration': step_data['Duration'],
+                'Start Time': 0,
+                'End Time': 0
+            })
+
+    machine_availability = {f'Machine{i}': 0 for i in range(num_machines)}
+    job_completion_times = {job_name: 0 for job_name in job_specifications}
+
+    # 2. Priority Rule Scheduling (MWR)
+    def calculate_mwr(operations, job_completion_times):
+        mwr = {}
+        for job_name in job_specifications:
+            remaining_work = 0
+            for op in operations:
+                if op['Job'] == job_name and op['End Time'] == 0:
+                    remaining_work += op['Duration']
+            mwr[job_name] = remaining_work
+        return mwr
+
+    scheduled_operations = []
+    available_operations = copy.deepcopy(operations)
+
+    while available_operations:
+        mwr = calculate_mwr(available_operations, job_completion_times)
+        # Find the job with the most work remaining among available operations
+        eligible_jobs = set(op['Job'] for op in available_operations)
+        if not eligible_jobs:
+            break  # No more eligible jobs
+
+        most_work_job = max(eligible_jobs, key=lambda job: mwr[job])
+
+        # Find the first operation of that job that is available
+        next_op = next((op for op in available_operations if op['Job'] == most_work_job and op['Step'] == min(op2['Step'] for op2 in available_operations if op2['Job'] == most_work_job)), None)
+
+        if not next_op:
+            break
+
+        machine = next_op['Machine']
+        duration = next_op['Duration']
+
+        start_time = max(machine_availability[machine], job_completion_times[next_op['Job']])
+
+        next_op['Start Time'] = start_time
+        next_op['End Time'] = start_time + duration
+
+        machine_availability[machine] = next_op['End Time']
+        job_completion_times[next_op['Job']] = next_op['End Time']
+
+        scheduled_operations.append(next_op)
+        available_operations.remove(next_op)
+
+    # 3. Local Search (Pairwise Swap)
+    def calculate_makespan(scheduled_operations):
+        return max(op['End Time'] for op in scheduled_operations)
+
+    def perform_swap(ops, i, j):
+        ops[i], ops[j] = ops[j], ops[i]
+
+    def revert_swap(ops, i, j):
+        ops[i], ops[j] = ops[j], ops[i]
+
+    def reschedule_machine(machine_name, scheduled_operations):
+        machine_ops = sorted([op for op in scheduled_operations if op['Machine'] == machine_name], key=lambda x: x['Start Time'])
+        availability = 0
+        for op in machine_ops:
+            op['Start Time'] = max(availability, job_completion_times[op['Job']])
+            op['End Time'] = op['Start Time'] + op['Duration']
+            availability = op['End Time']
+            job_completion_times[op['Job']] = op['End Time']
+
+    num_iterations = 100
+    original_makespan = calculate_makespan(scheduled_operations)
+    best_makespan = original_makespan
+    best_schedule = copy.deepcopy(scheduled_operations)
+
+    for _ in range(num_iterations):
+        for machine_name in machine_availability:
+            machine_ops = [op for op in scheduled_operations if op['Machine'] == machine_name]
+            num_ops = len(machine_ops)
+
+            for i in range(num_ops):
+                for j in range(i + 1, num_ops):
+                    # Tentatively swap operations
+                    perform_swap(machine_ops, i, j)
+
+                    # Recalculate start and end times for the swapped operations and subsequent operations on the same machine
+                    job_completion_times = {job_name: 0 for job_name in job_specifications}
+                    reschedule_machine(machine_name, scheduled_operations)
+
+                    # Calculate the new makespan
+                    new_makespan = calculate_makespan(scheduled_operations)
+
+                    # If the new makespan is better, keep the swap; otherwise, revert
+                    if new_makespan < best_makespan:
+                        best_makespan = new_makespan
+                        best_schedule = copy.deepcopy(scheduled_operations)
+                    else:
+                        revert_swap(machine_ops, i, j)
+                        job_completion_times = {job_name: 0 for job_name in job_specifications}
+                        reschedule_machine(machine_name, scheduled_operations)
+
+    # 4. Makespan Calculation (using the best schedule)
+    makespan = best_makespan
+
+    # 5. Output
+    structured_schedule = []
+    for op in best_schedule:
+        structured_schedule.append({
+            'Job': op['Job'],
+            'Step': op['Step'],
+            'Machine': op['Machine'],
+            'Start Time': op['Start Time'],
+            'End Time': op['End Time'],
+            'Duration': op['Duration']
+        })
+
+    return makespan, structured_schedule
+
+
+# Example Usage (replace with the full dataset)
+job_specifications = {
+    'Job1': [
+        {'Machine': 'Machine13', 'Duration': 101},
+        {'Machine': 'Machine11', 'Duration': 104},
+        {'Machine': 'Machine2', 'Duration': 40},
+        {'Machine': 'Machine0', 'Duration': 148},
+        {'Machine': 'Machine14', 'Duration': 145},
+        {'Machine': 'Machine3', 'Duration': 158},
+        {'Machine': 'Machine5', 'Duration': 9},
+        {'Machine': 'Machine4', 'Duration': 123},
+        {'Machine': 'Machine6', 'Duration': 110},
+        {'Machine': 'Machine1', 'Duration': 83},
+        {'Machine': 'Machine7', 'Duration': 170},
+        {'Machine': 'Machine9', 'Duration': 51},
+        {'Machine': 'Machine12', 'Duration': 46},
+        {'Machine': 'Machine8', 'Duration': 23},
+        {'Machine': 'Machine10', 'Duration': 56}
+    ],
+    'Job2': [
+        {'Machine': 'Machine14', 'Duration': 65},
+        {'Machine': 'Machine4', 'Duration': 28},
+        {'Machine': 'Machine1', 'Duration': 173},
+        {'Machine': 'Machine10', 'Duration': 49},
+        {'Machine': 'Machine7', 'Duration': 129},
+        {'Machine': 'Machine8', 'Duration': 114},
+        {'Machine': 'Machine3', 'Duration': 43},
+        {'Machine': 'Machine0', 'Duration': 73},
+        {'Machine': 'Machine2', 'Duration': 149},
+        {'Machine': 'Machine6', 'Duration': 54},
+        {'Machine': 'Machine13', 'Duration': 89},
+        {'Machine': 'Machine5', 'Duration': 158},
+        {'Machine': 'Machine9', 'Duration': 137},
+        {'Machine': 'Machine12', 'Duration': 154},
+        {'Machine': 'Machine11', 'Duration': 98}
+    ],
+    'Job3': [
+        {'Machine': 'Machine2', 'Duration': 104},
+        {'Machine': 'Machine8', 'Duration': 163},
+        {'Machine': 'Machine3', 'Duration': 91},
+        {'Machine': 'Machine10', 'Duration': 81},
+        {'Machine': 'Machine9', 'Duration': 35},
+        {'Machine': 'Machine5', 'Duration': 150},
+        {'Machine': 'Machine1', 'Duration': 161},
+        {'Machine': 'Machine0', 'Duration': 88},
+        {'Machine': 'Machine13', 'Duration': 20},
+        {'Machine': 'Machine12', 'Duration': 51},
+        {'Machine': 'Machine11', 'Duration': 127},
+        {'Machine': 'Machine7', 'Duration': 22},
+        {'Machine': 'Machine4', 'Duration': 193},
+        {'Machine': 'Machine6', 'Duration': 3},
+        {'Machine': 'Machine14', 'Duration': 193}
+    ],
+    'Job4': [
+        {'Machine': 'Machine7', 'Duration': 50},
+        {'Machine': 'Machine10', 'Duration': 137},
+        {'Machine': 'Machine14', 'Duration': 186},
+        {'Machine': 'Machine2', 'Duration': 152},
+        {'Machine': 'Machine1', 'Duration': 152},
+        {'Machine': 'Machine5', 'Duration': 65},
+        {'Machine': 'Machine9', 'Duration': 146},
+        {'Machine': 'Machine11', 'Duration': 39},
+        {'Machine': 'Machine8', 'Duration': 52},
+        {'Machine': 'Machine13', 'Duration': 53},
+        {'Machine': 'Machine3', 'Duration': 11},
+        {'Machine': 'Machine4', 'Duration': 132},
+        {'Machine': 'Machine0', 'Duration': 194},
+        {'Machine': 'Machine6', 'Duration': 45},
+        {'Machine': 'Machine12', 'Duration': 41}
+    ],
+    'Job5': [
+        {'Machine': 'Machine7', 'Duration': 47},
+        {'Machine': 'Machine13', 'Duration': 135},
+        {'Machine': 'Machine1', 'Duration': 89},
+        {'Machine': 'Machine8', 'Duration': 9},
+        {'Machine': 'Machine14', 'Duration': 141},
+        {'Machine': 'Machine2', 'Duration': 59},
+        {'Machine': 'Machine0', 'Duration': 73},
+        {'Machine': 'Machine12', 'Duration': 48},
+        {'Machine': 'Machine3', 'Duration': 97},
+        {'Machine': 'Machine10', 'Duration': 129},
+        {'Machine': 'Machine9', 'Duration': 115},
+        {'Machine': 'Machine11', 'Duration': 22},
+        {'Machine': 'Machine5', 'Duration': 69},
+        {'Machine': 'Machine6', 'Duration': 188},
+        {'Machine': 'Machine4', 'Duration': 19}
+    ],
+    'Job6': [
+        {'Machine': 'Machine2', 'Duration': 126},
+        {'Machine': 'Machine8', 'Duration': 71},
+        {'Machine': 'Machine9', 'Duration': 64},
+        {'Machine': 'Machine10', 'Duration': 22},
+        {'Machine': 'Machine13', 'Duration': 196},
+        {'Machine': 'Machine7', 'Duration': 39},
+        {'Machine': 'Machine12', 'Duration': 138},
+        {'Machine': 'Machine3', 'Duration': 65},
+        {'Machine': 'Machine4', 'Duration': 31},
+        {'Machine': 'Machine5', 'Duration': 158},
+        {'Machine': 'Machine0', 'Duration': 73},
+        {'Machine': 'Machine1', 'Duration': 7},
+        {'Machine': 'Machine11', 'Duration': 154},
+        {'Machine': 'Machine6', 'Duration': 157},
+        {'Machine': 'Machine14', 'Duration': 85}
+    ],
+    'Job7': [
+        {'Machine': 'Machine11', 'Duration': 27},
+        {'Machine': 'Machine12', 'Duration': 197},
+        {'Machine': 'Machine7', 'Duration': 190},
+        {'Machine': 'Machine0', 'Duration': 167},
+        {'Machine': 'Machine4', 'Duration': 59},
+        {'Machine': 'Machine13', 'Duration': 94},
+        {'Machine': 'Machine6', 'Duration': 195},
+        {'Machine': 'Machine5', 'Duration': 180},
+        {'Machine': 'Machine3', 'Duration': 1},
+        {'Machine': 'Machine9', 'Duration': 26},
+        {'Machine': 'Machine8', 'Duration': 136},
+        {'Machine': 'Machine14', 'Duration': 50},
+        {'Machine': 'Machine2', 'Duration': 11},
+        {'Machine': 'Machine1', 'Duration': 36},
+        {'Machine': 'Machine10', 'Duration': 34}
+    ],
+    'Job8': [
+        {'Machine': 'Machine12', 'Duration': 108},
+        {'Machine': 'Machine7', 'Duration': 94},
+        {'Machine': 'Machine8', 'Duration': 193},
+        {'Machine': 'Machine6', 'Duration': 34},
+        {'Machine': 'Machine2', 'Duration': 192},
+        {'Machine': 'Machine5', 'Duration': 191},
+        {'Machine': 'Machine1', 'Duration': 175},
+        {'Machine': 'Machine13', 'Duration': 151},
+        {'Machine': 'Machine0', 'Duration': 117},
+        {'Machine': 'Machine14', 'Duration': 59},
+        {'Machine': 'Machine4', 'Duration': 149},
+        {'Machine': 'Machine3', 'Duration': 32},
+        {'Machine': 'Machine9', 'Duration': 121},
+        {'Machine': 'Machine10', 'Duration': 159},
+        {'Machine': 'Machine11', 'Duration': 185}
+    ],
+    'Job9': [
+        {'Machine': 'Machine0', 'Duration': 32},
+        {'Machine': 'Machine9', 'Duration': 161},
+        {'Machine': 'Machine6', 'Duration': 49},
+        {'Machine': 'Machine4', 'Duration': 112},
+        {'Machine': 'Machine3', 'Duration': 130},
+        {'Machine': 'Machine11', 'Duration': 86},
+        {'Machine': 'Machine13', 'Duration': 3},
+        {'Machine': 'Machine12', 'Duration': 164},
+        {'Machine': 'Machine5', 'Duration': 184},
+        {'Machine': 'Machine14', 'Duration': 98},
+        {'Machine': 'Machine8', 'Duration': 61},
+        {'Machine': 'Machine7', 'Duration': 142},
+        {'Machine': 'Machine10', 'Duration': 116},
+        {'Machine': 'Machine2', 'Duration': 32},
+        {'Machine': 'Machine1', 'Duration': 54}
+    ],
+    'Job10': [
+        {'Machine': 'Machine11', 'Duration': 104},
+        {'Machine': 'Machine9', 'Duration': 29},
+        {'Machine': 'Machine5', 'Duration': 197},
+        {'Machine': 'Machine13', 'Duration': 163},
+        {'Machine': 'Machine4', 'Duration': 63},
+        {'Machine': 'Machine6', 'Duration': 130},
+        {'Machine': 'Machine2', 'Duration': 90},
+        {'Machine': 'Machine3', 'Duration': 55},
+        {'Machine': 'Machine7', 'Duration': 184},
+        {'Machine': 'Machine1', 'Duration': 24},
+        {'Machine': 'Machine8', 'Duration': 197},
+        {'Machine': 'Machine0', 'Duration': 163},
+        {'Machine': 'Machine14', 'Duration': 3},
+        {'Machine': 'Machine10', 'Duration': 193},
+        {'Machine': 'Machine12', 'Duration': 77}
+    ],
+    'Job11': [
+        {'Machine': 'Machine1', 'Duration': 31},
+        {'Machine': 'Machine11', 'Duration': 124},
+        {'Machine': 'Machine10', 'Duration': 170},
+        {'Machine': 'Machine0', 'Duration': 41},
+        {'Machine': 'Machine9', 'Duration': 163},
+        {'Machine': 'Machine6', 'Duration': 37},
+        {'Machine': 'Machine2', 'Duration': 156},
+        {'Machine': 'Machine7', 'Duration': 93},
+        {'Machine': 'Machine4', 'Duration': 80},
+        {'Machine': 'Machine13', 'Duration': 151},
+        {'Machine': 'Machine12', 'Duration': 20},
+        {'Machine': 'Machine8', 'Duration': 49},
+        {'Machine': 'Machine14', 'Duration': 166},
+        {'Machine': 'Machine5', 'Duration': 22},
+        {'Machine': 'Machine3', 'Duration': 187}
+    ],
+    'Job12': [
+        {'Machine': 'Machine5', 'Duration': 142},
+        {'Machine': 'Machine2', 'Duration': 64},
+        {'Machine': 'Machine12', 'Duration': 127},
+        {'Machine': 'Machine1', 'Duration': 19},
+        {'Machine': 'Machine8', 'Duration': 88},
+        {'Machine': 'Machine3', 'Duration': 57},
+        {'Machine': 'Machine0', 'Duration': 97},
+        {'Machine': 'Machine6', 'Duration': 109},
+        {'Machine': 'Machine11', 'Duration': 140},
+        {'Machine': 'Machine9', 'Duration': 81},
+        {'Machine': 'Machine4', 'Duration': 131},
+        {'Machine': 'Machine14', 'Duration': 39},
+        {'Machine': 'Machine7', 'Duration': 24},
+        {'Machine': 'Machine10', 'Duration': 47},
+        {'Machine': 'Machine13', 'Duration': 108}
+    ],
+    'Job13': [
+        {'Machine': 'Machine0', 'Duration': 129},
+        {'Machine': 'Machine1', 'Duration': 173},
+        {'Machine': 'Machine7', 'Duration': 51},
+        {'Machine': 'Machine2', 'Duration': 25},
+        {'Machine': 'Machine11', 'Duration': 124},
+        {'Machine': 'Machine4', 'Duration': 96},
+        {'Machine': 'Machine10', 'Duration': 155},
+        {'Machine': 'Machine12', 'Duration': 166},
+        {'Machine': 'Machine3', 'Duration': 56},
+        {'Machine': 'Machine9', 'Duration': 12},
+        {'Machine': 'Machine14', 'Duration': 15},
+        {'Machine': 'Machine13', 'Duration': 28},
+        {'Machine': 'Machine5', 'Duration': 68},
+        {'Machine': 'Machine8', 'Duration': 64},
+        {'Machine': 'Machine6', 'Duration': 180}
+    ],
+    'Job14': [
+        {'Machine': 'Machine10', 'Duration': 50},
+        {'Machine': 'Machine14', 'Duration': 144},
+        {'Machine': 'Machine7', 'Duration': 84},
+        {'Machine': 'Machine12', 'Duration': 49},
+        {'Machine': 'Machine4', 'Duration': 117},
+        {'Machine': 'Machine1', 'Duration': 141},
+        {'Machine': 'Machine13', 'Duration': 3},
+        {'Machine': 'Machine2', 'Duration': 134},
+        {'Machine': 'Machine5', 'Duration': 68},
+        {'Machine': 'Machine9', 'Duration': 171},
+        {'Machine': 'Machine8', 'Duration': 168},
+        {'Machine': 'Machine6', 'Duration': 170},
+        {'Machine': 'Machine11', 'Duration': 92},
+        {'Machine': 'Machine0', 'Duration': 106},
+        {'Machine': 'Machine3', 'Duration': 130}
+    ],
+    'Job15': [
+        {'Machine': 'Machine6', 'Duration': 107},
+        {'Machine': 'Machine2', 'Duration': 20},
+        {'Machine': 'Machine4', 'Duration': 24},
+        {'Machine': 'Machine3', 'Duration': 36},
+        {'Machine': 'Machine0', 'Duration': 39},
+        {'Machine': 'Machine5', 'Duration': 85},
+        {'Machine': 'Machine14', 'Duration': 122},
+        {'Machine': 'Machine12', 'Duration': 62},
+        {'Machine': 'Machine7', 'Duration': 134},
+        {'Machine': 'Machine10', 'Duration': 23},
+        {'Machine': 'Machine1', 'Duration': 106},
+        {'Machine': 'Machine11', 'Duration': 149},
+        {'Machine': 'Machine9', 'Duration': 118},
+        {'Machine': 'Machine13', 'Duration': 15},
+        {'Machine': 'Machine8', 'Duration': 63}
+    ],
+    'Job16': [
+        {'Machine': 'Machine14', 'Duration': 117},
+        {'Machine': 'Machine12', 'Duration': 9},
+        {'Machine': 'Machine0', 'Duration': 189},
+        {'Machine': 'Machine10', 'Duration': 109},
+        {'Machine': 'Machine5', 'Duration': 17},
+        {'Machine': 'Machine7', 'Duration': 69},
+        {'Machine': 'Machine9', 'Duration': 152},
+        {'Machine': 'Machine13', 'Duration': 183},
+        {'Machine': 'Machine4', 'Duration': 142},
+        {'Machine': 'Machine11', 'Duration': 128},
+        {'Machine': 'Machine6', 'Duration': 99},
+        {'Machine': 'Machine1', 'Duration': 114},
+        {'Machine': 'Machine8', 'Duration': 155},
+        {'Machine': 'Machine2', 'Duration': 191},
+        {'Machine': 'Machine3', 'Duration': 113}
+    ],
+    'Job17': [
+        {'Machine': 'Machine7', 'Duration': 20},
+        {'Machine': 'Machine4', 'Duration': 123},
+        {'Machine': 'Machine3', 'Duration': 67},
+        {'Machine': 'Machine11', 'Duration': 188},
+        {'Machine': 'Machine13', 'Duration': 15},
+        {'Machine': 'Machine8', 'Duration': 92},
+        {'Machine': 'Machine10', 'Duration': 111},
+        {'Machine': 'Machine6', 'Duration': 171},
+        {'Machine': 'Machine14', 'Duration': 184},
+        {'Machine': 'Machine0', 'Duration': 78},
+        {'Machine': 'Machine9', 'Duration': 140},
+        {'Machine': 'Machine12', 'Duration': 181},
+        {'Machine': 'Machine1', 'Duration': 95},
+        {'Machine': 'Machine5', 'Duration': 3},
+        {'Machine': 'Machine2', 'Duration': 177}
+    ],
+    'Job18': [
+        {'Machine': 'Machine0', 'Duration': 23},
+        {'Machine': 'Machine2', 'Duration': 26},
+        {'Machine': 'Machine12', 'Duration': 112},
+        {'Machine': 'Machine7', 'Duration': 39},
+        {'Machine': 'Machine1', 'Duration': 112},
+        {'Machine': 'Machine8', 'Duration': 157},
+        {'Machine': 'Machine10', 'Duration': 171},
+        {'Machine': 'Machine3', 'Duration': 194},
+        {'Machine': 'Machine9', 'Duration': 56},
+        {'Machine': 'Machine6', 'Duration': 38},
+        {'Machine': 'Machine13', 'Duration': 102},
+        {'Machine': 'Machine4', 'Duration': 152},
+        {'Machine': 'Machine11', 'Duration': 75},
+        {'Machine': 'Machine5', 'Duration': 88},
+        {'Machine': 'Machine14', 'Duration': 101}
+    ],
+    'Job19': [
+        {'Machine': 'Machine7', 'Duration': 196},
+        {'Machine': 'Machine9', 'Duration': 102},
+        {'Machine': 'Machine13', 'Duration': 173},
+        {'Machine': 'Machine2', 'Duration': 35},
+        {'Machine': 'Machine8', 'Duration': 75},
+        {'Machine': 'Machine5', 'Duration': 54},
+        {'Machine': 'Machine0', 'Duration': 134},
+        {'Machine': 'Machine12', 'Duration': 191},
+        {'Machine': 'Machine6', 'Duration': 147},
+        {'Machine': 'Machine4', 'Duration': 2},
+        {'Machine': 'Machine1', 'Duration': 132},
+        {'Machine': 'Machine10', 'Duration': 135},
+        {'Machine': 'Machine11', 'Duration': 181},
+        {'Machine': 'Machine3', 'Duration': 146},
+        {'Machine': 'Machine14', 'Duration': 138}
+    ],
+    'Job20': [
+        {'Machine': 'Machine10', 'Duration': 100},
+        {'Machine': 'Machine2', 'Duration': 55},
+        {'Machine': 'Machine1', 'Duration': 109},
+        {'Machine': 'Machine9', 'Duration': 80},
+        {'Machine': 'Machine12', 'Duration': 144},
+        {'Machine': 'Machine0', 'Duration': 16},
+        {'Machine': 'Machine3', 'Duration': 75},
+        {'Machine': 'Machine7', 'Duration': 170},
+        {'Machine': 'Machine13', 'Duration': 161},
+        {'Machine': 'Machine11', 'Duration': 1},
+        {'Machine': 'Machine14', 'Duration': 168},
+        {'Machine': 'Machine6', 'Duration': 131},
+        {'Machine': 'Machine8', 'Duration': 39},
+        {'Machine': 'Machine4', 'Duration': 149},
+        {'Machine': 'Machine5', 'Duration': 102}
+    ],
+    'Job21': [
+        {'Machine': 'Machine11', 'Duration': 10},
+        {'Machine': 'Machine1', 'Duration': 194},
+        {'Machine': 'Machine10', 'Duration': 196},
+        {'Machine': 'Machine8', 'Duration': 8},
+        {'Machine': 'Machine3', 'Duration': 126},
+        {'Machine': 'Machine6', 'Duration': 113},
+        {'Machine': 'Machine13', 'Duration': 189},
+        {'Machine': 'Machine14', 'Duration': 149},
+        {'Machine': 'Machine4', 'Duration': 53},
+        {'Machine': 'Machine0', 'Duration': 51},
+        {'Machine': 'Machine2', 'Duration': 38},
+        {'Machine': 'Machine12', 'Duration': 196},
+        {'Machine': 'Machine9', 'Duration': 166},
+        {'Machine': 'Machine7', 'Duration': 115},
+        {'Machine': 'Machine5', 'Duration': 170}
+    ],
+    'Job22': [
+        {'Machine': 'Machine10', 'Duration': 28},
+        {'Machine': 'Machine1', 'Duration': 126},
+        {'Machine': 'Machine5', 'Duration': 23},
+        {'Machine': 'Machine13', 'Duration': 38},
+        {'Machine': 'Machine2', 'Duration': 102},
+        {'Machine': 'Machine4', 'Duration': 25},
+        {'Machine': 'Machine12', 'Duration': 77},
+        {'Machine': 'Machine14', 'Duration': 79},
+        {'Machine': 'Machine11', 'Duration': 60},
+        {'Machine': 'Machine0', 'Duration': 118},
+        {'Machine': 'Machine7', 'Duration': 98},
+        {'Machine': 'Machine3', 'Duration': 117},
+        {'Machine': 'Machine6', 'Duration': 49},
+        {'Machine': 'Machine9', 'Duration': 58},
+        {'Machine': 'Machine8', 'Duration': 7}
+    ],
+    'Job23': [
+        {'Machine': 'Machine5', 'Duration': 114},
+        {'Machine': 'Machine9', 'Duration': 173},
+        {'Machine': 'Machine1', 'Duration': 36},
+        {'Machine': 'Machine11', 'Duration': 162},
+        {'Machine': 'Machine7', 'Duration': 65},
+        {'Machine': 'Machine8', 'Duration': 167},
+        {'Machine': 'Machine14', 'Duration': 35},
+        {'Machine': 'Machine3', 'Duration': 180},
+        {'Machine': 'Machine0', 'Duration': 144},
+        {'Machine': 'Machine10', 'Duration': 12},
+        {'Machine': 'Machine6', 'Duration': 199},
+        {'Machine': 'Machine4', 'Duration': 173},
+        {'Machine': 'Machine12', 'Duration': 172},
+        {'Machine': 'Machine2', 'Duration': 105},
+        {'Machine': 'Machine13', 'Duration': 182}
+    ],
+    'Job24': [
+        {'Machine': 'Machine7', 'Duration': 142},
+        {'Machine': 'Machine1', 'Duration': 119},
+        {'Machine': 'Machine4', 'Duration': 99},
+        {'Machine': 'Machine5', 'Duration': 149},
+        {'Machine': 'Machine13', 'Duration': 39},
+        {'Machine': 'Machine0', 'Duration': 45},
+        {'Machine': 'Machine3', 'Duration': 124},
+        {'Machine': 'Machine10', 'Duration': 109},
+        {'Machine': 'Machine6', 'Duration': 122},
+        {'Machine': 'Machine11', 'Duration': 120},
+        {'Machine': 'Machine12', 'Duration': 107},
+        {'Machine': 'Machine2', 'Duration': 125},
+        {'Machine': 'Machine8', 'Duration': 70},
+        {'Machine': 'Machine14', 'Duration': 165},
+        {'Machine': 'Machine9', 'Duration': 175}
+    ],
+    'Job25': [
+
+
+==================================================
+

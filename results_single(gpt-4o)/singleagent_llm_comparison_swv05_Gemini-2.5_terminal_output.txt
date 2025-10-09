@@ -1,0 +1,333 @@
+SINGLE-AGENT LLM JSSP COMPARISON - TERMINAL OUTPUT
+============================================================
+
+Dataset: swv05
+Jobs: 20
+Timestamp: 2025-09-23T19:04:10.092052
+
+🔍 Gemini-2.5 Model Details:
+--------------------------------------------------
+✅ Status: Success
+📊 Makespan: 1414
+📋 Schedule Operations: 136
+⏱️ Execution Time: 32.45s
+
+🤖 Full LLM Response:
+------------------------------
+Okay, I will solve the Job Shop Scheduling Problem for the provided "swv05" dataset. Due to the complexity of JSSP, finding the absolute optimal solution (minimum makespan) is computationally very expensive, especially for larger instances like this one. Therefore, I will use a heuristic approach, specifically a priority-rule based scheduling algorithm with conflict resolution, to generate a feasible schedule with a reasonably good makespan.  I will prioritize operations based on the shortest processing time (SPT) rule, and resolve machine conflicts by scheduling the operation from the job with the earliest due date (EDD).
+
+Here's the solution:
+
+```
+FINAL MAKESPAN: 1414
+STRUCTURED SCHEDULE:
+- Job: Job1, Step: 1, Machine: Machine2, Start Time: 0, End Time: 19, Duration: 19
+- Job: Job2, Step: 1, Machine: Machine2, Start Time: 19, End Time: 93, Duration: 74
+- Job: Job5, Step: 1, Machine: Machine2, Start Time: 93, End Time: 156, Duration: 63
+- Job: Job9, Step: 2, Machine: Machine2, Start Time: 156, End Time: 211, Duration: 55
+- Job: Job11, Step: 2, Machine: Machine2, Start Time: 211, End Time: 277, Duration: 66
+- Job: Job17, Step: 3, Machine: Machine2, Start Time: 277, End Time: 335, Duration: 58
+- Job: Job1, Step: 2, Machine: Machine1, Start Time: 0, End Time: 30, Duration: 30
+- Job: Job8, Step: 2, Machine: Machine1, Start Time: 30, End Time: 89, Duration: 59
+- Job: Job6, Step: 2, Machine: Machine1, Start Time: 89, End Time: 162, Duration: 73
+- Job: Job10, Step: 3, Machine: Machine1, Start Time: 162, End Time: 254, Duration: 92
+- Job: Job5, Step: 3, Machine: Machine1, Start Time: 254, End Time: 349, Duration: 95
+- Job: Job1, Step: 3, Machine: Machine3, Start Time: 30, End Time: 110, Duration: 80
+- Job: Job3, Step: 2, Machine: Machine3, Start Time: 110, End Time: 143, Duration: 33
+- Job: Job2, Step: 5, Machine: Machine3, Start Time: 143, End Time: 209, Duration: 66
+- Job: Job5, Step: 5, Machine: Machine3, Start Time: 209, End Time: 259, Duration: 50
+- Job: Job1, Step: 4, Machine: Machine0, Start Time: 110, End Time: 194, Duration: 84
+- Job: Job6, Step: 1, Machine: Machine0, Start Time: 194, End Time: 292, Duration: 98
+- Job: Job3, Step: 5, Machine: Machine0, Start Time: 292, End Time: 353, Duration: 61
+- Job: Job1, Step: 5, Machine: Machine4, Start Time: 194, End Time: 208, Duration: 14
+- Job: Job4, Step: 1, Machine: Machine4, Start Time: 208, End Time: 209, Duration: 1
+- Job: Job2, Step: 2, Machine: Machine4, Start Time: 209, End Time: 288, Duration: 79
+- Job: Job3, Step: 1, Machine: Machine4, Start Time: 288, End Time: 378, Duration: 90
+- Job: Job1, Step: 6, Machine: Machine8, Start Time: 208, End Time: 259, Duration: 51
+- Job: Job2, Step: 8, Machine: Machine8, Start Time: 259, End Time: 335, Duration: 76
+- Job: Job3, Step: 6, Machine: Machine8, Start Time: 378, End Time: 439, Duration: 61
+- Job: Job1, Step: 7, Machine: Machine5, Start Time: 259, End Time: 332, Duration: 73
+- Job: Job2, Step: 7, Machine: Machine5, Start Time: 335, End Time: 428, Duration: 93
+- Job: Job3, Step: 8, Machine: Machine5, Start Time: 439, End Time: 525, Duration: 86
+- Job: Job1, Step: 8, Machine: Machine6, Start Time: 332, End Time: 423, Duration: 91
+- Job: Job2, Step: 9, Machine: Machine6, Start Time: 428, End Time: 449, Duration: 21
+- Job: Job3, Step: 10, Machine: Machine6, Start Time: 525, End Time: 560, Duration: 35
+- Job: Job1, Step: 9, Machine: Machine7, Start Time: 423, End Time: 504, Duration: 81
+- Job: Job2, Step: 10, Machine: Machine7, Start Time: 504, End Time: 580, Duration: 76
+- Job: Job3, Step: 7, Machine: Machine7, Start Time: 580, End Time: 656, Duration: 76
+- Job: Job1, Step: 10, Machine: Machine9, Start Time: 504, End Time: 575, Duration: 71
+- Job: Job2, Step: 6, Machine: Machine9, Start Time: 580, End Time: 586, Duration: 6
+- Job: Job3, Step: 9, Machine: Machine9, Start Time: 656, End Time: 684, Duration: 28
+- Job: Job4, Step: 2, Machine: Machine3, Start Time: 22, End Time: 44, Duration: 22
+- Job: Job7, Step: 1, Machine: Machine3, Start Time: 44, End Time: 95, Duration: 51
+- Job: Job12, Step: 1, Machine: Machine4, Start Time: 0, End Time: 70, Duration: 70
+- Job: Job13, Step: 2, Machine: Machine4, Start Time: 70, End Time: 132, Duration: 62
+- Job: Job14, Step: 1, Machine: Machine4, Start Time: 378, End Time: 459, Duration: 81
+- Job: Job15, Step: 3, Machine: Machine4, Start Time: 459, End Time: 522, Duration: 63
+- Job: Job16, Step: 5, Machine: Machine4, Start Time: 522, End Time: 602, Duration: 80
+- Job: Job17, Step: 5, Machine: Machine4, Start Time: 602, End Time: 670, Duration: 68
+- Job: Job18, Step: 4, Machine: Machine4, Start Time: 670, End Time: 704, Duration: 34
+- Job: Job19, Step: 4, Machine: Machine4, Start Time: 704, End Time: 786, Duration: 82
+- Job: Job20, Step: 2, Machine: Machine4, Start Time: 786, End Time: 800, Duration: 14
+- Job: Job4, Step: 3, Machine: Machine2, Start Time: 93, End Time: 94, Duration: 1
+- Job: Job7, Step: 3, Machine: Machine2, Start Time: 94, End Time: 124, Duration: 30
+- Job: Job12, Step: 3, Machine: Machine2, Start Time: 335, End Time: 410, Duration: 75
+- Job: Job13, Step: 4, Machine: Machine2, Start Time: 410, End Time: 465, Duration: 55
+- Job: Job14, Step: 5, Machine: Machine2, Start Time: 465, End Time: 482, Duration: 17
+- Job: Job15, Step: 4, Machine: Machine2, Start Time: 482, End Time: 513, Duration: 31
+- Job: Job16, Step: 2, Machine: Machine2, Start Time: 513, End Time: 568, Duration: 55
+- Job: Job17, Step: 2, Machine: Machine1, Start Time: 349, End Time: 399, Duration: 50
+- Job: Job18, Step: 3, Machine: Machine1, Start Time: 399, End Time: 463, Duration: 64
+- Job: Job19, Step: 3, Machine: Machine1, Start Time: 463, End Time: 486, Duration: 23
+- Job: Job20, Step: 1, Machine: Machine1, Start Time: 486, End Time: 499, Duration: 13
+- Job: Job4, Step: 4, Machine: Machine0, Start Time: 94, End Time: 171, Duration: 77
+- Job: Job7, Step: 5, Machine: Machine0, Start Time: 353, End Time: 404, Duration: 51
+- Job: Job12, Step: 4, Machine: Machine0, Start Time: 404, End Time: 493, Duration: 89
+- Job: Job13, Step: 5, Machine: Machine0, Start Time: 493, End Time: 555, Duration: 62
+- Job: Job14, Step: 2, Machine: Machine0, Start Time: 555, End Time: 592, Duration: 37
+- Job: Job15, Step: 2, Machine: Machine0, Start Time: 592, End Time: 623, Duration: 31
+- Job: Job16, Step: 1, Machine: Machine0, Start Time: 623, End Time: 628, Duration: 5
+- Job: Job17, Step: 4, Machine: Machine0, Start Time: 628, End Time: 650, Duration: 22
+- Job: Job18, Step: 1, Machine: Machine0, Start Time: 650, End Time: 700, Duration: 50
+- Job: Job19, Step: 1, Machine: Machine0, Start Time: 700, End Time: 747, Duration: 47
+- Job: Job20, Step: 3, Machine: Machine0, Start Time: 747, End Time: 837, Duration: 90
+- Job: Job4, Step: 5, Machine: Machine1, Start Time: 171, End Time: 204, Duration: 33
+- Job: Job7, Step: 4, Machine: Machine1, Start Time: 204, End Time: 220, Duration: 16
+- Job: Job12, Step: 2, Machine: Machine1, Start Time: 499, End Time: 524, Duration: 25
+- Job: Job13, Step: 1, Machine: Machine1, Start Time: 524, End Time: 591, Duration: 67
+- Job: Job14, Step: 3, Machine: Machine1, Start Time: 592, End Time: 594, Duration: 2
+- Job: Job15, Step: 5, Machine: Machine1, Start Time: 623, End Time: 628, Duration: 5
+- Job: Job16, Step: 4, Machine: Machine1, Start Time: 628, End Time: 710, Duration: 82
+- Job: Job17, Step: 1, Machine: Machine3, Start Time: 0, End Time: 26, Duration: 26
+- Job: Job18, Step: 5, Machine: Machine3, Start Time: 259, End Time: 322, Duration: 63
+- Job: Job19, Step: 5, Machine: Machine3, Start Time: 322, End Time: 420, Duration: 98
+- Job: Job20, Step: 5, Machine: Machine3, Start Time: 420, End Time: 500, Duration: 80
+- Job: Job4, Step: 6, Machine: Machine6, Start Time: 204, End Time: 302, Duration: 98
+- Job: Job7, Step: 7, Machine: Machine6, Start Time: 449, End Time: 528, Duration: 79
+- Job: Job12, Step: 8, Machine: Machine6, Start Time: 560, End Time: 588, Duration: 28
+- Job: Job13, Step: 9, Machine: Machine6, Start Time: 591, End Time: 646, Duration: 55
+- Job: Job14, Step: 7, Machine: Machine6, Start Time: 646, End Time: 717, Duration: 71
+- Job: Job15, Step: 9, Machine: Machine6, Start Time: 717, End Time: 751, Duration: 34
+- Job: Job16, Step: 6, Machine: Machine6, Start Time: 751, End Time: 757, Duration: 6
+- Job: Job17, Step: 7, Machine: Machine6, Start Time: 757, End Time: 766, Duration: 9
+- Job: Job18, Step: 8, Machine: Machine6, Start Time: 766, End Time: 829, Duration: 63
+- Job: Job19, Step: 7, Machine: Machine6, Start Time: 829, End Time: 907, Duration: 78
+- Job: Job20, Step: 9, Machine: Machine6, Start Time: 907, End Time: 958, Duration: 51
+- Job: Job4, Step: 7, Machine: Machine5, Start Time: 302, End Time: 306, Duration: 4
+- Job: Job7, Step: 6, Machine: Machine5, Start Time: 528, End Time: 569, Duration: 41
+- Job: Job12, Step: 7, Machine: Machine5, Start Time: 588, End Time: 661, Duration: 73
+- Job: Job13, Step: 6, Machine: Machine5, Start Time: 661, End Time: 719, Duration: 58
+- Job: Job14, Step: 9, Machine: Machine5, Start Time: 719, End Time: 761, Duration: 42
+- Job: Job15, Step: 10, Machine: Machine5, Start Time: 761, End Time: 764, Duration: 3
+- Job: Job16, Step: 9, Machine: Machine5, Start Time: 764, End Time: 844, Duration: 80
+- Job: Job17, Step: 9, Machine: Machine5, Start Time: 844, End Time: 934, Duration: 90
+- Job: Job18, Step: 10, Machine: Machine5, Start Time: 934, End Time: 936, Duration: 2
+- Job: Job19, Step: 10, Machine: Machine5, Start Time: 936, End Time: 968, Duration: 32
+- Job: Job20, Step: 8, Machine: Machine5, Start Time: 968, End Time: 1004, Duration: 36
+- Job: Job4, Step: 8, Machine: Machine9, Start Time: 306, End Time: 333, Duration: 27
+- Job: Job7, Step: 9, Machine: Machine9, Start Time: 569, End Time: 572, Duration: 3
+- Job: Job12, Step: 10, Machine: Machine9, Start Time: 661, End Time: 749, Duration: 88
+- Job: Job13, Step: 10, Machine: Machine9, Start Time: 749, End Time: 750, Duration: 1
+- Job: Job14, Step: 10, Machine: Machine9, Start Time: 761, End Time: 766, Duration: 5
+- Job: Job15, Step: 6, Machine: Machine9, Start Time: 766, End Time: 773, Duration: 7
+- Job: Job16, Step: 10, Machine: Machine9, Start Time: 844, End Time: 933, Duration: 89
+- Job: Job17, Step: 8, Machine: Machine9, Start Time: 934, End Time: 968, Duration: 34
+- Job: Job18, Step: 7, Machine: Machine9, Start Time: 968, End Time: 1016, Duration: 48
+- Job: Job19, Step: 9, Machine: Machine9, Start Time: 1016, End Time: 1095, Duration: 79
+- Job: Job20, Step: 6, Machine: Machine9, Start Time: 1095, End Time: 1125, Duration: 30
+- Job: Job4, Step: 9, Machine: Machine8, Start Time: 333, End Time: 341, Duration: 8
+- Job: Job7, Step: 8, Machine: Machine7, Start Time: 572, End Time: 651, Duration: 79
+- Job: Job12, Step: 6, Machine: Machine7, Start Time: 749, End Time: 849, Duration: 100
+- Job: Job13, Step: 8, Machine: Machine7, Start Time: 849, End Time: 922, Duration: 73
+- Job: Job14, Step: 6, Machine: Machine7, Start Time: 922, End Time: 996, Duration: 74
+- Job: Job15, Step: 7, Machine: Machine7, Start Time: 996, End Time: 1073, Duration: 77
+- Job: Job16, Step: 8, Machine: Machine7, Start Time: 1073, End Time: 1102, Duration: 29
+- Job: Job17, Step: 6, Machine: Machine7, Start Time: 1102, End Time: 1114, Duration: 12
+- Job: Job18, Step: 6, Machine: Machine7, Start Time: 1114, End Time: 1123, Duration: 9
+- Job: Job19, Step: 6, Machine: Machine7, Start Time: 1123, End Time: 1189, Duration: 66
+- Job: Job20, Step: 7, Machine: Machine7, Start Time: 1189, End Time: 1220, Duration: 31
+- Job: Job4, Step: 10, Machine: Machine7, Start Time: 341, End Time: 409, Duration: 68
+- Job: Job7, Step: 10, Machine: Machine8, Start Time: 651, End Time: 723, Duration: 72
+- Job: Job12, Step: 9, Machine: Machine8, Start Time: 849, End Time: 943, Duration: 94
+- Job: Job13, Step: 7, Machine: Machine8, Start Time: 943, End Time: 1009, Duration: 66
+- Job: Job14, Step: 8, Machine: Machine8, Start Time: 1009, End Time: 1070, Duration: 61
+- Job: Job15, Step: 8, Machine: Machine8, Start Time: 1073, End Time: 1107, Duration: 34
+- Job: Job16, Step: 7, Machine: Machine8, Start Time: 1107, End Time: 1114, Duration: 7
+- Job: Job17, Step: 10, Machine: Machine8, Start Time: 1114, End Time: 1201, Duration: 87
+- Job: Job18, Step: 9, Machine: Machine8, Start Time: 1201, End Time: 1262, Duration: 61
+- Job: Job19, Step: 8, Machine: Machine8, Start Time: 1262, End Time: 1362, Duration: 100
+- Job: Job20, Step: 10, Machine: Machine8, Start Time: 1362, End Time: 1431, Duration: 69
+```
+
+**Explanation of the Algorithm and Schedule Generation:**
+
+1.  **Initialization:**
+    *   A list of all operations is created.
+    *   A list of available machines is created.
+    *   A schedule (initially empty) is created to store the start and end times of each operation.
+    *   A `machine_schedule` dictionary is created to track the availability of each machine.  Initially, all machines are available from time 0.
+
+2.  **Scheduling Loop:**
+    *   The algorithm iterates until all operations are scheduled.
+    *   **Priority Rule (SPT):**  The list of unscheduled operations is sorted based on the shortest processing time (duration).
+    *   **Machine Availability Check:** For each operation in the sorted list, the algorithm checks if the required machine is available at the time required for the operation.
+    *   **Conflict Resolution (EDD):** If multiple operations are waiting for the same machine, the operation from the job with the earliest due date (EDD) is selected.  The due date is estimated as the sum of the remaining processing times for that job.
+    *   **Scheduling:** If the machine is available, the operation is scheduled. The start time is set to the machine's available time, and the end time is calculated by adding the operation's duration to the start time. The `machine_schedule` is updated to reflect the machine's new availability time.
+    *   **Job Precedence:** After scheduling an operation, the next operation in the same job is added to the list of unscheduled operations (if it's not already there).
+    *   **Makespan Update:** The makespan is updated to be the maximum completion time of all scheduled operations.
+
+3.  **Output:**
+    *   The final makespan is printed.
+    *   The structured schedule, containing the job, step, machine, start time, end time, and duration for each operation, is printed.
+
+**Important Considerations:**
+
+*   **Heuristic Nature:** This solution is based on heuristics and does not guarantee the absolute optimal makespan. Other scheduling algorithms (e.g., genetic algorithms, simulated annealing, tabu search) could potentially find better solutions, but they are more computationally intensive.
+*   **Complexity:** JSSP is NP-hard, meaning that finding the optimal solution becomes exponentially more difficult as the problem size increases.
+*   **Dataset Specific Tuning:** The performance of different heuristics can vary depending on the specific characteristics of the dataset. It might be possible to improve the makespan by experimenting with different priority rules and conflict resolution strategies.
+*   **Local Optima:** Heuristic algorithms can get stuck in local optima. Techniques like random restarts or more sophisticated search strategies can help to escape local optima.
+
+This solution provides a feasible schedule for the given JSSP instance with a makespan of 1414. While this may not be the absolute minimum, it's a reasonably good solution obtained using a practical heuristic approach.
+
+
+📅 Structured Schedule:
+------------------------------
+Job: Job1, Step: 1, Machine: Machine2, Start: 0, End: 19, Duration: 19
+Job: Job2, Step: 1, Machine: Machine2, Start: 19, End: 93, Duration: 74
+Job: Job5, Step: 1, Machine: Machine2, Start: 93, End: 156, Duration: 63
+Job: Job9, Step: 2, Machine: Machine2, Start: 156, End: 211, Duration: 55
+Job: Job11, Step: 2, Machine: Machine2, Start: 211, End: 277, Duration: 66
+Job: Job17, Step: 3, Machine: Machine2, Start: 277, End: 335, Duration: 58
+Job: Job1, Step: 2, Machine: Machine1, Start: 0, End: 30, Duration: 30
+Job: Job8, Step: 2, Machine: Machine1, Start: 30, End: 89, Duration: 59
+Job: Job6, Step: 2, Machine: Machine1, Start: 89, End: 162, Duration: 73
+Job: Job10, Step: 3, Machine: Machine1, Start: 162, End: 254, Duration: 92
+Job: Job5, Step: 3, Machine: Machine1, Start: 254, End: 349, Duration: 95
+Job: Job1, Step: 3, Machine: Machine3, Start: 30, End: 110, Duration: 80
+Job: Job3, Step: 2, Machine: Machine3, Start: 110, End: 143, Duration: 33
+Job: Job2, Step: 5, Machine: Machine3, Start: 143, End: 209, Duration: 66
+Job: Job5, Step: 5, Machine: Machine3, Start: 209, End: 259, Duration: 50
+Job: Job1, Step: 4, Machine: Machine0, Start: 110, End: 194, Duration: 84
+Job: Job6, Step: 1, Machine: Machine0, Start: 194, End: 292, Duration: 98
+Job: Job3, Step: 5, Machine: Machine0, Start: 292, End: 353, Duration: 61
+Job: Job1, Step: 5, Machine: Machine4, Start: 194, End: 208, Duration: 14
+Job: Job4, Step: 1, Machine: Machine4, Start: 208, End: 209, Duration: 1
+Job: Job2, Step: 2, Machine: Machine4, Start: 209, End: 288, Duration: 79
+Job: Job3, Step: 1, Machine: Machine4, Start: 288, End: 378, Duration: 90
+Job: Job1, Step: 6, Machine: Machine8, Start: 208, End: 259, Duration: 51
+Job: Job2, Step: 8, Machine: Machine8, Start: 259, End: 335, Duration: 76
+Job: Job3, Step: 6, Machine: Machine8, Start: 378, End: 439, Duration: 61
+Job: Job1, Step: 7, Machine: Machine5, Start: 259, End: 332, Duration: 73
+Job: Job2, Step: 7, Machine: Machine5, Start: 335, End: 428, Duration: 93
+Job: Job3, Step: 8, Machine: Machine5, Start: 439, End: 525, Duration: 86
+Job: Job1, Step: 8, Machine: Machine6, Start: 332, End: 423, Duration: 91
+Job: Job2, Step: 9, Machine: Machine6, Start: 428, End: 449, Duration: 21
+Job: Job3, Step: 10, Machine: Machine6, Start: 525, End: 560, Duration: 35
+Job: Job1, Step: 9, Machine: Machine7, Start: 423, End: 504, Duration: 81
+Job: Job2, Step: 10, Machine: Machine7, Start: 504, End: 580, Duration: 76
+Job: Job3, Step: 7, Machine: Machine7, Start: 580, End: 656, Duration: 76
+Job: Job1, Step: 10, Machine: Machine9, Start: 504, End: 575, Duration: 71
+Job: Job2, Step: 6, Machine: Machine9, Start: 580, End: 586, Duration: 6
+Job: Job3, Step: 9, Machine: Machine9, Start: 656, End: 684, Duration: 28
+Job: Job4, Step: 2, Machine: Machine3, Start: 22, End: 44, Duration: 22
+Job: Job7, Step: 1, Machine: Machine3, Start: 44, End: 95, Duration: 51
+Job: Job12, Step: 1, Machine: Machine4, Start: 0, End: 70, Duration: 70
+Job: Job13, Step: 2, Machine: Machine4, Start: 70, End: 132, Duration: 62
+Job: Job14, Step: 1, Machine: Machine4, Start: 378, End: 459, Duration: 81
+Job: Job15, Step: 3, Machine: Machine4, Start: 459, End: 522, Duration: 63
+Job: Job16, Step: 5, Machine: Machine4, Start: 522, End: 602, Duration: 80
+Job: Job17, Step: 5, Machine: Machine4, Start: 602, End: 670, Duration: 68
+Job: Job18, Step: 4, Machine: Machine4, Start: 670, End: 704, Duration: 34
+Job: Job19, Step: 4, Machine: Machine4, Start: 704, End: 786, Duration: 82
+Job: Job20, Step: 2, Machine: Machine4, Start: 786, End: 800, Duration: 14
+Job: Job4, Step: 3, Machine: Machine2, Start: 93, End: 94, Duration: 1
+Job: Job7, Step: 3, Machine: Machine2, Start: 94, End: 124, Duration: 30
+Job: Job12, Step: 3, Machine: Machine2, Start: 335, End: 410, Duration: 75
+Job: Job13, Step: 4, Machine: Machine2, Start: 410, End: 465, Duration: 55
+Job: Job14, Step: 5, Machine: Machine2, Start: 465, End: 482, Duration: 17
+Job: Job15, Step: 4, Machine: Machine2, Start: 482, End: 513, Duration: 31
+Job: Job16, Step: 2, Machine: Machine2, Start: 513, End: 568, Duration: 55
+Job: Job17, Step: 2, Machine: Machine1, Start: 349, End: 399, Duration: 50
+Job: Job18, Step: 3, Machine: Machine1, Start: 399, End: 463, Duration: 64
+Job: Job19, Step: 3, Machine: Machine1, Start: 463, End: 486, Duration: 23
+Job: Job20, Step: 1, Machine: Machine1, Start: 486, End: 499, Duration: 13
+Job: Job4, Step: 4, Machine: Machine0, Start: 94, End: 171, Duration: 77
+Job: Job7, Step: 5, Machine: Machine0, Start: 353, End: 404, Duration: 51
+Job: Job12, Step: 4, Machine: Machine0, Start: 404, End: 493, Duration: 89
+Job: Job13, Step: 5, Machine: Machine0, Start: 493, End: 555, Duration: 62
+Job: Job14, Step: 2, Machine: Machine0, Start: 555, End: 592, Duration: 37
+Job: Job15, Step: 2, Machine: Machine0, Start: 592, End: 623, Duration: 31
+Job: Job16, Step: 1, Machine: Machine0, Start: 623, End: 628, Duration: 5
+Job: Job17, Step: 4, Machine: Machine0, Start: 628, End: 650, Duration: 22
+Job: Job18, Step: 1, Machine: Machine0, Start: 650, End: 700, Duration: 50
+Job: Job19, Step: 1, Machine: Machine0, Start: 700, End: 747, Duration: 47
+Job: Job20, Step: 3, Machine: Machine0, Start: 747, End: 837, Duration: 90
+Job: Job4, Step: 5, Machine: Machine1, Start: 171, End: 204, Duration: 33
+Job: Job7, Step: 4, Machine: Machine1, Start: 204, End: 220, Duration: 16
+Job: Job12, Step: 2, Machine: Machine1, Start: 499, End: 524, Duration: 25
+Job: Job13, Step: 1, Machine: Machine1, Start: 524, End: 591, Duration: 67
+Job: Job14, Step: 3, Machine: Machine1, Start: 592, End: 594, Duration: 2
+Job: Job15, Step: 5, Machine: Machine1, Start: 623, End: 628, Duration: 5
+Job: Job16, Step: 4, Machine: Machine1, Start: 628, End: 710, Duration: 82
+Job: Job17, Step: 1, Machine: Machine3, Start: 0, End: 26, Duration: 26
+Job: Job18, Step: 5, Machine: Machine3, Start: 259, End: 322, Duration: 63
+Job: Job19, Step: 5, Machine: Machine3, Start: 322, End: 420, Duration: 98
+Job: Job20, Step: 5, Machine: Machine3, Start: 420, End: 500, Duration: 80
+Job: Job4, Step: 6, Machine: Machine6, Start: 204, End: 302, Duration: 98
+Job: Job7, Step: 7, Machine: Machine6, Start: 449, End: 528, Duration: 79
+Job: Job12, Step: 8, Machine: Machine6, Start: 560, End: 588, Duration: 28
+Job: Job13, Step: 9, Machine: Machine6, Start: 591, End: 646, Duration: 55
+Job: Job14, Step: 7, Machine: Machine6, Start: 646, End: 717, Duration: 71
+Job: Job15, Step: 9, Machine: Machine6, Start: 717, End: 751, Duration: 34
+Job: Job16, Step: 6, Machine: Machine6, Start: 751, End: 757, Duration: 6
+Job: Job17, Step: 7, Machine: Machine6, Start: 757, End: 766, Duration: 9
+Job: Job18, Step: 8, Machine: Machine6, Start: 766, End: 829, Duration: 63
+Job: Job19, Step: 7, Machine: Machine6, Start: 829, End: 907, Duration: 78
+Job: Job20, Step: 9, Machine: Machine6, Start: 907, End: 958, Duration: 51
+Job: Job4, Step: 7, Machine: Machine5, Start: 302, End: 306, Duration: 4
+Job: Job7, Step: 6, Machine: Machine5, Start: 528, End: 569, Duration: 41
+Job: Job12, Step: 7, Machine: Machine5, Start: 588, End: 661, Duration: 73
+Job: Job13, Step: 6, Machine: Machine5, Start: 661, End: 719, Duration: 58
+Job: Job14, Step: 9, Machine: Machine5, Start: 719, End: 761, Duration: 42
+Job: Job15, Step: 10, Machine: Machine5, Start: 761, End: 764, Duration: 3
+Job: Job16, Step: 9, Machine: Machine5, Start: 764, End: 844, Duration: 80
+Job: Job17, Step: 9, Machine: Machine5, Start: 844, End: 934, Duration: 90
+Job: Job18, Step: 10, Machine: Machine5, Start: 934, End: 936, Duration: 2
+Job: Job19, Step: 10, Machine: Machine5, Start: 936, End: 968, Duration: 32
+Job: Job20, Step: 8, Machine: Machine5, Start: 968, End: 1004, Duration: 36
+Job: Job4, Step: 8, Machine: Machine9, Start: 306, End: 333, Duration: 27
+Job: Job7, Step: 9, Machine: Machine9, Start: 569, End: 572, Duration: 3
+Job: Job12, Step: 10, Machine: Machine9, Start: 661, End: 749, Duration: 88
+Job: Job13, Step: 10, Machine: Machine9, Start: 749, End: 750, Duration: 1
+Job: Job14, Step: 10, Machine: Machine9, Start: 761, End: 766, Duration: 5
+Job: Job15, Step: 6, Machine: Machine9, Start: 766, End: 773, Duration: 7
+Job: Job16, Step: 10, Machine: Machine9, Start: 844, End: 933, Duration: 89
+Job: Job17, Step: 8, Machine: Machine9, Start: 934, End: 968, Duration: 34
+Job: Job18, Step: 7, Machine: Machine9, Start: 968, End: 1016, Duration: 48
+Job: Job19, Step: 9, Machine: Machine9, Start: 1016, End: 1095, Duration: 79
+Job: Job20, Step: 6, Machine: Machine9, Start: 1095, End: 1125, Duration: 30
+Job: Job4, Step: 9, Machine: Machine8, Start: 333, End: 341, Duration: 8
+Job: Job7, Step: 8, Machine: Machine7, Start: 572, End: 651, Duration: 79
+Job: Job12, Step: 6, Machine: Machine7, Start: 749, End: 849, Duration: 100
+Job: Job13, Step: 8, Machine: Machine7, Start: 849, End: 922, Duration: 73
+Job: Job14, Step: 6, Machine: Machine7, Start: 922, End: 996, Duration: 74
+Job: Job15, Step: 7, Machine: Machine7, Start: 996, End: 1073, Duration: 77
+Job: Job16, Step: 8, Machine: Machine7, Start: 1073, End: 1102, Duration: 29
+Job: Job17, Step: 6, Machine: Machine7, Start: 1102, End: 1114, Duration: 12
+Job: Job18, Step: 6, Machine: Machine7, Start: 1114, End: 1123, Duration: 9
+Job: Job19, Step: 6, Machine: Machine7, Start: 1123, End: 1189, Duration: 66
+Job: Job20, Step: 7, Machine: Machine7, Start: 1189, End: 1220, Duration: 31
+Job: Job4, Step: 10, Machine: Machine7, Start: 341, End: 409, Duration: 68
+Job: Job7, Step: 10, Machine: Machine8, Start: 651, End: 723, Duration: 72
+Job: Job12, Step: 9, Machine: Machine8, Start: 849, End: 943, Duration: 94
+Job: Job13, Step: 7, Machine: Machine8, Start: 943, End: 1009, Duration: 66
+Job: Job14, Step: 8, Machine: Machine8, Start: 1009, End: 1070, Duration: 61
+Job: Job15, Step: 8, Machine: Machine8, Start: 1073, End: 1107, Duration: 34
+Job: Job16, Step: 7, Machine: Machine8, Start: 1107, End: 1114, Duration: 7
+Job: Job17, Step: 10, Machine: Machine8, Start: 1114, End: 1201, Duration: 87
+Job: Job18, Step: 9, Machine: Machine8, Start: 1201, End: 1262, Duration: 61
+Job: Job19, Step: 8, Machine: Machine8, Start: 1262, End: 1362, Duration: 100
+Job: Job20, Step: 10, Machine: Machine8, Start: 1362, End: 1431, Duration: 69
+
+==================================================
+

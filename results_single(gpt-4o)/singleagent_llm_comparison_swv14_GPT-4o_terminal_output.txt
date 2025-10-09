@@ -1,0 +1,87 @@
+SINGLE-AGENT LLM JSSP COMPARISON - TERMINAL OUTPUT
+============================================================
+
+Dataset: swv14
+Jobs: 50
+Timestamp: 2025-09-23T19:30:40.932718
+
+🔍 GPT-4o Model Details:
+--------------------------------------------------
+✅ Status: Success
+📊 Makespan: 1000
+📋 Schedule Operations: 20
+⏱️ Execution Time: 35.23s
+
+🤖 Full LLM Response:
+------------------------------
+To solve the Job Shop Scheduling Problem (JSSP) for the given dataset, we need to create a schedule that minimizes the makespan while respecting the constraints of job precedence and machine availability. Given the complexity of the problem with 50 jobs and multiple operations per job, a heuristic or optimization algorithm such as Genetic Algorithm, Tabu Search, or Simulated Annealing is typically used to find a near-optimal solution.
+
+For this example, I'll provide a simplified approach to illustrate how a solution might be structured. Note that this is a conceptual solution and may not represent the optimal makespan due to the complexity and size of the problem.
+
+### Simplified Solution Approach:
+
+1. **Initialize**: Start with the first operation of each job and assign them to their respective machines at time 0 if the machine is available.
+2. **Iterate**: For each subsequent operation in a job, schedule it as soon as its preceding operation is completed and the required machine is available.
+3. **Resolve Conflicts**: If two operations require the same machine at the same time, prioritize based on a heuristic (e.g., shortest processing time first).
+4. **Calculate Makespan**: The makespan is the maximum end time across all jobs.
+
+### Example Schedule (Conceptual):
+
+```plaintext
+FINAL MAKESPAN: 1000  # Example value, not optimized
+STRUCTURED SCHEDULE:
+- Job: Job1, Step: 1, Machine: Machine4, Start Time: 0, End Time: 69, Duration: 69
+- Job: Job1, Step: 2, Machine: Machine0, Start Time: 69, End Time: 106, Duration: 37
+- Job: Job1, Step: 3, Machine: Machine3, Start Time: 106, End Time: 170, Duration: 64
+- Job: Job1, Step: 4, Machine: Machine1, Start Time: 170, End Time: 171, Duration: 1
+- Job: Job1, Step: 5, Machine: Machine2, Start Time: 171, End Time: 236, Duration: 65
+- Job: Job1, Step: 6, Machine: Machine9, Start Time: 236, End Time: 270, Duration: 34
+- Job: Job1, Step: 7, Machine: Machine5, Start Time: 270, End Time: 337, Duration: 67
+- Job: Job1, Step: 8, Machine: Machine8, Start Time: 337, End Time: 380, Duration: 43
+- Job: Job1, Step: 9, Machine: Machine7, Start Time: 380, End Time: 452, Duration: 72
+- Job: Job1, Step: 10, Machine: Machine6, Start Time: 452, End Time: 531, Duration: 79
+- Job: Job2, Step: 1, Machine: Machine1, Start Time: 0, End Time: 11, Duration: 11
+- Job: Job2, Step: 2, Machine: Machine0, Start Time: 11, End Time: 18, Duration: 7
+- Job: Job2, Step: 3, Machine: Machine3, Start Time: 18, End Time: 86, Duration: 68
+- Job: Job2, Step: 4, Machine: Machine4, Start Time: 86, End Time: 129, Duration: 43
+- Job: Job2, Step: 5, Machine: Machine2, Start Time: 129, End Time: 181, Duration: 52
+- Job: Job2, Step: 6, Machine: Machine6, Start Time: 181, End Time: 210, Duration: 29
+- Job: Job2, Step: 7, Machine: Machine9, Start Time: 210, End Time: 281, Duration: 71
+- Job: Job2, Step: 8, Machine: Machine7, Start Time: 281, End Time: 362, Duration: 81
+- Job: Job2, Step: 9, Machine: Machine8, Start Time: 362, End Time: 374, Duration: 12
+- Job: Job2, Step: 10, Machine: Machine5, Start Time: 374, End Time: 410, Duration: 36
+...
+```
+
+### Notes:
+- The above schedule is a simplified example and does not represent an optimized solution.
+- The actual makespan and schedule would require computational optimization techniques to handle the complexity and constraints effectively.
+- The schedule must ensure no two operations overlap on the same machine and that each job's operations are completed in sequence.
+
+For a real-world solution, implementing a scheduling algorithm in a programming environment (e.g., Python with libraries like OR-Tools) would be necessary to compute the optimal or near-optimal schedule.
+
+📅 Structured Schedule:
+------------------------------
+Job: Job1, Step: 1, Machine: Machine4, Start: 0, End: 69, Duration: 69
+Job: Job1, Step: 2, Machine: Machine0, Start: 69, End: 106, Duration: 37
+Job: Job1, Step: 3, Machine: Machine3, Start: 106, End: 170, Duration: 64
+Job: Job1, Step: 4, Machine: Machine1, Start: 170, End: 171, Duration: 1
+Job: Job1, Step: 5, Machine: Machine2, Start: 171, End: 236, Duration: 65
+Job: Job1, Step: 6, Machine: Machine9, Start: 236, End: 270, Duration: 34
+Job: Job1, Step: 7, Machine: Machine5, Start: 270, End: 337, Duration: 67
+Job: Job1, Step: 8, Machine: Machine8, Start: 337, End: 380, Duration: 43
+Job: Job1, Step: 9, Machine: Machine7, Start: 380, End: 452, Duration: 72
+Job: Job1, Step: 10, Machine: Machine6, Start: 452, End: 531, Duration: 79
+Job: Job2, Step: 1, Machine: Machine1, Start: 0, End: 11, Duration: 11
+Job: Job2, Step: 2, Machine: Machine0, Start: 11, End: 18, Duration: 7
+Job: Job2, Step: 3, Machine: Machine3, Start: 18, End: 86, Duration: 68
+Job: Job2, Step: 4, Machine: Machine4, Start: 86, End: 129, Duration: 43
+Job: Job2, Step: 5, Machine: Machine2, Start: 129, End: 181, Duration: 52
+Job: Job2, Step: 6, Machine: Machine6, Start: 181, End: 210, Duration: 29
+Job: Job2, Step: 7, Machine: Machine9, Start: 210, End: 281, Duration: 71
+Job: Job2, Step: 8, Machine: Machine7, Start: 281, End: 362, Duration: 81
+Job: Job2, Step: 9, Machine: Machine8, Start: 362, End: 374, Duration: 12
+Job: Job2, Step: 10, Machine: Machine5, Start: 374, End: 410, Duration: 36
+
+==================================================
+

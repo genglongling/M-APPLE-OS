@@ -1,0 +1,68 @@
+MAPLE-INTEGRATED JSSP OPTIMIZATION WORKFLOW
+============================================
+
+AGENTS USED:
+-----------
+1. MAPLEJSSPQueryAgent (1 instance) - CALLS LLM
+2. MAPLESupervisorAgent (1 instance) - CALLS LLM
+
+WORKFLOW:
+---------
+
+┌─────────────────────────────────────────────────────────────────┐
+│                    MAPLE-INTEGRATED WORKFLOW                    │
+└─────────────────────────────────────────────────────────────────┘
+
+For each dataset (rcmax_20_15_5, TA01, abz07, swv01, yn01):
+│
+├─ 1. MAPLEJSSPQueryAgent.generate_schedule()
+│   ├─ CALLS LLM: Generates valid schedule
+│   ├─ Fallback: Static schedule generation if LLM unavailable
+│   └─ Returns: initial schedule
+│
+├─ 2. ValidationTools.validate_schedule()
+│   ├─ Validates schedule against dataset constraints
+│   ├─ Checks job precedence, machine capacity, completeness
+│   ├─ If invalid: Go back to step 1 (max 3 attempts)
+│   └─ If valid: Continue to step 3
+│
+└─ For each optimization method (6 methods):
+    │
+    ├─ 3. OptimizationTools.run_optimization_schedule()
+    │   ├─ Creates optimizer (SA, GA, TS, VNS, MA, LRCP)
+    │   ├─ Runs optimization (max 5 iterations)
+    │   ├─ Validates result against upper bounds
+    │   └─ Returns: optimized schedule, makespan, validation results
+    │
+    └─ 4. FileStorageTools.save_schedule()
+        ├─ Saves optimized schedule to JSON file
+        ├─ Includes dataset, method, makespan, timestamp
+        └─ Returns filepath for reference
+
+TOTAL AGENTS: 3
+- 1 MAPLEJSSPQueryAgent (schedule generation) - CALLS LLM
+- 1 ValidationTools (validation) - NO LLM
+- 1 FileStorageAgent (file storage) - NO LLM
+
+LLM USAGE:
+- MAPLEJSSPQueryAgent: 1-3 LLM calls per dataset (5-15 total)
+- ValidationTools: 0 LLM calls (static validation)
+- FileStorageAgent: 0 LLM calls (file operations)
+- TOTAL LLM CALLS: 5-15 (depends on validation success)
+
+TOTAL METHODS TESTED: 6
+- Simulated Annealing
+- Genetic Algorithm  
+- Tabu Search
+- Variable Neighborhood Search
+- Memetic Algorithm
+- LRCP
+
+TOTAL DATASETS: 5
+- rcmax_20_15_5 (20x15)
+- TA01 (15x15)
+- abz07 (20x15)
+- swv01 (20x10)
+- yn01 (20x20)
+
+TOTAL TESTS: 30 (5 datasets × 6 methods)

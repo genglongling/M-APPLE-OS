@@ -6,7 +6,7 @@ from .calculator import CalculatorTool
 from crewai import Agent, Crew, Process, Task
 from ..db.database import get_schema, get_table
 from dotenv import load_dotenv
-from langchain_openai import ChatOpenAI
+from langchain_anthropic import ChatAnthropic
 from ..prompt_templates.router_template import SYSTEM_PROMPT as MANAGER_SYSTEM_PROMPT
 from ..prompt_templates.sql_generator_template import SYSTEM_PROMPT as SQL_SYSTEM_PROMPT
 from .sql_query import SQLQueryTool
@@ -15,7 +15,7 @@ load_dotenv()
 
 def run_crewai(query):
     """Run CrewAI for JSSP or general problems"""
-    llm = ChatOpenAI(model="gpt-4o")
+    llm = ChatAnthropic(model="claude-sonnet-4-20250514")
 
     # Check if this is a JSSP problem
     if "Job Shop Scheduling Problem" in query or "JSSP" in query:

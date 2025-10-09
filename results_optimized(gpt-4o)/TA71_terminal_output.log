@@ -1,0 +1,409 @@
+Loading dataset: TA71 from /Users/glin/Documents/GitHub/M-APPLE/M-APPLE-OS/applications/TA/TA71.txt
+Loaded 100 jobs
+
+--- Running Full Workflow ---
+
+============================================================
+Running MAPLE Full Workflow on TA71
+Description: Complete workflow with all tools
+Timestamp: 2025-09-24 13:43:41
+============================================================
+⚠️ Warning: Agent is None in node: {'agent': None, 'type': 'JSSPAgent'}
+⚠️ Warning: Agent is None in node: {'agent': None, 'type': 'JSSPValidationAgent'}
+
+=== [OPTIMIZED MAPLE] New 4-Step Workflow ===
+Nodes: ['Unknown Agent', 'Unknown Agent']
+Edges: [{'from': 0, 'to': 1}]
+Workflow: Full Workflow
+Validation: ✅
+Repair: ✅
+Optimization: ✅
+
+=== [OPTIMIZED MAPLE] Inter-Agent Coordination ===
+
+=== [OPTIMIZED MAPLE] New Workflow Execution ===
+🔄 Running new 7-step workflow: Query -> Validation -> Repair -> Re-validation -> Optimization -> Final Check -> Supervisor
+
+🔄 Starting New 4-Step Workflow...
+1️⃣ Loading pre-generated schedule from JSON file...
+📊 Loaded 7 schedule entries from TA71
+📊 GPT-4o makespan: None
+📊 Initial schedule makespan: 211
+📊 Schedule entries count: 7
+📊 Sample entry: {'job': 'Job1', 'step': 1, 'machine': 'Machine83', 'start': 0, 'end': 59, 'duration': 59}
+[32m✅ Pre-generated schedule loaded successfully.
+2️⃣ ValidationTools validating schedule...
+❌ Initial validation failed: ["Missing jobs in schedule: ['Job22', 'Job27', 'Job30', 'Job38', 'Job66', 'Job36', 'Job48', 'Job23', 'Job93', 'Job10', 'Job35', 'Job84', 'Job62', 'Job4', 'Job72', 'Job33', 'Job55', 'Job60', 'Job49', 'Job74', 'Job96', 'Job100', 'Job28', 'Job73', 'Job16', 'Job41', 'Job86', 'Job53', 'Job52', 'Job46', 'Job61', 'Job18', 'Job58', 'Job13', 'Job44', 'Job26', 'Job97', 'Job94', 'Job37', 'Job21', 'Job47', 'Job90', 'Job56', 'Job40', 'Job77', 'Job54', 'Job32', 'Job25', 'Job11', 'Job7', 'Job82', 'Job83', 'Job9', 'Job75', 'Job43', 'Job14', 'Job88', 'Job8', 'Job78', 'Job69', 'Job31', 'Job76', 'Job5', 'Job20', 'Job51', 'Job70', 'Job68', 'Job89', 'Job6', 'Job57', 'Job80', 'Job19', 'Job34', 'Job29', 'Job59', 'Job39', 'Job87', 'Job65', 'Job67', 'Job15', 'Job92', 'Job63', 'Job91', 'Job64', 'Job98', 'Job42', 'Job17', 'Job79', 'Job99', 'Job45', 'Job71', 'Job81', 'Job95', 'Job12', 'Job50', 'Job85', 'Job24']", "Unused machines: ['Machine89', 'Machine77', 'Machine80', 'Machine23', 'Machine55', 'Machine97', 'Machine82', 'Machine84', 'Machine17', 'Machine93', 'Machine4', 'Machine31', 'Machine1', 'Machine92', 'Machine48', 'Machine44', 'Machine12', 'Machine65', 'Machine52', 'Machine70', 'Machine19', 'Machine74', 'Machine72', 'Machine98', 'Machine79', 'Machine6', 'Machine64', 'Machine27', 'Machine66', 'Machine67', 'Machine87', 'Machine99', 'Machine29', 'Machine46', 'Machine28', 'Machine75', 'Machine32', 'Machine24', 'Machine62', 'Machine54', 'Machine71', 'Machine51', 'Machine7', 'Machine47', 'Machine43', 'Machine21', 'Machine60', 'Machine86', 'Machine69', 'Machine88', 'Machine33', 'Machine20', 'Machine40', 'Machine58', 'Machine10', 'Machine15', 'Machine73', 'Machine94', 'Machine50', 'Machine22', 'Machine9', 'Machine39', 'Machine90', 'Machine38', 'Machine42', 'Machine56', 'Machine36', 'Machine18', 'Machine63', 'Machine41', 'Machine78', 'Machine3', 'Machine25', 'Machine13', 'Machine61', 'Machine95', 'Machine30', 'Machine14', 'Machine59', 'Machine96', 'Machine8', 'Machine26', 'Machine5', 'Machine81', 'Machine85', 'Machine53', 'Machine68', 'Machine16', 'Machine76', 'Machine37', 'Machine57', 'Machine91']"]
+3️⃣ RepairTools repairing schedule...
+🔧 Repair iteration 1/5
+🔧 Starting Algorithm 3: Cascading Repair and Queue Reordering
+📊 Processing 7 schedule entries
+❌ Found 2 constraint violations
+🔄 Phase I: Status Update - Identifying affected operations
+🔧 Fixing immediate constraint violations...
+🔄 Phase II: Job Precedence Repair - Fixing step ordering violations
+🔧 Repairing job precedence violations...
+🔄 Phase III: Machine Capacity Repair - Resolving machine overlaps
+🔧 Repairing machine capacity violations...
+🔄 Phase IV: Iterative Improvement - Optimizing schedule quality
+🔧 Applying iterative improvement...
+🔄 Phase V: Final validation and cleanup
+🔧 Final cleanup - ensuring valid operation times...
+✅ Algorithm 3 completed - Generated 7 schedule entries
+📊 Repair iteration 1 makespan: 211
+📊 Repair iteration 1 schedule entries: 7
+📊 Latest operations: [('Job1', 3, 211), ('Job2', 2, 153), ('Job1', 2, 143)]
+💾 Saved repair iteration 1 to: results_optimized(gpt-4o)/TA71_repair_iteration_1.json
+⚠️ Repair iteration 1 reduced errors from 2 to 2 (makespan: 211)
+🔧 Repair iteration 2/5
+🔧 Starting Algorithm 3: Cascading Repair and Queue Reordering
+📊 Processing 7 schedule entries
+❌ Found 2 constraint violations
+🔄 Phase I: Status Update - Identifying affected operations
+🔧 Fixing immediate constraint violations...
+🔄 Phase II: Job Precedence Repair - Fixing step ordering violations
+🔧 Repairing job precedence violations...
+🔄 Phase III: Machine Capacity Repair - Resolving machine overlaps
+🔧 Repairing machine capacity violations...
+🔄 Phase IV: Iterative Improvement - Optimizing schedule quality
+🔧 Applying iterative improvement...
+🔄 Phase V: Final validation and cleanup
+🔧 Final cleanup - ensuring valid operation times...
+✅ Algorithm 3 completed - Generated 7 schedule entries
+📊 Repair iteration 2 makespan: 211
+📊 Repair iteration 2 schedule entries: 7
+📊 Latest operations: [('Job1', 3, 211), ('Job2', 2, 153), ('Job1', 2, 143)]
+💾 Saved repair iteration 2 to: results_optimized(gpt-4o)/TA71_repair_iteration_2.json
+⚠️ Repair iteration 2 reduced errors from 2 to 2 (makespan: 211)
+🔧 Repair iteration 3/5
+🔧 Starting Algorithm 3: Cascading Repair and Queue Reordering
+📊 Processing 7 schedule entries
+❌ Found 2 constraint violations
+🔄 Phase I: Status Update - Identifying affected operations
+🔧 Fixing immediate constraint violations...
+🔄 Phase II: Job Precedence Repair - Fixing step ordering violations
+🔧 Repairing job precedence violations...
+🔄 Phase III: Machine Capacity Repair - Resolving machine overlaps
+🔧 Repairing machine capacity violations...
+🔄 Phase IV: Iterative Improvement - Optimizing schedule quality
+🔧 Applying iterative improvement...
+🔄 Phase V: Final validation and cleanup
+🔧 Final cleanup - ensuring valid operation times...
+✅ Algorithm 3 completed - Generated 7 schedule entries
+📊 Repair iteration 3 makespan: 211
+📊 Repair iteration 3 schedule entries: 7
+📊 Latest operations: [('Job1', 3, 211), ('Job2', 2, 153), ('Job1', 2, 143)]
+💾 Saved repair iteration 3 to: results_optimized(gpt-4o)/TA71_repair_iteration_3.json
+⚠️ Repair iteration 3 reduced errors from 2 to 2 (makespan: 211)
+🔧 Repair iteration 4/5
+🔧 Starting Algorithm 3: Cascading Repair and Queue Reordering
+📊 Processing 7 schedule entries
+❌ Found 2 constraint violations
+🔄 Phase I: Status Update - Identifying affected operations
+🔧 Fixing immediate constraint violations...
+🔄 Phase II: Job Precedence Repair - Fixing step ordering violations
+🔧 Repairing job precedence violations...
+🔄 Phase III: Machine Capacity Repair - Resolving machine overlaps
+🔧 Repairing machine capacity violations...
+🔄 Phase IV: Iterative Improvement - Optimizing schedule quality
+🔧 Applying iterative improvement...
+🔄 Phase V: Final validation and cleanup
+🔧 Final cleanup - ensuring valid operation times...
+✅ Algorithm 3 completed - Generated 7 schedule entries
+📊 Repair iteration 4 makespan: 211
+📊 Repair iteration 4 schedule entries: 7
+📊 Latest operations: [('Job1', 3, 211), ('Job2', 2, 153), ('Job1', 2, 143)]
+💾 Saved repair iteration 4 to: results_optimized(gpt-4o)/TA71_repair_iteration_4.json
+⚠️ Repair iteration 4 reduced errors from 2 to 2 (makespan: 211)
+🔧 Repair iteration 5/5
+🔧 Starting Algorithm 3: Cascading Repair and Queue Reordering
+📊 Processing 7 schedule entries
+❌ Found 2 constraint violations
+🔄 Phase I: Status Update - Identifying affected operations
+🔧 Fixing immediate constraint violations...
+🔄 Phase II: Job Precedence Repair - Fixing step ordering violations
+🔧 Repairing job precedence violations...
+🔄 Phase III: Machine Capacity Repair - Resolving machine overlaps
+🔧 Repairing machine capacity violations...
+🔄 Phase IV: Iterative Improvement - Optimizing schedule quality
+🔧 Applying iterative improvement...
+🔄 Phase V: Final validation and cleanup
+🔧 Final cleanup - ensuring valid operation times...
+✅ Algorithm 3 completed - Generated 7 schedule entries
+📊 Repair iteration 5 makespan: 211
+📊 Repair iteration 5 schedule entries: 7
+📊 Latest operations: [('Job1', 3, 211), ('Job2', 2, 153), ('Job1', 2, 143)]
+💾 Saved repair iteration 5 to: results_optimized(gpt-4o)/TA71_repair_iteration_5.json
+⚠️ Repair iteration 5 reduced errors from 2 to 2 (makespan: 211)
+⚠️ Repair completed after 5 iterations with remaining errors
+4️⃣ ValidationTools revalidating schedule...
+❌ Revalidation failed: ["Missing jobs in schedule: ['Job22', 'Job27', 'Job30', 'Job38', 'Job66', 'Job36', 'Job48', 'Job23', 'Job93', 'Job10', 'Job35', 'Job84', 'Job62', 'Job4', 'Job72', 'Job33', 'Job55', 'Job60', 'Job49', 'Job74', 'Job96', 'Job100', 'Job28', 'Job73', 'Job16', 'Job41', 'Job86', 'Job53', 'Job52', 'Job46', 'Job61', 'Job18', 'Job58', 'Job13', 'Job44', 'Job26', 'Job97', 'Job94', 'Job37', 'Job21', 'Job47', 'Job90', 'Job56', 'Job40', 'Job77', 'Job54', 'Job32', 'Job25', 'Job11', 'Job7', 'Job82', 'Job83', 'Job9', 'Job75', 'Job43', 'Job14', 'Job88', 'Job8', 'Job78', 'Job69', 'Job31', 'Job76', 'Job5', 'Job20', 'Job51', 'Job70', 'Job68', 'Job89', 'Job6', 'Job57', 'Job80', 'Job19', 'Job34', 'Job29', 'Job59', 'Job39', 'Job87', 'Job65', 'Job67', 'Job15', 'Job92', 'Job63', 'Job91', 'Job64', 'Job98', 'Job42', 'Job17', 'Job79', 'Job99', 'Job45', 'Job71', 'Job81', 'Job95', 'Job12', 'Job50', 'Job85', 'Job24']", "Unused machines: ['Machine89', 'Machine77', 'Machine80', 'Machine23', 'Machine55', 'Machine97', 'Machine82', 'Machine84', 'Machine17', 'Machine93', 'Machine4', 'Machine31', 'Machine1', 'Machine92', 'Machine48', 'Machine44', 'Machine12', 'Machine65', 'Machine52', 'Machine70', 'Machine19', 'Machine74', 'Machine72', 'Machine98', 'Machine79', 'Machine6', 'Machine64', 'Machine27', 'Machine66', 'Machine67', 'Machine87', 'Machine99', 'Machine29', 'Machine46', 'Machine28', 'Machine75', 'Machine32', 'Machine24', 'Machine62', 'Machine54', 'Machine71', 'Machine51', 'Machine7', 'Machine47', 'Machine43', 'Machine21', 'Machine60', 'Machine86', 'Machine69', 'Machine88', 'Machine33', 'Machine20', 'Machine40', 'Machine58', 'Machine10', 'Machine15', 'Machine73', 'Machine94', 'Machine50', 'Machine22', 'Machine9', 'Machine39', 'Machine90', 'Machine38', 'Machine42', 'Machine56', 'Machine36', 'Machine18', 'Machine63', 'Machine41', 'Machine78', 'Machine3', 'Machine25', 'Machine13', 'Machine61', 'Machine95', 'Machine30', 'Machine14', 'Machine59', 'Machine96', 'Machine8', 'Machine26', 'Machine5', 'Machine81', 'Machine85', 'Machine53', 'Machine68', 'Machine16', 'Machine76', 'Machine37', 'Machine57', 'Machine91']"]
+[31m❌ ERROR in workflow: Schedule validation failed after repair
+⚡ Disruption detected in Unknown Agent: Schedule validation failed after repair
+🔄 Initiating global replanning...
+⚠️ Global replanning completed. Manual intervention may be required.
+[31m🚨 Workflow execution halted due to error.
+❌ New 4-step workflow failed
+📊 Found 5 repair iterations
+  Iteration 1: makespan=211, entries=7
+  Iteration 2: makespan=211, entries=7
+  Iteration 3: makespan=211, entries=7
+  Iteration 4: makespan=211, entries=7
+  Iteration 5: makespan=211, entries=7
+
+--- Running No Repair Tools ---
+
+============================================================
+Running MAPLE No Repair Tools on TA71
+Description: Full workflow without repair tools
+Timestamp: 2025-09-24 13:43:46
+============================================================
+⚠️ Warning: Agent is None in node: {'agent': None, 'type': 'JSSPAgent'}
+⚠️ Warning: Agent is None in node: {'agent': None, 'type': 'JSSPValidationAgent'}
+
+=== [OPTIMIZED MAPLE] New 4-Step Workflow ===
+Nodes: ['Unknown Agent', 'Unknown Agent']
+Edges: [{'from': 0, 'to': 1}]
+Workflow: No Repair Tools
+Validation: ✅
+Repair: ❌
+Optimization: ✅
+
+=== [OPTIMIZED MAPLE] Inter-Agent Coordination ===
+
+=== [OPTIMIZED MAPLE] New Workflow Execution ===
+🔄 Running new 7-step workflow: Query -> Validation -> Repair -> Re-validation -> Optimization -> Final Check -> Supervisor
+
+🔄 Starting New 4-Step Workflow...
+1️⃣ Loading pre-generated schedule from JSON file...
+📊 Loaded 7 schedule entries from TA71
+📊 GPT-4o makespan: None
+📊 Initial schedule makespan: 211
+📊 Schedule entries count: 7
+📊 Sample entry: {'job': 'Job1', 'step': 1, 'machine': 'Machine83', 'start': 0, 'end': 59, 'duration': 59}
+[32m✅ Pre-generated schedule loaded successfully.
+2️⃣ ValidationTools validating schedule...
+❌ Initial validation failed: ["Missing jobs in schedule: ['Job22', 'Job27', 'Job30', 'Job38', 'Job66', 'Job36', 'Job48', 'Job23', 'Job93', 'Job10', 'Job35', 'Job84', 'Job62', 'Job4', 'Job72', 'Job33', 'Job55', 'Job60', 'Job49', 'Job74', 'Job96', 'Job100', 'Job28', 'Job73', 'Job16', 'Job41', 'Job86', 'Job53', 'Job52', 'Job46', 'Job61', 'Job18', 'Job58', 'Job13', 'Job44', 'Job26', 'Job97', 'Job94', 'Job37', 'Job21', 'Job47', 'Job90', 'Job56', 'Job40', 'Job77', 'Job54', 'Job32', 'Job25', 'Job11', 'Job7', 'Job82', 'Job83', 'Job9', 'Job75', 'Job43', 'Job14', 'Job88', 'Job8', 'Job78', 'Job69', 'Job31', 'Job76', 'Job5', 'Job20', 'Job51', 'Job70', 'Job68', 'Job89', 'Job6', 'Job57', 'Job80', 'Job19', 'Job34', 'Job29', 'Job59', 'Job39', 'Job87', 'Job65', 'Job67', 'Job15', 'Job92', 'Job63', 'Job91', 'Job64', 'Job98', 'Job42', 'Job17', 'Job79', 'Job99', 'Job45', 'Job71', 'Job81', 'Job95', 'Job12', 'Job50', 'Job85', 'Job24']", "Unused machines: ['Machine89', 'Machine77', 'Machine80', 'Machine23', 'Machine55', 'Machine97', 'Machine82', 'Machine84', 'Machine17', 'Machine93', 'Machine4', 'Machine31', 'Machine1', 'Machine92', 'Machine48', 'Machine44', 'Machine12', 'Machine65', 'Machine52', 'Machine70', 'Machine19', 'Machine74', 'Machine72', 'Machine98', 'Machine79', 'Machine6', 'Machine64', 'Machine27', 'Machine66', 'Machine67', 'Machine87', 'Machine99', 'Machine29', 'Machine46', 'Machine28', 'Machine75', 'Machine32', 'Machine24', 'Machine62', 'Machine54', 'Machine71', 'Machine51', 'Machine7', 'Machine47', 'Machine43', 'Machine21', 'Machine60', 'Machine86', 'Machine69', 'Machine88', 'Machine33', 'Machine20', 'Machine40', 'Machine58', 'Machine10', 'Machine15', 'Machine73', 'Machine94', 'Machine50', 'Machine22', 'Machine9', 'Machine39', 'Machine90', 'Machine38', 'Machine42', 'Machine56', 'Machine36', 'Machine18', 'Machine63', 'Machine41', 'Machine78', 'Machine3', 'Machine25', 'Machine13', 'Machine61', 'Machine95', 'Machine30', 'Machine14', 'Machine59', 'Machine96', 'Machine8', 'Machine26', 'Machine5', 'Machine81', 'Machine85', 'Machine53', 'Machine68', 'Machine16', 'Machine76', 'Machine37', 'Machine57', 'Machine91']"]
+⚠️ Schedule validation failed but repair is disabled - using original schedule without optimization
+✅ Proceeding with original schedule without optimization due to validation failures
+5️⃣ OptimizationTools skipped - using original schedule due to validation failures
+5️⃣ OptimizationTools already skipped due to validation failures
+6️⃣ ValidationTools final check...
+⚠️ Final validation found 2 errors, but continuing with optimization result
+✅ Optimization result accepted despite validation warnings
+7️⃣ Processing final results...
+📊 Final processed schedule with 7 entries
+📊 Calculated makespan: 211
+🎯 Final makespan: 211
+✅ New workflow completed successfully.
+
+=== Optimized Validation Results ===
+✅ Using best solution found (makespan: 211)
+📊 Total operations scheduled: 7
+✅ New 4-step workflow completed successfully
+
+--- Running No Validation Tools ---
+
+============================================================
+Running MAPLE No Validation Tools on TA71
+Description: Full workflow without validation tools
+Timestamp: 2025-09-24 13:43:52
+============================================================
+⚠️ Warning: Agent is None in node: {'agent': None, 'type': 'JSSPAgent'}
+⚠️ Warning: Agent is None in node: {'agent': None, 'type': 'JSSPValidationAgent'}
+
+=== [OPTIMIZED MAPLE] New 4-Step Workflow ===
+Nodes: ['Unknown Agent', 'Unknown Agent']
+Edges: [{'from': 0, 'to': 1}]
+Workflow: No Validation Tools
+Validation: ❌
+Repair: ✅
+Optimization: ✅
+
+=== [OPTIMIZED MAPLE] Inter-Agent Coordination ===
+
+=== [OPTIMIZED MAPLE] New Workflow Execution ===
+🔄 Running new 7-step workflow: Query -> Validation -> Repair -> Re-validation -> Optimization -> Final Check -> Supervisor
+
+🔄 Starting New 4-Step Workflow...
+1️⃣ Loading pre-generated schedule from JSON file...
+📊 Loaded 7 schedule entries from TA71
+📊 GPT-4o makespan: None
+📊 Initial schedule makespan: 211
+📊 Schedule entries count: 7
+📊 Sample entry: {'job': 'Job1', 'step': 1, 'machine': 'Machine83', 'start': 0, 'end': 59, 'duration': 59}
+[32m✅ Pre-generated schedule loaded successfully.
+2️⃣ ValidationTools disabled - skipping validation
+5️⃣ OptimizationTools optimizing schedule...
+📊 Pre-optimization makespan: 211
+📊 Post-optimization makespan: 86
+✅ Optimization completed successfully.
+6️⃣ ValidationTools disabled - skipping final validation
+7️⃣ Processing final results...
+📊 Final processed schedule with 7 entries
+📊 Calculated makespan: 86
+🎯 Final makespan: 86
+✅ New workflow completed successfully.
+
+=== Optimized Validation Results ===
+✅ Using best solution found (makespan: 86)
+📊 Total operations scheduled: 7
+✅ New 4-step workflow completed successfully
+
+--- Running No Optimization Tools ---
+
+============================================================
+Running MAPLE No Optimization Tools on TA71
+Description: Full workflow without optimization tools
+Timestamp: 2025-09-24 13:43:57
+============================================================
+⚠️ Warning: Agent is None in node: {'agent': None, 'type': 'JSSPAgent'}
+⚠️ Warning: Agent is None in node: {'agent': None, 'type': 'JSSPValidationAgent'}
+
+=== [OPTIMIZED MAPLE] New 4-Step Workflow ===
+Nodes: ['Unknown Agent', 'Unknown Agent']
+Edges: [{'from': 0, 'to': 1}]
+Workflow: No Optimization Tools
+Validation: ✅
+Repair: ✅
+Optimization: ❌
+
+=== [OPTIMIZED MAPLE] Inter-Agent Coordination ===
+
+=== [OPTIMIZED MAPLE] New Workflow Execution ===
+🔄 Running new 7-step workflow: Query -> Validation -> Repair -> Re-validation -> Optimization -> Final Check -> Supervisor
+
+🔄 Starting New 4-Step Workflow...
+1️⃣ Loading pre-generated schedule from JSON file...
+📊 Loaded 7 schedule entries from TA71
+📊 GPT-4o makespan: None
+📊 Initial schedule makespan: 211
+📊 Schedule entries count: 7
+📊 Sample entry: {'job': 'Job1', 'step': 1, 'machine': 'Machine83', 'start': 0, 'end': 59, 'duration': 59}
+[32m✅ Pre-generated schedule loaded successfully.
+2️⃣ ValidationTools validating schedule...
+❌ Initial validation failed: ["Missing jobs in schedule: ['Job22', 'Job27', 'Job30', 'Job38', 'Job66', 'Job36', 'Job48', 'Job23', 'Job93', 'Job10', 'Job35', 'Job84', 'Job62', 'Job4', 'Job72', 'Job33', 'Job55', 'Job60', 'Job49', 'Job74', 'Job96', 'Job100', 'Job28', 'Job73', 'Job16', 'Job41', 'Job86', 'Job53', 'Job52', 'Job46', 'Job61', 'Job18', 'Job58', 'Job13', 'Job44', 'Job26', 'Job97', 'Job94', 'Job37', 'Job21', 'Job47', 'Job90', 'Job56', 'Job40', 'Job77', 'Job54', 'Job32', 'Job25', 'Job11', 'Job7', 'Job82', 'Job83', 'Job9', 'Job75', 'Job43', 'Job14', 'Job88', 'Job8', 'Job78', 'Job69', 'Job31', 'Job76', 'Job5', 'Job20', 'Job51', 'Job70', 'Job68', 'Job89', 'Job6', 'Job57', 'Job80', 'Job19', 'Job34', 'Job29', 'Job59', 'Job39', 'Job87', 'Job65', 'Job67', 'Job15', 'Job92', 'Job63', 'Job91', 'Job64', 'Job98', 'Job42', 'Job17', 'Job79', 'Job99', 'Job45', 'Job71', 'Job81', 'Job95', 'Job12', 'Job50', 'Job85', 'Job24']", "Unused machines: ['Machine89', 'Machine77', 'Machine80', 'Machine23', 'Machine55', 'Machine97', 'Machine82', 'Machine84', 'Machine17', 'Machine93', 'Machine4', 'Machine31', 'Machine1', 'Machine92', 'Machine48', 'Machine44', 'Machine12', 'Machine65', 'Machine52', 'Machine70', 'Machine19', 'Machine74', 'Machine72', 'Machine98', 'Machine79', 'Machine6', 'Machine64', 'Machine27', 'Machine66', 'Machine67', 'Machine87', 'Machine99', 'Machine29', 'Machine46', 'Machine28', 'Machine75', 'Machine32', 'Machine24', 'Machine62', 'Machine54', 'Machine71', 'Machine51', 'Machine7', 'Machine47', 'Machine43', 'Machine21', 'Machine60', 'Machine86', 'Machine69', 'Machine88', 'Machine33', 'Machine20', 'Machine40', 'Machine58', 'Machine10', 'Machine15', 'Machine73', 'Machine94', 'Machine50', 'Machine22', 'Machine9', 'Machine39', 'Machine90', 'Machine38', 'Machine42', 'Machine56', 'Machine36', 'Machine18', 'Machine63', 'Machine41', 'Machine78', 'Machine3', 'Machine25', 'Machine13', 'Machine61', 'Machine95', 'Machine30', 'Machine14', 'Machine59', 'Machine96', 'Machine8', 'Machine26', 'Machine5', 'Machine81', 'Machine85', 'Machine53', 'Machine68', 'Machine16', 'Machine76', 'Machine37', 'Machine57', 'Machine91']"]
+3️⃣ RepairTools repairing schedule...
+🔧 Repair iteration 1/5
+🔧 Starting Algorithm 3: Cascading Repair and Queue Reordering
+📊 Processing 7 schedule entries
+❌ Found 2 constraint violations
+🔄 Phase I: Status Update - Identifying affected operations
+🔧 Fixing immediate constraint violations...
+🔄 Phase II: Job Precedence Repair - Fixing step ordering violations
+🔧 Repairing job precedence violations...
+🔄 Phase III: Machine Capacity Repair - Resolving machine overlaps
+🔧 Repairing machine capacity violations...
+🔄 Phase IV: Iterative Improvement - Optimizing schedule quality
+🔧 Applying iterative improvement...
+🔄 Phase V: Final validation and cleanup
+🔧 Final cleanup - ensuring valid operation times...
+✅ Algorithm 3 completed - Generated 7 schedule entries
+📊 Repair iteration 1 makespan: 211
+📊 Repair iteration 1 schedule entries: 7
+📊 Latest operations: [('Job1', 3, 211), ('Job2', 2, 153), ('Job1', 2, 143)]
+💾 Saved repair iteration 1 to: results_optimized(gpt-4o)/TA71_repair_iteration_1.json
+⚠️ Repair iteration 1 reduced errors from 2 to 2 (makespan: 211)
+🔧 Repair iteration 2/5
+🔧 Starting Algorithm 3: Cascading Repair and Queue Reordering
+📊 Processing 7 schedule entries
+❌ Found 2 constraint violations
+🔄 Phase I: Status Update - Identifying affected operations
+🔧 Fixing immediate constraint violations...
+🔄 Phase II: Job Precedence Repair - Fixing step ordering violations
+🔧 Repairing job precedence violations...
+🔄 Phase III: Machine Capacity Repair - Resolving machine overlaps
+🔧 Repairing machine capacity violations...
+🔄 Phase IV: Iterative Improvement - Optimizing schedule quality
+🔧 Applying iterative improvement...
+🔄 Phase V: Final validation and cleanup
+🔧 Final cleanup - ensuring valid operation times...
+✅ Algorithm 3 completed - Generated 7 schedule entries
+📊 Repair iteration 2 makespan: 211
+📊 Repair iteration 2 schedule entries: 7
+📊 Latest operations: [('Job1', 3, 211), ('Job2', 2, 153), ('Job1', 2, 143)]
+💾 Saved repair iteration 2 to: results_optimized(gpt-4o)/TA71_repair_iteration_2.json
+⚠️ Repair iteration 2 reduced errors from 2 to 2 (makespan: 211)
+🔧 Repair iteration 3/5
+🔧 Starting Algorithm 3: Cascading Repair and Queue Reordering
+📊 Processing 7 schedule entries
+❌ Found 2 constraint violations
+🔄 Phase I: Status Update - Identifying affected operations
+🔧 Fixing immediate constraint violations...
+🔄 Phase II: Job Precedence Repair - Fixing step ordering violations
+🔧 Repairing job precedence violations...
+🔄 Phase III: Machine Capacity Repair - Resolving machine overlaps
+🔧 Repairing machine capacity violations...
+🔄 Phase IV: Iterative Improvement - Optimizing schedule quality
+🔧 Applying iterative improvement...
+🔄 Phase V: Final validation and cleanup
+🔧 Final cleanup - ensuring valid operation times...
+✅ Algorithm 3 completed - Generated 7 schedule entries
+📊 Repair iteration 3 makespan: 211
+📊 Repair iteration 3 schedule entries: 7
+📊 Latest operations: [('Job1', 3, 211), ('Job2', 2, 153), ('Job1', 2, 143)]
+💾 Saved repair iteration 3 to: results_optimized(gpt-4o)/TA71_repair_iteration_3.json
+⚠️ Repair iteration 3 reduced errors from 2 to 2 (makespan: 211)
+🔧 Repair iteration 4/5
+🔧 Starting Algorithm 3: Cascading Repair and Queue Reordering
+📊 Processing 7 schedule entries
+❌ Found 2 constraint violations
+🔄 Phase I: Status Update - Identifying affected operations
+🔧 Fixing immediate constraint violations...
+🔄 Phase II: Job Precedence Repair - Fixing step ordering violations
+🔧 Repairing job precedence violations...
+🔄 Phase III: Machine Capacity Repair - Resolving machine overlaps
+🔧 Repairing machine capacity violations...
+🔄 Phase IV: Iterative Improvement - Optimizing schedule quality
+🔧 Applying iterative improvement...
+🔄 Phase V: Final validation and cleanup
+🔧 Final cleanup - ensuring valid operation times...
+✅ Algorithm 3 completed - Generated 7 schedule entries
+📊 Repair iteration 4 makespan: 211
+📊 Repair iteration 4 schedule entries: 7
+📊 Latest operations: [('Job1', 3, 211), ('Job2', 2, 153), ('Job1', 2, 143)]
+💾 Saved repair iteration 4 to: results_optimized(gpt-4o)/TA71_repair_iteration_4.json
+⚠️ Repair iteration 4 reduced errors from 2 to 2 (makespan: 211)
+🔧 Repair iteration 5/5
+🔧 Starting Algorithm 3: Cascading Repair and Queue Reordering
+📊 Processing 7 schedule entries
+❌ Found 2 constraint violations
+🔄 Phase I: Status Update - Identifying affected operations
+🔧 Fixing immediate constraint violations...
+🔄 Phase II: Job Precedence Repair - Fixing step ordering violations
+🔧 Repairing job precedence violations...
+🔄 Phase III: Machine Capacity Repair - Resolving machine overlaps
+🔧 Repairing machine capacity violations...
+🔄 Phase IV: Iterative Improvement - Optimizing schedule quality
+🔧 Applying iterative improvement...
+🔄 Phase V: Final validation and cleanup
+🔧 Final cleanup - ensuring valid operation times...
+✅ Algorithm 3 completed - Generated 7 schedule entries
+📊 Repair iteration 5 makespan: 211
+📊 Repair iteration 5 schedule entries: 7
+📊 Latest operations: [('Job1', 3, 211), ('Job2', 2, 153), ('Job1', 2, 143)]
+💾 Saved repair iteration 5 to: results_optimized(gpt-4o)/TA71_repair_iteration_5.json
+⚠️ Repair iteration 5 reduced errors from 2 to 2 (makespan: 211)
+⚠️ Repair completed after 5 iterations with remaining errors
+4️⃣ ValidationTools revalidating schedule...
+❌ Revalidation failed: ["Missing jobs in schedule: ['Job22', 'Job27', 'Job30', 'Job38', 'Job66', 'Job36', 'Job48', 'Job23', 'Job93', 'Job10', 'Job35', 'Job84', 'Job62', 'Job4', 'Job72', 'Job33', 'Job55', 'Job60', 'Job49', 'Job74', 'Job96', 'Job100', 'Job28', 'Job73', 'Job16', 'Job41', 'Job86', 'Job53', 'Job52', 'Job46', 'Job61', 'Job18', 'Job58', 'Job13', 'Job44', 'Job26', 'Job97', 'Job94', 'Job37', 'Job21', 'Job47', 'Job90', 'Job56', 'Job40', 'Job77', 'Job54', 'Job32', 'Job25', 'Job11', 'Job7', 'Job82', 'Job83', 'Job9', 'Job75', 'Job43', 'Job14', 'Job88', 'Job8', 'Job78', 'Job69', 'Job31', 'Job76', 'Job5', 'Job20', 'Job51', 'Job70', 'Job68', 'Job89', 'Job6', 'Job57', 'Job80', 'Job19', 'Job34', 'Job29', 'Job59', 'Job39', 'Job87', 'Job65', 'Job67', 'Job15', 'Job92', 'Job63', 'Job91', 'Job64', 'Job98', 'Job42', 'Job17', 'Job79', 'Job99', 'Job45', 'Job71', 'Job81', 'Job95', 'Job12', 'Job50', 'Job85', 'Job24']", "Unused machines: ['Machine89', 'Machine77', 'Machine80', 'Machine23', 'Machine55', 'Machine97', 'Machine82', 'Machine84', 'Machine17', 'Machine93', 'Machine4', 'Machine31', 'Machine1', 'Machine92', 'Machine48', 'Machine44', 'Machine12', 'Machine65', 'Machine52', 'Machine70', 'Machine19', 'Machine74', 'Machine72', 'Machine98', 'Machine79', 'Machine6', 'Machine64', 'Machine27', 'Machine66', 'Machine67', 'Machine87', 'Machine99', 'Machine29', 'Machine46', 'Machine28', 'Machine75', 'Machine32', 'Machine24', 'Machine62', 'Machine54', 'Machine71', 'Machine51', 'Machine7', 'Machine47', 'Machine43', 'Machine21', 'Machine60', 'Machine86', 'Machine69', 'Machine88', 'Machine33', 'Machine20', 'Machine40', 'Machine58', 'Machine10', 'Machine15', 'Machine73', 'Machine94', 'Machine50', 'Machine22', 'Machine9', 'Machine39', 'Machine90', 'Machine38', 'Machine42', 'Machine56', 'Machine36', 'Machine18', 'Machine63', 'Machine41', 'Machine78', 'Machine3', 'Machine25', 'Machine13', 'Machine61', 'Machine95', 'Machine30', 'Machine14', 'Machine59', 'Machine96', 'Machine8', 'Machine26', 'Machine5', 'Machine81', 'Machine85', 'Machine53', 'Machine68', 'Machine16', 'Machine76', 'Machine37', 'Machine57', 'Machine91']"]
+[31m❌ ERROR in workflow: Schedule validation failed after repair
+⚡ Disruption detected in Unknown Agent: Schedule validation failed after repair
+🔄 Initiating global replanning...
+⚠️ Global replanning completed. Manual intervention may be required.
+[31m🚨 Workflow execution halted due to error.
+❌ New 4-step workflow failed
+📊 Found 5 repair iterations
+  Iteration 1: makespan=211, entries=7
+  Iteration 2: makespan=211, entries=7
+  Iteration 3: makespan=211, entries=7
+  Iteration 4: makespan=211, entries=7
+  Iteration 5: makespan=211, entries=7
+
+============================================================
+WORKFLOW COMPARISON SUMMARY for TA71
+============================================================
+❌ Full Workflow        | Makespan:      N/A | Time: 0.01s | Repairs: 5
+✅ No Repair Tools      | Makespan:      211 | Time: 0.00s
+✅ No Validation Tools  | Makespan:       86 | Time: 0.00s
+❌ No Optimization Tools | Makespan:      N/A | Time: 0.00s | Repairs: 5

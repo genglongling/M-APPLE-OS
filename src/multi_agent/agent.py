@@ -1,4 +1,5 @@
 from textwrap import dedent
+from typing import Optional
 
 import sys
 import os
@@ -70,9 +71,9 @@ class Agent:
         backstory: str,
         task_description: str,
         task_expected_output: str = "",
-        tools: list[Tool] | None = None,
-        llm: str = "gemini",
-        model_type: str = "google",
+        tools: Optional[list[Tool]] = None,
+        llm: str = "gpt-4o",
+        model_type: str = "openai",
     ):
         self.name = name
         self.backstory = backstory

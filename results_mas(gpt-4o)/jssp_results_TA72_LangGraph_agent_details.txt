@@ -1,0 +1,206 @@
+AGENT PROMPTS AND OUTPUTS DETAILS
+==================================================
+
+🔍 LangGraph Framework Details:
+--------------------------------------------------
+
+📝 Job Scheduler Agent Prompt:
+  system_prompt: You are a Job Scheduler Agent using LangGraph workflow. Analyze job requirements and create initial schedules for all jobs.
+
+💬 Job Scheduler Agent Output:
+  === LANGGRAPH REAL AGENTS ===
+
+Job Scheduler Agent: It seems there was an error while trying to generate the initial schedules using SQL. Let's try a different approach to solve the Job Shop Scheduling Problem (JSSP) for the dataset TA72.
+
+To create a valid schedule, we need to ensure that:
+1. Each job's operations are performed in sequence.
+2. No two operations overlap on the same machine.
+
+Given the complexity of the problem, a heuristic or algorithmic approach like Genetic Algorithms, Simulated Annealing, or Tabu Search is typically used to find a near-optimal solution. However, since I can't directly execute such algorithms here, I'll provide a conceptual approach to how you might proceed:
+
+### Conceptual Approach to Solve JSSP:
+
+1. **Initialize Schedule:**
+   - Start with the first job and schedule its operations sequentially on the required machines.
+   - For each subsequent job, attempt to schedule its operations by finding the earliest available time slots on the required machines, ensuring no overlap.
+
+2. **Iterate and Adjust:**
+   - After an initial schedule is created, iterate over the jobs and adjust the start times to minimize idle times on machines and reduce the overall makespan.
+
+3. **Calculate Makespan:**
+   - The makespan is the time at which the last operation of the last job finishes.
+
+4. **Output the Schedule:**
+   - For each operation, output the job, step, machine, start time, end time, and duration.
+
+### Example Output Format:
+```
+FINAL MAKESPAN: [calculated_makespan]
+STRUCTURED SCHEDULE:
+- Job: Job1, Step: 1, Machine: Machine53, Start Time: 0, End Time: 40, Duration: 40
+- Job: Job1, Step: 2, Machine: Machine82, Start Time: 40, End Time: 82, Duration: 42
+...
+```
+
+### Next Steps:
+- Implement a scheduling algorithm in a programming environment that supports such operations.
+- Use the provided job and machine data to create a feasible schedule.
+- Optimize the schedule to minimize the makespan.
+
+If you have access to a specific tool or environment where you can run scheduling algorithms, I recommend using that to generate the schedule. If you need further assistance with a specific part of the process, feel free to ask!
+Machine Coordinator Agent: Agent response (timeout after 120s): You are a Machine Coordinator Agent specialized in JSSP problems.
+    
+        Job Shop Scheduling P...
+Supervisor Agent: The dataset provided is too large to process in a single request due to token limitations. To solve the Job Shop Scheduling Problem (JSSP) for this dataset, we need to break down the problem into smaller parts or use a specialized algorithm or software designed for JSSP.
+
+Here are some steps you can take to solve this problem:
+
+1. **Use a JSSP Solver**: There are specialized software and libraries designed to solve JSSP problems, such as OR-Tools by Google, which can handle large datasets efficiently.
+
+2. **Divide and Conquer**: Break down the dataset into smaller subsets of jobs and solve them individually, then combine the solutions while resolving any conflicts.
+
+3. **Heuristic Methods**: Use heuristic or metaheuristic methods like Genetic Algorithms, Simulated Annealing, or Tabu Search, which are often used for solving complex scheduling problems.
+
+4. **Optimization Software**: Consider using optimization software like CPLEX or Gurobi, which are capable of handling large-scale optimization problems.
+
+If you have access to any of these tools or methods, I recommend using them to find the optimal schedule and makespan for the given dataset. If you need further assistance with a specific tool or method, feel free to ask!
+
+
+=== FRAMEWORK ===
+
+Framework: LangGraph with 3 Real Agents
+
+📝 Machine Coordinator Agent Prompt:
+  system_prompt: You are a Machine Coordinator Agent using LangGraph workflow. Coordinate machine usage and resolve conflicts between jobs.
+
+💬 Machine Coordinator Agent Output:
+  === LANGGRAPH REAL AGENTS ===
+
+Job Scheduler Agent: It seems there was an error while trying to generate the initial schedules using SQL. Let's try a different approach to solve the Job Shop Scheduling Problem (JSSP) for the dataset TA72.
+
+To create a valid schedule, we need to ensure that:
+1. Each job's operations are performed in sequence.
+2. No two operations overlap on the same machine.
+
+Given the complexity of the problem, a heuristic or algorithmic approach like Genetic Algorithms, Simulated Annealing, or Tabu Search is typically used to find a near-optimal solution. However, since I can't directly execute such algorithms here, I'll provide a conceptual approach to how you might proceed:
+
+### Conceptual Approach to Solve JSSP:
+
+1. **Initialize Schedule:**
+   - Start with the first job and schedule its operations sequentially on the required machines.
+   - For each subsequent job, attempt to schedule its operations by finding the earliest available time slots on the required machines, ensuring no overlap.
+
+2. **Iterate and Adjust:**
+   - After an initial schedule is created, iterate over the jobs and adjust the start times to minimize idle times on machines and reduce the overall makespan.
+
+3. **Calculate Makespan:**
+   - The makespan is the time at which the last operation of the last job finishes.
+
+4. **Output the Schedule:**
+   - For each operation, output the job, step, machine, start time, end time, and duration.
+
+### Example Output Format:
+```
+FINAL MAKESPAN: [calculated_makespan]
+STRUCTURED SCHEDULE:
+- Job: Job1, Step: 1, Machine: Machine53, Start Time: 0, End Time: 40, Duration: 40
+- Job: Job1, Step: 2, Machine: Machine82, Start Time: 40, End Time: 82, Duration: 42
+...
+```
+
+### Next Steps:
+- Implement a scheduling algorithm in a programming environment that supports such operations.
+- Use the provided job and machine data to create a feasible schedule.
+- Optimize the schedule to minimize the makespan.
+
+If you have access to a specific tool or environment where you can run scheduling algorithms, I recommend using that to generate the schedule. If you need further assistance with a specific part of the process, feel free to ask!
+Machine Coordinator Agent: Agent response (timeout after 120s): You are a Machine Coordinator Agent specialized in JSSP problems.
+    
+        Job Shop Scheduling P...
+Supervisor Agent: The dataset provided is too large to process in a single request due to token limitations. To solve the Job Shop Scheduling Problem (JSSP) for this dataset, we need to break down the problem into smaller parts or use a specialized algorithm or software designed for JSSP.
+
+Here are some steps you can take to solve this problem:
+
+1. **Use a JSSP Solver**: There are specialized software and libraries designed to solve JSSP problems, such as OR-Tools by Google, which can handle large datasets efficiently.
+
+2. **Divide and Conquer**: Break down the dataset into smaller subsets of jobs and solve them individually, then combine the solutions while resolving any conflicts.
+
+3. **Heuristic Methods**: Use heuristic or metaheuristic methods like Genetic Algorithms, Simulated Annealing, or Tabu Search, which are often used for solving complex scheduling problems.
+
+4. **Optimization Software**: Consider using optimization software like CPLEX or Gurobi, which are capable of handling large-scale optimization problems.
+
+If you have access to any of these tools or methods, I recommend using them to find the optimal schedule and makespan for the given dataset. If you need further assistance with a specific tool or method, feel free to ask!
+
+
+=== FRAMEWORK ===
+
+Framework: LangGraph with 3 Real Agents
+
+📝 Supervisor Agent Prompt:
+  system_prompt: You are a Supervisor Agent using LangGraph workflow. Aggregate all job schedules and produce the overall JSSP schedule. Coordinate between all job agents to find the optimal solution.
+
+💬 Supervisor Agent Output:
+  === LANGGRAPH REAL AGENTS ===
+
+Job Scheduler Agent: It seems there was an error while trying to generate the initial schedules using SQL. Let's try a different approach to solve the Job Shop Scheduling Problem (JSSP) for the dataset TA72.
+
+To create a valid schedule, we need to ensure that:
+1. Each job's operations are performed in sequence.
+2. No two operations overlap on the same machine.
+
+Given the complexity of the problem, a heuristic or algorithmic approach like Genetic Algorithms, Simulated Annealing, or Tabu Search is typically used to find a near-optimal solution. However, since I can't directly execute such algorithms here, I'll provide a conceptual approach to how you might proceed:
+
+### Conceptual Approach to Solve JSSP:
+
+1. **Initialize Schedule:**
+   - Start with the first job and schedule its operations sequentially on the required machines.
+   - For each subsequent job, attempt to schedule its operations by finding the earliest available time slots on the required machines, ensuring no overlap.
+
+2. **Iterate and Adjust:**
+   - After an initial schedule is created, iterate over the jobs and adjust the start times to minimize idle times on machines and reduce the overall makespan.
+
+3. **Calculate Makespan:**
+   - The makespan is the time at which the last operation of the last job finishes.
+
+4. **Output the Schedule:**
+   - For each operation, output the job, step, machine, start time, end time, and duration.
+
+### Example Output Format:
+```
+FINAL MAKESPAN: [calculated_makespan]
+STRUCTURED SCHEDULE:
+- Job: Job1, Step: 1, Machine: Machine53, Start Time: 0, End Time: 40, Duration: 40
+- Job: Job1, Step: 2, Machine: Machine82, Start Time: 40, End Time: 82, Duration: 42
+...
+```
+
+### Next Steps:
+- Implement a scheduling algorithm in a programming environment that supports such operations.
+- Use the provided job and machine data to create a feasible schedule.
+- Optimize the schedule to minimize the makespan.
+
+If you have access to a specific tool or environment where you can run scheduling algorithms, I recommend using that to generate the schedule. If you need further assistance with a specific part of the process, feel free to ask!
+Machine Coordinator Agent: Agent response (timeout after 120s): You are a Machine Coordinator Agent specialized in JSSP problems.
+    
+        Job Shop Scheduling P...
+Supervisor Agent: The dataset provided is too large to process in a single request due to token limitations. To solve the Job Shop Scheduling Problem (JSSP) for this dataset, we need to break down the problem into smaller parts or use a specialized algorithm or software designed for JSSP.
+
+Here are some steps you can take to solve this problem:
+
+1. **Use a JSSP Solver**: There are specialized software and libraries designed to solve JSSP problems, such as OR-Tools by Google, which can handle large datasets efficiently.
+
+2. **Divide and Conquer**: Break down the dataset into smaller subsets of jobs and solve them individually, then combine the solutions while resolving any conflicts.
+
+3. **Heuristic Methods**: Use heuristic or metaheuristic methods like Genetic Algorithms, Simulated Annealing, or Tabu Search, which are often used for solving complex scheduling problems.
+
+4. **Optimization Software**: Consider using optimization software like CPLEX or Gurobi, which are capable of handling large-scale optimization problems.
+
+If you have access to any of these tools or methods, I recommend using them to find the optimal schedule and makespan for the given dataset. If you need further assistance with a specific tool or method, feel free to ask!
+
+
+=== FRAMEWORK ===
+
+Framework: LangGraph with 3 Real Agents
+
+==================================================
+

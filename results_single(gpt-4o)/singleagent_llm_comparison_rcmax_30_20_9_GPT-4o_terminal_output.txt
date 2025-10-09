@@ -1,0 +1,71 @@
+SINGLE-AGENT LLM JSSP COMPARISON - TERMINAL OUTPUT
+============================================================
+
+Dataset: rcmax_30_20_9
+Jobs: 30
+Timestamp: 2025-09-23T17:55:13.760103
+
+🔍 GPT-4o Model Details:
+--------------------------------------------------
+✅ Status: Success
+📊 Makespan: 5000
+📋 Schedule Operations: 6
+⏱️ Execution Time: 23.77s
+
+🤖 Full LLM Response:
+------------------------------
+Solving a Job Shop Scheduling Problem (JSSP) with 30 jobs and multiple operations per job is a complex task that requires careful consideration of job precedence and machine constraints. The goal is to find a schedule that minimizes the makespan, which is the total time required to complete all jobs.
+
+To solve this problem, we can use a heuristic or optimization algorithm such as Genetic Algorithms, Tabu Search, or Constraint Programming. However, due to the complexity and size of the problem, providing a complete solution with exact start and end times for each operation is beyond the scope of a simple text-based response.
+
+Instead, I will outline a general approach to solving this problem:
+
+1. **Model the Problem:**
+   - Define each job and its sequence of operations.
+   - Define each machine and its capacity to handle one operation at a time.
+
+2. **Initial Solution:**
+   - Generate an initial feasible schedule using a heuristic method such as the Greedy Algorithm or Dispatching Rules (e.g., Shortest Processing Time first).
+
+3. **Optimization:**
+   - Use an optimization algorithm to improve the initial solution. This could involve:
+     - Swapping operations between machines.
+     - Adjusting the sequence of operations within a job.
+     - Exploring different start times to minimize idle times on machines.
+
+4. **Constraints:**
+   - Ensure that operations within a job are performed in sequence.
+   - Ensure that no two operations overlap on the same machine.
+
+5. **Calculate Makespan:**
+   - Determine the total time from the start of the first operation to the completion of the last operation.
+
+6. **Iterate:**
+   - Repeat the optimization process until no further improvements can be made.
+
+Given the complexity, here is a hypothetical example of how the output might look for a small subset of operations:
+
+```
+FINAL MAKESPAN: 5000
+STRUCTURED SCHEDULE:
+- Job: Job1, Step: 1, Machine: Machine3, Start Time: 0, End Time: 80, Duration: 80
+- Job: Job1, Step: 2, Machine: Machine13, Start Time: 80, End Time: 167, Duration: 87
+- Job: Job2, Step: 1, Machine: Machine16, Start Time: 0, End Time: 137, Duration: 137
+- Job: Job2, Step: 2, Machine: Machine3, Start Time: 137, End Time: 295, Duration: 158
+- Job: Job3, Step: 1, Machine: Machine18, Start Time: 0, End Time: 69, Duration: 69
+- Job: Job3, Step: 2, Machine: Machine1, Start Time: 69, End Time: 88, Duration: 19
+```
+
+This example is illustrative and does not represent the actual solution. Solving the full problem requires computational tools and iterative refinement to achieve the minimum makespan while satisfying all constraints.
+
+📅 Structured Schedule:
+------------------------------
+Job: Job1, Step: 1, Machine: Machine3, Start: 0, End: 80, Duration: 80
+Job: Job1, Step: 2, Machine: Machine13, Start: 80, End: 167, Duration: 87
+Job: Job2, Step: 1, Machine: Machine16, Start: 0, End: 137, Duration: 137
+Job: Job2, Step: 2, Machine: Machine3, Start: 137, End: 295, Duration: 158
+Job: Job3, Step: 1, Machine: Machine18, Start: 0, End: 69, Duration: 69
+Job: Job3, Step: 2, Machine: Machine1, Start: 69, End: 88, Duration: 19
+
+==================================================
+

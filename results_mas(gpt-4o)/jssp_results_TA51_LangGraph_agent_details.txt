@@ -1,0 +1,305 @@
+AGENT PROMPTS AND OUTPUTS DETAILS
+==================================================
+
+🔍 LangGraph Framework Details:
+--------------------------------------------------
+
+📝 Job Scheduler Agent Prompt:
+  system_prompt: You are a Job Scheduler Agent using LangGraph workflow. Analyze job requirements and create initial schedules for all jobs.
+
+💬 Job Scheduler Agent Output:
+  === LANGGRAPH REAL AGENTS ===
+
+Job Scheduler Agent: Job Shop Scheduling Problems (JSSP) are complex optimization problems that require specialized algorithms to solve. While I can't directly solve this problem, I can guide you on how to approach it using appropriate tools and methods.
+
+### Approach to Solve JSSP:
+
+1. **Model the Problem:**
+   - Represent each job and its operations as a sequence of tasks.
+   - Each task requires a specific machine and has a defined duration.
+
+2. **Constraints:**
+   - **Job Precedence:** Operations within a job must be performed in sequence.
+   - **Machine Constraints:** Each machine can only process one operation at a time.
+
+3. **Objective:**
+   - Minimize the makespan, which is the total time required to complete all jobs.
+
+4. **Algorithmic Solutions:**
+   - **Exact Methods:** Use Integer Linear Programming (ILP) or Mixed-Integer Linear Programming (MILP) to find an optimal solution.
+   - **Heuristic Methods:** Apply algorithms like Genetic Algorithms, Simulated Annealing, or Tabu Search for near-optimal solutions.
+   - **Dispatching Rules:** Use priority rules like Shortest Processing Time (SPT) or Earliest Due Date (EDD) to guide the scheduling.
+
+5. **Tools and Libraries:**
+   - **Google OR-Tools:** A powerful library for combinatorial optimization.
+   - **Gurobi or CPLEX:** Commercial solvers for linear programming and mixed-integer programming.
+   - **Python Libraries:** Use libraries like Numpy and Pandas for data handling, and Matplotlib for visualization.
+
+6. **Implementation Steps:**
+   - Define the problem constraints and objective function.
+   - Choose an appropriate algorithm or solver.
+   - Implement the solution using a programming language like Python or C++.
+   - Validate the solution to ensure all constraints are satisfied.
+
+By following these steps and using the right tools, you can develop a solution to the JSSP for dataset TA51. If you need further assistance with specific coding examples or tool usage, feel free to ask!
+Machine Coordinator Agent: Machine Coordinator Analysis:
+
+To address the Job Shop Scheduling Problem (JSSP) for the dataset TA51, here are some strategies and insights for resolving machine conflicts and optimizing machine utilization:
+
+1. **Priority Rule-Based Heuristic:**
+   - Implement strategies like First-Come-First-Serve (FCFS), Shortest Processing Time (SPT), or Longest Processing Time (LPT) to prioritize job scheduling. For instance, using the LPT rule can help prioritize longer tasks, potentially reducing idle machine time.
+
+2. **Tabu Search:**
+   - Utilize a tabu list to avoid revisiting certain scheduling decisions, helping to escape local optima and explore a broader solution space.
+
+3. **Genetic Algorithm Approach:**
+   - Employ genetic algorithms to evolve a population of solutions over generations, using operators like selection, mutation, and recombination to find optimal or near-optimal schedules.
+
+4. **Conflict Detection:**
+   - Regularly check for scheduling conflicts by ensuring no machine is assigned more than one job at a time and that job operations follow the required sequence.
+
+5. **Conflict Resolution:**
+   - In the event of a conflict, reschedule jobs based on their priority or processing time. Adjust schedules dynamically to accommodate changes and resolve conflicts efficiently.
+
+6. **Preventive Strategies:**
+   - Implement look-ahead and look-behind procedures to anticipate potential conflicts and address them proactively, ensuring smoother operations.
+
+By applying these strategies, you can effectively manage machine conflicts and optimize machine utilization, aiming to achieve the minimum makespan while satisfying all job precedence and machine constraints.
+Supervisor Agent: It seems that solving the Job Shop Scheduling Problem (JSSP) directly through this interface is not feasible due to the complexity and computational nature of the problem. However, I can guide you on how to approach solving it using appropriate tools and methods.
+
+### Steps to Solve JSSP:
+
+1. **Data Structuring**: 
+   - Convert the job and machine data into a structured format, such as a table or matrix, where each row represents a job and each column represents a machine with its respective operation duration.
+
+2. **Modeling the Problem**:
+   - Use a programming language like Python with libraries such as PuLP, Google's OR-Tools, or specialized software like OptaPlanner, IBM ILOG CPLEX, or Gurobi to model the problem.
+   - Define constraints such as job precedence (operations within a job must be sequential) and machine constraints (no overlapping operations on the same machine).
+
+3. **Optimization Algorithm**:
+   - Implement an optimization algorithm suitable for JSSP, such as Genetic Algorithm, Simulated Annealing, or Tabu Search.
+   - These algorithms will help in finding a near-optimal solution by iteratively improving the schedule.
+
+4. **Fitness Evaluation**:
+   - Define a fitness function to evaluate the quality of each solution. The goal is to minimize the makespan, which is the total time required to complete all jobs.
+
+5. **Iterative Improvement**:
+   - Run the optimization algorithm iteratively to explore different schedules and improve the solution.
+
+6. **Solution Analysis**:
+   - Once an optimal or near-optimal solution is found, calculate the start and end times for each operation and represent them in a structured schedule or Gantt chart.
+
+7. **Parameter Tuning**:
+   - Adjust the parameters of the model and algorithm as necessary to improve the solution quality.
+
+### Recommended Tools:
+- **Python Libraries**: PuLP, OR-Tools
+- **Optimization Software**: OptaPlanner, IBM ILOG CPLEX, Gurobi
+
+These tools and methods will help you solve the JSSP efficiently and provide the required schedule with the minimum makespan. If you need further assistance with specific tools or coding examples, feel free to ask!
+
+
+=== FRAMEWORK ===
+
+Framework: LangGraph with 3 Real Agents
+
+📝 Machine Coordinator Agent Prompt:
+  system_prompt: You are a Machine Coordinator Agent using LangGraph workflow. Coordinate machine usage and resolve conflicts between jobs.
+
+💬 Machine Coordinator Agent Output:
+  === LANGGRAPH REAL AGENTS ===
+
+Job Scheduler Agent: Job Shop Scheduling Problems (JSSP) are complex optimization problems that require specialized algorithms to solve. While I can't directly solve this problem, I can guide you on how to approach it using appropriate tools and methods.
+
+### Approach to Solve JSSP:
+
+1. **Model the Problem:**
+   - Represent each job and its operations as a sequence of tasks.
+   - Each task requires a specific machine and has a defined duration.
+
+2. **Constraints:**
+   - **Job Precedence:** Operations within a job must be performed in sequence.
+   - **Machine Constraints:** Each machine can only process one operation at a time.
+
+3. **Objective:**
+   - Minimize the makespan, which is the total time required to complete all jobs.
+
+4. **Algorithmic Solutions:**
+   - **Exact Methods:** Use Integer Linear Programming (ILP) or Mixed-Integer Linear Programming (MILP) to find an optimal solution.
+   - **Heuristic Methods:** Apply algorithms like Genetic Algorithms, Simulated Annealing, or Tabu Search for near-optimal solutions.
+   - **Dispatching Rules:** Use priority rules like Shortest Processing Time (SPT) or Earliest Due Date (EDD) to guide the scheduling.
+
+5. **Tools and Libraries:**
+   - **Google OR-Tools:** A powerful library for combinatorial optimization.
+   - **Gurobi or CPLEX:** Commercial solvers for linear programming and mixed-integer programming.
+   - **Python Libraries:** Use libraries like Numpy and Pandas for data handling, and Matplotlib for visualization.
+
+6. **Implementation Steps:**
+   - Define the problem constraints and objective function.
+   - Choose an appropriate algorithm or solver.
+   - Implement the solution using a programming language like Python or C++.
+   - Validate the solution to ensure all constraints are satisfied.
+
+By following these steps and using the right tools, you can develop a solution to the JSSP for dataset TA51. If you need further assistance with specific coding examples or tool usage, feel free to ask!
+Machine Coordinator Agent: Machine Coordinator Analysis:
+
+To address the Job Shop Scheduling Problem (JSSP) for the dataset TA51, here are some strategies and insights for resolving machine conflicts and optimizing machine utilization:
+
+1. **Priority Rule-Based Heuristic:**
+   - Implement strategies like First-Come-First-Serve (FCFS), Shortest Processing Time (SPT), or Longest Processing Time (LPT) to prioritize job scheduling. For instance, using the LPT rule can help prioritize longer tasks, potentially reducing idle machine time.
+
+2. **Tabu Search:**
+   - Utilize a tabu list to avoid revisiting certain scheduling decisions, helping to escape local optima and explore a broader solution space.
+
+3. **Genetic Algorithm Approach:**
+   - Employ genetic algorithms to evolve a population of solutions over generations, using operators like selection, mutation, and recombination to find optimal or near-optimal schedules.
+
+4. **Conflict Detection:**
+   - Regularly check for scheduling conflicts by ensuring no machine is assigned more than one job at a time and that job operations follow the required sequence.
+
+5. **Conflict Resolution:**
+   - In the event of a conflict, reschedule jobs based on their priority or processing time. Adjust schedules dynamically to accommodate changes and resolve conflicts efficiently.
+
+6. **Preventive Strategies:**
+   - Implement look-ahead and look-behind procedures to anticipate potential conflicts and address them proactively, ensuring smoother operations.
+
+By applying these strategies, you can effectively manage machine conflicts and optimize machine utilization, aiming to achieve the minimum makespan while satisfying all job precedence and machine constraints.
+Supervisor Agent: It seems that solving the Job Shop Scheduling Problem (JSSP) directly through this interface is not feasible due to the complexity and computational nature of the problem. However, I can guide you on how to approach solving it using appropriate tools and methods.
+
+### Steps to Solve JSSP:
+
+1. **Data Structuring**: 
+   - Convert the job and machine data into a structured format, such as a table or matrix, where each row represents a job and each column represents a machine with its respective operation duration.
+
+2. **Modeling the Problem**:
+   - Use a programming language like Python with libraries such as PuLP, Google's OR-Tools, or specialized software like OptaPlanner, IBM ILOG CPLEX, or Gurobi to model the problem.
+   - Define constraints such as job precedence (operations within a job must be sequential) and machine constraints (no overlapping operations on the same machine).
+
+3. **Optimization Algorithm**:
+   - Implement an optimization algorithm suitable for JSSP, such as Genetic Algorithm, Simulated Annealing, or Tabu Search.
+   - These algorithms will help in finding a near-optimal solution by iteratively improving the schedule.
+
+4. **Fitness Evaluation**:
+   - Define a fitness function to evaluate the quality of each solution. The goal is to minimize the makespan, which is the total time required to complete all jobs.
+
+5. **Iterative Improvement**:
+   - Run the optimization algorithm iteratively to explore different schedules and improve the solution.
+
+6. **Solution Analysis**:
+   - Once an optimal or near-optimal solution is found, calculate the start and end times for each operation and represent them in a structured schedule or Gantt chart.
+
+7. **Parameter Tuning**:
+   - Adjust the parameters of the model and algorithm as necessary to improve the solution quality.
+
+### Recommended Tools:
+- **Python Libraries**: PuLP, OR-Tools
+- **Optimization Software**: OptaPlanner, IBM ILOG CPLEX, Gurobi
+
+These tools and methods will help you solve the JSSP efficiently and provide the required schedule with the minimum makespan. If you need further assistance with specific tools or coding examples, feel free to ask!
+
+
+=== FRAMEWORK ===
+
+Framework: LangGraph with 3 Real Agents
+
+📝 Supervisor Agent Prompt:
+  system_prompt: You are a Supervisor Agent using LangGraph workflow. Aggregate all job schedules and produce the overall JSSP schedule. Coordinate between all job agents to find the optimal solution.
+
+💬 Supervisor Agent Output:
+  === LANGGRAPH REAL AGENTS ===
+
+Job Scheduler Agent: Job Shop Scheduling Problems (JSSP) are complex optimization problems that require specialized algorithms to solve. While I can't directly solve this problem, I can guide you on how to approach it using appropriate tools and methods.
+
+### Approach to Solve JSSP:
+
+1. **Model the Problem:**
+   - Represent each job and its operations as a sequence of tasks.
+   - Each task requires a specific machine and has a defined duration.
+
+2. **Constraints:**
+   - **Job Precedence:** Operations within a job must be performed in sequence.
+   - **Machine Constraints:** Each machine can only process one operation at a time.
+
+3. **Objective:**
+   - Minimize the makespan, which is the total time required to complete all jobs.
+
+4. **Algorithmic Solutions:**
+   - **Exact Methods:** Use Integer Linear Programming (ILP) or Mixed-Integer Linear Programming (MILP) to find an optimal solution.
+   - **Heuristic Methods:** Apply algorithms like Genetic Algorithms, Simulated Annealing, or Tabu Search for near-optimal solutions.
+   - **Dispatching Rules:** Use priority rules like Shortest Processing Time (SPT) or Earliest Due Date (EDD) to guide the scheduling.
+
+5. **Tools and Libraries:**
+   - **Google OR-Tools:** A powerful library for combinatorial optimization.
+   - **Gurobi or CPLEX:** Commercial solvers for linear programming and mixed-integer programming.
+   - **Python Libraries:** Use libraries like Numpy and Pandas for data handling, and Matplotlib for visualization.
+
+6. **Implementation Steps:**
+   - Define the problem constraints and objective function.
+   - Choose an appropriate algorithm or solver.
+   - Implement the solution using a programming language like Python or C++.
+   - Validate the solution to ensure all constraints are satisfied.
+
+By following these steps and using the right tools, you can develop a solution to the JSSP for dataset TA51. If you need further assistance with specific coding examples or tool usage, feel free to ask!
+Machine Coordinator Agent: Machine Coordinator Analysis:
+
+To address the Job Shop Scheduling Problem (JSSP) for the dataset TA51, here are some strategies and insights for resolving machine conflicts and optimizing machine utilization:
+
+1. **Priority Rule-Based Heuristic:**
+   - Implement strategies like First-Come-First-Serve (FCFS), Shortest Processing Time (SPT), or Longest Processing Time (LPT) to prioritize job scheduling. For instance, using the LPT rule can help prioritize longer tasks, potentially reducing idle machine time.
+
+2. **Tabu Search:**
+   - Utilize a tabu list to avoid revisiting certain scheduling decisions, helping to escape local optima and explore a broader solution space.
+
+3. **Genetic Algorithm Approach:**
+   - Employ genetic algorithms to evolve a population of solutions over generations, using operators like selection, mutation, and recombination to find optimal or near-optimal schedules.
+
+4. **Conflict Detection:**
+   - Regularly check for scheduling conflicts by ensuring no machine is assigned more than one job at a time and that job operations follow the required sequence.
+
+5. **Conflict Resolution:**
+   - In the event of a conflict, reschedule jobs based on their priority or processing time. Adjust schedules dynamically to accommodate changes and resolve conflicts efficiently.
+
+6. **Preventive Strategies:**
+   - Implement look-ahead and look-behind procedures to anticipate potential conflicts and address them proactively, ensuring smoother operations.
+
+By applying these strategies, you can effectively manage machine conflicts and optimize machine utilization, aiming to achieve the minimum makespan while satisfying all job precedence and machine constraints.
+Supervisor Agent: It seems that solving the Job Shop Scheduling Problem (JSSP) directly through this interface is not feasible due to the complexity and computational nature of the problem. However, I can guide you on how to approach solving it using appropriate tools and methods.
+
+### Steps to Solve JSSP:
+
+1. **Data Structuring**: 
+   - Convert the job and machine data into a structured format, such as a table or matrix, where each row represents a job and each column represents a machine with its respective operation duration.
+
+2. **Modeling the Problem**:
+   - Use a programming language like Python with libraries such as PuLP, Google's OR-Tools, or specialized software like OptaPlanner, IBM ILOG CPLEX, or Gurobi to model the problem.
+   - Define constraints such as job precedence (operations within a job must be sequential) and machine constraints (no overlapping operations on the same machine).
+
+3. **Optimization Algorithm**:
+   - Implement an optimization algorithm suitable for JSSP, such as Genetic Algorithm, Simulated Annealing, or Tabu Search.
+   - These algorithms will help in finding a near-optimal solution by iteratively improving the schedule.
+
+4. **Fitness Evaluation**:
+   - Define a fitness function to evaluate the quality of each solution. The goal is to minimize the makespan, which is the total time required to complete all jobs.
+
+5. **Iterative Improvement**:
+   - Run the optimization algorithm iteratively to explore different schedules and improve the solution.
+
+6. **Solution Analysis**:
+   - Once an optimal or near-optimal solution is found, calculate the start and end times for each operation and represent them in a structured schedule or Gantt chart.
+
+7. **Parameter Tuning**:
+   - Adjust the parameters of the model and algorithm as necessary to improve the solution quality.
+
+### Recommended Tools:
+- **Python Libraries**: PuLP, OR-Tools
+- **Optimization Software**: OptaPlanner, IBM ILOG CPLEX, Gurobi
+
+These tools and methods will help you solve the JSSP efficiently and provide the required schedule with the minimum makespan. If you need further assistance with specific tools or coding examples, feel free to ask!
+
+
+=== FRAMEWORK ===
+
+Framework: LangGraph with 3 Real Agents
+
+==================================================
+

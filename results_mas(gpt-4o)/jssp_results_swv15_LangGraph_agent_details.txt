@@ -1,0 +1,224 @@
+AGENT PROMPTS AND OUTPUTS DETAILS
+==================================================
+
+🔍 LangGraph Framework Details:
+--------------------------------------------------
+
+📝 Job Scheduler Agent Prompt:
+  system_prompt: You are a Job Scheduler Agent using LangGraph workflow. Analyze job requirements and create initial schedules for all jobs.
+
+💬 Job Scheduler Agent Output:
+  === LANGGRAPH REAL AGENTS ===
+
+Job Scheduler Agent: To solve the Job Shop Scheduling Problem (JSSP) for the given dataset, we need to create a schedule that minimizes the makespan while satisfying all constraints. This involves determining the start and end times for each operation across all jobs, ensuring that no two operations overlap on the same machine and that operations within a job are performed sequentially.
+
+Given the complexity and size of the problem (50 jobs, each with 10 operations), a detailed solution would typically require computational algorithms such as genetic algorithms, simulated annealing, or constraint programming to find an optimal or near-optimal solution. However, I can provide a conceptual approach to how this problem can be tackled:
+
+1. **Initialize the Schedule:**
+   - Start by assigning the earliest possible start time for each operation, considering the machine availability and the precedence constraints within each job.
+
+2. **Iterate to Optimize:**
+   - Use a heuristic or optimization algorithm to adjust the start times to minimize the makespan. This could involve shifting operations forward or backward in time to better utilize machine availability.
+
+3. **Check Constraints:**
+   - Ensure that no two operations overlap on the same machine.
+   - Verify that all operations within a job are performed in the correct sequence.
+
+4. **Calculate Makespan:**
+   - The makespan is the time at which the last operation finishes. This is the total completion time for all jobs.
+
+5. **Output the Schedule:**
+   - For each operation, provide the job name, step number, machine name, start time, end time, and duration.
+
+Since this is a complex optimization problem, providing a detailed schedule with specific start and end times for each operation requires computational resources and algorithms beyond manual calculation. However, I can guide you on how to implement such a solution using programming languages and libraries designed for optimization problems, such as Python with libraries like OR-Tools or PuLP.
+
+If you have access to such tools, I recommend setting up the problem using these libraries to compute the schedule. If you need further assistance with setting up the code or understanding the algorithms, feel free to ask!
+Machine Coordinator Agent: Machine Coordinator Analysis:
+
+1. **Conflict Identification**: 
+   - The primary conflicts arise when multiple jobs require the same machine simultaneously. This is a common issue in JSSP due to the limited availability of machines and the sequential nature of job operations.
+
+2. **Conflict Resolution Strategies**:
+   - **Longest Job Next**: Prioritize jobs with the longest total duration to minimize their waiting time and potentially reduce the overall makespan.
+   - **Shortest Job Next**: Prioritize jobs with the shortest total duration to quickly free up machines for other jobs, potentially reducing bottlenecks.
+   - **Earliest Deadline First**: If deadlines are specified, prioritize jobs with the earliest deadlines to ensure timely completion.
+   - **Least Slack**: Prioritize jobs with the smallest difference between their deadline and duration, focusing on jobs with tight schedules.
+
+3. **Machine Utilization Optimization**:
+   - Aim to keep all machines as busy as possible by scheduling jobs to minimize idle times. This can be achieved by strategically ordering jobs to ensure continuous machine operation.
+   - Consider using queueing strategies where jobs wait for their turn on a machine, reducing idle times.
+
+4. **Additional Considerations**:
+   - Allow for flexibility in job scheduling by considering alternative machines if possible, to alleviate bottlenecks.
+   - Implement floating jobs that can be scheduled on different machines, enhancing flexibility and reducing conflicts.
+
+5. **Optimization Techniques**:
+   - Utilize advanced algorithms such as genetic algorithms, integer programming, or constraint programming to find optimal or near-optimal solutions for complex scheduling scenarios.
+
+By applying these strategies, you can effectively resolve machine conflicts and optimize machine utilization, leading to a more efficient and streamlined job shop scheduling process.
+Supervisor Agent: To solve the Job Shop Scheduling Problem (JSSP) for the dataset swv15, you would typically need to use specialized optimization algorithms or software. Here is a general approach to solving such problems:
+
+1. **Problem Formulation:**
+   - Represent the problem using a mathematical model with constraints for machine availability, job precedence, and operation durations.
+
+2. **Solution Methods:**
+   - Use optimization techniques such as Genetic Algorithms, Swarm Optimization, Dynamic Programming, or Constraint Satisfaction.
+   - Alternatively, employ software like Gurobi, CPLEX, or Google OR-Tools, which are designed for solving JSSP problems.
+
+3. **Result Interpretation:**
+   - Analyze the output to determine the sequence of operations that minimizes the makespan.
+   - Extract the start and end times for each operation on each machine.
+
+For practical implementation, you would need to use programming languages like Python, C++, or Java with appropriate libraries, or specialized software. If you need further assistance, consulting with a data scientist or operations research specialist would be beneficial.
+
+
+=== FRAMEWORK ===
+
+Framework: LangGraph with 3 Real Agents
+
+📝 Machine Coordinator Agent Prompt:
+  system_prompt: You are a Machine Coordinator Agent using LangGraph workflow. Coordinate machine usage and resolve conflicts between jobs.
+
+💬 Machine Coordinator Agent Output:
+  === LANGGRAPH REAL AGENTS ===
+
+Job Scheduler Agent: To solve the Job Shop Scheduling Problem (JSSP) for the given dataset, we need to create a schedule that minimizes the makespan while satisfying all constraints. This involves determining the start and end times for each operation across all jobs, ensuring that no two operations overlap on the same machine and that operations within a job are performed sequentially.
+
+Given the complexity and size of the problem (50 jobs, each with 10 operations), a detailed solution would typically require computational algorithms such as genetic algorithms, simulated annealing, or constraint programming to find an optimal or near-optimal solution. However, I can provide a conceptual approach to how this problem can be tackled:
+
+1. **Initialize the Schedule:**
+   - Start by assigning the earliest possible start time for each operation, considering the machine availability and the precedence constraints within each job.
+
+2. **Iterate to Optimize:**
+   - Use a heuristic or optimization algorithm to adjust the start times to minimize the makespan. This could involve shifting operations forward or backward in time to better utilize machine availability.
+
+3. **Check Constraints:**
+   - Ensure that no two operations overlap on the same machine.
+   - Verify that all operations within a job are performed in the correct sequence.
+
+4. **Calculate Makespan:**
+   - The makespan is the time at which the last operation finishes. This is the total completion time for all jobs.
+
+5. **Output the Schedule:**
+   - For each operation, provide the job name, step number, machine name, start time, end time, and duration.
+
+Since this is a complex optimization problem, providing a detailed schedule with specific start and end times for each operation requires computational resources and algorithms beyond manual calculation. However, I can guide you on how to implement such a solution using programming languages and libraries designed for optimization problems, such as Python with libraries like OR-Tools or PuLP.
+
+If you have access to such tools, I recommend setting up the problem using these libraries to compute the schedule. If you need further assistance with setting up the code or understanding the algorithms, feel free to ask!
+Machine Coordinator Agent: Machine Coordinator Analysis:
+
+1. **Conflict Identification**: 
+   - The primary conflicts arise when multiple jobs require the same machine simultaneously. This is a common issue in JSSP due to the limited availability of machines and the sequential nature of job operations.
+
+2. **Conflict Resolution Strategies**:
+   - **Longest Job Next**: Prioritize jobs with the longest total duration to minimize their waiting time and potentially reduce the overall makespan.
+   - **Shortest Job Next**: Prioritize jobs with the shortest total duration to quickly free up machines for other jobs, potentially reducing bottlenecks.
+   - **Earliest Deadline First**: If deadlines are specified, prioritize jobs with the earliest deadlines to ensure timely completion.
+   - **Least Slack**: Prioritize jobs with the smallest difference between their deadline and duration, focusing on jobs with tight schedules.
+
+3. **Machine Utilization Optimization**:
+   - Aim to keep all machines as busy as possible by scheduling jobs to minimize idle times. This can be achieved by strategically ordering jobs to ensure continuous machine operation.
+   - Consider using queueing strategies where jobs wait for their turn on a machine, reducing idle times.
+
+4. **Additional Considerations**:
+   - Allow for flexibility in job scheduling by considering alternative machines if possible, to alleviate bottlenecks.
+   - Implement floating jobs that can be scheduled on different machines, enhancing flexibility and reducing conflicts.
+
+5. **Optimization Techniques**:
+   - Utilize advanced algorithms such as genetic algorithms, integer programming, or constraint programming to find optimal or near-optimal solutions for complex scheduling scenarios.
+
+By applying these strategies, you can effectively resolve machine conflicts and optimize machine utilization, leading to a more efficient and streamlined job shop scheduling process.
+Supervisor Agent: To solve the Job Shop Scheduling Problem (JSSP) for the dataset swv15, you would typically need to use specialized optimization algorithms or software. Here is a general approach to solving such problems:
+
+1. **Problem Formulation:**
+   - Represent the problem using a mathematical model with constraints for machine availability, job precedence, and operation durations.
+
+2. **Solution Methods:**
+   - Use optimization techniques such as Genetic Algorithms, Swarm Optimization, Dynamic Programming, or Constraint Satisfaction.
+   - Alternatively, employ software like Gurobi, CPLEX, or Google OR-Tools, which are designed for solving JSSP problems.
+
+3. **Result Interpretation:**
+   - Analyze the output to determine the sequence of operations that minimizes the makespan.
+   - Extract the start and end times for each operation on each machine.
+
+For practical implementation, you would need to use programming languages like Python, C++, or Java with appropriate libraries, or specialized software. If you need further assistance, consulting with a data scientist or operations research specialist would be beneficial.
+
+
+=== FRAMEWORK ===
+
+Framework: LangGraph with 3 Real Agents
+
+📝 Supervisor Agent Prompt:
+  system_prompt: You are a Supervisor Agent using LangGraph workflow. Aggregate all job schedules and produce the overall JSSP schedule. Coordinate between all job agents to find the optimal solution.
+
+💬 Supervisor Agent Output:
+  === LANGGRAPH REAL AGENTS ===
+
+Job Scheduler Agent: To solve the Job Shop Scheduling Problem (JSSP) for the given dataset, we need to create a schedule that minimizes the makespan while satisfying all constraints. This involves determining the start and end times for each operation across all jobs, ensuring that no two operations overlap on the same machine and that operations within a job are performed sequentially.
+
+Given the complexity and size of the problem (50 jobs, each with 10 operations), a detailed solution would typically require computational algorithms such as genetic algorithms, simulated annealing, or constraint programming to find an optimal or near-optimal solution. However, I can provide a conceptual approach to how this problem can be tackled:
+
+1. **Initialize the Schedule:**
+   - Start by assigning the earliest possible start time for each operation, considering the machine availability and the precedence constraints within each job.
+
+2. **Iterate to Optimize:**
+   - Use a heuristic or optimization algorithm to adjust the start times to minimize the makespan. This could involve shifting operations forward or backward in time to better utilize machine availability.
+
+3. **Check Constraints:**
+   - Ensure that no two operations overlap on the same machine.
+   - Verify that all operations within a job are performed in the correct sequence.
+
+4. **Calculate Makespan:**
+   - The makespan is the time at which the last operation finishes. This is the total completion time for all jobs.
+
+5. **Output the Schedule:**
+   - For each operation, provide the job name, step number, machine name, start time, end time, and duration.
+
+Since this is a complex optimization problem, providing a detailed schedule with specific start and end times for each operation requires computational resources and algorithms beyond manual calculation. However, I can guide you on how to implement such a solution using programming languages and libraries designed for optimization problems, such as Python with libraries like OR-Tools or PuLP.
+
+If you have access to such tools, I recommend setting up the problem using these libraries to compute the schedule. If you need further assistance with setting up the code or understanding the algorithms, feel free to ask!
+Machine Coordinator Agent: Machine Coordinator Analysis:
+
+1. **Conflict Identification**: 
+   - The primary conflicts arise when multiple jobs require the same machine simultaneously. This is a common issue in JSSP due to the limited availability of machines and the sequential nature of job operations.
+
+2. **Conflict Resolution Strategies**:
+   - **Longest Job Next**: Prioritize jobs with the longest total duration to minimize their waiting time and potentially reduce the overall makespan.
+   - **Shortest Job Next**: Prioritize jobs with the shortest total duration to quickly free up machines for other jobs, potentially reducing bottlenecks.
+   - **Earliest Deadline First**: If deadlines are specified, prioritize jobs with the earliest deadlines to ensure timely completion.
+   - **Least Slack**: Prioritize jobs with the smallest difference between their deadline and duration, focusing on jobs with tight schedules.
+
+3. **Machine Utilization Optimization**:
+   - Aim to keep all machines as busy as possible by scheduling jobs to minimize idle times. This can be achieved by strategically ordering jobs to ensure continuous machine operation.
+   - Consider using queueing strategies where jobs wait for their turn on a machine, reducing idle times.
+
+4. **Additional Considerations**:
+   - Allow for flexibility in job scheduling by considering alternative machines if possible, to alleviate bottlenecks.
+   - Implement floating jobs that can be scheduled on different machines, enhancing flexibility and reducing conflicts.
+
+5. **Optimization Techniques**:
+   - Utilize advanced algorithms such as genetic algorithms, integer programming, or constraint programming to find optimal or near-optimal solutions for complex scheduling scenarios.
+
+By applying these strategies, you can effectively resolve machine conflicts and optimize machine utilization, leading to a more efficient and streamlined job shop scheduling process.
+Supervisor Agent: To solve the Job Shop Scheduling Problem (JSSP) for the dataset swv15, you would typically need to use specialized optimization algorithms or software. Here is a general approach to solving such problems:
+
+1. **Problem Formulation:**
+   - Represent the problem using a mathematical model with constraints for machine availability, job precedence, and operation durations.
+
+2. **Solution Methods:**
+   - Use optimization techniques such as Genetic Algorithms, Swarm Optimization, Dynamic Programming, or Constraint Satisfaction.
+   - Alternatively, employ software like Gurobi, CPLEX, or Google OR-Tools, which are designed for solving JSSP problems.
+
+3. **Result Interpretation:**
+   - Analyze the output to determine the sequence of operations that minimizes the makespan.
+   - Extract the start and end times for each operation on each machine.
+
+For practical implementation, you would need to use programming languages like Python, C++, or Java with appropriate libraries, or specialized software. If you need further assistance, consulting with a data scientist or operations research specialist would be beneficial.
+
+
+=== FRAMEWORK ===
+
+Framework: LangGraph with 3 Real Agents
+
+==================================================
+

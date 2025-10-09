@@ -1,0 +1,429 @@
+Loading dataset: swv07 from /Users/glin/Documents/GitHub/M-APPLE/M-APPLE-OS/applications/abzswvyn/swv07.txt
+Loaded 20 jobs
+
+--- Running Full Workflow ---
+
+============================================================
+Running MAPLE Full Workflow on swv07
+Description: Complete workflow with all tools
+Timestamp: 2025-09-24 15:05:25
+============================================================
+⚠️ Warning: Agent is None in node: {'agent': None, 'type': 'JSSPAgent'}
+⚠️ Warning: Agent is None in node: {'agent': None, 'type': 'JSSPValidationAgent'}
+
+=== [OPTIMIZED MAPLE] New 4-Step Workflow ===
+Nodes: ['Unknown Agent', 'Unknown Agent']
+Edges: [{'from': 0, 'to': 1}]
+Workflow: Full Workflow
+Validation: ✅
+Repair: ✅
+Optimization: ✅
+
+=== [OPTIMIZED MAPLE] Inter-Agent Coordination ===
+
+=== [OPTIMIZED MAPLE] New Workflow Execution ===
+🔄 Running new 7-step workflow: Query -> Validation -> Repair -> Re-validation -> Optimization -> Final Check -> Supervisor
+
+🔄 Starting New 4-Step Workflow...
+1️⃣ Loading pre-generated schedule from JSON file...
+📊 Loaded 30 schedule entries from swv07
+📊 DeepSeek-V3 makespan: 1478
+📊 Initial schedule makespan: 745
+📊 Schedule entries count: 30
+📊 Sample entry: {'job': 'Job1', 'step': 1, 'machine': 'Machine3', 'start': 0, 'end': 92, 'duration': 92}
+[32m✅ Pre-generated schedule loaded successfully.
+2️⃣ ValidationTools validating schedule...
+❌ Initial validation failed: ['Job Job2: Step 4 starts before step 3 ends', 'Job Job2: Step 7 starts before step 6 ends', 'Job Job2: Step 10 starts before step 9 ends', 'Job Job2: Step 12 starts before step 11 ends', 'Job Job2: Step 13 starts before step 12 ends', "Missing jobs in schedule: ['Job17', 'Job16', 'Job9', 'Job10', 'Job4', 'Job13', 'Job6', 'Job5', 'Job12', 'Job14', 'Job11', 'Job18', 'Job7', 'Job19', 'Job3', 'Job15', 'Job8', 'Job20']"]
+3️⃣ RepairTools repairing schedule...
+🔧 Repair iteration 1/5
+🔧 Starting Algorithm 3: Cascading Repair and Queue Reordering
+📊 Processing 30 schedule entries
+❌ Found 6 constraint violations
+🔄 Phase I: Status Update - Identifying affected operations
+🔧 Fixing immediate constraint violations...
+🔄 Phase II: Job Precedence Repair - Fixing step ordering violations
+🔧 Repairing job precedence violations...
+🔄 Phase III: Machine Capacity Repair - Resolving machine overlaps
+🔧 Repairing machine capacity violations...
+🔄 Phase IV: Iterative Improvement - Optimizing schedule quality
+🔧 Applying iterative improvement...
+🔄 Phase V: Final validation and cleanup
+🔧 Final cleanup - ensuring valid operation times...
+⏰ Fixed invalid times for Job2 step 4
+⏰ Fixed invalid times for Job2 step 7
+⏰ Fixed invalid times for Job2 step 10
+⏰ Fixed invalid times for Job2 step 12
+✅ Algorithm 3 completed - Generated 30 schedule entries
+📊 Repair iteration 1 makespan: 746
+📊 Repair iteration 1 schedule entries: 30
+📊 Latest operations: [('Job2', 10, 746), ('Job2', 9, 745), ('Job1', 15, 698)]
+💾 Saved repair iteration 1 to: maple_optimized(deepseek-v3)/swv07_repair_iteration_1.json
+⚠️ Repair iteration 1 reduced errors from 6 to 4 (makespan: 746)
+🔧 Repair iteration 2/5
+🔧 Starting Algorithm 3: Cascading Repair and Queue Reordering
+📊 Processing 30 schedule entries
+❌ Found 4 constraint violations
+🔄 Phase I: Status Update - Identifying affected operations
+🔧 Fixing immediate constraint violations...
+🔄 Phase II: Job Precedence Repair - Fixing step ordering violations
+🔧 Repairing job precedence violations...
+🔄 Phase III: Machine Capacity Repair - Resolving machine overlaps
+🔧 Repairing machine capacity violations...
+🔄 Phase IV: Iterative Improvement - Optimizing schedule quality
+🔧 Applying iterative improvement...
+🔄 Phase V: Final validation and cleanup
+🔧 Final cleanup - ensuring valid operation times...
+⏰ Fixed invalid times for Job2 step 5
+⏰ Fixed invalid times for Job2 step 13
+⏰ Fixed invalid times for Job2 step 11
+✅ Algorithm 3 completed - Generated 30 schedule entries
+📊 Repair iteration 2 makespan: 747
+📊 Repair iteration 2 schedule entries: 30
+📊 Latest operations: [('Job2', 11, 747), ('Job2', 10, 746), ('Job2', 9, 745)]
+💾 Saved repair iteration 2 to: maple_optimized(deepseek-v3)/swv07_repair_iteration_2.json
+⚠️ Repair iteration 2 reduced errors from 4 to 4 (makespan: 747)
+🔧 Repair iteration 3/5
+🔧 Starting Algorithm 3: Cascading Repair and Queue Reordering
+📊 Processing 30 schedule entries
+❌ Found 4 constraint violations
+🔄 Phase I: Status Update - Identifying affected operations
+🔧 Fixing immediate constraint violations...
+🔄 Phase II: Job Precedence Repair - Fixing step ordering violations
+🔧 Repairing job precedence violations...
+🔄 Phase III: Machine Capacity Repair - Resolving machine overlaps
+🔧 Repairing machine capacity violations...
+🔄 Phase IV: Iterative Improvement - Optimizing schedule quality
+🔧 Applying iterative improvement...
+🔄 Phase V: Final validation and cleanup
+🔧 Final cleanup - ensuring valid operation times...
+⏰ Fixed invalid times for Job2 step 12
+✅ Algorithm 3 completed - Generated 30 schedule entries
+📊 Repair iteration 3 makespan: 748
+📊 Repair iteration 3 schedule entries: 30
+📊 Latest operations: [('Job2', 12, 748), ('Job2', 11, 747), ('Job2', 10, 746)]
+💾 Saved repair iteration 3 to: maple_optimized(deepseek-v3)/swv07_repair_iteration_3.json
+⚠️ Repair iteration 3 reduced errors from 4 to 2 (makespan: 748)
+🔧 Repair iteration 4/5
+🔧 Starting Algorithm 3: Cascading Repair and Queue Reordering
+📊 Processing 30 schedule entries
+❌ Found 2 constraint violations
+🔄 Phase I: Status Update - Identifying affected operations
+🔧 Fixing immediate constraint violations...
+🔄 Phase II: Job Precedence Repair - Fixing step ordering violations
+🔧 Repairing job precedence violations...
+🔄 Phase III: Machine Capacity Repair - Resolving machine overlaps
+🔧 Repairing machine capacity violations...
+🔄 Phase IV: Iterative Improvement - Optimizing schedule quality
+🔧 Applying iterative improvement...
+🔄 Phase V: Final validation and cleanup
+🔧 Final cleanup - ensuring valid operation times...
+⏰ Fixed invalid times for Job2 step 13
+✅ Algorithm 3 completed - Generated 30 schedule entries
+📊 Repair iteration 4 makespan: 749
+📊 Repair iteration 4 schedule entries: 30
+📊 Latest operations: [('Job2', 13, 749), ('Job2', 12, 748), ('Job2', 11, 747)]
+💾 Saved repair iteration 4 to: maple_optimized(deepseek-v3)/swv07_repair_iteration_4.json
+⚠️ Repair iteration 4 reduced errors from 2 to 2 (makespan: 749)
+🔧 Repair iteration 5/5
+🔧 Starting Algorithm 3: Cascading Repair and Queue Reordering
+📊 Processing 30 schedule entries
+❌ Found 2 constraint violations
+🔄 Phase I: Status Update - Identifying affected operations
+🔧 Fixing immediate constraint violations...
+🔄 Phase II: Job Precedence Repair - Fixing step ordering violations
+🔧 Repairing job precedence violations...
+🔄 Phase III: Machine Capacity Repair - Resolving machine overlaps
+🔧 Repairing machine capacity violations...
+🔄 Phase IV: Iterative Improvement - Optimizing schedule quality
+🔧 Applying iterative improvement...
+🔄 Phase V: Final validation and cleanup
+🔧 Final cleanup - ensuring valid operation times...
+⏰ Fixed invalid times for Job2 step 14
+✅ Algorithm 3 completed - Generated 30 schedule entries
+📊 Repair iteration 5 makespan: 750
+📊 Repair iteration 5 schedule entries: 30
+📊 Latest operations: [('Job2', 14, 750), ('Job2', 13, 749), ('Job2', 12, 748)]
+💾 Saved repair iteration 5 to: maple_optimized(deepseek-v3)/swv07_repair_iteration_5.json
+⚠️ Repair iteration 5 reduced errors from 2 to 2 (makespan: 750)
+⚠️ Repair completed after 5 iterations with remaining errors
+4️⃣ ValidationTools revalidating schedule...
+❌ Revalidation failed: ['Job Job2: Step 15 starts before step 14 ends', "Missing jobs in schedule: ['Job17', 'Job16', 'Job9', 'Job10', 'Job4', 'Job13', 'Job6', 'Job5', 'Job12', 'Job14', 'Job11', 'Job18', 'Job7', 'Job19', 'Job3', 'Job15', 'Job8', 'Job20']"]
+[31m❌ ERROR in workflow: Schedule validation failed after repair
+⚡ Disruption detected in Unknown Agent: Schedule validation failed after repair
+🔄 Initiating global replanning...
+⚠️ Global replanning completed. Manual intervention may be required.
+[31m🚨 Workflow execution halted due to error.
+❌ New 4-step workflow failed
+📊 Found 5 repair iterations
+  Iteration 1: makespan=746, entries=30
+  Iteration 2: makespan=747, entries=30
+  Iteration 3: makespan=748, entries=30
+  Iteration 4: makespan=749, entries=30
+  Iteration 5: makespan=750, entries=30
+
+--- Running No Repair Tools ---
+
+============================================================
+Running MAPLE No Repair Tools on swv07
+Description: Full workflow without repair tools
+Timestamp: 2025-09-24 15:05:25
+============================================================
+⚠️ Warning: Agent is None in node: {'agent': None, 'type': 'JSSPAgent'}
+⚠️ Warning: Agent is None in node: {'agent': None, 'type': 'JSSPValidationAgent'}
+
+=== [OPTIMIZED MAPLE] New 4-Step Workflow ===
+Nodes: ['Unknown Agent', 'Unknown Agent']
+Edges: [{'from': 0, 'to': 1}]
+Workflow: No Repair Tools
+Validation: ✅
+Repair: ❌
+Optimization: ✅
+
+=== [OPTIMIZED MAPLE] Inter-Agent Coordination ===
+
+=== [OPTIMIZED MAPLE] New Workflow Execution ===
+🔄 Running new 7-step workflow: Query -> Validation -> Repair -> Re-validation -> Optimization -> Final Check -> Supervisor
+
+🔄 Starting New 4-Step Workflow...
+1️⃣ Loading pre-generated schedule from JSON file...
+📊 Loaded 30 schedule entries from swv07
+📊 DeepSeek-V3 makespan: 1478
+📊 Initial schedule makespan: 745
+📊 Schedule entries count: 30
+📊 Sample entry: {'job': 'Job1', 'step': 1, 'machine': 'Machine3', 'start': 0, 'end': 92, 'duration': 92}
+[32m✅ Pre-generated schedule loaded successfully.
+2️⃣ ValidationTools validating schedule...
+❌ Initial validation failed: ['Job Job2: Step 4 starts before step 3 ends', 'Job Job2: Step 7 starts before step 6 ends', 'Job Job2: Step 10 starts before step 9 ends', 'Job Job2: Step 12 starts before step 11 ends', 'Job Job2: Step 13 starts before step 12 ends', "Missing jobs in schedule: ['Job17', 'Job16', 'Job9', 'Job10', 'Job4', 'Job13', 'Job6', 'Job5', 'Job12', 'Job14', 'Job11', 'Job18', 'Job7', 'Job19', 'Job3', 'Job15', 'Job8', 'Job20']"]
+⚠️ Schedule validation failed but repair is disabled - using original schedule without optimization
+✅ Proceeding with original schedule without optimization due to validation failures
+5️⃣ OptimizationTools skipped - using original schedule due to validation failures
+5️⃣ OptimizationTools already skipped due to validation failures
+6️⃣ ValidationTools final check...
+⚠️ Final validation found 6 errors, but continuing with optimization result
+✅ Optimization result accepted despite validation warnings
+7️⃣ Processing final results...
+📊 Final processed schedule with 30 entries
+📊 Calculated makespan: 745
+🎯 Final makespan: 745
+✅ New workflow completed successfully.
+
+=== Optimized Validation Results ===
+✅ Using best solution found (makespan: 745)
+📊 Total operations scheduled: 30
+✅ New 4-step workflow completed successfully
+
+--- Running No Validation Tools ---
+
+============================================================
+Running MAPLE No Validation Tools on swv07
+Description: Full workflow without validation tools
+Timestamp: 2025-09-24 15:05:25
+============================================================
+⚠️ Warning: Agent is None in node: {'agent': None, 'type': 'JSSPAgent'}
+⚠️ Warning: Agent is None in node: {'agent': None, 'type': 'JSSPValidationAgent'}
+
+=== [OPTIMIZED MAPLE] New 4-Step Workflow ===
+Nodes: ['Unknown Agent', 'Unknown Agent']
+Edges: [{'from': 0, 'to': 1}]
+Workflow: No Validation Tools
+Validation: ❌
+Repair: ✅
+Optimization: ✅
+
+=== [OPTIMIZED MAPLE] Inter-Agent Coordination ===
+
+=== [OPTIMIZED MAPLE] New Workflow Execution ===
+🔄 Running new 7-step workflow: Query -> Validation -> Repair -> Re-validation -> Optimization -> Final Check -> Supervisor
+
+🔄 Starting New 4-Step Workflow...
+1️⃣ Loading pre-generated schedule from JSON file...
+📊 Loaded 30 schedule entries from swv07
+📊 DeepSeek-V3 makespan: 1478
+📊 Initial schedule makespan: 745
+📊 Schedule entries count: 30
+📊 Sample entry: {'job': 'Job1', 'step': 1, 'machine': 'Machine3', 'start': 0, 'end': 92, 'duration': 92}
+[32m✅ Pre-generated schedule loaded successfully.
+2️⃣ ValidationTools disabled - skipping validation
+5️⃣ OptimizationTools optimizing schedule...
+📊 Pre-optimization makespan: 745
+📊 Post-optimization makespan: 188
+✅ Optimization completed successfully.
+6️⃣ ValidationTools disabled - skipping final validation
+7️⃣ Processing final results...
+📊 Final processed schedule with 30 entries
+📊 Calculated makespan: 188
+🎯 Final makespan: 188
+✅ New workflow completed successfully.
+
+=== Optimized Validation Results ===
+✅ Using best solution found (makespan: 188)
+📊 Total operations scheduled: 30
+✅ New 4-step workflow completed successfully
+
+--- Running No Optimization Tools ---
+
+============================================================
+Running MAPLE No Optimization Tools on swv07
+Description: Full workflow without optimization tools
+Timestamp: 2025-09-24 15:05:25
+============================================================
+⚠️ Warning: Agent is None in node: {'agent': None, 'type': 'JSSPAgent'}
+⚠️ Warning: Agent is None in node: {'agent': None, 'type': 'JSSPValidationAgent'}
+
+=== [OPTIMIZED MAPLE] New 4-Step Workflow ===
+Nodes: ['Unknown Agent', 'Unknown Agent']
+Edges: [{'from': 0, 'to': 1}]
+Workflow: No Optimization Tools
+Validation: ✅
+Repair: ✅
+Optimization: ❌
+
+=== [OPTIMIZED MAPLE] Inter-Agent Coordination ===
+
+=== [OPTIMIZED MAPLE] New Workflow Execution ===
+🔄 Running new 7-step workflow: Query -> Validation -> Repair -> Re-validation -> Optimization -> Final Check -> Supervisor
+
+🔄 Starting New 4-Step Workflow...
+1️⃣ Loading pre-generated schedule from JSON file...
+📊 Loaded 30 schedule entries from swv07
+📊 DeepSeek-V3 makespan: 1478
+📊 Initial schedule makespan: 745
+📊 Schedule entries count: 30
+📊 Sample entry: {'job': 'Job1', 'step': 1, 'machine': 'Machine3', 'start': 0, 'end': 92, 'duration': 92}
+[32m✅ Pre-generated schedule loaded successfully.
+2️⃣ ValidationTools validating schedule...
+❌ Initial validation failed: ['Job Job2: Step 4 starts before step 3 ends', 'Job Job2: Step 7 starts before step 6 ends', 'Job Job2: Step 10 starts before step 9 ends', 'Job Job2: Step 12 starts before step 11 ends', 'Job Job2: Step 13 starts before step 12 ends', "Missing jobs in schedule: ['Job17', 'Job16', 'Job9', 'Job10', 'Job4', 'Job13', 'Job6', 'Job5', 'Job12', 'Job14', 'Job11', 'Job18', 'Job7', 'Job19', 'Job3', 'Job15', 'Job8', 'Job20']"]
+3️⃣ RepairTools repairing schedule...
+🔧 Repair iteration 1/5
+🔧 Starting Algorithm 3: Cascading Repair and Queue Reordering
+📊 Processing 30 schedule entries
+❌ Found 6 constraint violations
+🔄 Phase I: Status Update - Identifying affected operations
+🔧 Fixing immediate constraint violations...
+🔄 Phase II: Job Precedence Repair - Fixing step ordering violations
+🔧 Repairing job precedence violations...
+🔄 Phase III: Machine Capacity Repair - Resolving machine overlaps
+🔧 Repairing machine capacity violations...
+🔄 Phase IV: Iterative Improvement - Optimizing schedule quality
+🔧 Applying iterative improvement...
+🔄 Phase V: Final validation and cleanup
+🔧 Final cleanup - ensuring valid operation times...
+⏰ Fixed invalid times for Job2 step 4
+⏰ Fixed invalid times for Job2 step 7
+⏰ Fixed invalid times for Job2 step 10
+⏰ Fixed invalid times for Job2 step 12
+✅ Algorithm 3 completed - Generated 30 schedule entries
+📊 Repair iteration 1 makespan: 746
+📊 Repair iteration 1 schedule entries: 30
+📊 Latest operations: [('Job2', 10, 746), ('Job2', 9, 745), ('Job1', 15, 698)]
+💾 Saved repair iteration 1 to: maple_optimized(deepseek-v3)/swv07_repair_iteration_1.json
+⚠️ Repair iteration 1 reduced errors from 6 to 4 (makespan: 746)
+🔧 Repair iteration 2/5
+🔧 Starting Algorithm 3: Cascading Repair and Queue Reordering
+📊 Processing 30 schedule entries
+❌ Found 4 constraint violations
+🔄 Phase I: Status Update - Identifying affected operations
+🔧 Fixing immediate constraint violations...
+🔄 Phase II: Job Precedence Repair - Fixing step ordering violations
+🔧 Repairing job precedence violations...
+🔄 Phase III: Machine Capacity Repair - Resolving machine overlaps
+🔧 Repairing machine capacity violations...
+🔄 Phase IV: Iterative Improvement - Optimizing schedule quality
+🔧 Applying iterative improvement...
+🔄 Phase V: Final validation and cleanup
+🔧 Final cleanup - ensuring valid operation times...
+⏰ Fixed invalid times for Job2 step 5
+⏰ Fixed invalid times for Job2 step 13
+⏰ Fixed invalid times for Job2 step 11
+✅ Algorithm 3 completed - Generated 30 schedule entries
+📊 Repair iteration 2 makespan: 747
+📊 Repair iteration 2 schedule entries: 30
+📊 Latest operations: [('Job2', 11, 747), ('Job2', 10, 746), ('Job2', 9, 745)]
+💾 Saved repair iteration 2 to: maple_optimized(deepseek-v3)/swv07_repair_iteration_2.json
+⚠️ Repair iteration 2 reduced errors from 4 to 4 (makespan: 747)
+🔧 Repair iteration 3/5
+🔧 Starting Algorithm 3: Cascading Repair and Queue Reordering
+📊 Processing 30 schedule entries
+❌ Found 4 constraint violations
+🔄 Phase I: Status Update - Identifying affected operations
+🔧 Fixing immediate constraint violations...
+🔄 Phase II: Job Precedence Repair - Fixing step ordering violations
+🔧 Repairing job precedence violations...
+🔄 Phase III: Machine Capacity Repair - Resolving machine overlaps
+🔧 Repairing machine capacity violations...
+🔄 Phase IV: Iterative Improvement - Optimizing schedule quality
+🔧 Applying iterative improvement...
+🔄 Phase V: Final validation and cleanup
+🔧 Final cleanup - ensuring valid operation times...
+⏰ Fixed invalid times for Job2 step 12
+✅ Algorithm 3 completed - Generated 30 schedule entries
+📊 Repair iteration 3 makespan: 748
+📊 Repair iteration 3 schedule entries: 30
+📊 Latest operations: [('Job2', 12, 748), ('Job2', 11, 747), ('Job2', 10, 746)]
+💾 Saved repair iteration 3 to: maple_optimized(deepseek-v3)/swv07_repair_iteration_3.json
+⚠️ Repair iteration 3 reduced errors from 4 to 2 (makespan: 748)
+🔧 Repair iteration 4/5
+🔧 Starting Algorithm 3: Cascading Repair and Queue Reordering
+📊 Processing 30 schedule entries
+❌ Found 2 constraint violations
+🔄 Phase I: Status Update - Identifying affected operations
+🔧 Fixing immediate constraint violations...
+🔄 Phase II: Job Precedence Repair - Fixing step ordering violations
+🔧 Repairing job precedence violations...
+🔄 Phase III: Machine Capacity Repair - Resolving machine overlaps
+🔧 Repairing machine capacity violations...
+🔄 Phase IV: Iterative Improvement - Optimizing schedule quality
+🔧 Applying iterative improvement...
+🔄 Phase V: Final validation and cleanup
+🔧 Final cleanup - ensuring valid operation times...
+⏰ Fixed invalid times for Job2 step 13
+✅ Algorithm 3 completed - Generated 30 schedule entries
+📊 Repair iteration 4 makespan: 749
+📊 Repair iteration 4 schedule entries: 30
+📊 Latest operations: [('Job2', 13, 749), ('Job2', 12, 748), ('Job2', 11, 747)]
+💾 Saved repair iteration 4 to: maple_optimized(deepseek-v3)/swv07_repair_iteration_4.json
+⚠️ Repair iteration 4 reduced errors from 2 to 2 (makespan: 749)
+🔧 Repair iteration 5/5
+🔧 Starting Algorithm 3: Cascading Repair and Queue Reordering
+📊 Processing 30 schedule entries
+❌ Found 2 constraint violations
+🔄 Phase I: Status Update - Identifying affected operations
+🔧 Fixing immediate constraint violations...
+🔄 Phase II: Job Precedence Repair - Fixing step ordering violations
+🔧 Repairing job precedence violations...
+🔄 Phase III: Machine Capacity Repair - Resolving machine overlaps
+🔧 Repairing machine capacity violations...
+🔄 Phase IV: Iterative Improvement - Optimizing schedule quality
+🔧 Applying iterative improvement...
+🔄 Phase V: Final validation and cleanup
+🔧 Final cleanup - ensuring valid operation times...
+⏰ Fixed invalid times for Job2 step 14
+✅ Algorithm 3 completed - Generated 30 schedule entries
+📊 Repair iteration 5 makespan: 750
+📊 Repair iteration 5 schedule entries: 30
+📊 Latest operations: [('Job2', 14, 750), ('Job2', 13, 749), ('Job2', 12, 748)]
+💾 Saved repair iteration 5 to: maple_optimized(deepseek-v3)/swv07_repair_iteration_5.json
+⚠️ Repair iteration 5 reduced errors from 2 to 2 (makespan: 750)
+⚠️ Repair completed after 5 iterations with remaining errors
+4️⃣ ValidationTools revalidating schedule...
+❌ Revalidation failed: ['Job Job2: Step 15 starts before step 14 ends', "Missing jobs in schedule: ['Job17', 'Job16', 'Job9', 'Job10', 'Job4', 'Job13', 'Job6', 'Job5', 'Job12', 'Job14', 'Job11', 'Job18', 'Job7', 'Job19', 'Job3', 'Job15', 'Job8', 'Job20']"]
+[31m❌ ERROR in workflow: Schedule validation failed after repair
+⚡ Disruption detected in Unknown Agent: Schedule validation failed after repair
+🔄 Initiating global replanning...
+⚠️ Global replanning completed. Manual intervention may be required.
+[31m🚨 Workflow execution halted due to error.
+❌ New 4-step workflow failed
+📊 Found 5 repair iterations
+  Iteration 1: makespan=746, entries=30
+  Iteration 2: makespan=747, entries=30
+  Iteration 3: makespan=748, entries=30
+  Iteration 4: makespan=749, entries=30
+  Iteration 5: makespan=750, entries=30
+
+============================================================
+WORKFLOW COMPARISON SUMMARY for swv07
+============================================================
+❌ Full Workflow        | Makespan:      N/A | Time: 0.01s | Repairs: 5
+✅ No Repair Tools      | Makespan:      745 | Time: 0.00s
+✅ No Validation Tools  | Makespan:      188 | Time: 0.00s
+❌ No Optimization Tools | Makespan:      N/A | Time: 0.00s | Repairs: 5

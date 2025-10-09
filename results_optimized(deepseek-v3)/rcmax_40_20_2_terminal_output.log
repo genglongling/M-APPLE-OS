@@ -1,0 +1,435 @@
+Loading dataset: rcmax_40_20_2 from /Users/glin/Documents/GitHub/M-APPLE/M-APPLE-OS/applications/DMU/rcmax_40_20_2.txt
+Loaded 40 jobs
+
+--- Running Full Workflow ---
+
+============================================================
+Running MAPLE Full Workflow on rcmax_40_20_2
+Description: Complete workflow with all tools
+Timestamp: 2025-09-24 15:04:41
+============================================================
+⚠️ Warning: Agent is None in node: {'agent': None, 'type': 'JSSPAgent'}
+⚠️ Warning: Agent is None in node: {'agent': None, 'type': 'JSSPValidationAgent'}
+
+=== [OPTIMIZED MAPLE] New 4-Step Workflow ===
+Nodes: ['Unknown Agent', 'Unknown Agent']
+Edges: [{'from': 0, 'to': 1}]
+Workflow: Full Workflow
+Validation: ✅
+Repair: ✅
+Optimization: ✅
+
+=== [OPTIMIZED MAPLE] Inter-Agent Coordination ===
+
+=== [OPTIMIZED MAPLE] New Workflow Execution ===
+🔄 Running new 7-step workflow: Query -> Validation -> Repair -> Re-validation -> Optimization -> Final Check -> Supervisor
+
+🔄 Starting New 4-Step Workflow...
+1️⃣ Loading pre-generated schedule from JSON file...
+📊 Loaded 60 schedule entries from rcmax_40_20_2
+📊 DeepSeek-V3 makespan: 3876
+📊 Initial schedule makespan: 2320
+📊 Schedule entries count: 60
+📊 Sample entry: {'job': 'Job1', 'step': 1, 'machine': 'Machine11', 'start': 0, 'end': 98, 'duration': 98}
+[32m✅ Pre-generated schedule loaded successfully.
+2️⃣ ValidationTools validating schedule...
+❌ Initial validation failed: ['Machine Machine16: Operations overlap - Job2 step 13 and Job3 step 12', 'Machine Machine13: Operations overlap - Job1 step 10 and Job3 step 5', 'Machine Machine3: Operations overlap - Job1 step 11 and Job2 step 11', 'Machine Machine6: Operations overlap - Job1 step 12 and Job2 step 12', 'Machine Machine19: Operations overlap - Job2 step 15 and Job1 step 16', 'Machine Machine19: Operations overlap - Job1 step 16 and Job3 step 13', 'Machine Machine2: Operations overlap - Job1 step 20 and Job3 step 18', "Missing jobs in schedule: ['Job17', 'Job21', 'Job16', 'Job40', 'Job9', 'Job4', 'Job13', 'Job33', 'Job30', 'Job27', 'Job23', 'Job38', 'Job22', 'Job29', 'Job15', 'Job34', 'Job20', 'Job25', 'Job39', 'Job10', 'Job6', 'Job5', 'Job37', 'Job26', 'Job12', 'Job31', 'Job14', 'Job32', 'Job11', 'Job7', 'Job35', 'Job28', 'Job19', 'Job24', 'Job36', 'Job18', 'Job8']"]
+3️⃣ RepairTools repairing schedule...
+🔧 Repair iteration 1/5
+🔧 Starting Algorithm 3: Cascading Repair and Queue Reordering
+📊 Processing 60 schedule entries
+❌ Found 8 constraint violations
+🔄 Phase I: Status Update - Identifying affected operations
+🔧 Fixing immediate constraint violations...
+🔄 Phase II: Job Precedence Repair - Fixing step ordering violations
+🔧 Repairing job precedence violations...
+🔄 Phase III: Machine Capacity Repair - Resolving machine overlaps
+🔧 Repairing machine capacity violations...
+⏰ Fixed machine overlap on Machine3
+⏰ Fixed machine overlap on Machine16
+⏰ Fixed machine overlap on Machine13
+⏰ Fixed machine overlap on Machine6
+⏰ Fixed machine overlap on Machine2
+⏰ Fixed machine overlap on Machine19
+⏰ Fixed machine overlap on Machine19
+🔄 Phase IV: Iterative Improvement - Optimizing schedule quality
+🔧 Applying iterative improvement...
+🔄 Phase V: Final validation and cleanup
+🔧 Final cleanup - ensuring valid operation times...
+✅ Algorithm 3 completed - Generated 60 schedule entries
+📊 Repair iteration 1 makespan: 2320
+📊 Repair iteration 1 schedule entries: 60
+📊 Latest operations: [('Job2', 20, 2320), ('Job3', 18, 2206), ('Job3', 20, 2144)]
+💾 Saved repair iteration 1 to: maple_optimized(deepseek-v3)/rcmax_40_20_2_repair_iteration_1.json
+⚠️ Repair iteration 1 reduced errors from 8 to 7 (makespan: 2320)
+🔧 Repair iteration 2/5
+🔧 Starting Algorithm 3: Cascading Repair and Queue Reordering
+📊 Processing 60 schedule entries
+❌ Found 7 constraint violations
+🔄 Phase I: Status Update - Identifying affected operations
+🔧 Fixing immediate constraint violations...
+🔄 Phase II: Job Precedence Repair - Fixing step ordering violations
+🔧 Repairing job precedence violations...
+🔄 Phase III: Machine Capacity Repair - Resolving machine overlaps
+🔧 Repairing machine capacity violations...
+🔄 Phase IV: Iterative Improvement - Optimizing schedule quality
+🔧 Applying iterative improvement...
+🔄 Phase V: Final validation and cleanup
+🔧 Final cleanup - ensuring valid operation times...
+⏰ Fixed invalid times for Job3 step 6
+⏰ Fixed invalid times for Job1 step 17
+⏰ Fixed invalid times for Job3 step 14
+⏰ Fixed invalid times for Job3 step 19
+✅ Algorithm 3 completed - Generated 60 schedule entries
+📊 Repair iteration 2 makespan: 2320
+📊 Repair iteration 2 schedule entries: 60
+📊 Latest operations: [('Job2', 20, 2320), ('Job3', 19, 2207), ('Job3', 18, 2206)]
+💾 Saved repair iteration 2 to: maple_optimized(deepseek-v3)/rcmax_40_20_2_repair_iteration_2.json
+⚠️ Repair iteration 2 reduced errors from 7 to 5 (makespan: 2320)
+🔧 Repair iteration 3/5
+🔧 Starting Algorithm 3: Cascading Repair and Queue Reordering
+📊 Processing 60 schedule entries
+❌ Found 5 constraint violations
+🔄 Phase I: Status Update - Identifying affected operations
+🔧 Fixing immediate constraint violations...
+🔄 Phase II: Job Precedence Repair - Fixing step ordering violations
+🔧 Repairing job precedence violations...
+🔄 Phase III: Machine Capacity Repair - Resolving machine overlaps
+🔧 Repairing machine capacity violations...
+🔄 Phase IV: Iterative Improvement - Optimizing schedule quality
+🔧 Applying iterative improvement...
+🔄 Phase V: Final validation and cleanup
+🔧 Final cleanup - ensuring valid operation times...
+⏰ Fixed invalid times for Job3 step 7
+⏰ Fixed invalid times for Job3 step 20
+✅ Algorithm 3 completed - Generated 60 schedule entries
+📊 Repair iteration 3 makespan: 2320
+📊 Repair iteration 3 schedule entries: 60
+📊 Latest operations: [('Job2', 20, 2320), ('Job3', 20, 2208), ('Job3', 19, 2207)]
+💾 Saved repair iteration 3 to: maple_optimized(deepseek-v3)/rcmax_40_20_2_repair_iteration_3.json
+⚠️ Repair iteration 3 reduced errors from 5 to 2 (makespan: 2320)
+🔧 Repair iteration 4/5
+🔧 Starting Algorithm 3: Cascading Repair and Queue Reordering
+📊 Processing 60 schedule entries
+❌ Found 2 constraint violations
+🔄 Phase I: Status Update - Identifying affected operations
+🔧 Fixing immediate constraint violations...
+🔄 Phase II: Job Precedence Repair - Fixing step ordering violations
+🔧 Repairing job precedence violations...
+🔄 Phase III: Machine Capacity Repair - Resolving machine overlaps
+🔧 Repairing machine capacity violations...
+🔄 Phase IV: Iterative Improvement - Optimizing schedule quality
+🔧 Applying iterative improvement...
+🔄 Phase V: Final validation and cleanup
+🔧 Final cleanup - ensuring valid operation times...
+✅ Algorithm 3 completed - Generated 60 schedule entries
+📊 Repair iteration 4 makespan: 2320
+📊 Repair iteration 4 schedule entries: 60
+📊 Latest operations: [('Job2', 20, 2320), ('Job3', 20, 2208), ('Job3', 19, 2207)]
+💾 Saved repair iteration 4 to: maple_optimized(deepseek-v3)/rcmax_40_20_2_repair_iteration_4.json
+⚠️ Repair iteration 4 reduced errors from 2 to 1 (makespan: 2320)
+🔧 Repair iteration 5/5
+🔧 Starting Algorithm 3: Cascading Repair and Queue Reordering
+📊 Processing 60 schedule entries
+❌ Found 1 constraint violations
+🔄 Phase I: Status Update - Identifying affected operations
+🔧 Fixing immediate constraint violations...
+🔄 Phase II: Job Precedence Repair - Fixing step ordering violations
+🔧 Repairing job precedence violations...
+🔄 Phase III: Machine Capacity Repair - Resolving machine overlaps
+🔧 Repairing machine capacity violations...
+🔄 Phase IV: Iterative Improvement - Optimizing schedule quality
+🔧 Applying iterative improvement...
+🔄 Phase V: Final validation and cleanup
+🔧 Final cleanup - ensuring valid operation times...
+✅ Algorithm 3 completed - Generated 60 schedule entries
+📊 Repair iteration 5 makespan: 2320
+📊 Repair iteration 5 schedule entries: 60
+📊 Latest operations: [('Job2', 20, 2320), ('Job3', 20, 2208), ('Job3', 19, 2207)]
+💾 Saved repair iteration 5 to: maple_optimized(deepseek-v3)/rcmax_40_20_2_repair_iteration_5.json
+⚠️ Repair iteration 5 reduced errors from 1 to 1 (makespan: 2320)
+⚠️ Repair completed after 5 iterations with remaining errors
+4️⃣ ValidationTools revalidating schedule...
+❌ Revalidation failed: ["Missing jobs in schedule: ['Job17', 'Job21', 'Job16', 'Job40', 'Job9', 'Job4', 'Job13', 'Job33', 'Job30', 'Job27', 'Job23', 'Job38', 'Job22', 'Job29', 'Job15', 'Job34', 'Job20', 'Job25', 'Job39', 'Job10', 'Job6', 'Job5', 'Job37', 'Job26', 'Job12', 'Job31', 'Job14', 'Job32', 'Job11', 'Job7', 'Job35', 'Job28', 'Job19', 'Job24', 'Job36', 'Job18', 'Job8']"]
+[31m❌ ERROR in workflow: Schedule validation failed after repair
+⚡ Disruption detected in Unknown Agent: Schedule validation failed after repair
+🔄 Initiating global replanning...
+⚠️ Global replanning completed. Manual intervention may be required.
+[31m🚨 Workflow execution halted due to error.
+❌ New 4-step workflow failed
+📊 Found 5 repair iterations
+  Iteration 1: makespan=2320, entries=60
+  Iteration 2: makespan=2320, entries=60
+  Iteration 3: makespan=2320, entries=60
+  Iteration 4: makespan=2320, entries=60
+  Iteration 5: makespan=2320, entries=60
+
+--- Running No Repair Tools ---
+
+============================================================
+Running MAPLE No Repair Tools on rcmax_40_20_2
+Description: Full workflow without repair tools
+Timestamp: 2025-09-24 15:04:41
+============================================================
+⚠️ Warning: Agent is None in node: {'agent': None, 'type': 'JSSPAgent'}
+⚠️ Warning: Agent is None in node: {'agent': None, 'type': 'JSSPValidationAgent'}
+
+=== [OPTIMIZED MAPLE] New 4-Step Workflow ===
+Nodes: ['Unknown Agent', 'Unknown Agent']
+Edges: [{'from': 0, 'to': 1}]
+Workflow: No Repair Tools
+Validation: ✅
+Repair: ❌
+Optimization: ✅
+
+=== [OPTIMIZED MAPLE] Inter-Agent Coordination ===
+
+=== [OPTIMIZED MAPLE] New Workflow Execution ===
+🔄 Running new 7-step workflow: Query -> Validation -> Repair -> Re-validation -> Optimization -> Final Check -> Supervisor
+
+🔄 Starting New 4-Step Workflow...
+1️⃣ Loading pre-generated schedule from JSON file...
+📊 Loaded 60 schedule entries from rcmax_40_20_2
+📊 DeepSeek-V3 makespan: 3876
+📊 Initial schedule makespan: 2320
+📊 Schedule entries count: 60
+📊 Sample entry: {'job': 'Job1', 'step': 1, 'machine': 'Machine11', 'start': 0, 'end': 98, 'duration': 98}
+[32m✅ Pre-generated schedule loaded successfully.
+2️⃣ ValidationTools validating schedule...
+❌ Initial validation failed: ['Machine Machine16: Operations overlap - Job2 step 13 and Job3 step 12', 'Machine Machine13: Operations overlap - Job1 step 10 and Job3 step 5', 'Machine Machine3: Operations overlap - Job1 step 11 and Job2 step 11', 'Machine Machine6: Operations overlap - Job1 step 12 and Job2 step 12', 'Machine Machine19: Operations overlap - Job2 step 15 and Job1 step 16', 'Machine Machine19: Operations overlap - Job1 step 16 and Job3 step 13', 'Machine Machine2: Operations overlap - Job1 step 20 and Job3 step 18', "Missing jobs in schedule: ['Job17', 'Job21', 'Job16', 'Job40', 'Job9', 'Job4', 'Job13', 'Job33', 'Job30', 'Job27', 'Job23', 'Job38', 'Job22', 'Job29', 'Job15', 'Job34', 'Job20', 'Job25', 'Job39', 'Job10', 'Job6', 'Job5', 'Job37', 'Job26', 'Job12', 'Job31', 'Job14', 'Job32', 'Job11', 'Job7', 'Job35', 'Job28', 'Job19', 'Job24', 'Job36', 'Job18', 'Job8']"]
+⚠️ Schedule validation failed but repair is disabled - using original schedule without optimization
+✅ Proceeding with original schedule without optimization due to validation failures
+5️⃣ OptimizationTools skipped - using original schedule due to validation failures
+5️⃣ OptimizationTools already skipped due to validation failures
+6️⃣ ValidationTools final check...
+⚠️ Final validation found 8 errors, but continuing with optimization result
+✅ Optimization result accepted despite validation warnings
+7️⃣ Processing final results...
+📊 Final processed schedule with 60 entries
+📊 Calculated makespan: 2320
+🎯 Final makespan: 2320
+✅ New workflow completed successfully.
+
+=== Optimized Validation Results ===
+✅ Using best solution found (makespan: 2320)
+📊 Total operations scheduled: 60
+✅ New 4-step workflow completed successfully
+
+--- Running No Validation Tools ---
+
+============================================================
+Running MAPLE No Validation Tools on rcmax_40_20_2
+Description: Full workflow without validation tools
+Timestamp: 2025-09-24 15:04:41
+============================================================
+⚠️ Warning: Agent is None in node: {'agent': None, 'type': 'JSSPAgent'}
+⚠️ Warning: Agent is None in node: {'agent': None, 'type': 'JSSPValidationAgent'}
+
+=== [OPTIMIZED MAPLE] New 4-Step Workflow ===
+Nodes: ['Unknown Agent', 'Unknown Agent']
+Edges: [{'from': 0, 'to': 1}]
+Workflow: No Validation Tools
+Validation: ❌
+Repair: ✅
+Optimization: ✅
+
+=== [OPTIMIZED MAPLE] Inter-Agent Coordination ===
+
+=== [OPTIMIZED MAPLE] New Workflow Execution ===
+🔄 Running new 7-step workflow: Query -> Validation -> Repair -> Re-validation -> Optimization -> Final Check -> Supervisor
+
+🔄 Starting New 4-Step Workflow...
+1️⃣ Loading pre-generated schedule from JSON file...
+📊 Loaded 60 schedule entries from rcmax_40_20_2
+📊 DeepSeek-V3 makespan: 3876
+📊 Initial schedule makespan: 2320
+📊 Schedule entries count: 60
+📊 Sample entry: {'job': 'Job1', 'step': 1, 'machine': 'Machine11', 'start': 0, 'end': 98, 'duration': 98}
+[32m✅ Pre-generated schedule loaded successfully.
+2️⃣ ValidationTools disabled - skipping validation
+5️⃣ OptimizationTools optimizing schedule...
+📊 Pre-optimization makespan: 2320
+📊 Post-optimization makespan: 446
+✅ Optimization completed successfully.
+6️⃣ ValidationTools disabled - skipping final validation
+7️⃣ Processing final results...
+📊 Final processed schedule with 60 entries
+📊 Calculated makespan: 446
+🎯 Final makespan: 446
+✅ New workflow completed successfully.
+
+=== Optimized Validation Results ===
+✅ Using best solution found (makespan: 446)
+📊 Total operations scheduled: 60
+✅ New 4-step workflow completed successfully
+
+--- Running No Optimization Tools ---
+
+============================================================
+Running MAPLE No Optimization Tools on rcmax_40_20_2
+Description: Full workflow without optimization tools
+Timestamp: 2025-09-24 15:04:41
+============================================================
+⚠️ Warning: Agent is None in node: {'agent': None, 'type': 'JSSPAgent'}
+⚠️ Warning: Agent is None in node: {'agent': None, 'type': 'JSSPValidationAgent'}
+
+=== [OPTIMIZED MAPLE] New 4-Step Workflow ===
+Nodes: ['Unknown Agent', 'Unknown Agent']
+Edges: [{'from': 0, 'to': 1}]
+Workflow: No Optimization Tools
+Validation: ✅
+Repair: ✅
+Optimization: ❌
+
+=== [OPTIMIZED MAPLE] Inter-Agent Coordination ===
+
+=== [OPTIMIZED MAPLE] New Workflow Execution ===
+🔄 Running new 7-step workflow: Query -> Validation -> Repair -> Re-validation -> Optimization -> Final Check -> Supervisor
+
+🔄 Starting New 4-Step Workflow...
+1️⃣ Loading pre-generated schedule from JSON file...
+📊 Loaded 60 schedule entries from rcmax_40_20_2
+📊 DeepSeek-V3 makespan: 3876
+📊 Initial schedule makespan: 2320
+📊 Schedule entries count: 60
+📊 Sample entry: {'job': 'Job1', 'step': 1, 'machine': 'Machine11', 'start': 0, 'end': 98, 'duration': 98}
+[32m✅ Pre-generated schedule loaded successfully.
+2️⃣ ValidationTools validating schedule...
+❌ Initial validation failed: ['Machine Machine16: Operations overlap - Job2 step 13 and Job3 step 12', 'Machine Machine13: Operations overlap - Job1 step 10 and Job3 step 5', 'Machine Machine3: Operations overlap - Job1 step 11 and Job2 step 11', 'Machine Machine6: Operations overlap - Job1 step 12 and Job2 step 12', 'Machine Machine19: Operations overlap - Job2 step 15 and Job1 step 16', 'Machine Machine19: Operations overlap - Job1 step 16 and Job3 step 13', 'Machine Machine2: Operations overlap - Job1 step 20 and Job3 step 18', "Missing jobs in schedule: ['Job17', 'Job21', 'Job16', 'Job40', 'Job9', 'Job4', 'Job13', 'Job33', 'Job30', 'Job27', 'Job23', 'Job38', 'Job22', 'Job29', 'Job15', 'Job34', 'Job20', 'Job25', 'Job39', 'Job10', 'Job6', 'Job5', 'Job37', 'Job26', 'Job12', 'Job31', 'Job14', 'Job32', 'Job11', 'Job7', 'Job35', 'Job28', 'Job19', 'Job24', 'Job36', 'Job18', 'Job8']"]
+3️⃣ RepairTools repairing schedule...
+🔧 Repair iteration 1/5
+🔧 Starting Algorithm 3: Cascading Repair and Queue Reordering
+📊 Processing 60 schedule entries
+❌ Found 8 constraint violations
+🔄 Phase I: Status Update - Identifying affected operations
+🔧 Fixing immediate constraint violations...
+🔄 Phase II: Job Precedence Repair - Fixing step ordering violations
+🔧 Repairing job precedence violations...
+🔄 Phase III: Machine Capacity Repair - Resolving machine overlaps
+🔧 Repairing machine capacity violations...
+⏰ Fixed machine overlap on Machine3
+⏰ Fixed machine overlap on Machine16
+⏰ Fixed machine overlap on Machine13
+⏰ Fixed machine overlap on Machine6
+⏰ Fixed machine overlap on Machine2
+⏰ Fixed machine overlap on Machine19
+⏰ Fixed machine overlap on Machine19
+🔄 Phase IV: Iterative Improvement - Optimizing schedule quality
+🔧 Applying iterative improvement...
+🔄 Phase V: Final validation and cleanup
+🔧 Final cleanup - ensuring valid operation times...
+✅ Algorithm 3 completed - Generated 60 schedule entries
+📊 Repair iteration 1 makespan: 2320
+📊 Repair iteration 1 schedule entries: 60
+📊 Latest operations: [('Job2', 20, 2320), ('Job3', 18, 2206), ('Job3', 20, 2144)]
+💾 Saved repair iteration 1 to: maple_optimized(deepseek-v3)/rcmax_40_20_2_repair_iteration_1.json
+⚠️ Repair iteration 1 reduced errors from 8 to 7 (makespan: 2320)
+🔧 Repair iteration 2/5
+🔧 Starting Algorithm 3: Cascading Repair and Queue Reordering
+📊 Processing 60 schedule entries
+❌ Found 7 constraint violations
+🔄 Phase I: Status Update - Identifying affected operations
+🔧 Fixing immediate constraint violations...
+🔄 Phase II: Job Precedence Repair - Fixing step ordering violations
+🔧 Repairing job precedence violations...
+🔄 Phase III: Machine Capacity Repair - Resolving machine overlaps
+🔧 Repairing machine capacity violations...
+🔄 Phase IV: Iterative Improvement - Optimizing schedule quality
+🔧 Applying iterative improvement...
+🔄 Phase V: Final validation and cleanup
+🔧 Final cleanup - ensuring valid operation times...
+⏰ Fixed invalid times for Job3 step 6
+⏰ Fixed invalid times for Job1 step 17
+⏰ Fixed invalid times for Job3 step 14
+⏰ Fixed invalid times for Job3 step 19
+✅ Algorithm 3 completed - Generated 60 schedule entries
+📊 Repair iteration 2 makespan: 2320
+📊 Repair iteration 2 schedule entries: 60
+📊 Latest operations: [('Job2', 20, 2320), ('Job3', 19, 2207), ('Job3', 18, 2206)]
+💾 Saved repair iteration 2 to: maple_optimized(deepseek-v3)/rcmax_40_20_2_repair_iteration_2.json
+⚠️ Repair iteration 2 reduced errors from 7 to 5 (makespan: 2320)
+🔧 Repair iteration 3/5
+🔧 Starting Algorithm 3: Cascading Repair and Queue Reordering
+📊 Processing 60 schedule entries
+❌ Found 5 constraint violations
+🔄 Phase I: Status Update - Identifying affected operations
+🔧 Fixing immediate constraint violations...
+🔄 Phase II: Job Precedence Repair - Fixing step ordering violations
+🔧 Repairing job precedence violations...
+🔄 Phase III: Machine Capacity Repair - Resolving machine overlaps
+🔧 Repairing machine capacity violations...
+🔄 Phase IV: Iterative Improvement - Optimizing schedule quality
+🔧 Applying iterative improvement...
+🔄 Phase V: Final validation and cleanup
+🔧 Final cleanup - ensuring valid operation times...
+⏰ Fixed invalid times for Job3 step 7
+⏰ Fixed invalid times for Job3 step 20
+✅ Algorithm 3 completed - Generated 60 schedule entries
+📊 Repair iteration 3 makespan: 2320
+📊 Repair iteration 3 schedule entries: 60
+📊 Latest operations: [('Job2', 20, 2320), ('Job3', 20, 2208), ('Job3', 19, 2207)]
+💾 Saved repair iteration 3 to: maple_optimized(deepseek-v3)/rcmax_40_20_2_repair_iteration_3.json
+⚠️ Repair iteration 3 reduced errors from 5 to 2 (makespan: 2320)
+🔧 Repair iteration 4/5
+🔧 Starting Algorithm 3: Cascading Repair and Queue Reordering
+📊 Processing 60 schedule entries
+❌ Found 2 constraint violations
+🔄 Phase I: Status Update - Identifying affected operations
+🔧 Fixing immediate constraint violations...
+🔄 Phase II: Job Precedence Repair - Fixing step ordering violations
+🔧 Repairing job precedence violations...
+🔄 Phase III: Machine Capacity Repair - Resolving machine overlaps
+🔧 Repairing machine capacity violations...
+🔄 Phase IV: Iterative Improvement - Optimizing schedule quality
+🔧 Applying iterative improvement...
+🔄 Phase V: Final validation and cleanup
+🔧 Final cleanup - ensuring valid operation times...
+✅ Algorithm 3 completed - Generated 60 schedule entries
+📊 Repair iteration 4 makespan: 2320
+📊 Repair iteration 4 schedule entries: 60
+📊 Latest operations: [('Job2', 20, 2320), ('Job3', 20, 2208), ('Job3', 19, 2207)]
+💾 Saved repair iteration 4 to: maple_optimized(deepseek-v3)/rcmax_40_20_2_repair_iteration_4.json
+⚠️ Repair iteration 4 reduced errors from 2 to 1 (makespan: 2320)
+🔧 Repair iteration 5/5
+🔧 Starting Algorithm 3: Cascading Repair and Queue Reordering
+📊 Processing 60 schedule entries
+❌ Found 1 constraint violations
+🔄 Phase I: Status Update - Identifying affected operations
+🔧 Fixing immediate constraint violations...
+🔄 Phase II: Job Precedence Repair - Fixing step ordering violations
+🔧 Repairing job precedence violations...
+🔄 Phase III: Machine Capacity Repair - Resolving machine overlaps
+🔧 Repairing machine capacity violations...
+🔄 Phase IV: Iterative Improvement - Optimizing schedule quality
+🔧 Applying iterative improvement...
+🔄 Phase V: Final validation and cleanup
+🔧 Final cleanup - ensuring valid operation times...
+✅ Algorithm 3 completed - Generated 60 schedule entries
+📊 Repair iteration 5 makespan: 2320
+📊 Repair iteration 5 schedule entries: 60
+📊 Latest operations: [('Job2', 20, 2320), ('Job3', 20, 2208), ('Job3', 19, 2207)]
+💾 Saved repair iteration 5 to: maple_optimized(deepseek-v3)/rcmax_40_20_2_repair_iteration_5.json
+⚠️ Repair iteration 5 reduced errors from 1 to 1 (makespan: 2320)
+⚠️ Repair completed after 5 iterations with remaining errors
+4️⃣ ValidationTools revalidating schedule...
+❌ Revalidation failed: ["Missing jobs in schedule: ['Job17', 'Job21', 'Job16', 'Job40', 'Job9', 'Job4', 'Job13', 'Job33', 'Job30', 'Job27', 'Job23', 'Job38', 'Job22', 'Job29', 'Job15', 'Job34', 'Job20', 'Job25', 'Job39', 'Job10', 'Job6', 'Job5', 'Job37', 'Job26', 'Job12', 'Job31', 'Job14', 'Job32', 'Job11', 'Job7', 'Job35', 'Job28', 'Job19', 'Job24', 'Job36', 'Job18', 'Job8']"]
+[31m❌ ERROR in workflow: Schedule validation failed after repair
+⚡ Disruption detected in Unknown Agent: Schedule validation failed after repair
+🔄 Initiating global replanning...
+⚠️ Global replanning completed. Manual intervention may be required.
+[31m🚨 Workflow execution halted due to error.
+❌ New 4-step workflow failed
+📊 Found 5 repair iterations
+  Iteration 1: makespan=2320, entries=60
+  Iteration 2: makespan=2320, entries=60
+  Iteration 3: makespan=2320, entries=60
+  Iteration 4: makespan=2320, entries=60
+  Iteration 5: makespan=2320, entries=60
+
+============================================================
+WORKFLOW COMPARISON SUMMARY for rcmax_40_20_2
+============================================================
+❌ Full Workflow        | Makespan:      N/A | Time: 0.01s | Repairs: 5
+✅ No Repair Tools      | Makespan:     2320 | Time: 0.00s
+✅ No Validation Tools  | Makespan:      446 | Time: 0.02s
+❌ No Optimization Tools | Makespan:      N/A | Time: 0.01s | Repairs: 5

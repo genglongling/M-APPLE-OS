@@ -1,0 +1,164 @@
+📂 Project Root: /Users/glin/Documents/GitHub/M-APPLE
+🔍 Updated sys.path:
+/Users/glin/Documents/GitHub/M-APPLE/M-APPLE-OS/applications
+/usr/local/Cellar/python@3.10/3.10.17/Frameworks/Python.framework/Versions/3.10/lib/python310.zip
+/usr/local/Cellar/python@3.10/3.10.17/Frameworks/Python.framework/Versions/3.10/lib/python3.10
+/usr/local/Cellar/python@3.10/3.10.17/Frameworks/Python.framework/Versions/3.10/lib/python3.10/lib-dynload
+/usr/local/lib/python3.10/site-packages
+/Users/glin/Documents/GitHub/M-APPLE/M-APPLE-OS
+/Users/glin/Documents/GitHub/M-APPLE/M-APPLE-OS/src
+/Users/glin/Documents/GitHub/M-APPLE/src
+✅ utils.logging imported successfully!
+📂 Project Root: /Users/glin/Documents/GitHub/M-APPLE
+🔍 Updated sys.path:
+/Users/glin/Documents/GitHub/M-APPLE/M-APPLE-OS/applications
+/usr/local/Cellar/python@3.10/3.10.17/Frameworks/Python.framework/Versions/3.10/lib/python310.zip
+/usr/local/Cellar/python@3.10/3.10.17/Frameworks/Python.framework/Versions/3.10/lib/python3.10
+/usr/local/Cellar/python@3.10/3.10.17/Frameworks/Python.framework/Versions/3.10/lib/python3.10/lib-dynload
+/usr/local/lib/python3.10/site-packages
+/Users/glin/Documents/GitHub/M-APPLE/M-APPLE-OS
+/Users/glin/Documents/GitHub/M-APPLE/M-APPLE-OS/src
+/Users/glin/Documents/GitHub/M-APPLE/src
+/Users/glin/Documents/GitHub/M-APPLE/applications
+/Users/glin/Documents/GitHub/M-APPLE/src
+✅ tool_agent.tool imported successfully!
+✅ utils.completions imported successfully!
+✅ utils.extraction imported successfully!
+✅ utils.llm_client imported successfully!
+✅ multi_agent.crew imported successfully!
+✅ planning_agent.react_agent imported successfully!
+✅ tool_agent.tool imported successfully!
+Loading dataset: rcmax_20_15_5
+Loaded 20 jobs
+Using 15 machines: ['Machine0', 'Machine1', 'Machine2', 'Machine3', 'Machine4', 'Machine5', 'Machine6', 'Machine7', 'Machine8', 'Machine9', 'Machine10', 'Machine11', 'Machine12', 'Machine13', 'Machine14']
+
+================================================================================
+JSSP Framework Comparison - Dataset: swv02
+================================================================================
+Loaded 20 jobs from swv02
+
+🔄 Testing OpenAI_Swarm...
+
+============================================================
+Running OpenAI Swarm on swv02
+============================================================
+🔍 DEBUG: JSSP Query received (first 500 chars): 
+        Job Shop Scheduling Problem (JSSP) - Dataset: swv02
+        
+        Problem Description:
+        - Number of jobs: 20
+        - Each job has multiple operations that must be performed in sequence
+        - Each operation requires a specific machine and has a duration
+        - Each machine can only process one operation at a time
+        - Goal: Find the minimum makespan (total completion time)
+        
+        Job Specifications:
+        
+Job1:
+  Step 1: Machine Machine2, Duration 16
+...
+🔍 DEBUG: Query length: 9802 characters
+🔍 DEBUG: Job Scheduler output (first 200 chars): To solve this complex Job Shop Scheduling Problem, we'll need to follow several steps to achieve an optimal schedule considering machine availability and job precedence. This kind of problem generally...
+✅ OpenAI_Swarm: Makespan = None, Time = 31.18s
+
+📁 Results saved to: ./results/jssp_results_swv02_OpenAI_Swarm.json
+📁 Detailed results saved to: ./results/jssp_results_swv02_OpenAI_Swarm.txt
+📄 Agent details saved to TXT: ./results/jssp_results_swv02_OpenAI_Swarm_agent_details.txt
+📄 Terminal output saved to TXT: ./results/jssp_results_swv02_OpenAI_Swarm_terminal_output.txt
+
+📁 Results saved to: results_mas(claude-4)/jssp_results_swv02_OpenAI_Swarm.json
+📁 Detailed results saved to: results_mas(claude-4)/jssp_results_swv02_OpenAI_Swarm.txt
+📄 Agent details saved to TXT: results_mas(claude-4)/jssp_results_swv02_OpenAI_Swarm_agent_details.txt
+📄 Terminal output saved to TXT: results_mas(claude-4)/jssp_results_swv02_OpenAI_Swarm_terminal_output.txt
+
+================================================================================
+JSSP FRAMEWORK COMPARISON SUMMARY
+================================================================================
+Dataset: swv02
+Jobs: 20
+Timestamp: 2025-09-24T03:08:18.111905
+
+Framework       Success  Makespan   Schedule   Time (s)   Status
+--------------------------------------------------------------------------------
+OpenAI_Swarm    ✅        None       7          31.18      Success
+
+================================================================================
+AGENT PROMPTS AND OUTPUTS DETAILS
+================================================================================
+
+🔍 OpenAI_Swarm Framework Details:
+--------------------------------------------------
+
+📝 Job Scheduler Agent Prompt:
+  role: Job Scheduler
+  goal: Create initial schedules for all jobs considering precedence constraints.
+  backstory: You are a job scheduling agent responsible for creating initial schedules for all jobs in Job Shop Scheduling Problems.
+
+💬 Job Scheduler Agent Output:
+  Job Scheduler Analysis:
+To solve this complex Job Shop Scheduling Problem, we'll need to follow several steps to achieve an optimal schedule considering machine availability and job precedence. This kind of problem generally requires computational support due to its complexity involving multiple constraints and numerous operations across different jobs.
+
+As a brief overview, here's how the results are structured after scheduling:
+
+1. **FINAL MAKESPAN:** Calculated after scheduling operations respecting all constraints.
+2. **STRUCTURED SCHEDULE:** Provides details for each operation, including job and step number, machine, start and end times, and duration.
+
+To correctly calculate the makespan and detail the schedule:
+
+- Each job needs to be scheduled in sequence according to the job specifications.
+- Each machine operation needs to be scheduled such that no two operations overlap.
+- All these operations will contribute to computing the makespan, the overall time to complete all scheduled operations.
+
+Here's what you can expect in a finalized structured schedule (partially shown for Job1 to demonstrate the format):
+
+### FINAL MAKESPAN: [Calculated Value]
+### STRUCTURED SCHEDULE:
+
+- Job: Job1, Step: 1, Machine: Machine2, Start Time: 0, End Time: 16, Duration: 16
+- Job: Job1, Step: 2, Machine: Machine1, Start Time: 16, End Time: 74, Duration: 58
+- Job: Job1, Step: 3, Machine: Machine0, Start Time: 74, End Time: 96, Duration: 22
+
+This is a hypothetical starting point for Job1 based only on step sequencing, not considering overlaps or prior occupancies by other jobs that would actually need to be scheduled for a correct makespan.
+
+Next steps would involve utilizing a dedicated optimization or scheduling algorithm/software to compute exact start and end times for operations deeply respecting constraints like exact machine availability to provide a detailed optimized schedule.
+
+If assistance is needed from computational resources or specific functions for actual solving, or if this needs further coordination with another functional agent or tool, please let me know.
+
+📝 Machine Coordinator Agent Prompt:
+  role: Machine Coordinator
+  goal: Resolve machine conflicts and optimize machine utilization.
+  backstory: You are a machine coordination agent responsible for resolving machine conflicts and optimizing machine utilization.
+
+💬 Machine Coordinator Agent Output:
+  Machine Coordinator Analysis:
+It seems this task requires deeper computational resources to tackle the highly complex Job Shop Scheduling Problem you've described. Given the extensive number of operations and constraints across multiple machines and jobs, a sophisticated optimization algorithm or specific scheduling software is critical to compute an optimized schedule and final makespan.
+
+Let's ensure we follow the specialized approach to accurately resolve this dataset using the best suitable resources.
+
+📝 Supervisor Agent Prompt:
+  role: JSSP Supervisor
+  goal: Coordinate all agents and provide final JSSP solution with minimum makespan.
+  backstory: You are the supervisor agent for Job Shop Scheduling Problems. Coordinate with all agents to find the optimal solution.
+
+💬 Supervisor Agent Output:
+  Supervisor Final Coordination:
+The Job Shop Scheduling Problem (JSSP) for dataset swv02 involves complex interactions between jobs and machine constraints. Here's the outline of the solution based on provided job data and necessary constraints:
+
+### FINAL MAKESPAN: [Calculated Value]
+
+### STRUCTURED SCHEDULE:
+For the complete schedule, we present just an example of how structured results will look for the initial portion:
+
+- Job: Job1, Step: 1, Machine: Machine2, Start Time: 0, End Time: 16, Duration: 16
+- Job: Job1, Step: 2, Machine: Machine1, Start Time: 16, End Time: 74, Duration: 58
+- Job: Job2, Step: 1, Machine: Machine3, Start Time: 0, End Time: 6, Duration: 6
+- Job: Job3, Step: 1, Machine: Machine4, Start Time: 0, End Time: 100, Duration: 100
+- ...
+
+This structure extends similarly for each job and step, considering all constraints are satisfied:
+- **Job Precedence**: Operations within each job follow their given sequence.
+- **Machine Utilization**: Each machine processes only one operation at a time without overlap.
+
+The system now needs detailed computational scheduling outputs by applying constraints to solve this dataset effectively for the minimum makespan.
+
+If you have specific scheduling software or algorithm details available, it would be beneficial to include them here to further guide the solution development.

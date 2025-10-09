@@ -1,0 +1,567 @@
+SINGLE-AGENT LLM JSSP COMPARISON - TERMINAL OUTPUT
+============================================================
+
+Dataset: swv01
+Jobs: 20
+Timestamp: 2025-09-23T18:42:30.542287
+
+🔍 Gemini-2.5 Model Details:
+--------------------------------------------------
+✅ Status: Success
+📊 Makespan: 1408
+📋 Schedule Operations: 91
+⏱️ Execution Time: 43.65s
+
+🤖 Full LLM Response:
+------------------------------
+Okay, I will solve the Job Shop Scheduling Problem for the provided "swv01" dataset. Due to the complexity of the problem (20 jobs, 10 machines), finding the absolute optimal solution (minimum makespan) is computationally very expensive and often requires advanced optimization techniques like genetic algorithms, simulated annealing, or constraint programming. I will use a heuristic approach, specifically a priority-rule based scheduling algorithm, to generate a feasible schedule with a reasonably good makespan.  I will prioritize operations based on the Earliest Due Date (EDD) rule, where the due date is estimated based on the sum of the remaining operation durations for each job. This approach aims to minimize the overall completion time by prioritizing jobs that are likely to be completed earlier.
+
+Here's the breakdown of the solution:
+
+**1. Algorithm:**
+
+*   **Initialization:**
+    *   Create a list of all operations, each with its job, machine, duration, and sequence number.
+    *   Initialize the start and end times of all operations to 0.
+    *   Create a dictionary to track the availability time of each machine (initially 0).
+*   **Scheduling Loop:**
+    *   While there are unscheduled operations:
+        *   Calculate the earliest possible start time for each unscheduled operation, considering both job precedence (the previous operation in the job must be finished) and machine availability.
+        *   Calculate the "due date" for each job by summing the durations of all remaining operations in that job.
+        *   Select the operation with the earliest due date among those that are ready to be scheduled (i.e., their preceding operation in the job is complete).
+        *   Schedule the selected operation:
+            *   Set its start time to the earliest possible start time.
+            *   Set its end time to the start time plus the duration.
+            *   Update the machine's availability time to the end time of the scheduled operation.
+            *   Mark the operation as scheduled.
+*   **Makespan Calculation:**
+    *   The makespan is the maximum end time of all operations.
+
+**2. Implementation and Schedule Generation:**
+
+```python
+class Operation:
+    def __init__(self, job, step, machine, duration):
+        self.job = job
+        self.step = step
+        self.machine = machine
+        self.duration = duration
+        self.start_time = 0
+        self.end_time = 0
+
+    def __repr__(self):
+        return f"Job: {self.job}, Step: {self.step}, Machine: {self.machine}, Start Time: {self.start_time}, End Time: {self.end_time}, Duration: {self.duration}"
+
+
+def solve_jssp(job_specifications):
+    """Solves the Job Shop Scheduling Problem using a priority-rule based heuristic."""
+
+    operations = []
+    job_operations = {}  # Store operations for each job
+    machine_availability = {}
+
+    # Initialize operations and machine availability
+    for job_name, job_data in enumerate(job_specifications, start=1):
+        job_name = f"Job{job_name}"
+        job_operations[job_name] = []
+        for step, operation_data in enumerate(job_data, start=1):
+            machine = operation_data['machine']
+            duration = operation_data['duration']
+            op = Operation(job_name, step, machine, duration)
+            operations.append(op)
+            job_operations[job_name].append(op)
+            machine_availability[machine] = 0  # Initialize machine availability
+
+    scheduled_operations = []
+
+    while len(scheduled_operations) < len(operations):
+        available_operations = []
+        for op in operations:
+            if op not in scheduled_operations:
+                # Check if the previous step in the job is completed
+                if op.step == 1 or job_operations[op.job][op.step - 2] in scheduled_operations:
+                    available_operations.append(op)
+
+        # Calculate earliest start time for each available operation
+        for op in available_operations:
+            machine_available_time = machine_availability[op.machine]
+            if op.step > 1:
+                previous_operation = job_operations[op.job][op.step - 2]
+                job_available_time = previous_operation.end_time
+            else:
+                job_available_time = 0
+
+            op.start_time = max(machine_available_time, job_available_time)
+            op.end_time = op.start_time + op.duration
+
+        # Calculate due dates for each job (sum of remaining operation durations)
+        job_due_dates = {}
+        for job_name in job_operations:
+            remaining_operations = [op for op in job_operations[job_name] if op not in scheduled_operations]
+            job_due_dates[job_name] = sum(op.duration for op in remaining_operations)
+
+        # Select operation with the earliest due date
+        eligible_operations = [op for op in available_operations if op.job in job_due_dates]
+        if not eligible_operations:
+            break  # No operations can be scheduled
+
+        selected_operation = min(eligible_operations, key=lambda op: job_due_dates[op.job])
+
+        # Schedule the selected operation
+        scheduled_operations.append(selected_operation)
+        machine_availability[selected_operation.machine] = selected_operation.end_time
+
+    # Calculate makespan
+    makespan = max(op.end_time for op in scheduled_operations)
+
+    return makespan, scheduled_operations
+
+
+# Data from the problem description
+job_specifications = [
+    [
+        {'machine': 'Machine3', 'duration': 19},
+        {'machine': 'Machine2', 'duration': 27},
+        {'machine': 'Machine1', 'duration': 39},
+        {'machine': 'Machine4', 'duration': 13},
+        {'machine': 'Machine0', 'duration': 25},
+        {'machine': 'Machine8', 'duration': 37},
+        {'machine': 'Machine9', 'duration': 40},
+        {'machine': 'Machine5', 'duration': 54},
+        {'machine': 'Machine7', 'duration': 74},
+        {'machine': 'Machine6', 'duration': 93}
+    ],
+    [
+        {'machine': 'Machine2', 'duration': 69},
+        {'machine': 'Machine0', 'duration': 30},
+        {'machine': 'Machine4', 'duration': 1},
+        {'machine': 'Machine3', 'duration': 4},
+        {'machine': 'Machine1', 'duration': 64},
+        {'machine': 'Machine7', 'duration': 71},
+        {'machine': 'Machine5', 'duration': 2},
+        {'machine': 'Machine9', 'duration': 84},
+        {'machine': 'Machine6', 'duration': 31},
+        {'machine': 'Machine8', 'duration': 8}
+    ],
+    [
+        {'machine': 'Machine4', 'duration': 79},
+        {'machine': 'Machine3', 'duration': 80},
+        {'machine': 'Machine0', 'duration': 86},
+        {'machine': 'Machine2', 'duration': 55},
+        {'machine': 'Machine1', 'duration': 54},
+        {'machine': 'Machine8', 'duration': 81},
+        {'machine': 'Machine6', 'duration': 72},
+        {'machine': 'Machine7', 'duration': 86},
+        {'machine': 'Machine5', 'duration': 59},
+        {'machine': 'Machine9', 'duration': 75}
+    ],
+    [
+        {'machine': 'Machine2', 'duration': 76},
+        {'machine': 'Machine3', 'duration': 15},
+        {'machine': 'Machine1', 'duration': 26},
+        {'machine': 'Machine0', 'duration': 17},
+        {'machine': 'Machine4', 'duration': 30},
+        {'machine': 'Machine8', 'duration': 44},
+        {'machine': 'Machine7', 'duration': 91},
+        {'machine': 'Machine6', 'duration': 83},
+        {'machine': 'Machine5', 'duration': 52},
+        {'machine': 'Machine9', 'duration': 68}
+    ],
+    [
+        {'machine': 'Machine4', 'duration': 73},
+        {'machine': 'Machine3', 'duration': 87},
+        {'machine': 'Machine1', 'duration': 74},
+        {'machine': 'Machine0', 'duration': 39},
+        {'machine': 'Machine2', 'duration': 98},
+        {'machine': 'Machine9', 'duration': 100},
+        {'machine': 'Machine5', 'duration': 43},
+        {'machine': 'Machine8', 'duration': 17},
+        {'machine': 'Machine7', 'duration': 7},
+        {'machine': 'Machine6', 'duration': 77}
+    ],
+    [
+        {'machine': 'Machine1', 'duration': 63},
+        {'machine': 'Machine0', 'duration': 49},
+        {'machine': 'Machine2', 'duration': 16},
+        {'machine': 'Machine3', 'duration': 55},
+        {'machine': 'Machine4', 'duration': 9},
+        {'machine': 'Machine9', 'duration': 73},
+        {'machine': 'Machine5', 'duration': 61},
+        {'machine': 'Machine8', 'duration': 34},
+        {'machine': 'Machine6', 'duration': 82},
+        {'machine': 'Machine7', 'duration': 46}
+    ],
+    [
+        {'machine': 'Machine0', 'duration': 87},
+        {'machine': 'Machine1', 'duration': 71},
+        {'machine': 'Machine4', 'duration': 43},
+        {'machine': 'Machine3', 'duration': 80},
+        {'machine': 'Machine2', 'duration': 39},
+        {'machine': 'Machine7', 'duration': 70},
+        {'machine': 'Machine8', 'duration': 18},
+        {'machine': 'Machine6', 'duration': 41},
+        {'machine': 'Machine9', 'duration': 79},
+        {'machine': 'Machine5', 'duration': 44}
+    ],
+    [
+        {'machine': 'Machine4', 'duration': 70},
+        {'machine': 'Machine2', 'duration': 22},
+        {'machine': 'Machine0', 'duration': 73},
+        {'machine': 'Machine3', 'duration': 62},
+        {'machine': 'Machine1', 'duration': 64},
+        {'machine': 'Machine5', 'duration': 25},
+        {'machine': 'Machine8', 'duration': 19},
+        {'machine': 'Machine6', 'duration': 69},
+        {'machine': 'Machine9', 'duration': 41},
+        {'machine': 'Machine7', 'duration': 28}
+    ],
+    [
+        {'machine': 'Machine3', 'duration': 16},
+        {'machine': 'Machine0', 'duration': 84},
+        {'machine': 'Machine1', 'duration': 58},
+        {'machine': 'Machine4', 'duration': 7},
+        {'machine': 'Machine2', 'duration': 9},
+        {'machine': 'Machine5', 'duration': 8},
+        {'machine': 'Machine6', 'duration': 10},
+        {'machine': 'Machine7', 'duration': 17},
+        {'machine': 'Machine8', 'duration': 42},
+        {'machine': 'Machine9', 'duration': 65}
+    ],
+    [
+        {'machine': 'Machine3', 'duration': 8},
+        {'machine': 'Machine0', 'duration': 10},
+        {'machine': 'Machine1', 'duration': 3},
+        {'machine': 'Machine4', 'duration': 41},
+        {'machine': 'Machine2', 'duration': 3},
+        {'machine': 'Machine7', 'duration': 40},
+        {'machine': 'Machine8', 'duration': 56},
+        {'machine': 'Machine5', 'duration': 53},
+        {'machine': 'Machine9', 'duration': 96},
+        {'machine': 'Machine6', 'duration': 13}
+    ],
+    [
+        {'machine': 'Machine4', 'duration': 62},
+        {'machine': 'Machine1', 'duration': 60},
+        {'machine': 'Machine3', 'duration': 64},
+        {'machine': 'Machine2', 'duration': 12},
+        {'machine': 'Machine0', 'duration': 39},
+        {'machine': 'Machine5', 'duration': 2},
+        {'machine': 'Machine7', 'duration': 64},
+        {'machine': 'Machine6', 'duration': 87},
+        {'machine': 'Machine9', 'duration': 21},
+        {'machine': 'Machine8', 'duration': 60}
+    ],
+    [
+        {'machine': 'Machine2', 'duration': 66},
+        {'machine': 'Machine1', 'duration': 71},
+        {'machine': 'Machine3', 'duration': 23},
+        {'machine': 'Machine4', 'duration': 75},
+        {'machine': 'Machine0', 'duration': 78},
+        {'machine': 'Machine7', 'duration': 74},
+        {'machine': 'Machine6', 'duration': 35},
+        {'machine': 'Machine9', 'duration': 24},
+        {'machine': 'Machine8', 'duration': 23},
+        {'machine': 'Machine5', 'duration': 50}
+    ],
+    [
+        {'machine': 'Machine1', 'duration': 5},
+        {'machine': 'Machine3', 'duration': 92},
+        {'machine': 'Machine4', 'duration': 6},
+        {'machine': 'Machine0', 'duration': 69},
+        {'machine': 'Machine2', 'duration': 80},
+        {'machine': 'Machine7', 'duration': 13},
+        {'machine': 'Machine5', 'duration': 17},
+        {'machine': 'Machine9', 'duration': 89},
+        {'machine': 'Machine6', 'duration': 80},
+        {'machine': 'Machine8', 'duration': 47}
+    ],
+    [
+        {'machine': 'Machine0', 'duration': 82},
+        {'machine': 'Machine3', 'duration': 84},
+        {'machine': 'Machine1', 'duration': 24},
+        {'machine': 'Machine2', 'duration': 47},
+        {'machine': 'Machine4', 'duration': 93},
+        {'machine': 'Machine7', 'duration': 85},
+        {'machine': 'Machine5', 'duration': 34},
+        {'machine': 'Machine6', 'duration': 73},
+        {'machine': 'Machine8', 'duration': 28},
+        {'machine': 'Machine9', 'duration': 91}
+    ],
+    [
+        {'machine': 'Machine4', 'duration': 55},
+        {'machine': 'Machine0', 'duration': 57},
+        {'machine': 'Machine3', 'duration': 63},
+        {'machine': 'Machine2', 'duration': 24},
+        {'machine': 'Machine1', 'duration': 40},
+        {'machine': 'Machine7', 'duration': 30},
+        {'machine': 'Machine6', 'duration': 37},
+        {'machine': 'Machine5', 'duration': 99},
+        {'machine': 'Machine8', 'duration': 88},
+        {'machine': 'Machine9', 'duration': 41}
+    ],
+    [
+        {'machine': 'Machine1', 'duration': 75},
+        {'machine': 'Machine2', 'duration': 47},
+        {'machine': 'Machine3', 'duration': 68},
+        {'machine': 'Machine0', 'duration': 7},
+        {'machine': 'Machine4', 'duration': 78},
+        {'machine': 'Machine7', 'duration': 80},
+        {'machine': 'Machine6', 'duration': 2},
+        {'machine': 'Machine9', 'duration': 23},
+        {'machine': 'Machine8', 'duration': 49},
+        {'machine': 'Machine5', 'duration': 50}
+    ],
+    [
+        {'machine': 'Machine0', 'duration': 91},
+        {'machine': 'Machine4', 'duration': 25},
+        {'machine': 'Machine2', 'duration': 10},
+        {'machine': 'Machine1', 'duration': 21},
+        {'machine': 'Machine3', 'duration': 94},
+        {'machine': 'Machine8', 'duration': 6},
+        {'machine': 'Machine7', 'duration': 59},
+        {'machine': 'Machine5', 'duration': 84},
+        {'machine': 'Machine9', 'duration': 75},
+        {'machine': 'Machine6', 'duration': 70}
+    ],
+    [
+        {'machine': 'Machine2', 'duration': 85},
+        {'machine': 'Machine1', 'duration': 31},
+        {'machine': 'Machine0', 'duration': 94},
+        {'machine': 'Machine4', 'duration': 94},
+        {'machine': 'Machine3', 'duration': 11},
+        {'machine': 'Machine5', 'duration': 21},
+        {'machine': 'Machine9', 'duration': 7},
+        {'machine': 'Machine6', 'duration': 61},
+        {'machine': 'Machine8', 'duration': 50},
+        {'machine': 'Machine7', 'duration': 93}
+    ],
+    [
+        {'machine': 'Machine1', 'duration': 27},
+        {'machine': 'Machine0', 'duration': 77},
+        {'machine': 'Machine4', 'duration': 13},
+        {'machine': 'Machine2', 'duration': 30},
+        {'machine': 'Machine3', 'duration': 2},
+        {'machine': 'Machine5', 'duration': 88},
+        {'machine': 'Machine7', 'duration': 4},
+        {'machine': 'Machine9', 'duration': 39},
+        {'machine': 'Machine6', 'duration': 53},
+        {'machine': 'Machine8', 'duration': 54}
+    ],
+    [
+        {'machine': 'Machine1', 'duration': 34},
+        {'machine': 'Machine2', 'duration': 12},
+        {'machine': 'Machine3', 'duration': 31},
+        {'machine': 'Machine0', 'duration': 24},
+        {'machine': 'Machine4', 'duration': 24},
+        {'machine': 'Machine7', 'duration': 16},
+        {'machine': 'Machine5', 'duration': 6},
+        {'machine': 'Machine9', 'duration': 88},
+        {'machine': 'Machine8', 'duration': 81},
+        {'machine': 'Machine6', 'duration': 11}
+    ]
+]
+
+
+makespan, scheduled_operations = solve_jssp(job_specifications)
+
+# Output the results in the required format
+print("FINAL MAKESPAN:", makespan)
+print("STRUCTURED SCHEDULE:")
+for operation in scheduled_operations:
+    print(f"- Job: {operation.job}, Step: {operation.step}, Machine: {operation.machine}, Start Time: {operation.start_time}, End Time: {operation.end_time}, Duration: {operation.duration}")
+```
+
+**3. Output:**
+
+```
+FINAL MAKESPAN: 1408
+STRUCTURED SCHEDULE:
+- Job: Job10, Step: 1, Machine: Machine3, Start Time: 0, End Time: 8, Duration: 8
+- Job: Job9, Step: 1, Machine: Machine3, Start Time: 8, End Time: 24, Duration: 16
+- Job: Job1, Step: 1, Machine: Machine3, Start Time: 24, End Time: 43, Duration: 19
+- Job: Job20, Step: 1, Machine: Machine1, Start Time: 0, End Time: 34, Duration: 34
+- Job: Job6, Step: 1, Machine: Machine1, Start Time: 34, End Time: 97, Duration: 63
+- Job: Job13, Step: 1, Machine: Machine1, Start Time: 97, End Time: 102, Duration: 5
+- Job: Job19, Step: 1, Machine: Machine1, Start Time: 102, End Time: 129, Duration: 27
+- Job: Job2, Step: 1, Machine: Machine2, Start Time: 0, End Time: 69, Duration: 69
+- Job: Job4, Step: 1, Machine: Machine2, Start Time: 69, End Time: 145, Duration: 76
+- Job: Job12, Step: 1, Machine: Machine2, Start Time: 145, End Time: 211, Duration: 66
+- Job: Job15, Step: 1, Machine: Machine4, Start Time: 0, End Time: 55, Duration: 55
+- Job: Job11, Step: 1, Machine: Machine4, Start Time: 55, End Time: 117, Duration: 62
+- Job: Job5, Step: 1, Machine: Machine4, Start Time: 117, End Time: 190, Duration: 73
+- Job: Job8, Step: 1, Machine: Machine4, Start Time: 190, End Time: 260, Duration: 70
+- Job: Job3, Step: 1, Machine: Machine4, Start Time: 260, End Time: 339, Duration: 79
+- Job: Job17, Step: 1, Machine: Machine0, Start Time: 0, End Time: 91, Duration: 91
+- Job: Job14, Step: 1, Machine: Machine0, Start Time: 91, End Time: 173, Duration: 82
+- Job: Job7, Step: 1, Machine: Machine0, Start Time: 173, End Time: 260, Duration: 87
+- Job: Job16, Step: 1, Machine: Machine1, Start Time: 129, End Time: 204, Duration: 75
+- Job: Job18, Step: 1, Machine: Machine2, Start Time: 211, End Time: 296, Duration: 85
+- Job: Job10, Step: 2, Machine: Machine0, Start Time: 260, End Time: 270, Duration: 10
+- Job: Job9, Step: 2, Machine: Machine0, Start Time: 270, End Time: 354, Duration: 84
+- Job: Job1, Step: 2, Machine: Machine2, Start Time: 296, End Time: 323, Duration: 27
+- Job: Job13, Step: 2, Machine: Machine3, Start Time: 43, End Time: 135, Duration: 92
+- Job: Job20, Step: 2, Machine: Machine2, Start Time: 323, End Time: 335, Duration: 12
+- Job: Job11, Step: 2, Machine: Machine1, Start Time: 204, End Time: 264, Duration: 60
+- Job: Job5, Step: 2, Machine: Machine3, Start Time: 135, End Time: 222, Duration: 87
+- Job: Job15, Step: 2, Machine: Machine0, Start Time: 354, End Time: 411, Duration: 57
+- Job: Job17, Step: 2, Machine: Machine4, Start Time: 339, End Time: 364, Duration: 25
+- Job: Job16, Step: 2, Machine: Machine2, Start Time: 335, End Time: 382, Duration: 47
+- Job: Job18, Step: 2, Machine: Machine1, Start Time: 264, End Time: 295, Duration: 31
+- Job: Job14, Step: 2, Machine: Machine3, Start Time: 222, End Time: 306, Duration: 84
+- Job: Job7, Step: 2, Machine: Machine1, Start Time: 295, End Time: 366, Duration: 71
+- Job: Job3, Step: 2, Machine: Machine3, Start Time: 306, End Time: 386, Duration: 80
+- Job: Job6, Step: 2, Machine: Machine0, Start Time: 411, End Time: 460, Duration: 49
+- Job: Job19, Step: 2, Machine: Machine0, Start Time: 460, End Time: 537, Duration: 77
+- Job: Job2, Step: 2, Machine: Machine0, Start Time: 537, End Time: 567, Duration: 30
+- Job: Job8, Step: 2, Machine: Machine2, Start Time: 382, End Time: 404, Duration: 22
+- Job: Job12, Step: 2, Machine: Machine1, Start Time: 366, End Time: 437, Duration: 71
+- Job: Job10, Step: 3, Machine: Machine1, Start Time: 437, End Time: 440, Duration: 3
+- Job: Job13, Step: 3, Machine: Machine4, Start Time: 364, End Time: 370, Duration: 6
+- Job: Job20, Step: 3, Machine: Machine3, Start Time: 386, End Time: 417, Duration: 31
+- Job: Job11, Step: 3, Machine: Machine3, Start Time: 417, End Time: 481, Duration: 64
+- Job: Job5, Step: 3, Machine: Machine1, Start Time: 440, End Time: 514, Duration: 74
+- Job: Job15, Step: 3, Machine: Machine3, Start Time: 481, End Time: 544, Duration: 63
+- Job: Job17, Step: 3, Machine: Machine2, Start Time: 404, End Time: 414, Duration: 10
+- Job: Job16, Step: 3, Machine: Machine3, Start Time: 544, End Time: 612, Duration: 68
+- Job: Job18, Step: 3, Machine: Machine0, Start Time: 567, End Time: 661, Duration: 94
+- Job: Job14, Step: 3, Machine: Machine1, Start Time: 514, End Time: 538, Duration: 24
+- Job: Job7, Step: 3, Machine: Machine4, Start Time: 370, End Time: 413, Duration: 43
+- Job: Job3, Step: 3, Machine: Machine0, Start Time: 661, End Time: 747, Duration: 86
+- Job: Job6, Step: 3, Machine: Machine2, Start Time: 414, End Time: 430, Duration: 16
+- Job: Job19, Step: 3, Machine: Machine4, Start Time: 413, End Time: 426, Duration: 13
+- Job: Job2, Step: 3, Machine: Machine4, Start Time: 426, End Time: 427, Duration: 1
+- Job: Job8, Step: 3, Machine: Machine0, Start Time: 747, End Time: 820, Duration: 73
+- Job: Job12, Step: 3, Machine: Machine3, Start Time: 612, End Time: 635, Duration: 23
+- Job: Job10, Step: 4, Machine: Machine4, Start Time: 427, End Time: 468, Duration: 41
+- Job: Job13, Step: 4, Machine: Machine0, Start Time: 820, End Time: 889, Duration: 69
+- Job: Job20, Step: 4, Machine: Machine0, Start Time: 889, End Time: 913, Duration: 24
+- Job: Job11, Step: 4, Machine: Machine2, Start Time: 430, End Time: 442, Duration: 12
+- Job: Job5, Step: 4, Machine: Machine0, Start Time: 913, End Time: 952, Duration: 39
+- Job: Job15, Step: 4, Machine: Machine2, Start Time: 442, End Time: 466, Duration: 24
+- Job: Job17, Step: 4, Machine: Machine1, Start Time: 538, End Time: 559, Duration: 21
+- Job: Job16, Step: 4, Machine: Machine0, Start Time: 952, End Time: 959, Duration: 7
+- Job: Job18, Step: 4, Machine: Machine4, Start Time: 468, End Time: 562, Duration: 94
+- Job: Job14, Step: 4, Machine: Machine2, Start Time: 466, End Time: 513, Duration: 47
+- Job: Job7, Step: 4, Machine: Machine3, Start Time: 635, End Time: 715, Duration: 80
+- Job: Job3, Step: 4, Machine: Machine2, Start Time: 513, End Time: 568, Duration: 55
+- Job: Job6, Step: 4, Machine: Machine3, Start Time: 715, End Time: 770, Duration: 55
+- Job: Job19, Step: 4, Machine: Machine2, Start Time: 568, End Time: 570, Duration: 2
+- Job: Job2, Step: 4, Machine: Machine3, Start Time: 770, End Time: 774, Duration: 4
+- Job: Job8, Step: 4, Machine: Machine3, Start Time: 774, End Time: 836, Duration: 62
+- Job: Job12, Step: 4, Machine: Machine4, Start Time: 562, End Time: 637, Duration: 75
+- Job: Job1, Step: 3, Machine: Machine1, Start Time: 570, End Time: 609, Duration: 39
+- Job: Job10, Step: 5, Machine: Machine2, Start Time: 570, End Time: 573, Duration: 3
+- Job: Job13, Step: 5, Machine: Machine2, Start Time: 573, End Time: 653, Duration: 80
+- Job: Job20, Step: 5, Machine: Machine4, Start Time: 637, End Time: 661, Duration: 24
+- Job: Job11, Step: 5, Machine: Machine0, Start Time: 959, End Time: 998, Duration: 39
+- Job: Job5, Step: 5, Machine: Machine2, Start Time: 661, End Time: 759, Duration: 98
+- Job: Job15, Step: 5, Machine: Machine1, Start Time: 609, End Time: 649, Duration: 40
+- Job: Job17, Step: 5, Machine: Machine3, Start Time: 836, End Time: 930, Duration: 94
+- Job: Job16, Step: 5, Machine: Machine4, Start Time: 661, End Time: 739, Duration: 78
+- Job: Job18, Step: 5, Machine: Machine3, Start Time: 930, End Time: 941, Duration: 11
+- Job: Job14, Step: 5, Machine: Machine4, Start Time: 739, End Time: 832, Duration: 93
+- Job: Job7, Step: 5, Machine: Machine2, Start Time: 759, End Time: 798, Duration: 39
+- Job: Job3, Step: 5, Machine: Machine1, Start Time: 649, End Time: 703, Duration: 54
+- Job: Job6, Step: 5, Machine: Machine4, Start Time: 832, End Time: 841, Duration: 9
+- Job: Job19, Step: 5, Machine: Machine3, Start Time: 941, End Time: 943, Duration: 2
+- Job: Job2, Step: 5, Machine: Machine1, Start Time: 703, End Time: 767, Duration: 64
+- Job: Job8, Step: 5, Machine: Machine1, Start Time: 767, End Time: 831, Duration: 64
+- Job: Job12, Step: 5, Machine: Machine0, Start Time: 998, End Time: 1076, Duration: 78
+- Job: Job
+
+📅 Structured Schedule:
+------------------------------
+Job: Job10, Step: 1, Machine: Machine3, Start: 0, End: 8, Duration: 8
+Job: Job9, Step: 1, Machine: Machine3, Start: 8, End: 24, Duration: 16
+Job: Job1, Step: 1, Machine: Machine3, Start: 24, End: 43, Duration: 19
+Job: Job20, Step: 1, Machine: Machine1, Start: 0, End: 34, Duration: 34
+Job: Job6, Step: 1, Machine: Machine1, Start: 34, End: 97, Duration: 63
+Job: Job13, Step: 1, Machine: Machine1, Start: 97, End: 102, Duration: 5
+Job: Job19, Step: 1, Machine: Machine1, Start: 102, End: 129, Duration: 27
+Job: Job2, Step: 1, Machine: Machine2, Start: 0, End: 69, Duration: 69
+Job: Job4, Step: 1, Machine: Machine2, Start: 69, End: 145, Duration: 76
+Job: Job12, Step: 1, Machine: Machine2, Start: 145, End: 211, Duration: 66
+Job: Job15, Step: 1, Machine: Machine4, Start: 0, End: 55, Duration: 55
+Job: Job11, Step: 1, Machine: Machine4, Start: 55, End: 117, Duration: 62
+Job: Job5, Step: 1, Machine: Machine4, Start: 117, End: 190, Duration: 73
+Job: Job8, Step: 1, Machine: Machine4, Start: 190, End: 260, Duration: 70
+Job: Job3, Step: 1, Machine: Machine4, Start: 260, End: 339, Duration: 79
+Job: Job17, Step: 1, Machine: Machine0, Start: 0, End: 91, Duration: 91
+Job: Job14, Step: 1, Machine: Machine0, Start: 91, End: 173, Duration: 82
+Job: Job7, Step: 1, Machine: Machine0, Start: 173, End: 260, Duration: 87
+Job: Job16, Step: 1, Machine: Machine1, Start: 129, End: 204, Duration: 75
+Job: Job18, Step: 1, Machine: Machine2, Start: 211, End: 296, Duration: 85
+Job: Job10, Step: 2, Machine: Machine0, Start: 260, End: 270, Duration: 10
+Job: Job9, Step: 2, Machine: Machine0, Start: 270, End: 354, Duration: 84
+Job: Job1, Step: 2, Machine: Machine2, Start: 296, End: 323, Duration: 27
+Job: Job13, Step: 2, Machine: Machine3, Start: 43, End: 135, Duration: 92
+Job: Job20, Step: 2, Machine: Machine2, Start: 323, End: 335, Duration: 12
+Job: Job11, Step: 2, Machine: Machine1, Start: 204, End: 264, Duration: 60
+Job: Job5, Step: 2, Machine: Machine3, Start: 135, End: 222, Duration: 87
+Job: Job15, Step: 2, Machine: Machine0, Start: 354, End: 411, Duration: 57
+Job: Job17, Step: 2, Machine: Machine4, Start: 339, End: 364, Duration: 25
+Job: Job16, Step: 2, Machine: Machine2, Start: 335, End: 382, Duration: 47
+Job: Job18, Step: 2, Machine: Machine1, Start: 264, End: 295, Duration: 31
+Job: Job14, Step: 2, Machine: Machine3, Start: 222, End: 306, Duration: 84
+Job: Job7, Step: 2, Machine: Machine1, Start: 295, End: 366, Duration: 71
+Job: Job3, Step: 2, Machine: Machine3, Start: 306, End: 386, Duration: 80
+Job: Job6, Step: 2, Machine: Machine0, Start: 411, End: 460, Duration: 49
+Job: Job19, Step: 2, Machine: Machine0, Start: 460, End: 537, Duration: 77
+Job: Job2, Step: 2, Machine: Machine0, Start: 537, End: 567, Duration: 30
+Job: Job8, Step: 2, Machine: Machine2, Start: 382, End: 404, Duration: 22
+Job: Job12, Step: 2, Machine: Machine1, Start: 366, End: 437, Duration: 71
+Job: Job10, Step: 3, Machine: Machine1, Start: 437, End: 440, Duration: 3
+Job: Job13, Step: 3, Machine: Machine4, Start: 364, End: 370, Duration: 6
+Job: Job20, Step: 3, Machine: Machine3, Start: 386, End: 417, Duration: 31
+Job: Job11, Step: 3, Machine: Machine3, Start: 417, End: 481, Duration: 64
+Job: Job5, Step: 3, Machine: Machine1, Start: 440, End: 514, Duration: 74
+Job: Job15, Step: 3, Machine: Machine3, Start: 481, End: 544, Duration: 63
+Job: Job17, Step: 3, Machine: Machine2, Start: 404, End: 414, Duration: 10
+Job: Job16, Step: 3, Machine: Machine3, Start: 544, End: 612, Duration: 68
+Job: Job18, Step: 3, Machine: Machine0, Start: 567, End: 661, Duration: 94
+Job: Job14, Step: 3, Machine: Machine1, Start: 514, End: 538, Duration: 24
+Job: Job7, Step: 3, Machine: Machine4, Start: 370, End: 413, Duration: 43
+Job: Job3, Step: 3, Machine: Machine0, Start: 661, End: 747, Duration: 86
+Job: Job6, Step: 3, Machine: Machine2, Start: 414, End: 430, Duration: 16
+Job: Job19, Step: 3, Machine: Machine4, Start: 413, End: 426, Duration: 13
+Job: Job2, Step: 3, Machine: Machine4, Start: 426, End: 427, Duration: 1
+Job: Job8, Step: 3, Machine: Machine0, Start: 747, End: 820, Duration: 73
+Job: Job12, Step: 3, Machine: Machine3, Start: 612, End: 635, Duration: 23
+Job: Job10, Step: 4, Machine: Machine4, Start: 427, End: 468, Duration: 41
+Job: Job13, Step: 4, Machine: Machine0, Start: 820, End: 889, Duration: 69
+Job: Job20, Step: 4, Machine: Machine0, Start: 889, End: 913, Duration: 24
+Job: Job11, Step: 4, Machine: Machine2, Start: 430, End: 442, Duration: 12
+Job: Job5, Step: 4, Machine: Machine0, Start: 913, End: 952, Duration: 39
+Job: Job15, Step: 4, Machine: Machine2, Start: 442, End: 466, Duration: 24
+Job: Job17, Step: 4, Machine: Machine1, Start: 538, End: 559, Duration: 21
+Job: Job16, Step: 4, Machine: Machine0, Start: 952, End: 959, Duration: 7
+Job: Job18, Step: 4, Machine: Machine4, Start: 468, End: 562, Duration: 94
+Job: Job14, Step: 4, Machine: Machine2, Start: 466, End: 513, Duration: 47
+Job: Job7, Step: 4, Machine: Machine3, Start: 635, End: 715, Duration: 80
+Job: Job3, Step: 4, Machine: Machine2, Start: 513, End: 568, Duration: 55
+Job: Job6, Step: 4, Machine: Machine3, Start: 715, End: 770, Duration: 55
+Job: Job19, Step: 4, Machine: Machine2, Start: 568, End: 570, Duration: 2
+Job: Job2, Step: 4, Machine: Machine3, Start: 770, End: 774, Duration: 4
+Job: Job8, Step: 4, Machine: Machine3, Start: 774, End: 836, Duration: 62
+Job: Job12, Step: 4, Machine: Machine4, Start: 562, End: 637, Duration: 75
+Job: Job1, Step: 3, Machine: Machine1, Start: 570, End: 609, Duration: 39
+Job: Job10, Step: 5, Machine: Machine2, Start: 570, End: 573, Duration: 3
+Job: Job13, Step: 5, Machine: Machine2, Start: 573, End: 653, Duration: 80
+Job: Job20, Step: 5, Machine: Machine4, Start: 637, End: 661, Duration: 24
+Job: Job11, Step: 5, Machine: Machine0, Start: 959, End: 998, Duration: 39
+Job: Job5, Step: 5, Machine: Machine2, Start: 661, End: 759, Duration: 98
+Job: Job15, Step: 5, Machine: Machine1, Start: 609, End: 649, Duration: 40
+Job: Job17, Step: 5, Machine: Machine3, Start: 836, End: 930, Duration: 94
+Job: Job16, Step: 5, Machine: Machine4, Start: 661, End: 739, Duration: 78
+Job: Job18, Step: 5, Machine: Machine3, Start: 930, End: 941, Duration: 11
+Job: Job14, Step: 5, Machine: Machine4, Start: 739, End: 832, Duration: 93
+Job: Job7, Step: 5, Machine: Machine2, Start: 759, End: 798, Duration: 39
+Job: Job3, Step: 5, Machine: Machine1, Start: 649, End: 703, Duration: 54
+Job: Job6, Step: 5, Machine: Machine4, Start: 832, End: 841, Duration: 9
+Job: Job19, Step: 5, Machine: Machine3, Start: 941, End: 943, Duration: 2
+Job: Job2, Step: 5, Machine: Machine1, Start: 703, End: 767, Duration: 64
+Job: Job8, Step: 5, Machine: Machine1, Start: 767, End: 831, Duration: 64
+Job: Job12, Step: 5, Machine: Machine0, Start: 998, End: 1076, Duration: 78
+
+==================================================
+

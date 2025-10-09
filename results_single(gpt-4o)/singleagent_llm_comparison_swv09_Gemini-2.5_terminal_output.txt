@@ -1,0 +1,184 @@
+SINGLE-AGENT LLM JSSP COMPARISON - TERMINAL OUTPUT
+============================================================
+
+Dataset: swv09
+Jobs: 20
+Timestamp: 2025-09-23T19:14:56.890839
+
+🔍 Gemini-2.5 Model Details:
+--------------------------------------------------
+✅ Status: Success
+📊 Makespan: None
+📋 Schedule Operations: 0
+⏱️ Execution Time: 26.69s
+
+🤖 Full LLM Response:
+------------------------------
+Okay, I will solve the Job Shop Scheduling Problem for the provided "swv09" dataset. Due to the complexity of finding the absolute optimal solution in a reasonable time, I will use a heuristic approach. I will prioritize operations based on a combination of factors, including the job's remaining processing time and the operation's duration. I will resolve machine conflicts by scheduling operations in a first-come, first-served manner.
+
+```python
+import heapq
+
+def solve_jssp(jobs):
+    """
+    Solves the Job Shop Scheduling Problem using a heuristic approach.
+
+    Args:
+        jobs: A list of dictionaries, where each dictionary represents a job
+              and contains a list of operations. Each operation is a tuple
+              (machine, duration).
+
+    Returns:
+        A tuple containing:
+            - makespan: The minimum makespan found.
+            - schedule: A list of dictionaries, where each dictionary represents
+                        an operation and contains the job name, step number,
+                        machine, start time, end time, and duration.
+    """
+
+    num_machines = 15  # Based on the machine names Machine0 to Machine14
+    machines = {f"Machine{i}": [] for i in range(num_machines)}
+    num_jobs = len(jobs)
+    job_names = [f"Job{i+1}" for i in range(num_jobs)]
+
+    # Initialize data structures
+    job_pointers = [0] * num_jobs  # Index of the next operation to schedule for each job
+    job_completion_times = [0] * num_jobs
+    machine_available_times = {machine: 0 for machine in machines}
+    schedule = []
+    pq = []  # Priority queue for ready operations
+
+    # Add initial operations to the priority queue
+    for i in range(num_jobs):
+        machine, duration = jobs[i][0]
+        heapq.heappush(pq, (duration, i))  # (duration, job_index)
+
+    current_time = 0
+    completed_jobs = 0
+
+    while completed_jobs < num_jobs:
+        # Find the next operation to schedule
+        if not pq:
+            current_time += 1
+            continue
+
+        duration, job_index = heapq.heappop(pq)
+        job_name = job_names[job_index]
+        step_number = job_pointers[job_index] + 1
+        machine_name, duration = jobs[job_index][job_pointers[job_index]]
+
+        # Schedule the operation
+        start_time = max(machine_available_times[machine_name], job_completion_times[job_index])
+        end_time = start_time + duration
+
+        schedule.append({
+            "Job": job_name,
+            "Step": step_number,
+            "Machine": machine_name,
+            "Start Time": start_time,
+            "End Time": end_time,
+            "Duration": duration
+        })
+
+        # Update machine and job completion times
+        machine_available_times[machine_name] = end_time
+        job_completion_times[job_index] = end_time
+
+        # Move to the next operation in the job
+        job_pointers[job_index] += 1
+
+        # If the job is complete, increment the completed jobs counter
+        if job_pointers[job_index] == len(jobs[job_index]):
+            completed_jobs += 1
+        else:
+            # Add the next operation to the priority queue
+            next_machine, next_duration = jobs[job_index][job_pointers[job_index]]
+            heapq.heappush(pq, (next_duration, job_index))
+
+        current_time = max(current_time, end_time)
+
+    makespan = max(job_completion_times)
+
+    return makespan, schedule
+```
+
+```python
+# Define the job specifications
+jobs_data = [
+    [("Machine5", 8), ("Machine3", 73), ("Machine0", 69), ("Machine2", 38), ("Machine6", 6), ("Machine4", 62), ("Machine1", 78), ("Machine9", 79), ("Machine8", 59), ("Machine13", 77), ("Machine11", 22), ("Machine10", 80), ("Machine12", 58), ("Machine14", 49), ("Machine7", 48)],
+    [("Machine3", 34), ("Machine4", 29), ("Machine2", 69), ("Machine0", 5), ("Machine5", 63), ("Machine1", 82), ("Machine6", 94), ("Machine14", 17), ("Machine11", 94), ("Machine9", 29), ("Machine10", 5), ("Machine13", 75), ("Machine7", 15), ("Machine8", 61), ("Machine12", 61)],
+    [("Machine1", 52), ("Machine2", 30), ("Machine0", 25), ("Machine6", 17), ("Machine3", 46), ("Machine4", 86), ("Machine5", 3), ("Machine14", 70), ("Machine11", 34), ("Machine9", 23), ("Machine10", 68), ("Machine13", 76), ("Machine8", 53), ("Machine12", 71), ("Machine7", 9)],
+    [("Machine2", 50), ("Machine4", 20), ("Machine3", 24), ("Machine0", 53), ("Machine1", 97), ("Machine5", 79), ("Machine6", 92), ("Machine14", 3), ("Machine12", 52), ("Machine10", 75), ("Machine9", 74), ("Machine8", 59), ("Machine7", 75), ("Machine13", 84), ("Machine11", 99)],
+    [("Machine2", 15), ("Machine0", 61), ("Machine3", 47), ("Machine4", 38), ("Machine6", 49), ("Machine5", 21), ("Machine1", 6), ("Machine11", 8), ("Machine8", 71), ("Machine14", 83), ("Machine13", 24), ("Machine12", 18), ("Machine9", 33), ("Machine7", 70), ("Machine10", 100)],
+    [("Machine4", 48), ("Machine5", 50), ("Machine2", 66), ("Machine0", 92), ("Machine6", 2), ("Machine3", 58), ("Machine1", 23), ("Machine9", 84), ("Machine8", 66), ("Machine10", 12), ("Machine7", 36), ("Machine14", 4), ("Machine12", 88), ("Machine13", 64), ("Machine11", 12)],
+    [("Machine3", 29), ("Machine0", 25), ("Machine6", 44), ("Machine5", 87), ("Machine2", 42), ("Machine1", 44), ("Machine4", 86), ("Machine8", 28), ("Machine10", 86), ("Machine9", 74), ("Machine14", 77), ("Machine13", 59), ("Machine12", 94), ("Machine7", 58), ("Machine11", 16)],
+    [("Machine4", 31), ("Machine3", 58), ("Machine0", 94), ("Machine5", 69), ("Machine2", 44), ("Machine1", 93), ("Machine6", 92), ("Machine9", 80), ("Machine8", 63), ("Machine12", 47), ("Machine13", 3), ("Machine7", 79), ("Machine11", 39), ("Machine14", 80), ("Machine10", 75)],
+    [("Machine1", 69), ("Machine2", 27), ("Machine0", 76), ("Machine5", 19), ("Machine6", 86), ("Machine3", 16), ("Machine4", 31), ("Machine12", 33), ("Machine9", 69), ("Machine13", 19), ("Machine10", 43), ("Machine14", 9), ("Machine11", 37), ("Machine7", 35), ("Machine8", 24)],
+    [("Machine2", 75), ("Machine3", 78), ("Machine6", 41), ("Machine4", 60), ("Machine5", 59), ("Machine0", 42), ("Machine1", 60), ("Machine12", 18), ("Machine8", 31), ("Machine10", 15), ("Machine7", 54), ("Machine14", 60), ("Machine9", 20), ("Machine11", 61), ("Machine13", 69)],
+    [("Machine4", 89), ("Machine6", 20), ("Machine1", 27), ("Machine5", 78), ("Machine3", 2), ("Machine2", 21), ("Machine0", 55), ("Machine13", 79), ("Machine11", 77), ("Machine10", 99), ("Machine9", 70), ("Machine12", 30), ("Machine7", 97), ("Machine8", 41), ("Machine14", 98)],
+    [("Machine6", 1), ("Machine2", 10), ("Machine4", 84), ("Machine5", 72), ("Machine0", 14), ("Machine1", 9), ("Machine3", 51), ("Machine7", 22), ("Machine14", 65), ("Machine10", 100), ("Machine13", 65), ("Machine11", 43), ("Machine8", 10), ("Machine12", 14), ("Machine9", 19)],
+    [("Machine5", 50), ("Machine2", 13), ("Machine3", 49), ("Machine6", 75), ("Machine1", 42), ("Machine0", 81), ("Machine4", 89), ("Machine9", 100), ("Machine14", 54), ("Machine13", 37), ("Machine10", 7), ("Machine11", 38), ("Machine8", 25), ("Machine12", 78), ("Machine7", 79)],
+    [("Machine2", 44), ("Machine3", 77), ("Machine5", 26), ("Machine1", 42), ("Machine4", 9), ("Machine6", 73), ("Machine0", 60), ("Machine9", 61), ("Machine10", 85), ("Machine12", 14), ("Machine11", 92), ("Machine7", 100), ("Machine14", 49), ("Machine8", 46), ("Machine13", 12)],
+    [("Machine2", 72), ("Machine0", 53), ("Machine1", 43), ("Machine5", 65), ("Machine6", 59), ("Machine4", 87), ("Machine3", 13), ("Machine8", 71), ("Machine12", 25), ("Machine9", 71), ("Machine10", 89), ("Machine11", 2), ("Machine7", 76), ("Machine14", 21), ("Machine13", 12)],
+    [("Machine2", 60), ("Machine6", 28), ("Machine5", 33), ("Machine1", 36), ("Machine0", 6), ("Machine3", 96), ("Machine4", 48), ("Machine9", 40), ("Machine11", 79), ("Machine10", 60), ("Machine8", 39), ("Machine13", 34), ("Machine7", 54), ("Machine12", 20), ("Machine14", 52)],
+    [("Machine5", 82), ("Machine2", 12), ("Machine3", 11), ("Machine4", 61), ("Machine1", 21), ("Machine0", 21), ("Machine6", 34), ("Machine12", 86), ("Machine14", 53), ("Machine8", 7), ("Machine9", 4), ("Machine7", 95), ("Machine10", 62), ("Machine13", 54), ("Machine11", 82)],
+    [("Machine5", 72), ("Machine0", 13), ("Machine3", 46), ("Machine6", 97), ("Machine1", 87), ("Machine4", 87), ("Machine2", 11), ("Machine7", 45), ("Machine14", 85), ("Machine11", 66), ("Machine8", 43), ("Machine9", 39), ("Machine13", 34), ("Machine10", 30), ("Machine12", 55)],
+    [("Machine1", 39), ("Machine5", 19), ("Machine0", 19), ("Machine4", 73), ("Machine6", 63), ("Machine3", 30), ("Machine2", 69), ("Machine9", 36), ("Machine7", 13), ("Machine10", 96), ("Machine12", 27), ("Machine13", 59), ("Machine14", 76), ("Machine11", 62), ("Machine8", 14)],
+    [("Machine1", 7), ("Machine4", 14), ("Machine3", 79), ("Machine2", 27), ("Machine6", 43), ("Machine0", 96), ("Machine5", 24), ("Machine11", 30), ("Machine7", 27), ("Machine12", 2), ("Machine8", 69), ("Machine14", 75), ("Machine13", 34), ("Machine10", 79), ("Machine9", 96)]
+]
+
+# Solve the JSSP
+makespan, schedule = solve_jssp(jobs_data)
+
+# Print the results in the required format
+print(f"FINAL MAKESPAN: {makespan}")
+print("STRUCTURED SCHEDULE:")
+for operation in schedule:
+    print(f"- Job: {operation['Job']}, Step: {operation['Step']}, Machine: {operation['Machine']}, Start Time: {operation['Start Time']}, End Time: {operation['End Time']}, Duration: {operation['Duration']}")
+```
+
+**Explanation of the Code and Approach:**
+
+1.  **Data Structures:**
+    *   `machines`: A dictionary to keep track of the availability time of each machine.  The keys are machine names (e.g., "Machine0"), and the values are the time at which the machine will be free.
+    *   `job_pointers`: A list to store the index of the next operation to be scheduled for each job.
+    *   `job_completion_times`: A list to store the completion time of each job.
+    *   `schedule`: A list to store the scheduled operations, each represented as a dictionary.
+    *   `pq`: A priority queue to hold ready operations. Operations are prioritized based on their duration (shortest duration first).
+
+2.  **Initialization:**
+    *   The `machines` dictionary is initialized with all machines available from time 0.
+    *   `job_pointers` is initialized to 0 for all jobs, indicating that the first operation of each job is ready.
+    *   The first operation of each job is added to the priority queue `pq`.
+
+3.  **Scheduling Loop:**
+    *   The `while` loop continues until all jobs are completed.
+    *   Inside the loop:
+        *   The operation with the shortest duration is retrieved from the priority queue.
+        *   The start time of the operation is determined by taking the maximum of the machine's availability time and the job's completion time (to satisfy precedence constraints).
+        *   The end time is calculated by adding the duration to the start time.
+        *   The operation is added to the `schedule` list.
+        *   The machine's availability time and the job's completion time are updated.
+        *   The `job_pointer` for the job is incremented to point to the next operation.
+        *   If the job is not yet complete, the next operation is added to the priority queue.
+
+4.  **Makespan Calculation:**
+    *   After all jobs are completed, the makespan is calculated as the maximum completion time among all jobs.
+
+5.  **Output:**
+    *   The makespan and the structured schedule are printed in the required format.
+
+**Key Improvements and Considerations:**
+
+*   **Heuristic Approach:** This solution uses a greedy heuristic.  It prioritizes operations based on duration. Other heuristics could be used, such as prioritizing operations that use machines that are in high demand (most constrained machines).
+*   **Priority Queue:** The priority queue helps to efficiently select the next operation to schedule based on the chosen priority (duration in this case).
+*   **Conflict Resolution:** Machine conflicts are resolved by scheduling operations in a first-come, first-served manner based on the machine's availability time.
+*   **Job Precedence:** The code ensures that operations within a job are scheduled in the correct sequence by considering the job's completion time when determining the start time of the next operation.
+*   **Scalability:** While this heuristic approach is not guaranteed to find the optimal solution, it is relatively efficient and can handle larger problem instances.
+*   **Optimality:**  Finding the absolute optimal solution for JSSP is NP-hard.  For larger instances, metaheuristic algorithms like Genetic Algorithms, Simulated Annealing, or Tabu Search are often used to find near-optimal solutions.  These algorithms are more complex to implement but can provide better results.
+
+This solution provides a feasible schedule and a makespan.  Keep in mind that due to the heuristic nature of the algorithm, the makespan might not be the absolute minimum, but it should be a reasonably good solution.
+
+
+==================================================
+

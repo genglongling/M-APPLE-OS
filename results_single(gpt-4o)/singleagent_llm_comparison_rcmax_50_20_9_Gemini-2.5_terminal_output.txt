@@ -1,0 +1,212 @@
+SINGLE-AGENT LLM JSSP COMPARISON - TERMINAL OUTPUT
+============================================================
+
+Dataset: rcmax_50_20_9
+Jobs: 50
+Timestamp: 2025-09-23T18:12:53.611919
+
+🔍 Gemini-2.5 Model Details:
+--------------------------------------------------
+✅ Status: Success
+📊 Makespan: None
+📋 Schedule Operations: 0
+⏱️ Execution Time: 43.67s
+
+🤖 Full LLM Response:
+------------------------------
+Okay, I will analyze the provided JSSP instance (rcmax_50_20_9) and generate a schedule that minimizes the makespan while adhering to all constraints. Due to the complexity of the problem, I will use a heuristic approach, specifically a priority-rule based scheduling algorithm, combined with local search to improve the solution.  I'll prioritize operations based on the "Longest Processing Time" (LPT) rule, and then use a simple shifting neighborhood search to refine the schedule.
+
+**Here's the approach:**
+
+1.  **Initialization:** Create an initial schedule using the LPT rule.  This means that when a machine becomes available, we select the available operation with the longest duration to be processed next.
+
+2.  **Conflict Resolution:**  The LPT rule will likely create conflicts (overlapping operations on the same machine).  We resolve these conflicts by delaying operations until the machine is free.
+
+3.  **Local Search (Shifting Neighborhood):**  Iteratively improve the schedule by shifting operations within their job sequence.  For each operation, try shifting it earlier or later in time, as long as it doesn't violate job precedence constraints. If a shift results in a lower makespan, accept the change.
+
+4.  **Iteration and Termination:** Repeat the conflict resolution and local search steps for a fixed number of iterations or until no further improvement is found.
+
+**Important Considerations:**
+
+*   **Computational Complexity:**  Finding the absolute optimal solution for a JSSP of this size (50 jobs, 20 operations each) is computationally very expensive (NP-hard).  The heuristic approach provides a good, but not necessarily optimal, solution in a reasonable time.
+*   **Data Structures:**  Efficient data structures (e.g., lists, dictionaries) will be used to represent the schedule, machine availability, and job dependencies.
+
+```python
+import random
+
+def solve_jssp(job_specifications):
+    """
+    Solves the Job Shop Scheduling Problem using a heuristic approach.
+
+    Args:
+        job_specifications: A dictionary representing the JSSP instance.
+            Keys are job names (e.g., "Job1"), and values are lists of
+            operations. Each operation is a tuple: (machine, duration).
+
+    Returns:
+        A tuple containing:
+        - makespan: The makespan of the generated schedule.
+        - schedule: A list of tuples, where each tuple represents an
+          operation in the schedule:
+          (job_name, step_number, machine, start_time, end_time, duration)
+    """
+
+    num_jobs = len(job_specifications)
+    num_machines = 20  # Assuming 20 machines based on the problem description
+
+    # 1. Initialization (LPT-based initial schedule)
+    schedule = []
+    machine_availability = {f"Machine{i}": 0 for i in range(num_machines)}
+    job_completion_times = {job_name: 0 for job_name in job_specifications}
+
+    # Create a list of operations, sorted by duration (LPT)
+    operations = []
+    for job_name, job_ops in job_specifications.items():
+        for i, (machine, duration) in enumerate(job_ops):
+            operations.append((job_name, i + 1, machine, duration))
+
+    operations.sort(key=lambda x: x[3], reverse=True)  # Sort by duration (LPT)
+
+    # Schedule the operations
+    for job_name, step_number, machine, duration in operations:
+        start_time = max(machine_availability[machine], job_completion_times[job_name])
+        end_time = start_time + duration
+        schedule.append((job_name, step_number, machine, start_time, end_time, duration))
+        machine_availability[machine] = end_time
+        job_completion_times[job_name] = end_time
+
+    # 2. Conflict Resolution (Delay operations to avoid overlaps)
+    schedule.sort(key=lambda x: x[3])  # Sort by start time
+
+    machine_schedules = {f"Machine{i}": [] for i in range(num_machines)}
+    for i in range(len(schedule)):
+        job_name, step_number, machine, start_time, end_time, duration = schedule[i]
+        conflicts = []
+        for scheduled_job_name, scheduled_step_number, scheduled_start_time, scheduled_end_time in machine_schedules[machine]:
+            if not (end_time <= scheduled_start_time or start_time >= scheduled_end_time):
+                conflicts.append((scheduled_start_time, scheduled_end_time))
+
+        if conflicts:
+            delay = 0
+            for scheduled_start_time, scheduled_end_time in conflicts:
+                delay = max(delay, scheduled_end_time - start_time)
+
+            start_time += delay
+            end_time = start_time + duration
+            schedule[i] = (job_name, step_number, machine, start_time, end_time, duration)
+
+        machine_schedules[machine].append((job_name, step_number, start_time, end_time))
+        machine_schedules[machine].sort(key=lambda x: x[2])
+
+    # Update job completion times
+    job_completion_times = {job_name: 0 for job_name in job_specifications}
+    for job_name, step_number, machine, start_time, end_time, duration in schedule:
+        job_completion_times[job_name] = max(job_completion_times[job_name], end_time)
+
+    makespan = max(job_completion_times.values())
+
+    # 3. Local Search (Shifting Neighborhood)
+    best_makespan = makespan
+    best_schedule = schedule[:]
+    num_iterations = 100  # Adjust as needed
+
+    for _ in range(num_iterations):
+        # Select a random operation to shift
+        op_index = random.randint(0, len(schedule) - 1)
+        job_name, step_number, machine, start_time, end_time, duration = schedule[op_index]
+
+        # Try shifting the operation earlier
+        new_start_time = max(0, start_time - random.randint(1, duration // 2))  # Shift earlier by a random amount
+        
+        # Ensure job precedence is maintained
+        prev_op_end_time = 0
+        if step_number > 1:
+            prev_machine, prev_duration = job_specifications[job_name][step_number - 2]
+            for jn, sn, m, st, et, d in schedule:
+                if jn == job_name and sn == step_number - 1:
+                    prev_op_end_time = et
+                    break
+        new_start_time = max(new_start_time, prev_op_end_time)
+
+        new_end_time = new_start_time + duration
+        new_schedule = schedule[:]
+        new_schedule[op_index] = (job_name, step_number, machine, new_start_time, new_end_time, duration)
+
+        # Resolve conflicts in the new schedule
+        new_machine_schedules = {f"Machine{i}": [] for i in range(num_machines)}
+        new_schedule.sort(key=lambda x: x[3])
+        conflict_free = True
+
+        for i in range(len(new_schedule)):
+            jn, sn, m, st, et, d = new_schedule[i]
+            conflicts = []
+            for scheduled_jn, scheduled_sn, scheduled_st, scheduled_et in new_machine_schedules[m]:
+                if not (et <= scheduled_st or st >= scheduled_et):
+                    conflicts.append((scheduled_st, scheduled_et))
+            
+            if conflicts:
+                delay = 0
+                for scheduled_st, scheduled_et in conflicts:
+                    delay = max(delay, scheduled_et - st)
+                
+                st += delay
+                et = st + d
+                new_schedule[i] = (jn, sn, m, st, et, d)
+                
+            new_machine_schedules[m].append((jn, sn, st, et))
+            new_machine_schedules[m].sort(key=lambda x: x[2])
+
+        # Calculate the makespan of the new schedule
+        new_job_completion_times = {job_name: 0 for job_name in job_specifications}
+        for jn, sn, m, st, et, d in new_schedule:
+            new_job_completion_times[jn] = max(new_job_completion_times[jn], et)
+        new_makespan = max(new_job_completion_times.values())
+
+        # Accept the shift if it improves the makespan
+        if new_makespan < best_makespan:
+            best_makespan = new_makespan
+            best_schedule = new_schedule[:]
+            schedule = new_schedule[:]
+            makespan = new_makespan
+
+    return best_makespan, best_schedule
+
+
+# Prepare the data in the required format
+job_specifications = {
+    "Job1": [("Machine18", 64), ("Machine15", 34), ("Machine17", 179), ("Machine13", 118), ("Machine19", 78), ("Machine3", 17), ("Machine6", 190), ("Machine1", 101), ("Machine16", 174), ("Machine14", 83), ("Machine0", 28), ("Machine7", 83), ("Machine9", 54), ("Machine4", 151), ("Machine12", 41), ("Machine8", 25), ("Machine2", 195), ("Machine5", 122), ("Machine10", 147), ("Machine11", 68)],
+    "Job2": [("Machine5", 156), ("Machine3", 198), ("Machine13", 64), ("Machine8", 26), ("Machine18", 177), ("Machine19", 157), ("Machine11", 73), ("Machine10", 173), ("Machine6", 17), ("Machine9", 45), ("Machine16", 62), ("Machine1", 107), ("Machine17", 143), ("Machine0", 147), ("Machine12", 199), ("Machine4", 33), ("Machine15", 109), ("Machine2", 56), ("Machine14", 112), ("Machine7", 36)],
+    "Job3": [("Machine12", 127), ("Machine11", 111), ("Machine16", 132), ("Machine17", 156), ("Machine4", 126), ("Machine1", 165), ("Machine13", 110), ("Machine5", 168), ("Machine2", 18), ("Machine3", 117), ("Machine14", 156), ("Machine0", 177), ("Machine7", 75), ("Machine15", 190), ("Machine9", 116), ("Machine10", 85), ("Machine6", 16), ("Machine8", 99), ("Machine19", 33), ("Machine18", 157)],
+    "Job4": [("Machine18", 95), ("Machine6", 61), ("Machine3", 95), ("Machine15", 90), ("Machine5", 154), ("Machine19", 174), ("Machine12", 173), ("Machine14", 119), ("Machine0", 184), ("Machine13", 1), ("Machine8", 118), ("Machine17", 157), ("Machine7", 137), ("Machine4", 87), ("Machine1", 125), ("Machine2", 2), ("Machine11", 179), ("Machine16", 141), ("Machine10", 198), ("Machine9", 6)],
+    "Job5": [("Machine9", 48), ("Machine3", 119), ("Machine7", 186), ("Machine1", 151), ("Machine17", 153), ("Machine16", 4), ("Machine18", 95), ("Machine0", 193), ("Machine8", 76), ("Machine2", 175), ("Machine5", 125), ("Machine13", 101), ("Machine10", 20), ("Machine12", 113), ("Machine19", 152), ("Machine6", 119), ("Machine14", 123), ("Machine11", 83), ("Machine4", 186), ("Machine15", 30)],
+    "Job6": [("Machine18", 87), ("Machine9", 121), ("Machine6", 110), ("Machine5", 62), ("Machine1", 104), ("Machine14", 191), ("Machine8", 109), ("Machine15", 4), ("Machine12", 43), ("Machine19", 30), ("Machine16", 104), ("Machine11", 6), ("Machine0", 146), ("Machine4", 163), ("Machine3", 129), ("Machine13", 144), ("Machine17", 165), ("Machine10", 121), ("Machine2", 83), ("Machine7", 141)],
+    "Job7": [("Machine9", 41), ("Machine17", 130), ("Machine13", 130), ("Machine4", 24), ("Machine5", 38), ("Machine3", 143), ("Machine1", 121), ("Machine10", 39), ("Machine0", 51), ("Machine8", 50), ("Machine15", 102), ("Machine14", 188), ("Machine11", 100), ("Machine6", 58), ("Machine16", 193), ("Machine12", 173), ("Machine2", 130), ("Machine18", 87), ("Machine19", 65), ("Machine7", 26)],
+    "Job8": [("Machine2", 130), ("Machine3", 149), ("Machine7", 162), ("Machine1", 23), ("Machine17", 181), ("Machine13", 130), ("Machine5", 121), ("Machine12", 36), ("Machine6", 190), ("Machine10", 156), ("Machine18", 145), ("Machine11", 165), ("Machine14", 200), ("Machine15", 100), ("Machine16", 123), ("Machine0", 112), ("Machine4", 72), ("Machine19", 90), ("Machine8", 23), ("Machine9", 198)],
+    "Job9": [("Machine6", 62), ("Machine16", 161), ("Machine8", 85), ("Machine11", 143), ("Machine13", 67), ("Machine19", 23), ("Machine12", 172), ("Machine17", 18), ("Machine10", 45), ("Machine18", 91), ("Machine0", 39), ("Machine3", 56), ("Machine4", 57), ("Machine1", 60), ("Machine5", 89), ("Machine15", 171), ("Machine2", 52), ("Machine9", 1), ("Machine7", 44), ("Machine14", 54)],
+    "Job10": [("Machine7", 55), ("Machine16", 31), ("Machine0", 182), ("Machine4", 96), ("Machine13", 87), ("Machine19", 118), ("Machine8", 69), ("Machine17", 92), ("Machine1", 187), ("Machine10", 12), ("Machine9", 100), ("Machine15", 183), ("Machine14", 139), ("Machine3", 60), ("Machine2", 6), ("Machine18", 192), ("Machine5", 145), ("Machine12", 144), ("Machine6", 4), ("Machine11", 104)],
+    "Job11": [("Machine0", 106), ("Machine6", 23), ("Machine17", 9), ("Machine5", 99), ("Machine4", 85), ("Machine12", 149), ("Machine1", 99), ("Machine3", 122), ("Machine14", 140), ("Machine13", 99), ("Machine19", 110), ("Machine10", 100), ("Machine15", 81), ("Machine16", 37), ("Machine18", 2), ("Machine7", 39), ("Machine8", 142), ("Machine11", 38), ("Machine9", 99), ("Machine2", 79)],
+    "Job12": [("Machine16", 45), ("Machine15", 197), ("Machine18", 49), ("Machine14", 156), ("Machine7", 107), ("Machine19", 36), ("Machine8", 69), ("Machine3", 173), ("Machine2", 158), ("Machine17", 111), ("Machine10", 147), ("Machine0", 119), ("Machine5", 125), ("Machine9", 2), ("Machine1", 96), ("Machine4", 13), ("Machine12", 170), ("Machine13", 155), ("Machine6", 56), ("Machine11", 117)],
+    "Job13": [("Machine1", 88), ("Machine16", 57), ("Machine19", 130), ("Machine17", 18), ("Machine14", 1), ("Machine6", 163), ("Machine4", 94), ("Machine13", 5), ("Machine2", 110), ("Machine5", 75), ("Machine11", 108), ("Machine15", 187), ("Machine9", 163), ("Machine7", 190), ("Machine0", 60), ("Machine3", 149), ("Machine12", 137), ("Machine10", 106), ("Machine8", 76), ("Machine18", 54)],
+    "Job14": [("Machine8", 91), ("Machine2", 116), ("Machine6", 147), ("Machine16", 3), ("Machine19", 110), ("Machine9", 136), ("Machine15", 103), ("Machine1", 11), ("Machine3", 166), ("Machine4", 150), ("Machine14", 20), ("Machine0", 25), ("Machine10", 56), ("Machine11", 85), ("Machine13", 10), ("Machine5", 174), ("Machine18", 155), ("Machine17", 157), ("Machine12", 74), ("Machine7", 168)],
+    "Job15": [("Machine18", 40), ("Machine12", 58), ("Machine7", 126), ("Machine13", 41), ("Machine0", 103), ("Machine3", 90), ("Machine14", 117), ("Machine9", 191), ("Machine1", 195), ("Machine10", 66), ("Machine16", 13), ("Machine2", 178), ("Machine17", 138), ("Machine19", 102), ("Machine8", 166), ("Machine4", 130), ("Machine15", 90), ("Machine6", 129), ("Machine5", 59), ("Machine11", 84)],
+    "Job16": [("Machine16", 99), ("Machine18", 113), ("Machine13", 190), ("Machine5", 181), ("Machine9", 176), ("Machine10", 26), ("Machine17", 96), ("Machine12", 183), ("Machine8", 69), ("Machine6", 192), ("Machine4", 150), ("Machine0", 169), ("Machine2", 120), ("Machine1", 137), ("Machine15", 189), ("Machine3", 163), ("Machine7", 196), ("Machine19", 94), ("Machine14", 56), ("Machine11", 8)],
+    "Job17": [("Machine2", 43), ("Machine3", 45), ("Machine11", 103), ("Machine12", 27), ("Machine16", 74), ("Machine14", 162), ("Machine4", 172), ("Machine9", 173), ("Machine15", 95), ("Machine8", 178), ("Machine0", 93), ("Machine5", 139), ("Machine10", 174), ("Machine19", 153), ("Machine18", 26), ("Machine13", 33), ("Machine7", 46), ("Machine1", 133), ("Machine17", 40), ("Machine6", 35)],
+    "Job18": [("Machine12", 156), ("Machine4", 173), ("Machine8", 68), ("Machine18", 20), ("Machine1", 10), ("Machine3", 175), ("Machine11", 131), ("Machine19", 56), ("Machine9", 133), ("Machine14", 131), ("Machine15", 11), ("Machine5", 83), ("Machine7", 137), ("Machine2", 24), ("Machine16", 34), ("Machine13", 144), ("Machine6", 13), ("Machine10", 156), ("Machine0", 38), ("Machine17", 30)],
+    "Job19": [("Machine10", 178), ("Machine8", 19), ("Machine5", 70), ("Machine6", 181), ("Machine4", 165), ("Machine18", 60), ("Machine11", 39), ("Machine2", 72), ("Machine7", 83), ("Machine17", 32), ("Machine15", 188), ("Machine14", 50), ("Machine19", 47), ("Machine16", 17), ("Machine13", 19), ("Machine12", 18), ("Machine3", 173), ("Machine9", 190), ("Machine0", 42), ("Machine1", 117)],
+    "Job20": [("Machine14", 164), ("Machine19", 184), ("Machine10", 14), ("Machine1", 175), ("Machine2", 134), ("Machine13", 169), ("Machine17", 89), ("Machine18", 171), ("Machine5", 96), ("Machine16", 123), ("Machine7", 154), ("Machine6", 155), ("Machine11", 195), ("Machine8", 21), ("Machine0", 140), ("Machine12", 129), ("Machine3", 79), ("Machine9", 121), ("Machine4", 5), ("Machine15", 192)],
+    "Job21": [("Machine6", 28), ("Machine9", 55), ("Machine11", 185), ("Machine17", 175), ("Machine14", 45), ("Machine19", 120), ("Machine7", 94), ("Machine13", 121), ("Machine10", 100), ("Machine3", 91), ("Machine12", 61), ("Machine16", 113), ("Machine2", 59), ("Machine5", 162), ("Machine18", 150), ("Machine8", 53), ("Machine15", 117), ("Machine1", 76), ("Machine4", 25), ("Machine0", 147)],
+    "Job22": [("Machine8", 144), ("Machine15", 177), ("Machine4", 35), ("Machine3", 40), ("Machine5", 149), ("Machine16", 25), ("Machine19", 30), ("Machine12", 68), ("Machine17", 6), ("Machine7", 179), ("Machine13", 119), ("Machine18", 172), ("Machine14", 196), ("Machine6", 76), ("Machine1", 78), ("Machine9", 125), ("Machine2", 89), ("Machine0", 194), ("Machine11", 184), ("Machine10", 145)],
+    "Job23": [("Machine13", 88), ("Machine7", 186), ("Machine1", 81), ("Machine16", 146), ("Machine12", 14), ("Machine17", 12), ("Machine11", 151), ("Machine19", 160), ("Machine5", 195), ("Machine0", 158), ("Machine9", 49), ("Machine14", 70), ("Machine10", 62), ("Machine18", 92), ("Machine4", 152), ("Machine3", 89), ("Machine8", 61), ("Machine2", 15), ("Machine15", 27), ("Machine6", 36)],
+    "Job24": [("Machine16", 91), ("Machine17", 98), ("Machine9", 165), ("Machine19", 88), ("Machine1", 14), ("Machine6", 95), ("Machine3", 189), ("Machine0", 52), ("Machine15", 55), ("Machine7", 12), ("Machine5", 118), ("Machine18", 46), ("Machine14", 66), ("Machine11", 83), ("Machine2", 129), ("Machine4", 7), ("Machine13", 119), ("Machine8", 134), ("Machine12", 105), ("Machine10", 143)],
+    "Job25": [("Machine1", 198), ("Machine6", 70), ("Machine13", 179), ("Machine19", 109), ("Machine17", 154), ("Machine8", 129), ("Machine10", 120), ("Machine11", 185), ("Machine18", 59), ("Machine2", 51), ("Machine9", 119), ("Machine12", 66), ("Machine5", 22), ("Machine3", 47), ("Machine14", 99), ("Machine4", 40), ("Machine15", 196), ("Machine7", 123), ("Machine16", 31), ("Machine0", 158)],
+    "Job26": [("Machine9", 141), ("Machine15", 46), ("Machine2", 162), ("Machine4", 84), ("Machine0", 77), ("Machine7", 150), ("Machine6", 144), ("Machine11", 104), ("Machine10", 14), ("Machine12", 100), ("Machine18", 31), ("Machine19", 74), ("Machine17", 198), ("Machine14", 198), ("Machine16", 82), ("Machine13", 33), ("Machine1", 175), ("Machine8", 67), ("Machine5", 103), ("Machine3", 51)],
+    "Job27": [("Machine4", 196), ("Machine3", 109), ("Machine13", 116), ("Machine18", 200), ("Machine15", 14), ("Machine12", 114), ("Machine7", 115), ("Machine16", 196), ("Machine14", 21), ("Machine8", 192), ("Machine2", 198), ("Machine11", 9), ("Machine19", 48), ("Machine10", 129), ("Machine6", 49), ("Machine17", 70), ("Machine1", 134), ("Machine9", 72), ("Machine5", 67), ("Machine0", 4)],
+    "Job28": [("Machine6", 12), ("Machine9", 170), ("Machine8", 175), ("Machine2", 8), ("Machine10", 178), ("Machine17", 27), ("Machine5", 86), ("Machine1", 74), ("Machine13", 5), ("Machine0", 1), ("Machine15", 52), ("Machine7", 19), ("Machine12", 35), ("Machine16", 120), ("Machine3", 102), ("Machine11", 144), ("Machine14", 176), ("Machine18", 52), ("Machine19", 58), ("Machine4", 71)],
+    "Job29": [("Machine15", 53), ("Machine1", 71), ("Machine10", 198), ("Machine4", 30), ("Machine0", 112), ("Machine19", 145), ("Machine3", 124), ("Machine18", 156), ("Machine5", 149), ("Machine2", 111), ("Machine9", 137), ("Machine7", 108), ("Machine17", 91), ("Machine6", 123), ("Machine14", 37), ("Machine16", 25), ("Machine11", 167), ("Machine13", 32), ("Machine8", 48), ("Machine12", 38)],
+    "Job30": [("Machine17", 136), ("Machine14", 4), ("Machine9", 92), ("Machine11", 59), ("Machine5", 108), ("Machine7", 136), ("Machine4", 84), ("Machine12", 37), ("Machine19", 57), ("Machine6", 1), ("Machine1", 163), ("Machine3", 23), ("Machine18", 157), ("Machine15", 88), ("Machine0", 179), ("Machine2", 68), ("Machine8", 159), ("Machine13", 49), ("Machine10", 35), ("Machine16", 163)],
+    "Job31": [("Machine1", 47), ("Machine17", 178), ("Machine7", 142), ("Machine10", 200), ("Machine14", 88), ("Machine12", 72), ("Machine13", 106), ("Machine8", 59), ("Machine9", 174), ("Machine2", 102), ("Machine18", 110), ("Machine0", 163), ("Machine4", 93), ("Machine5", 110), ("Machine11", 147), ("Machine16", 63), ("Machine15", 192), ("Machine3", 51), ("Machine6", 139), ("Machine19", 24)],
+    "Job32": [("Machine8", 97), ("Machine16", 119), ("Machine14", 60), ("Machine19", 145), ("Machine18", 155), ("Machine5", 184), ("Machine0", 188), ("Machine7", 107), ("Machine6", 152), ("Machine4", 7), ("Machine3", 165), ("Machine1", 42), ("Machine10", 16), ("Machine12", 153), ("Machine13", 186), ("Machine11", 59), ("Machine9", 64), ("Machine17", 161), ("Machine2", 40), ("Machine15", 47)],
+    "Job33": [("Machine7", 92), ("Machine3", 98), ("Machine15", 48), ("Machine13", 175), ("Machine8", 91), ("Machine5", 152), ("Machine6", 177), ("Machine2", 76), ("Machine19", 135), ("
+
+==================================================
+

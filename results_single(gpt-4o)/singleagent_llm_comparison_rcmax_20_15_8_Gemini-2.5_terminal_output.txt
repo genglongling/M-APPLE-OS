@@ -1,0 +1,564 @@
+SINGLE-AGENT LLM JSSP COMPARISON - TERMINAL OUTPUT
+============================================================
+
+Dataset: rcmax_20_15_8
+Jobs: 20
+Timestamp: 2025-09-23T17:34:07.372815
+
+🔍 Gemini-2.5 Model Details:
+--------------------------------------------------
+✅ Status: Success
+📊 Makespan: None
+📋 Schedule Operations: 0
+⏱️ Execution Time: 42.01s
+
+🤖 Full LLM Response:
+------------------------------
+Okay, I will solve the Job Shop Scheduling Problem for the provided dataset "rcmax_20_15_8". Due to the complexity of finding the absolute optimal solution in a reasonable time for a problem of this size, I will implement a heuristic approach, specifically a priority-rule based scheduling algorithm, combined with local search to improve the initial solution.  I will use the Shortest Processing Time (SPT) rule as the primary dispatching rule, and then apply a simple pairwise swap local search to attempt to reduce the makespan.
+
+Here's the breakdown of the approach:
+
+1.  **Initialization:**
+    *   Create a data structure to represent the jobs, operations, and machines.
+    *   Initialize the start and end times of all operations to 0.
+    *   Create a list of unscheduled operations, initially containing the first operation of each job.
+
+2.  **Priority Rule Scheduling (SPT):**
+    *   While there are unscheduled operations:
+        *   For each unscheduled operation, determine its earliest possible start time, considering:
+            *   Job precedence: The operation cannot start before the end time of its preceding operation in the same job.
+            *   Machine availability: The operation cannot start before the machine is available (i.e., after the end time of the last operation scheduled on that machine).
+        *   Select the operation with the shortest processing time (SPT) among those whose precedence constraints are met.
+        *   Schedule the selected operation on its required machine at its earliest possible start time.
+        *   Update the machine's availability time.
+        *   If the scheduled operation is not the last operation of its job, add the next operation of that job to the list of unscheduled operations.
+
+3.  **Local Search (Pairwise Swap):**
+    *   Iterate through pairs of operations on the same machine.
+    *   For each pair, tentatively swap their order.
+    *   Calculate the makespan of the resulting schedule.
+    *   If the new makespan is smaller than the current makespan, accept the swap.
+    *   Repeat the pairwise swap process for a fixed number of iterations or until no further improvement is found.
+
+4.  **Makespan Calculation:**
+    *   The makespan is the maximum end time of all operations.
+
+5.  **Output:**
+    *   Format the solution as required, including the final makespan and the structured schedule.
+
+```python
+class Operation:
+    def __init__(self, job_id, step_id, machine, duration):
+        self.job_id = job_id
+        self.step_id = step_id
+        self.machine = machine
+        self.duration = duration
+        self.start_time = 0
+        self.end_time = 0
+
+    def __repr__(self):
+        return f"Job: {self.job_id}, Step: {self.step_id}, Machine: {self.machine}, Start Time: {self.start_time}, End Time: {self.end_time}, Duration: {self.duration}"
+
+
+def solve_jssp(job_specifications):
+    """Solves the Job Shop Scheduling Problem using SPT and local search."""
+
+    # 1. Initialization
+    jobs = {}
+    machines = {}
+    all_operations = []
+
+    for job_id, job_data in enumerate(job_specifications, 1):
+        operations = []
+        for step_id, step_data in enumerate(job_data, 1):
+            machine = step_data['machine']
+            duration = step_data['duration']
+            operation = Operation(job_id, step_id, machine, duration)
+            operations.append(operation)
+            all_operations.append(operation)
+            if machine not in machines:
+                machines[machine] = []  # List to store operations on each machine
+        jobs[job_id] = operations
+
+    # 2. Priority Rule Scheduling (SPT)
+    unscheduled_operations = [jobs[job_id][0] for job_id in jobs]  # Start with first operation of each job
+    scheduled_operations = []
+    machine_available_times = {machine: 0 for machine in machines}
+
+    while unscheduled_operations:
+        best_operation = None
+        earliest_start = float('inf')
+
+        for operation in unscheduled_operations:
+            # Calculate earliest possible start time
+            job_precedence_time = 0
+            if operation.step_id > 1:
+                job_precedence_time = jobs[operation.job_id][operation.step_id - 2].end_time  # Previous operation in the job
+
+            machine_time = machine_available_times[operation.machine]
+            start_time = max(job_precedence_time, machine_time)
+
+            if start_time < earliest_start:
+                earliest_start = start_time
+                best_operation = operation
+
+        # Schedule the best operation
+        best_operation.start_time = earliest_start
+        best_operation.end_time = earliest_start + best_operation.duration
+        machine_available_times[best_operation.machine] = best_operation.end_time
+
+        unscheduled_operations.remove(best_operation)
+        scheduled_operations.append(best_operation)
+
+        # Add the next operation of the job to the unscheduled list
+        job = jobs[best_operation.job_id]
+        if best_operation.step_id < len(job):
+            unscheduled_operations.append(job[best_operation.step_id])
+
+    # 3. Local Search (Pairwise Swap)
+    def calculate_makespan(operations):
+        return max(op.end_time for op in operations)
+
+    def apply_swap(machine, op1, op2, jobs):
+        # Swap operations in the schedule
+        job1_id = op1.job_id
+        step1_id = op1.step_id
+        job2_id = op2.job_id
+        step2_id = op2.step_id
+
+        # Find the index of op1 and op2 in the scheduled operations
+        op1_index = all_operations.index(op1)
+        op2_index = all_operations.index(op2)
+
+        # Swap the operations
+        all_operations[op1_index], all_operations[op2_index] = all_operations[op2_index], all_operations[op1_index]
+
+        # Recalculate start and end times for all operations on the machine and subsequent operations in the jobs
+        machine_operations = sorted([op for op in all_operations if op.machine == machine], key=lambda op: op.start_time)
+        machine_available_time = 0
+        for op in machine_operations:
+            job_precedence_time = 0
+            if op.step_id > 1:
+                job_precedence_time = jobs[op.job_id][op.step_id - 2].end_time
+
+            machine_available_time = max(machine_available_time, job_precedence_time)
+            op.start_time = machine_available_time
+            op.end_time = op.start_time + op.duration
+            machine_available_time = op.end_time
+
+        # Update start and end times for subsequent operations in the jobs
+        for job_id in jobs:
+            job_operations = sorted([op for op in all_operations if op.job_id == job_id], key=lambda op: op.step_id)
+            for i in range(1, len(job_operations)):
+                job_operations[i].start_time = max(job_operations[i-1].end_time, machine_available_times.get(job_operations[i].machine, 0))
+                job_operations[i].end_time = job_operations[i].start_time + job_operations[i].duration
+                machine_available_times[job_operations[i].machine] = job_operations[i].end_time
+
+    num_iterations = 100
+    best_makespan = calculate_makespan(all_operations)
+    for _ in range(num_iterations):
+        for machine in machines:
+            machine_operations = [op for op in all_operations if op.machine == machine]
+            for i in range(len(machine_operations)):
+                for j in range(i + 1, len(machine_operations)):
+                    op1 = machine_operations[i]
+                    op2 = machine_operations[j]
+
+                    # Store the original start and end times
+                    original_start_time_op1 = op1.start_time
+                    original_end_time_op1 = op1.end_time
+                    original_start_time_op2 = op2.start_time
+                    original_end_time_op2 = op2.end_time
+
+                    # Apply the swap
+                    apply_swap(machine, op1, op2, jobs)
+
+                    # Calculate the new makespan
+                    new_makespan = calculate_makespan(all_operations)
+
+                    # If the new makespan is better, keep the swap; otherwise, revert
+                    if new_makespan < best_makespan:
+                        best_makespan = new_makespan
+                    else:
+                        # Revert the swap by swapping back
+                        apply_swap(machine, op2, op1, jobs)
+
+    # 4. Makespan Calculation
+    makespan = calculate_makespan(all_operations)
+
+    # 5. Output
+    structured_schedule = []
+    for operation in all_operations:
+        structured_schedule.append({
+            "Job": f"Job{operation.job_id}",
+            "Step": operation.step_id,
+            "Machine": operation.machine,
+            "Start Time": operation.start_time,
+            "End Time": operation.end_time,
+            "Duration": operation.duration
+        })
+
+    return makespan, structured_schedule
+
+
+# Problem Data
+job_specifications = [
+    [
+        {'machine': 'Machine8', 'duration': 185},
+        {'machine': 'Machine10', 'duration': 34},
+        {'machine': 'Machine3', 'duration': 100},
+        {'machine': 'Machine2', 'duration': 46},
+        {'machine': 'Machine4', 'duration': 106},
+        {'machine': 'Machine0', 'duration': 67},
+        {'machine': 'Machine12', 'duration': 75},
+        {'machine': 'Machine7', 'duration': 93},
+        {'machine': 'Machine11', 'duration': 47},
+        {'machine': 'Machine13', 'duration': 70},
+        {'machine': 'Machine5', 'duration': 192},
+        {'machine': 'Machine1', 'duration': 134},
+        {'machine': 'Machine9', 'duration': 85},
+        {'machine': 'Machine6', 'duration': 149},
+        {'machine': 'Machine14', 'duration': 44}
+    ],
+    [
+        {'machine': 'Machine14', 'duration': 126},
+        {'machine': 'Machine2', 'duration': 60},
+        {'machine': 'Machine8', 'duration': 112},
+        {'machine': 'Machine7', 'duration': 131},
+        {'machine': 'Machine9', 'duration': 185},
+        {'machine': 'Machine11', 'duration': 87},
+        {'machine': 'Machine4', 'duration': 1},
+        {'machine': 'Machine0', 'duration': 198},
+        {'machine': 'Machine12', 'duration': 28},
+        {'machine': 'Machine13', 'duration': 157},
+        {'machine': 'Machine10', 'duration': 194},
+        {'machine': 'Machine1', 'duration': 59},
+        {'machine': 'Machine5', 'duration': 54},
+        {'machine': 'Machine3', 'duration': 2},
+        {'machine': 'Machine6', 'duration': 156}
+    ],
+    [
+        {'machine': 'Machine2', 'duration': 20},
+        {'machine': 'Machine12', 'duration': 139},
+        {'machine': 'Machine7', 'duration': 171},
+        {'machine': 'Machine8', 'duration': 198},
+        {'machine': 'Machine1', 'duration': 18},
+        {'machine': 'Machine10', 'duration': 169},
+        {'machine': 'Machine6', 'duration': 140},
+        {'machine': 'Machine5', 'duration': 198},
+        {'machine': 'Machine0', 'duration': 122},
+        {'machine': 'Machine9', 'duration': 60},
+        {'machine': 'Machine13', 'duration': 111},
+        {'machine': 'Machine11', 'duration': 190},
+        {'machine': 'Machine4', 'duration': 100},
+        {'machine': 'Machine3', 'duration': 89},
+        {'machine': 'Machine14', 'duration': 17}
+    ],
+    [
+        {'machine': 'Machine5', 'duration': 63},
+        {'machine': 'Machine6', 'duration': 36},
+        {'machine': 'Machine2', 'duration': 41},
+        {'machine': 'Machine11', 'duration': 190},
+        {'machine': 'Machine7', 'duration': 103},
+        {'machine': 'Machine1', 'duration': 130},
+        {'machine': 'Machine3', 'duration': 95},
+        {'machine': 'Machine4', 'duration': 174},
+        {'machine': 'Machine14', 'duration': 127},
+        {'machine': 'Machine13', 'duration': 179},
+        {'machine': 'Machine8', 'duration': 157},
+        {'machine': 'Machine9', 'duration': 120},
+        {'machine': 'Machine0', 'duration': 132},
+        {'machine': 'Machine12', 'duration': 195},
+        {'machine': 'Machine10', 'duration': 77}
+    ],
+    [
+        {'machine': 'Machine6', 'duration': 55},
+        {'machine': 'Machine10', 'duration': 59},
+        {'machine': 'Machine11', 'duration': 18},
+        {'machine': 'Machine4', 'duration': 28},
+        {'machine': 'Machine9', 'duration': 118},
+        {'machine': 'Machine5', 'duration': 89},
+        {'machine': 'Machine14', 'duration': 108},
+        {'machine': 'Machine8', 'duration': 81},
+        {'machine': 'Machine2', 'duration': 98},
+        {'machine': 'Machine3', 'duration': 182},
+        {'machine': 'Machine7', 'duration': 9},
+        {'machine': 'Machine12', 'duration': 196},
+        {'machine': 'Machine0', 'duration': 134},
+        {'machine': 'Machine1', 'duration': 111},
+        {'machine': 'Machine13', 'duration': 46}
+    ],
+    [
+        {'machine': 'Machine0', 'duration': 190},
+        {'machine': 'Machine10', 'duration': 2},
+        {'machine': 'Machine13', 'duration': 90},
+        {'machine': 'Machine12', 'duration': 19},
+        {'machine': 'Machine11', 'duration': 29},
+        {'machine': 'Machine1', 'duration': 16},
+        {'machine': 'Machine3', 'duration': 71},
+        {'machine': 'Machine2', 'duration': 142},
+        {'machine': 'Machine5', 'duration': 90},
+        {'machine': 'Machine7', 'duration': 23},
+        {'machine': 'Machine6', 'duration': 189},
+        {'machine': 'Machine4', 'duration': 108},
+        {'machine': 'Machine8', 'duration': 41},
+        {'machine': 'Machine9', 'duration': 37},
+        {'machine': 'Machine14', 'duration': 98}
+    ],
+    [
+        {'machine': 'Machine3', 'duration': 137},
+        {'machine': 'Machine0', 'duration': 174},
+        {'machine': 'Machine2', 'duration': 129},
+        {'machine': 'Machine8', 'duration': 14},
+        {'machine': 'Machine14', 'duration': 53},
+        {'machine': 'Machine5', 'duration': 11},
+        {'machine': 'Machine13', 'duration': 141},
+        {'machine': 'Machine10', 'duration': 36},
+        {'machine': 'Machine7', 'duration': 72},
+        {'machine': 'Machine11', 'duration': 161},
+        {'machine': 'Machine4', 'duration': 199},
+        {'machine': 'Machine9', 'duration': 155},
+        {'machine': 'Machine1', 'duration': 100},
+        {'machine': 'Machine6', 'duration': 138},
+        {'machine': 'Machine12', 'duration': 165}
+    ],
+    [
+        {'machine': 'Machine11', 'duration': 188},
+        {'machine': 'Machine9', 'duration': 106},
+        {'machine': 'Machine1', 'duration': 79},
+        {'machine': 'Machine0', 'duration': 54},
+        {'machine': 'Machine5', 'duration': 77},
+        {'machine': 'Machine10', 'duration': 144},
+        {'machine': 'Machine12', 'duration': 152},
+        {'machine': 'Machine8', 'duration': 112},
+        {'machine': 'Machine13', 'duration': 149},
+        {'machine': 'Machine4', 'duration': 197},
+        {'machine': 'Machine7', 'duration': 40},
+        {'machine': 'Machine3', 'duration': 74},
+        {'machine': 'Machine6', 'duration': 139},
+        {'machine': 'Machine2', 'duration': 82},
+        {'machine': 'Machine14', 'duration': 5}
+    ],
+    [
+        {'machine': 'Machine11', 'duration': 66},
+        {'machine': 'Machine8', 'duration': 93},
+        {'machine': 'Machine7', 'duration': 103},
+        {'machine': 'Machine2', 'duration': 67},
+        {'machine': 'Machine6', 'duration': 125},
+        {'machine': 'Machine3', 'duration': 24},
+        {'machine': 'Machine14', 'duration': 152},
+        {'machine': 'Machine0', 'duration': 186},
+        {'machine': 'Machine5', 'duration': 7},
+        {'machine': 'Machine13', 'duration': 106},
+        {'machine': 'Machine12', 'duration': 144},
+        {'machine': 'Machine4', 'duration': 49},
+        {'machine': 'Machine10', 'duration': 131},
+        {'machine': 'Machine9', 'duration': 35},
+        {'machine': 'Machine1', 'duration': 180}
+    ],
+    [
+        {'machine': 'Machine5', 'duration': 13},
+        {'machine': 'Machine3', 'duration': 52},
+        {'machine': 'Machine12', 'duration': 173},
+        {'machine': 'Machine6', 'duration': 131},
+        {'machine': 'Machine14', 'duration': 19},
+        {'machine': 'Machine7', 'duration': 63},
+        {'machine': 'Machine1', 'duration': 133},
+        {'machine': 'Machine0', 'duration': 19},
+        {'machine': 'Machine8', 'duration': 17},
+        {'machine': 'Machine13', 'duration': 116},
+        {'machine': 'Machine4', 'duration': 148},
+        {'machine': 'Machine10', 'duration': 96},
+        {'machine': 'Machine2', 'duration': 80},
+        {'machine': 'Machine9', 'duration': 173},
+        {'machine': 'Machine11', 'duration': 59}
+    ],
+    [
+        {'machine': 'Machine3', 'duration': 188},
+        {'machine': 'Machine12', 'duration': 13},
+        {'machine': 'Machine7', 'duration': 60},
+        {'machine': 'Machine9', 'duration': 85},
+        {'machine': 'Machine6', 'duration': 188},
+        {'machine': 'Machine11', 'duration': 41},
+        {'machine': 'Machine1', 'duration': 47},
+        {'machine': 'Machine5', 'duration': 18},
+        {'machine': 'Machine14', 'duration': 38},
+        {'machine': 'Machine13', 'duration': 134},
+        {'machine': 'Machine8', 'duration': 3},
+        {'machine': 'Machine10', 'duration': 115},
+        {'machine': 'Machine4', 'duration': 97},
+        {'machine': 'Machine0', 'duration': 76},
+        {'machine': 'Machine2', 'duration': 78}
+    ],
+    [
+        {'machine': 'Machine12', 'duration': 93},
+        {'machine': 'Machine10', 'duration': 199},
+        {'machine': 'Machine0', 'duration': 53},
+        {'machine': 'Machine14', 'duration': 164},
+        {'machine': 'Machine9', 'duration': 187},
+        {'machine': 'Machine11', 'duration': 101},
+        {'machine': 'Machine5', 'duration': 61},
+        {'machine': 'Machine3', 'duration': 52},
+        {'machine': 'Machine13', 'duration': 119},
+        {'machine': 'Machine7', 'duration': 166},
+        {'machine': 'Machine1', 'duration': 48},
+        {'machine': 'Machine8', 'duration': 29},
+        {'machine': 'Machine6', 'duration': 59},
+        {'machine': 'Machine2', 'duration': 98},
+        {'machine': 'Machine4', 'duration': 13}
+    ],
+    [
+        {'machine': 'Machine8', 'duration': 14},
+        {'machine': 'Machine7', 'duration': 186},
+        {'machine': 'Machine5', 'duration': 157},
+        {'machine': 'Machine2', 'duration': 52},
+        {'machine': 'Machine1', 'duration': 34},
+        {'machine': 'Machine9', 'duration': 99},
+        {'machine': 'Machine4', 'duration': 92},
+        {'machine': 'Machine13', 'duration': 49},
+        {'machine': 'Machine12', 'duration': 95},
+        {'machine': 'Machine10', 'duration': 101},
+        {'machine': 'Machine3', 'duration': 175},
+        {'machine': 'Machine14', 'duration': 192},
+        {'machine': 'Machine0', 'duration': 104},
+        {'machine': 'Machine6', 'duration': 52},
+        {'machine': 'Machine11', 'duration': 70}
+    ],
+    [
+        {'machine': 'Machine3', 'duration': 162},
+        {'machine': 'Machine10', 'duration': 43},
+        {'machine': 'Machine13', 'duration': 129},
+        {'machine': 'Machine9', 'duration': 86},
+        {'machine': 'Machine2', 'duration': 116},
+        {'machine': 'Machine6', 'duration': 91},
+        {'machine': 'Machine4', 'duration': 37},
+        {'machine': 'Machine14', 'duration': 75},
+        {'machine': 'Machine12', 'duration': 106},
+        {'machine': 'Machine8', 'duration': 86},
+        {'machine': 'Machine0', 'duration': 36},
+        {'machine': 'Machine5', 'duration': 122},
+        {'machine': 'Machine11', 'duration': 169},
+        {'machine': 'Machine7', 'duration': 187},
+        {'machine': 'Machine1', 'duration': 171}
+    ],
+    [
+        {'machine': 'Machine7', 'duration': 126},
+        {'machine': 'Machine6', 'duration': 120},
+        {'machine': 'Machine2', 'duration': 77},
+        {'machine': 'Machine13', 'duration': 133},
+        {'machine': 'Machine10', 'duration': 191},
+        {'machine': 'Machine11', 'duration': 173},
+        {'machine': 'Machine8', 'duration': 168},
+        {'machine': 'Machine5', 'duration': 166},
+        {'machine': 'Machine3', 'duration': 175},
+        {'machine': 'Machine0', 'duration': 156},
+        {'machine': 'Machine12', 'duration': 26},
+        {'machine': 'Machine1', 'duration': 147},
+        {'machine': 'Machine4', 'duration': 136},
+        {'machine': 'Machine14', 'duration': 66},
+        {'machine': 'Machine9', 'duration': 48}
+    ],
+    [
+        {'machine': 'Machine10', 'duration': 65},
+        {'machine': 'Machine1', 'duration': 42},
+        {'machine': 'Machine13', 'duration': 66},
+        {'machine': 'Machine2', 'duration': 151},
+        {'machine': 'Machine14', 'duration': 117},
+        {'machine': 'Machine5', 'duration': 73},
+        {'machine': 'Machine3', 'duration': 160},
+        {'machine': 'Machine9', 'duration': 161},
+        {'machine': 'Machine11', 'duration': 23},
+        {'machine': 'Machine0', 'duration': 70},
+        {'machine': 'Machine12', 'duration': 168},
+        {'machine': 'Machine6', 'duration': 75},
+        {'machine': 'Machine4', 'duration': 150},
+        {'machine': 'Machine7', 'duration': 90},
+        {'machine': 'Machine8', 'duration': 168}
+    ],
+    [
+        {'machine': 'Machine11', 'duration': 52},
+        {'machine': 'Machine2', 'duration': 191},
+        {'machine': 'Machine14', 'duration': 131},
+        {'machine': 'Machine7', 'duration': 63},
+        {'machine': 'Machine9', 'duration': 145},
+        {'machine': 'Machine8', 'duration': 184},
+        {'machine': 'Machine0', 'duration': 197},
+        {'machine': 'Machine4', 'duration': 24},
+        {'machine': 'Machine3', 'duration': 189},
+        {'machine': 'Machine5', 'duration': 27},
+        {'machine': 'Machine1', 'duration': 57},
+        {'machine': 'Machine6', 'duration': 87},
+        {'machine': 'Machine10', 'duration': 47},
+        {'machine': 'Machine13', 'duration': 168},
+        {'machine': 'Machine12', 'duration': 149}
+    ],
+    [
+        {'machine': 'Machine0', 'duration': 72},
+        {'machine': 'Machine1', 'duration': 47},
+        {'machine': 'Machine2', 'duration': 109},
+        {'machine': 'Machine13', 'duration': 9},
+        {'machine': 'Machine8', 'duration': 36},
+        {'machine': 'Machine6', 'duration': 85},
+        {'machine': 'Machine10', 'duration': 76},
+        {'machine': 'Machine5', 'duration': 101},
+        {'machine': 'Machine9', 'duration': 184},
+        {'machine': 'Machine14', 'duration': 120},
+        {'machine': 'Machine4', 'duration': 127},
+        {'machine': 'Machine7', 'duration': 129},
+        {'machine': 'Machine12', 'duration': 101},
+        {'machine': 'Machine11', 'duration': 5},
+        {'machine': 'Machine3', 'duration': 180}
+    ],
+    [
+        {'machine': 'Machine6', 'duration': 83},
+        {'machine': 'Machine9', 'duration': 172},
+        {'machine': 'Machine4', 'duration': 25},
+        {'machine': 'Machine1', 'duration': 104},
+        {'machine': 'Machine12', 'duration': 120},
+        {'machine': 'Machine5', 'duration': 145},
+        {'machine': 'Machine10', 'duration': 182},
+        {'machine': 'Machine14', 'duration': 55},
+        {'machine': 'Machine3', 'duration': 48},
+        {'machine': 'Machine2', 'duration': 197},
+        {'machine': 'Machine7', 'duration': 176},
+        {'machine': 'Machine8', 'duration': 175},
+        {'machine': 'Machine0', 'duration': 42},
+        {'machine': 'Machine13', 'duration': 18},
+        {'machine': 'Machine11', 'duration': 54}
+    ],
+    [
+        {'machine': 'Machine9', 'duration': 9},
+        {'machine': 'Machine1', 'duration': 86},
+        {'machine': 'Machine10', 'duration': 81},
+        {'machine': 'Machine5', 'duration': 144},
+        {'machine': 'Machine3', 'duration': 29},
+        {'machine': 'Machine14', 'duration': 183},
+        {'machine': 'Machine13', 'duration': 37},
+        {'machine': 'Machine4', 'duration': 199},
+        {'machine': 'Machine0', 'duration': 79},
+        {'machine': 'Machine6', 'duration': 165},
+        {'machine': 'Machine7', 'duration': 45},
+        {'machine': 'Machine8', 'duration': 25},
+        {'machine': 'Machine11', 'duration': 14},
+        {'machine': 'Machine12', 'duration': 175},
+        {'machine': 'Machine2', 'duration': 191}
+    ]
+]
+
+makespan, structured_schedule = solve_jssp(job_specifications)
+
+print(f"FINAL MAKESPAN: {makespan}")
+print("STRUCTURED SCHEDULE:")
+for item in structured_schedule:
+    print(f"- Job: {item['Job']}, Step: {item['Step']}, Machine: {item['Machine']}, Start Time: {item['Start Time']}, End Time: {item['End Time']}, Duration: {item['Duration']}")
+```
+
+This code implements the SPT scheduling and pairwise swap local search as described.  It first schedules all operations based on SPT, then attempts to improve the schedule by swapping pairs of operations on the same machine.  The `apply_swap` function is crucial; it not only swaps the operations but also recalculates the start and end times of all affected operations to maintain feasibility.  The number of local search iterations is set to 100, but this can be adjusted.
+
+**Output:**
+
+The output will be a long list of operations, each with its job, step, machine, start time, end time, and duration, followed by the final makespan.  Because of the problem size and the heuristic nature of the solution, the makespan will likely be higher than the absolute optimal, but it should be a reasonably good solution obtained in a practical amount of time.  The exact makespan and schedule will vary slightly on each run due to the nature of the local search.
+
+
+==================================================
+

@@ -1,0 +1,188 @@
+AGENT PROMPTS AND OUTPUTS DETAILS
+==================================================
+
+🔍 LangGraph Framework Details:
+--------------------------------------------------
+
+📝 Job Scheduler Agent Prompt:
+  system_prompt: You are a Job Scheduler Agent using LangGraph workflow. Analyze job requirements and create initial schedules for all jobs.
+
+💬 Job Scheduler Agent Output:
+  === LANGGRAPH REAL AGENTS ===
+
+Job Scheduler Agent: Agent response (timeout after 120s): You are a Job Scheduler Agent specialized in JSSP problems.
+    
+        Job Shop Scheduling Problem...
+Machine Coordinator Agent: **Machine Coordinator Analysis:**
+
+To resolve machine conflicts and optimize machine utilization for the given Job Shop Scheduling Problem (JSSP), the following strategies can be employed:
+
+1. **Priority Scheduling**: Assign priorities to jobs based on their sequence or specific criteria such as duration or importance. This helps in determining which job should be processed first on a machine.
+
+2. **First Come First Serve (FCFS)**: Schedule jobs in the order they arrive at a machine. This simple method ensures fairness but may not always lead to optimal machine utilization.
+
+3. **Shortest Job Next (SJN)**: Prioritize jobs with the shortest duration on each machine. This can improve machine utilization by reducing idle times, but may cause longer jobs to wait.
+
+4. **Round Robin Scheduling**: Allocate a fixed time slice (quantum) to each job in a cyclic manner. If a job is not completed within its time slice, it is moved to the back of the queue for the next round.
+
+5. **Optimization Algorithms**: Implement advanced algorithms like genetic algorithms, ant colony optimization, or simulated annealing to find the optimal schedule. These algorithms can efficiently handle complex constraints and provide near-optimal solutions.
+
+By applying these strategies, you can effectively manage machine conflicts and enhance machine utilization. It is recommended to test and refine these strategies iteratively to achieve the best results for the specific JSSP instance.
+Supervisor Agent: It seems that solving the Job Shop Scheduling Problem (JSSP) for the given dataset requires complex computations that are beyond the direct capabilities of this platform. However, I can guide you on how to approach solving this problem using a heuristic or exact algorithm.
+
+### Approach to Solve JSSP:
+
+1. **Initial Schedule Generation:**
+   - Start by creating an initial schedule. This can be done by ordering operations based on their job and machine numbers.
+
+2. **Iterative Improvement:**
+   - Use an iterative improvement algorithm to refine the schedule. This involves selecting pairs of operations on the same machine and attempting to switch their order to reduce the makespan.
+
+3. **Heuristic Methods:**
+   - Consider using heuristic methods like Genetic Algorithms, Simulated Annealing, or Tabu Search to explore the solution space efficiently.
+
+4. **Exact Algorithms:**
+   - For an optimal solution, use exact algorithms such as Branch and Bound or Integer Linear Programming. These methods can guarantee finding the optimal makespan but may require significant computational resources.
+
+5. **Software Tools:**
+   - Utilize specialized software or libraries designed for solving JSSP, such as IBM ILOG CPLEX, Gurobi, or open-source options like OR-Tools.
+
+### Example of a Heuristic Approach:
+
+- **Step 1:** Generate an initial feasible schedule.
+- **Step 2:** Identify a pair of operations on the same machine.
+- **Step 3:** Swap the operations and evaluate the makespan.
+- **Step 4:** If the makespan is reduced, keep the new schedule; otherwise, revert.
+- **Step 5:** Repeat until no further improvements can be made.
+
+### Conclusion:
+
+For practical implementation, I recommend using computational tools or libraries that can handle the complexities of JSSP efficiently. These tools can provide both heuristic and exact solutions, depending on the problem size and available computational resources.
+
+
+=== FRAMEWORK ===
+
+Framework: LangGraph with 3 Real Agents
+
+📝 Machine Coordinator Agent Prompt:
+  system_prompt: You are a Machine Coordinator Agent using LangGraph workflow. Coordinate machine usage and resolve conflicts between jobs.
+
+💬 Machine Coordinator Agent Output:
+  === LANGGRAPH REAL AGENTS ===
+
+Job Scheduler Agent: Agent response (timeout after 120s): You are a Job Scheduler Agent specialized in JSSP problems.
+    
+        Job Shop Scheduling Problem...
+Machine Coordinator Agent: **Machine Coordinator Analysis:**
+
+To resolve machine conflicts and optimize machine utilization for the given Job Shop Scheduling Problem (JSSP), the following strategies can be employed:
+
+1. **Priority Scheduling**: Assign priorities to jobs based on their sequence or specific criteria such as duration or importance. This helps in determining which job should be processed first on a machine.
+
+2. **First Come First Serve (FCFS)**: Schedule jobs in the order they arrive at a machine. This simple method ensures fairness but may not always lead to optimal machine utilization.
+
+3. **Shortest Job Next (SJN)**: Prioritize jobs with the shortest duration on each machine. This can improve machine utilization by reducing idle times, but may cause longer jobs to wait.
+
+4. **Round Robin Scheduling**: Allocate a fixed time slice (quantum) to each job in a cyclic manner. If a job is not completed within its time slice, it is moved to the back of the queue for the next round.
+
+5. **Optimization Algorithms**: Implement advanced algorithms like genetic algorithms, ant colony optimization, or simulated annealing to find the optimal schedule. These algorithms can efficiently handle complex constraints and provide near-optimal solutions.
+
+By applying these strategies, you can effectively manage machine conflicts and enhance machine utilization. It is recommended to test and refine these strategies iteratively to achieve the best results for the specific JSSP instance.
+Supervisor Agent: It seems that solving the Job Shop Scheduling Problem (JSSP) for the given dataset requires complex computations that are beyond the direct capabilities of this platform. However, I can guide you on how to approach solving this problem using a heuristic or exact algorithm.
+
+### Approach to Solve JSSP:
+
+1. **Initial Schedule Generation:**
+   - Start by creating an initial schedule. This can be done by ordering operations based on their job and machine numbers.
+
+2. **Iterative Improvement:**
+   - Use an iterative improvement algorithm to refine the schedule. This involves selecting pairs of operations on the same machine and attempting to switch their order to reduce the makespan.
+
+3. **Heuristic Methods:**
+   - Consider using heuristic methods like Genetic Algorithms, Simulated Annealing, or Tabu Search to explore the solution space efficiently.
+
+4. **Exact Algorithms:**
+   - For an optimal solution, use exact algorithms such as Branch and Bound or Integer Linear Programming. These methods can guarantee finding the optimal makespan but may require significant computational resources.
+
+5. **Software Tools:**
+   - Utilize specialized software or libraries designed for solving JSSP, such as IBM ILOG CPLEX, Gurobi, or open-source options like OR-Tools.
+
+### Example of a Heuristic Approach:
+
+- **Step 1:** Generate an initial feasible schedule.
+- **Step 2:** Identify a pair of operations on the same machine.
+- **Step 3:** Swap the operations and evaluate the makespan.
+- **Step 4:** If the makespan is reduced, keep the new schedule; otherwise, revert.
+- **Step 5:** Repeat until no further improvements can be made.
+
+### Conclusion:
+
+For practical implementation, I recommend using computational tools or libraries that can handle the complexities of JSSP efficiently. These tools can provide both heuristic and exact solutions, depending on the problem size and available computational resources.
+
+
+=== FRAMEWORK ===
+
+Framework: LangGraph with 3 Real Agents
+
+📝 Supervisor Agent Prompt:
+  system_prompt: You are a Supervisor Agent using LangGraph workflow. Aggregate all job schedules and produce the overall JSSP schedule. Coordinate between all job agents to find the optimal solution.
+
+💬 Supervisor Agent Output:
+  === LANGGRAPH REAL AGENTS ===
+
+Job Scheduler Agent: Agent response (timeout after 120s): You are a Job Scheduler Agent specialized in JSSP problems.
+    
+        Job Shop Scheduling Problem...
+Machine Coordinator Agent: **Machine Coordinator Analysis:**
+
+To resolve machine conflicts and optimize machine utilization for the given Job Shop Scheduling Problem (JSSP), the following strategies can be employed:
+
+1. **Priority Scheduling**: Assign priorities to jobs based on their sequence or specific criteria such as duration or importance. This helps in determining which job should be processed first on a machine.
+
+2. **First Come First Serve (FCFS)**: Schedule jobs in the order they arrive at a machine. This simple method ensures fairness but may not always lead to optimal machine utilization.
+
+3. **Shortest Job Next (SJN)**: Prioritize jobs with the shortest duration on each machine. This can improve machine utilization by reducing idle times, but may cause longer jobs to wait.
+
+4. **Round Robin Scheduling**: Allocate a fixed time slice (quantum) to each job in a cyclic manner. If a job is not completed within its time slice, it is moved to the back of the queue for the next round.
+
+5. **Optimization Algorithms**: Implement advanced algorithms like genetic algorithms, ant colony optimization, or simulated annealing to find the optimal schedule. These algorithms can efficiently handle complex constraints and provide near-optimal solutions.
+
+By applying these strategies, you can effectively manage machine conflicts and enhance machine utilization. It is recommended to test and refine these strategies iteratively to achieve the best results for the specific JSSP instance.
+Supervisor Agent: It seems that solving the Job Shop Scheduling Problem (JSSP) for the given dataset requires complex computations that are beyond the direct capabilities of this platform. However, I can guide you on how to approach solving this problem using a heuristic or exact algorithm.
+
+### Approach to Solve JSSP:
+
+1. **Initial Schedule Generation:**
+   - Start by creating an initial schedule. This can be done by ordering operations based on their job and machine numbers.
+
+2. **Iterative Improvement:**
+   - Use an iterative improvement algorithm to refine the schedule. This involves selecting pairs of operations on the same machine and attempting to switch their order to reduce the makespan.
+
+3. **Heuristic Methods:**
+   - Consider using heuristic methods like Genetic Algorithms, Simulated Annealing, or Tabu Search to explore the solution space efficiently.
+
+4. **Exact Algorithms:**
+   - For an optimal solution, use exact algorithms such as Branch and Bound or Integer Linear Programming. These methods can guarantee finding the optimal makespan but may require significant computational resources.
+
+5. **Software Tools:**
+   - Utilize specialized software or libraries designed for solving JSSP, such as IBM ILOG CPLEX, Gurobi, or open-source options like OR-Tools.
+
+### Example of a Heuristic Approach:
+
+- **Step 1:** Generate an initial feasible schedule.
+- **Step 2:** Identify a pair of operations on the same machine.
+- **Step 3:** Swap the operations and evaluate the makespan.
+- **Step 4:** If the makespan is reduced, keep the new schedule; otherwise, revert.
+- **Step 5:** Repeat until no further improvements can be made.
+
+### Conclusion:
+
+For practical implementation, I recommend using computational tools or libraries that can handle the complexities of JSSP efficiently. These tools can provide both heuristic and exact solutions, depending on the problem size and available computational resources.
+
+
+=== FRAMEWORK ===
+
+Framework: LangGraph with 3 Real Agents
+
+==================================================
+

@@ -1,0 +1,605 @@
+Loading dataset: TA72 from /Users/glin/Documents/GitHub/M-APPLE/M-APPLE-OS/applications/TA/TA72.txt
+Loaded 100 jobs
+
+--- Running Full Workflow ---
+
+============================================================
+Running MAPLE Full Workflow on TA72
+Description: Complete workflow with all tools
+Timestamp: 2025-09-24 15:11:28
+============================================================
+⚠️ Warning: Agent is None in node: {'agent': None, 'type': 'JSSPAgent'}
+⚠️ Warning: Agent is None in node: {'agent': None, 'type': 'JSSPValidationAgent'}
+
+=== [OPTIMIZED MAPLE] New 4-Step Workflow ===
+Nodes: ['Unknown Agent', 'Unknown Agent']
+Edges: [{'from': 0, 'to': 1}]
+Workflow: Full Workflow
+Validation: ✅
+Repair: ✅
+Optimization: ✅
+
+=== [OPTIMIZED MAPLE] Inter-Agent Coordination ===
+
+=== [OPTIMIZED MAPLE] New Workflow Execution ===
+🔄 Running new 7-step workflow: Query -> Validation -> Repair -> Re-validation -> Optimization -> Final Check -> Supervisor
+
+🔄 Starting New 4-Step Workflow...
+1️⃣ Loading pre-generated schedule from JSON file...
+📊 Loaded 245 schedule entries from TA72
+📊 Claude-Sonnet-4 makespan: 1247
+📊 Initial schedule makespan: 269
+📊 Schedule entries count: 245
+📊 Sample entry: {'job': 'Job1', 'step': 1, 'machine': 'Machine53', 'start': 0, 'end': 40, 'duration': 40}
+[32m✅ Pre-generated schedule loaded successfully.
+2️⃣ ValidationTools validating schedule...
+❌ Initial validation failed: ['Job Job8: Step 2 starts before step 1 ends', 'Machine Machine44: Operations overlap - Job2 step 1 and Job99 step 2', 'Machine Machine44: Operations overlap - Job99 step 2 and Job29 step 2', 'Machine Machine44: Operations overlap - Job29 step 2 and Job72 step 2', 'Machine Machine1: Operations overlap - Job9 step 1 and Job25 step 2', 'Machine Machine1: Operations overlap - Job25 step 2 and Job88 step 3', 'Machine Machine1: Operations overlap - Job31 step 2 and Job80 step 1', 'Machine Machine29: Operations overlap - Job64 step 1 and Job17 step 3', 'Machine Machine91: Operations overlap - Job75 step 1 and Job23 step 2', 'Machine Machine91: Operations overlap - Job23 step 2 and Job7 step 2', 'Machine Machine91: Operations overlap - Job7 step 2 and Job73 step 2', 'Machine Machine23: Operations overlap - Job72 step 1 and Job36 step 3', 'Machine Machine97: Operations overlap - Job74 step 3 and Job9 step 2', 'Machine Machine16: Operations overlap - Job86 step 1 and Job19 step 2', 'Machine Machine16: Operations overlap - Job19 step 2 and Job90 step 2', 'Machine Machine81: Operations overlap - Job19 step 1 and Job91 step 3', 'Machine Machine81: Operations overlap - Job91 step 3 and Job27 step 2', 'Machine Machine93: Operations overlap - Job20 step 1 and Job18 step 3', 'Machine Machine93: Operations overlap - Job18 step 3 and Job65 step 2', 'Machine Machine93: Operations overlap - Job65 step 2 and Job99 step 3', 'Machine Machine83: Operations overlap - Job26 step 1 and Job43 step 2', 'Machine Machine83: Operations overlap - Job43 step 2 and Job68 step 1', 'Machine Machine17: Operations overlap - Job29 step 1 and Job64 step 2', 'Machine Machine17: Operations overlap - Job64 step 2 and Job98 step 1', 'Machine Machine17: Operations overlap - Job98 step 1 and Job38 step 3', 'Machine Machine39: Operations overlap - Job66 step 2 and Job2 step 2', 'Machine Machine69: Operations overlap - Job62 step 1 and Job72 step 3', 'Machine Machine6: Operations overlap - Job58 step 1 and Job54 step 3', 'Machine Machine6: Operations overlap - Job54 step 3 and Job40 step 3', 'Machine Machine41: Operations overlap - Job69 step 2 and Job29 step 3', 'Machine Machine40: Operations overlap - Job46 step 1 and Job51 step 3', 'Machine Machine37: Operations overlap - Job37 step 1 and Job13 step 2', 'Machine Machine37: Operations overlap - Job13 step 2 and Job90 step 1', 'Machine Machine68: Operations overlap - Job39 step 1 and Job95 step 2', 'Machine Machine55: Operations overlap - Job57 step 1 and Job89 step 2', 'Machine Machine55: Operations overlap - Job89 step 2 and Job33 step 2', 'Machine Machine51: Operations overlap - Job41 step 1 and Job48 step 3', 'Machine Machine51: Operations overlap - Job48 step 3 and Job43 step 1', 'Machine Machine51: Operations overlap - Job53 step 1 and Job76 step 3', 'Machine Machine51: Operations overlap - Job76 step 3 and Job59 step 1', 'Machine Machine82: Operations overlap - Job44 step 1 and Job88 step 2', 'Machine Machine31: Operations overlap - Job48 step 1 and Job63 step 2', 'Machine Machine84: Operations overlap - Job49 step 1 and Job75 step 2', 'Machine Machine84: Operations overlap - Job75 step 2 and Job84 step 1', 'Machine Machine21: Operations overlap - Job81 step 1 and Job11 step 2', 'Machine Machine21: Operations overlap - Job11 step 2 and Job100 step 2', 'Machine Machine21: Operations overlap - Job100 step 2 and Job45 step 3', 'Machine Machine21: Operations overlap - Job45 step 3 and Job21 step 2', 'Machine Machine98: Operations overlap - Job56 step 1 and Job35 step 3', 'Machine Machine98: Operations overlap - Job35 step 3 and Job1 step 3', 'Machine Machine56: Operations overlap - Job45 step 2 and Job61 step 2', 'Machine Machine56: Operations overlap - Job61 step 2 and Job89 step 3', 'Machine Machine76: Operations overlap - Job65 step 1 and Job18 step 2', 'Machine Machine63: Operations overlap - Job71 step 1 and Job36 step 2', 'Machine Machine50: Operations overlap - Job77 step 1 and Job81 step 3', 'Machine Machine50: Operations overlap - Job81 step 3 and Job26 step 2', 'Machine Machine99: Operations overlap - Job79 step 1 and Job14 step 2', 'Machine Machine46: Operations overlap - Job28 step 2 and Job94 step 2', 'Machine Machine5: Operations overlap - Job93 step 1 and Job48 step 2', 'Machine Machine2: Operations overlap - Job86 step 2 and Job80 step 2', 'Machine Machine26: Operations overlap - Job91 step 2 and Job6 step 2', 'Machine Machine87: Operations overlap - Job51 step 2 and Job16 step 2', 'Machine Machine87: Operations overlap - Job39 step 2 and Job65 step 3', 'Machine Machine35: Operations overlap - Job85 step 2 and Job64 step 3', 'Machine Machine92: Operations overlap - Job20 step 2 and Job63 step 3', 'Machine Machine32: Operations overlap - Job57 step 2 and Job12 step 2', 'Machine Machine32: Operations overlap - Job12 step 2 and Job55 step 2', 'Machine Machine96: Operations overlap - Job76 step 2 and Job46 step 2', 'Machine Machine34: Operations overlap - Job47 step 3 and Job77 step 2', 'Machine Machine8: Operations overlap - Job56 step 2 and Job92 step 3', 'Machine Machine20: Operations overlap - Job98 step 2 and Job68 step 2', "Unused machines: ['Machine19', 'Machine13', 'Machine65', 'Machine77', 'Machine67', 'Machine47', 'Machine90']"]
+3️⃣ RepairTools repairing schedule...
+🔧 Repair iteration 1/5
+🔧 Starting Algorithm 3: Cascading Repair and Queue Reordering
+📊 Processing 245 schedule entries
+❌ Found 72 constraint violations
+🔄 Phase I: Status Update - Identifying affected operations
+🔧 Fixing immediate constraint violations...
+🔄 Phase II: Job Precedence Repair - Fixing step ordering violations
+🔧 Repairing job precedence violations...
+🔄 Phase III: Machine Capacity Repair - Resolving machine overlaps
+🔧 Repairing machine capacity violations...
+⏰ Fixed machine overlap on Machine44
+⏰ Fixed machine overlap on Machine44
+⏰ Fixed machine overlap on Machine44
+⏰ Fixed machine overlap on Machine44
+⏰ Fixed machine overlap on Machine1
+⏰ Fixed machine overlap on Machine1
+⏰ Fixed machine overlap on Machine1
+⏰ Fixed machine overlap on Machine1
+⏰ Fixed machine overlap on Machine29
+⏰ Fixed machine overlap on Machine91
+⏰ Fixed machine overlap on Machine91
+⏰ Fixed machine overlap on Machine91
+⏰ Fixed machine overlap on Machine23
+⏰ Fixed machine overlap on Machine97
+⏰ Fixed machine overlap on Machine16
+⏰ Fixed machine overlap on Machine16
+⏰ Fixed machine overlap on Machine81
+⏰ Fixed machine overlap on Machine81
+⏰ Fixed machine overlap on Machine93
+⏰ Fixed machine overlap on Machine93
+⏰ Fixed machine overlap on Machine93
+⏰ Fixed machine overlap on Machine93
+⏰ Fixed machine overlap on Machine83
+⏰ Fixed machine overlap on Machine83
+⏰ Fixed machine overlap on Machine17
+⏰ Fixed machine overlap on Machine17
+⏰ Fixed machine overlap on Machine17
+⏰ Fixed machine overlap on Machine39
+⏰ Fixed machine overlap on Machine69
+⏰ Fixed machine overlap on Machine6
+⏰ Fixed machine overlap on Machine6
+⏰ Fixed machine overlap on Machine41
+⏰ Fixed machine overlap on Machine40
+⏰ Fixed machine overlap on Machine37
+⏰ Fixed machine overlap on Machine37
+⏰ Fixed machine overlap on Machine37
+⏰ Fixed machine overlap on Machine68
+⏰ Fixed machine overlap on Machine68
+⏰ Fixed machine overlap on Machine55
+⏰ Fixed machine overlap on Machine55
+⏰ Fixed machine overlap on Machine51
+⏰ Fixed machine overlap on Machine51
+⏰ Fixed machine overlap on Machine51
+⏰ Fixed machine overlap on Machine51
+⏰ Fixed machine overlap on Machine51
+⏰ Fixed machine overlap on Machine82
+⏰ Fixed machine overlap on Machine82
+⏰ Fixed machine overlap on Machine31
+⏰ Fixed machine overlap on Machine84
+⏰ Fixed machine overlap on Machine84
+⏰ Fixed machine overlap on Machine21
+⏰ Fixed machine overlap on Machine21
+⏰ Fixed machine overlap on Machine21
+⏰ Fixed machine overlap on Machine21
+⏰ Fixed machine overlap on Machine98
+⏰ Fixed machine overlap on Machine98
+⏰ Fixed machine overlap on Machine56
+⏰ Fixed machine overlap on Machine56
+⏰ Fixed machine overlap on Machine76
+⏰ Fixed machine overlap on Machine63
+⏰ Fixed machine overlap on Machine63
+⏰ Fixed machine overlap on Machine63
+⏰ Fixed machine overlap on Machine50
+⏰ Fixed machine overlap on Machine50
+⏰ Fixed machine overlap on Machine99
+⏰ Fixed machine overlap on Machine99
+⏰ Fixed machine overlap on Machine46
+⏰ Fixed machine overlap on Machine5
+⏰ Fixed machine overlap on Machine5
+⏰ Fixed machine overlap on Machine2
+⏰ Fixed machine overlap on Machine35
+⏰ Fixed machine overlap on Machine26
+⏰ Fixed machine overlap on Machine26
+⏰ Fixed machine overlap on Machine87
+⏰ Fixed machine overlap on Machine87
+⏰ Fixed machine overlap on Machine87
+⏰ Fixed machine overlap on Machine20
+⏰ Fixed machine overlap on Machine20
+⏰ Fixed machine overlap on Machine92
+⏰ Fixed machine overlap on Machine32
+⏰ Fixed machine overlap on Machine32
+⏰ Fixed machine overlap on Machine96
+⏰ Fixed machine overlap on Machine34
+⏰ Fixed machine overlap on Machine8
+🔄 Phase IV: Iterative Improvement - Optimizing schedule quality
+🔧 Applying iterative improvement...
+🔄 Phase V: Final validation and cleanup
+🔧 Final cleanup - ensuring valid operation times...
+✅ Algorithm 3 completed - Generated 245 schedule entries
+📊 Repair iteration 1 makespan: 387
+📊 Repair iteration 1 schedule entries: 245
+📊 Latest operations: [('Job59', 1, 387), ('Job67', 2, 364), ('Job73', 2, 320)]
+💾 Saved repair iteration 1 to: maple_optimized(claude-4)/TA72_repair_iteration_1.json
+⚠️ Repair iteration 1 reduced errors from 72 to 26 (makespan: 387)
+🔧 Repair iteration 2/5
+🔧 Starting Algorithm 3: Cascading Repair and Queue Reordering
+📊 Processing 245 schedule entries
+❌ Found 26 constraint violations
+🔄 Phase I: Status Update - Identifying affected operations
+🔧 Fixing immediate constraint violations...
+🔄 Phase II: Job Precedence Repair - Fixing step ordering violations
+🔧 Repairing job precedence violations...
+🔄 Phase III: Machine Capacity Repair - Resolving machine overlaps
+🔧 Repairing machine capacity violations...
+⏰ Fixed machine overlap on Machine83
+⏰ Fixed machine overlap on Machine42
+🔄 Phase IV: Iterative Improvement - Optimizing schedule quality
+🔧 Applying iterative improvement...
+🔄 Phase V: Final validation and cleanup
+🔧 Final cleanup - ensuring valid operation times...
+⏰ Fixed invalid times for Job13 step 3
+⏰ Fixed invalid times for Job14 step 3
+⏰ Fixed invalid times for Job27 step 3
+⏰ Fixed invalid times for Job84 step 2
+⏰ Fixed invalid times for Job31 step 3
+⏰ Fixed invalid times for Job100 step 3
+⏰ Fixed invalid times for Job12 step 3
+⏰ Fixed invalid times for Job75 step 3
+⏰ Fixed invalid times for Job60 step 3
+⏰ Fixed invalid times for Job73 step 3
+⏰ Fixed invalid times for Job80 step 2
+⏰ Fixed invalid times for Job59 step 2
+✅ Algorithm 3 completed - Generated 245 schedule entries
+📊 Repair iteration 2 makespan: 388
+📊 Repair iteration 2 schedule entries: 245
+📊 Latest operations: [('Job59', 2, 388), ('Job59', 1, 387), ('Job67', 2, 364)]
+💾 Saved repair iteration 2 to: maple_optimized(claude-4)/TA72_repair_iteration_2.json
+⚠️ Repair iteration 2 reduced errors from 26 to 1 (makespan: 388)
+🔧 Repair iteration 3/5
+🔧 Starting Algorithm 3: Cascading Repair and Queue Reordering
+📊 Processing 245 schedule entries
+❌ Found 1 constraint violations
+🔄 Phase I: Status Update - Identifying affected operations
+🔧 Fixing immediate constraint violations...
+🔄 Phase II: Job Precedence Repair - Fixing step ordering violations
+🔧 Repairing job precedence violations...
+🔄 Phase III: Machine Capacity Repair - Resolving machine overlaps
+🔧 Repairing machine capacity violations...
+🔄 Phase IV: Iterative Improvement - Optimizing schedule quality
+🔧 Applying iterative improvement...
+🔄 Phase V: Final validation and cleanup
+🔧 Final cleanup - ensuring valid operation times...
+✅ Algorithm 3 completed - Generated 245 schedule entries
+📊 Repair iteration 3 makespan: 388
+📊 Repair iteration 3 schedule entries: 245
+📊 Latest operations: [('Job59', 2, 388), ('Job59', 1, 387), ('Job67', 2, 364)]
+💾 Saved repair iteration 3 to: maple_optimized(claude-4)/TA72_repair_iteration_3.json
+⚠️ Repair iteration 3 reduced errors from 1 to 1 (makespan: 388)
+🔧 Repair iteration 4/5
+🔧 Starting Algorithm 3: Cascading Repair and Queue Reordering
+📊 Processing 245 schedule entries
+❌ Found 1 constraint violations
+🔄 Phase I: Status Update - Identifying affected operations
+🔧 Fixing immediate constraint violations...
+🔄 Phase II: Job Precedence Repair - Fixing step ordering violations
+🔧 Repairing job precedence violations...
+🔄 Phase III: Machine Capacity Repair - Resolving machine overlaps
+🔧 Repairing machine capacity violations...
+🔄 Phase IV: Iterative Improvement - Optimizing schedule quality
+🔧 Applying iterative improvement...
+🔄 Phase V: Final validation and cleanup
+🔧 Final cleanup - ensuring valid operation times...
+✅ Algorithm 3 completed - Generated 245 schedule entries
+📊 Repair iteration 4 makespan: 388
+📊 Repair iteration 4 schedule entries: 245
+📊 Latest operations: [('Job59', 2, 388), ('Job59', 1, 387), ('Job67', 2, 364)]
+💾 Saved repair iteration 4 to: maple_optimized(claude-4)/TA72_repair_iteration_4.json
+⚠️ Repair iteration 4 reduced errors from 1 to 1 (makespan: 388)
+🔧 Repair iteration 5/5
+🔧 Starting Algorithm 3: Cascading Repair and Queue Reordering
+📊 Processing 245 schedule entries
+❌ Found 1 constraint violations
+🔄 Phase I: Status Update - Identifying affected operations
+🔧 Fixing immediate constraint violations...
+🔄 Phase II: Job Precedence Repair - Fixing step ordering violations
+🔧 Repairing job precedence violations...
+🔄 Phase III: Machine Capacity Repair - Resolving machine overlaps
+🔧 Repairing machine capacity violations...
+🔄 Phase IV: Iterative Improvement - Optimizing schedule quality
+🔧 Applying iterative improvement...
+🔄 Phase V: Final validation and cleanup
+🔧 Final cleanup - ensuring valid operation times...
+✅ Algorithm 3 completed - Generated 245 schedule entries
+📊 Repair iteration 5 makespan: 388
+📊 Repair iteration 5 schedule entries: 245
+📊 Latest operations: [('Job59', 2, 388), ('Job59', 1, 387), ('Job67', 2, 364)]
+💾 Saved repair iteration 5 to: maple_optimized(claude-4)/TA72_repair_iteration_5.json
+⚠️ Repair iteration 5 reduced errors from 1 to 1 (makespan: 388)
+⚠️ Repair completed after 5 iterations with remaining errors
+4️⃣ ValidationTools revalidating schedule...
+❌ Revalidation failed: ["Unused machines: ['Machine19', 'Machine13', 'Machine65', 'Machine77', 'Machine67', 'Machine47', 'Machine90']"]
+[31m❌ ERROR in workflow: Schedule validation failed after repair
+⚡ Disruption detected in Unknown Agent: Schedule validation failed after repair
+🔄 Initiating global replanning...
+⚠️ Global replanning completed. Manual intervention may be required.
+[31m🚨 Workflow execution halted due to error.
+❌ New 4-step workflow failed
+📊 Found 5 repair iterations
+  Iteration 1: makespan=387, entries=245
+  Iteration 2: makespan=388, entries=245
+  Iteration 3: makespan=388, entries=245
+  Iteration 4: makespan=388, entries=245
+  Iteration 5: makespan=388, entries=245
+
+--- Running No Repair Tools ---
+
+============================================================
+Running MAPLE No Repair Tools on TA72
+Description: Full workflow without repair tools
+Timestamp: 2025-09-24 15:11:28
+============================================================
+⚠️ Warning: Agent is None in node: {'agent': None, 'type': 'JSSPAgent'}
+⚠️ Warning: Agent is None in node: {'agent': None, 'type': 'JSSPValidationAgent'}
+
+=== [OPTIMIZED MAPLE] New 4-Step Workflow ===
+Nodes: ['Unknown Agent', 'Unknown Agent']
+Edges: [{'from': 0, 'to': 1}]
+Workflow: No Repair Tools
+Validation: ✅
+Repair: ❌
+Optimization: ✅
+
+=== [OPTIMIZED MAPLE] Inter-Agent Coordination ===
+
+=== [OPTIMIZED MAPLE] New Workflow Execution ===
+🔄 Running new 7-step workflow: Query -> Validation -> Repair -> Re-validation -> Optimization -> Final Check -> Supervisor
+
+🔄 Starting New 4-Step Workflow...
+1️⃣ Loading pre-generated schedule from JSON file...
+📊 Loaded 245 schedule entries from TA72
+📊 Claude-Sonnet-4 makespan: 1247
+📊 Initial schedule makespan: 269
+📊 Schedule entries count: 245
+📊 Sample entry: {'job': 'Job1', 'step': 1, 'machine': 'Machine53', 'start': 0, 'end': 40, 'duration': 40}
+[32m✅ Pre-generated schedule loaded successfully.
+2️⃣ ValidationTools validating schedule...
+❌ Initial validation failed: ['Job Job8: Step 2 starts before step 1 ends', 'Machine Machine44: Operations overlap - Job2 step 1 and Job99 step 2', 'Machine Machine44: Operations overlap - Job99 step 2 and Job29 step 2', 'Machine Machine44: Operations overlap - Job29 step 2 and Job72 step 2', 'Machine Machine1: Operations overlap - Job9 step 1 and Job25 step 2', 'Machine Machine1: Operations overlap - Job25 step 2 and Job88 step 3', 'Machine Machine1: Operations overlap - Job31 step 2 and Job80 step 1', 'Machine Machine29: Operations overlap - Job64 step 1 and Job17 step 3', 'Machine Machine91: Operations overlap - Job75 step 1 and Job23 step 2', 'Machine Machine91: Operations overlap - Job23 step 2 and Job7 step 2', 'Machine Machine91: Operations overlap - Job7 step 2 and Job73 step 2', 'Machine Machine23: Operations overlap - Job72 step 1 and Job36 step 3', 'Machine Machine97: Operations overlap - Job74 step 3 and Job9 step 2', 'Machine Machine16: Operations overlap - Job86 step 1 and Job19 step 2', 'Machine Machine16: Operations overlap - Job19 step 2 and Job90 step 2', 'Machine Machine81: Operations overlap - Job19 step 1 and Job91 step 3', 'Machine Machine81: Operations overlap - Job91 step 3 and Job27 step 2', 'Machine Machine93: Operations overlap - Job20 step 1 and Job18 step 3', 'Machine Machine93: Operations overlap - Job18 step 3 and Job65 step 2', 'Machine Machine93: Operations overlap - Job65 step 2 and Job99 step 3', 'Machine Machine83: Operations overlap - Job26 step 1 and Job43 step 2', 'Machine Machine83: Operations overlap - Job43 step 2 and Job68 step 1', 'Machine Machine17: Operations overlap - Job29 step 1 and Job64 step 2', 'Machine Machine17: Operations overlap - Job64 step 2 and Job98 step 1', 'Machine Machine17: Operations overlap - Job98 step 1 and Job38 step 3', 'Machine Machine39: Operations overlap - Job66 step 2 and Job2 step 2', 'Machine Machine69: Operations overlap - Job62 step 1 and Job72 step 3', 'Machine Machine6: Operations overlap - Job58 step 1 and Job54 step 3', 'Machine Machine6: Operations overlap - Job54 step 3 and Job40 step 3', 'Machine Machine41: Operations overlap - Job69 step 2 and Job29 step 3', 'Machine Machine40: Operations overlap - Job46 step 1 and Job51 step 3', 'Machine Machine37: Operations overlap - Job37 step 1 and Job13 step 2', 'Machine Machine37: Operations overlap - Job13 step 2 and Job90 step 1', 'Machine Machine68: Operations overlap - Job39 step 1 and Job95 step 2', 'Machine Machine55: Operations overlap - Job57 step 1 and Job89 step 2', 'Machine Machine55: Operations overlap - Job89 step 2 and Job33 step 2', 'Machine Machine51: Operations overlap - Job41 step 1 and Job48 step 3', 'Machine Machine51: Operations overlap - Job48 step 3 and Job43 step 1', 'Machine Machine51: Operations overlap - Job53 step 1 and Job76 step 3', 'Machine Machine51: Operations overlap - Job76 step 3 and Job59 step 1', 'Machine Machine82: Operations overlap - Job44 step 1 and Job88 step 2', 'Machine Machine31: Operations overlap - Job48 step 1 and Job63 step 2', 'Machine Machine84: Operations overlap - Job49 step 1 and Job75 step 2', 'Machine Machine84: Operations overlap - Job75 step 2 and Job84 step 1', 'Machine Machine21: Operations overlap - Job81 step 1 and Job11 step 2', 'Machine Machine21: Operations overlap - Job11 step 2 and Job100 step 2', 'Machine Machine21: Operations overlap - Job100 step 2 and Job45 step 3', 'Machine Machine21: Operations overlap - Job45 step 3 and Job21 step 2', 'Machine Machine98: Operations overlap - Job56 step 1 and Job35 step 3', 'Machine Machine98: Operations overlap - Job35 step 3 and Job1 step 3', 'Machine Machine56: Operations overlap - Job45 step 2 and Job61 step 2', 'Machine Machine56: Operations overlap - Job61 step 2 and Job89 step 3', 'Machine Machine76: Operations overlap - Job65 step 1 and Job18 step 2', 'Machine Machine63: Operations overlap - Job71 step 1 and Job36 step 2', 'Machine Machine50: Operations overlap - Job77 step 1 and Job81 step 3', 'Machine Machine50: Operations overlap - Job81 step 3 and Job26 step 2', 'Machine Machine99: Operations overlap - Job79 step 1 and Job14 step 2', 'Machine Machine46: Operations overlap - Job28 step 2 and Job94 step 2', 'Machine Machine5: Operations overlap - Job93 step 1 and Job48 step 2', 'Machine Machine2: Operations overlap - Job86 step 2 and Job80 step 2', 'Machine Machine26: Operations overlap - Job91 step 2 and Job6 step 2', 'Machine Machine87: Operations overlap - Job51 step 2 and Job16 step 2', 'Machine Machine87: Operations overlap - Job39 step 2 and Job65 step 3', 'Machine Machine35: Operations overlap - Job85 step 2 and Job64 step 3', 'Machine Machine92: Operations overlap - Job20 step 2 and Job63 step 3', 'Machine Machine32: Operations overlap - Job57 step 2 and Job12 step 2', 'Machine Machine32: Operations overlap - Job12 step 2 and Job55 step 2', 'Machine Machine96: Operations overlap - Job76 step 2 and Job46 step 2', 'Machine Machine34: Operations overlap - Job47 step 3 and Job77 step 2', 'Machine Machine8: Operations overlap - Job56 step 2 and Job92 step 3', 'Machine Machine20: Operations overlap - Job98 step 2 and Job68 step 2', "Unused machines: ['Machine19', 'Machine13', 'Machine65', 'Machine77', 'Machine67', 'Machine47', 'Machine90']"]
+⚠️ Schedule validation failed but repair is disabled - using original schedule without optimization
+✅ Proceeding with original schedule without optimization due to validation failures
+5️⃣ OptimizationTools skipped - using original schedule due to validation failures
+5️⃣ OptimizationTools already skipped due to validation failures
+6️⃣ ValidationTools final check...
+⚠️ Final validation found 72 errors, but continuing with optimization result
+✅ Optimization result accepted despite validation warnings
+7️⃣ Processing final results...
+📊 Final processed schedule with 245 entries
+📊 Calculated makespan: 269
+🎯 Final makespan: 269
+✅ New workflow completed successfully.
+
+=== Optimized Validation Results ===
+✅ Using best solution found (makespan: 269)
+📊 Total operations scheduled: 245
+✅ New 4-step workflow completed successfully
+
+--- Running No Validation Tools ---
+
+============================================================
+Running MAPLE No Validation Tools on TA72
+Description: Full workflow without validation tools
+Timestamp: 2025-09-24 15:11:28
+============================================================
+⚠️ Warning: Agent is None in node: {'agent': None, 'type': 'JSSPAgent'}
+⚠️ Warning: Agent is None in node: {'agent': None, 'type': 'JSSPValidationAgent'}
+
+=== [OPTIMIZED MAPLE] New 4-Step Workflow ===
+Nodes: ['Unknown Agent', 'Unknown Agent']
+Edges: [{'from': 0, 'to': 1}]
+Workflow: No Validation Tools
+Validation: ❌
+Repair: ✅
+Optimization: ✅
+
+=== [OPTIMIZED MAPLE] Inter-Agent Coordination ===
+
+=== [OPTIMIZED MAPLE] New Workflow Execution ===
+🔄 Running new 7-step workflow: Query -> Validation -> Repair -> Re-validation -> Optimization -> Final Check -> Supervisor
+
+🔄 Starting New 4-Step Workflow...
+1️⃣ Loading pre-generated schedule from JSON file...
+📊 Loaded 245 schedule entries from TA72
+📊 Claude-Sonnet-4 makespan: 1247
+📊 Initial schedule makespan: 269
+📊 Schedule entries count: 245
+📊 Sample entry: {'job': 'Job1', 'step': 1, 'machine': 'Machine53', 'start': 0, 'end': 40, 'duration': 40}
+[32m✅ Pre-generated schedule loaded successfully.
+2️⃣ ValidationTools disabled - skipping validation
+5️⃣ OptimizationTools optimizing schedule...
+📊 Pre-optimization makespan: 269
+📊 Post-optimization makespan: 387
+✅ Optimization completed successfully.
+6️⃣ ValidationTools disabled - skipping final validation
+7️⃣ Processing final results...
+📊 Final processed schedule with 245 entries
+📊 Calculated makespan: 387
+🎯 Final makespan: 387
+✅ New workflow completed successfully.
+
+=== Optimized Validation Results ===
+✅ Using best solution found (makespan: 387)
+📊 Total operations scheduled: 245
+✅ New 4-step workflow completed successfully
+
+--- Running No Optimization Tools ---
+
+============================================================
+Running MAPLE No Optimization Tools on TA72
+Description: Full workflow without optimization tools
+Timestamp: 2025-09-24 15:11:29
+============================================================
+⚠️ Warning: Agent is None in node: {'agent': None, 'type': 'JSSPAgent'}
+⚠️ Warning: Agent is None in node: {'agent': None, 'type': 'JSSPValidationAgent'}
+
+=== [OPTIMIZED MAPLE] New 4-Step Workflow ===
+Nodes: ['Unknown Agent', 'Unknown Agent']
+Edges: [{'from': 0, 'to': 1}]
+Workflow: No Optimization Tools
+Validation: ✅
+Repair: ✅
+Optimization: ❌
+
+=== [OPTIMIZED MAPLE] Inter-Agent Coordination ===
+
+=== [OPTIMIZED MAPLE] New Workflow Execution ===
+🔄 Running new 7-step workflow: Query -> Validation -> Repair -> Re-validation -> Optimization -> Final Check -> Supervisor
+
+🔄 Starting New 4-Step Workflow...
+1️⃣ Loading pre-generated schedule from JSON file...
+📊 Loaded 245 schedule entries from TA72
+📊 Claude-Sonnet-4 makespan: 1247
+📊 Initial schedule makespan: 269
+📊 Schedule entries count: 245
+📊 Sample entry: {'job': 'Job1', 'step': 1, 'machine': 'Machine53', 'start': 0, 'end': 40, 'duration': 40}
+[32m✅ Pre-generated schedule loaded successfully.
+2️⃣ ValidationTools validating schedule...
+❌ Initial validation failed: ['Job Job8: Step 2 starts before step 1 ends', 'Machine Machine44: Operations overlap - Job2 step 1 and Job99 step 2', 'Machine Machine44: Operations overlap - Job99 step 2 and Job29 step 2', 'Machine Machine44: Operations overlap - Job29 step 2 and Job72 step 2', 'Machine Machine1: Operations overlap - Job9 step 1 and Job25 step 2', 'Machine Machine1: Operations overlap - Job25 step 2 and Job88 step 3', 'Machine Machine1: Operations overlap - Job31 step 2 and Job80 step 1', 'Machine Machine29: Operations overlap - Job64 step 1 and Job17 step 3', 'Machine Machine91: Operations overlap - Job75 step 1 and Job23 step 2', 'Machine Machine91: Operations overlap - Job23 step 2 and Job7 step 2', 'Machine Machine91: Operations overlap - Job7 step 2 and Job73 step 2', 'Machine Machine23: Operations overlap - Job72 step 1 and Job36 step 3', 'Machine Machine97: Operations overlap - Job74 step 3 and Job9 step 2', 'Machine Machine16: Operations overlap - Job86 step 1 and Job19 step 2', 'Machine Machine16: Operations overlap - Job19 step 2 and Job90 step 2', 'Machine Machine81: Operations overlap - Job19 step 1 and Job91 step 3', 'Machine Machine81: Operations overlap - Job91 step 3 and Job27 step 2', 'Machine Machine93: Operations overlap - Job20 step 1 and Job18 step 3', 'Machine Machine93: Operations overlap - Job18 step 3 and Job65 step 2', 'Machine Machine93: Operations overlap - Job65 step 2 and Job99 step 3', 'Machine Machine83: Operations overlap - Job26 step 1 and Job43 step 2', 'Machine Machine83: Operations overlap - Job43 step 2 and Job68 step 1', 'Machine Machine17: Operations overlap - Job29 step 1 and Job64 step 2', 'Machine Machine17: Operations overlap - Job64 step 2 and Job98 step 1', 'Machine Machine17: Operations overlap - Job98 step 1 and Job38 step 3', 'Machine Machine39: Operations overlap - Job66 step 2 and Job2 step 2', 'Machine Machine69: Operations overlap - Job62 step 1 and Job72 step 3', 'Machine Machine6: Operations overlap - Job58 step 1 and Job54 step 3', 'Machine Machine6: Operations overlap - Job54 step 3 and Job40 step 3', 'Machine Machine41: Operations overlap - Job69 step 2 and Job29 step 3', 'Machine Machine40: Operations overlap - Job46 step 1 and Job51 step 3', 'Machine Machine37: Operations overlap - Job37 step 1 and Job13 step 2', 'Machine Machine37: Operations overlap - Job13 step 2 and Job90 step 1', 'Machine Machine68: Operations overlap - Job39 step 1 and Job95 step 2', 'Machine Machine55: Operations overlap - Job57 step 1 and Job89 step 2', 'Machine Machine55: Operations overlap - Job89 step 2 and Job33 step 2', 'Machine Machine51: Operations overlap - Job41 step 1 and Job48 step 3', 'Machine Machine51: Operations overlap - Job48 step 3 and Job43 step 1', 'Machine Machine51: Operations overlap - Job53 step 1 and Job76 step 3', 'Machine Machine51: Operations overlap - Job76 step 3 and Job59 step 1', 'Machine Machine82: Operations overlap - Job44 step 1 and Job88 step 2', 'Machine Machine31: Operations overlap - Job48 step 1 and Job63 step 2', 'Machine Machine84: Operations overlap - Job49 step 1 and Job75 step 2', 'Machine Machine84: Operations overlap - Job75 step 2 and Job84 step 1', 'Machine Machine21: Operations overlap - Job81 step 1 and Job11 step 2', 'Machine Machine21: Operations overlap - Job11 step 2 and Job100 step 2', 'Machine Machine21: Operations overlap - Job100 step 2 and Job45 step 3', 'Machine Machine21: Operations overlap - Job45 step 3 and Job21 step 2', 'Machine Machine98: Operations overlap - Job56 step 1 and Job35 step 3', 'Machine Machine98: Operations overlap - Job35 step 3 and Job1 step 3', 'Machine Machine56: Operations overlap - Job45 step 2 and Job61 step 2', 'Machine Machine56: Operations overlap - Job61 step 2 and Job89 step 3', 'Machine Machine76: Operations overlap - Job65 step 1 and Job18 step 2', 'Machine Machine63: Operations overlap - Job71 step 1 and Job36 step 2', 'Machine Machine50: Operations overlap - Job77 step 1 and Job81 step 3', 'Machine Machine50: Operations overlap - Job81 step 3 and Job26 step 2', 'Machine Machine99: Operations overlap - Job79 step 1 and Job14 step 2', 'Machine Machine46: Operations overlap - Job28 step 2 and Job94 step 2', 'Machine Machine5: Operations overlap - Job93 step 1 and Job48 step 2', 'Machine Machine2: Operations overlap - Job86 step 2 and Job80 step 2', 'Machine Machine26: Operations overlap - Job91 step 2 and Job6 step 2', 'Machine Machine87: Operations overlap - Job51 step 2 and Job16 step 2', 'Machine Machine87: Operations overlap - Job39 step 2 and Job65 step 3', 'Machine Machine35: Operations overlap - Job85 step 2 and Job64 step 3', 'Machine Machine92: Operations overlap - Job20 step 2 and Job63 step 3', 'Machine Machine32: Operations overlap - Job57 step 2 and Job12 step 2', 'Machine Machine32: Operations overlap - Job12 step 2 and Job55 step 2', 'Machine Machine96: Operations overlap - Job76 step 2 and Job46 step 2', 'Machine Machine34: Operations overlap - Job47 step 3 and Job77 step 2', 'Machine Machine8: Operations overlap - Job56 step 2 and Job92 step 3', 'Machine Machine20: Operations overlap - Job98 step 2 and Job68 step 2', "Unused machines: ['Machine19', 'Machine13', 'Machine65', 'Machine77', 'Machine67', 'Machine47', 'Machine90']"]
+3️⃣ RepairTools repairing schedule...
+🔧 Repair iteration 1/5
+🔧 Starting Algorithm 3: Cascading Repair and Queue Reordering
+📊 Processing 245 schedule entries
+❌ Found 72 constraint violations
+🔄 Phase I: Status Update - Identifying affected operations
+🔧 Fixing immediate constraint violations...
+🔄 Phase II: Job Precedence Repair - Fixing step ordering violations
+🔧 Repairing job precedence violations...
+🔄 Phase III: Machine Capacity Repair - Resolving machine overlaps
+🔧 Repairing machine capacity violations...
+⏰ Fixed machine overlap on Machine44
+⏰ Fixed machine overlap on Machine44
+⏰ Fixed machine overlap on Machine44
+⏰ Fixed machine overlap on Machine44
+⏰ Fixed machine overlap on Machine1
+⏰ Fixed machine overlap on Machine1
+⏰ Fixed machine overlap on Machine1
+⏰ Fixed machine overlap on Machine1
+⏰ Fixed machine overlap on Machine29
+⏰ Fixed machine overlap on Machine91
+⏰ Fixed machine overlap on Machine91
+⏰ Fixed machine overlap on Machine91
+⏰ Fixed machine overlap on Machine23
+⏰ Fixed machine overlap on Machine97
+⏰ Fixed machine overlap on Machine16
+⏰ Fixed machine overlap on Machine16
+⏰ Fixed machine overlap on Machine81
+⏰ Fixed machine overlap on Machine81
+⏰ Fixed machine overlap on Machine93
+⏰ Fixed machine overlap on Machine93
+⏰ Fixed machine overlap on Machine93
+⏰ Fixed machine overlap on Machine93
+⏰ Fixed machine overlap on Machine83
+⏰ Fixed machine overlap on Machine83
+⏰ Fixed machine overlap on Machine17
+⏰ Fixed machine overlap on Machine17
+⏰ Fixed machine overlap on Machine17
+⏰ Fixed machine overlap on Machine39
+⏰ Fixed machine overlap on Machine69
+⏰ Fixed machine overlap on Machine6
+⏰ Fixed machine overlap on Machine6
+⏰ Fixed machine overlap on Machine41
+⏰ Fixed machine overlap on Machine40
+⏰ Fixed machine overlap on Machine37
+⏰ Fixed machine overlap on Machine37
+⏰ Fixed machine overlap on Machine37
+⏰ Fixed machine overlap on Machine68
+⏰ Fixed machine overlap on Machine68
+⏰ Fixed machine overlap on Machine55
+⏰ Fixed machine overlap on Machine55
+⏰ Fixed machine overlap on Machine51
+⏰ Fixed machine overlap on Machine51
+⏰ Fixed machine overlap on Machine51
+⏰ Fixed machine overlap on Machine51
+⏰ Fixed machine overlap on Machine51
+⏰ Fixed machine overlap on Machine82
+⏰ Fixed machine overlap on Machine82
+⏰ Fixed machine overlap on Machine31
+⏰ Fixed machine overlap on Machine84
+⏰ Fixed machine overlap on Machine84
+⏰ Fixed machine overlap on Machine21
+⏰ Fixed machine overlap on Machine21
+⏰ Fixed machine overlap on Machine21
+⏰ Fixed machine overlap on Machine21
+⏰ Fixed machine overlap on Machine98
+⏰ Fixed machine overlap on Machine98
+⏰ Fixed machine overlap on Machine56
+⏰ Fixed machine overlap on Machine56
+⏰ Fixed machine overlap on Machine76
+⏰ Fixed machine overlap on Machine63
+⏰ Fixed machine overlap on Machine63
+⏰ Fixed machine overlap on Machine63
+⏰ Fixed machine overlap on Machine50
+⏰ Fixed machine overlap on Machine50
+⏰ Fixed machine overlap on Machine99
+⏰ Fixed machine overlap on Machine99
+⏰ Fixed machine overlap on Machine46
+⏰ Fixed machine overlap on Machine5
+⏰ Fixed machine overlap on Machine5
+⏰ Fixed machine overlap on Machine2
+⏰ Fixed machine overlap on Machine35
+⏰ Fixed machine overlap on Machine26
+⏰ Fixed machine overlap on Machine26
+⏰ Fixed machine overlap on Machine87
+⏰ Fixed machine overlap on Machine87
+⏰ Fixed machine overlap on Machine87
+⏰ Fixed machine overlap on Machine20
+⏰ Fixed machine overlap on Machine20
+⏰ Fixed machine overlap on Machine92
+⏰ Fixed machine overlap on Machine32
+⏰ Fixed machine overlap on Machine32
+⏰ Fixed machine overlap on Machine96
+⏰ Fixed machine overlap on Machine34
+⏰ Fixed machine overlap on Machine8
+🔄 Phase IV: Iterative Improvement - Optimizing schedule quality
+🔧 Applying iterative improvement...
+🔄 Phase V: Final validation and cleanup
+🔧 Final cleanup - ensuring valid operation times...
+✅ Algorithm 3 completed - Generated 245 schedule entries
+📊 Repair iteration 1 makespan: 387
+📊 Repair iteration 1 schedule entries: 245
+📊 Latest operations: [('Job59', 1, 387), ('Job67', 2, 364), ('Job73', 2, 320)]
+💾 Saved repair iteration 1 to: maple_optimized(claude-4)/TA72_repair_iteration_1.json
+⚠️ Repair iteration 1 reduced errors from 72 to 26 (makespan: 387)
+🔧 Repair iteration 2/5
+🔧 Starting Algorithm 3: Cascading Repair and Queue Reordering
+📊 Processing 245 schedule entries
+❌ Found 26 constraint violations
+🔄 Phase I: Status Update - Identifying affected operations
+🔧 Fixing immediate constraint violations...
+🔄 Phase II: Job Precedence Repair - Fixing step ordering violations
+🔧 Repairing job precedence violations...
+🔄 Phase III: Machine Capacity Repair - Resolving machine overlaps
+🔧 Repairing machine capacity violations...
+⏰ Fixed machine overlap on Machine83
+⏰ Fixed machine overlap on Machine42
+🔄 Phase IV: Iterative Improvement - Optimizing schedule quality
+🔧 Applying iterative improvement...
+🔄 Phase V: Final validation and cleanup
+🔧 Final cleanup - ensuring valid operation times...
+⏰ Fixed invalid times for Job13 step 3
+⏰ Fixed invalid times for Job14 step 3
+⏰ Fixed invalid times for Job27 step 3
+⏰ Fixed invalid times for Job84 step 2
+⏰ Fixed invalid times for Job31 step 3
+⏰ Fixed invalid times for Job100 step 3
+⏰ Fixed invalid times for Job12 step 3
+⏰ Fixed invalid times for Job75 step 3
+⏰ Fixed invalid times for Job60 step 3
+⏰ Fixed invalid times for Job73 step 3
+⏰ Fixed invalid times for Job80 step 2
+⏰ Fixed invalid times for Job59 step 2
+✅ Algorithm 3 completed - Generated 245 schedule entries
+📊 Repair iteration 2 makespan: 388
+📊 Repair iteration 2 schedule entries: 245
+📊 Latest operations: [('Job59', 2, 388), ('Job59', 1, 387), ('Job67', 2, 364)]
+💾 Saved repair iteration 2 to: maple_optimized(claude-4)/TA72_repair_iteration_2.json
+⚠️ Repair iteration 2 reduced errors from 26 to 1 (makespan: 388)
+🔧 Repair iteration 3/5
+🔧 Starting Algorithm 3: Cascading Repair and Queue Reordering
+📊 Processing 245 schedule entries
+❌ Found 1 constraint violations
+🔄 Phase I: Status Update - Identifying affected operations
+🔧 Fixing immediate constraint violations...
+🔄 Phase II: Job Precedence Repair - Fixing step ordering violations
+🔧 Repairing job precedence violations...
+🔄 Phase III: Machine Capacity Repair - Resolving machine overlaps
+🔧 Repairing machine capacity violations...
+🔄 Phase IV: Iterative Improvement - Optimizing schedule quality
+🔧 Applying iterative improvement...
+🔄 Phase V: Final validation and cleanup
+🔧 Final cleanup - ensuring valid operation times...
+✅ Algorithm 3 completed - Generated 245 schedule entries
+📊 Repair iteration 3 makespan: 388
+📊 Repair iteration 3 schedule entries: 245
+📊 Latest operations: [('Job59', 2, 388), ('Job59', 1, 387), ('Job67', 2, 364)]
+💾 Saved repair iteration 3 to: maple_optimized(claude-4)/TA72_repair_iteration_3.json
+⚠️ Repair iteration 3 reduced errors from 1 to 1 (makespan: 388)
+🔧 Repair iteration 4/5
+🔧 Starting Algorithm 3: Cascading Repair and Queue Reordering
+📊 Processing 245 schedule entries
+❌ Found 1 constraint violations
+🔄 Phase I: Status Update - Identifying affected operations
+🔧 Fixing immediate constraint violations...
+🔄 Phase II: Job Precedence Repair - Fixing step ordering violations
+🔧 Repairing job precedence violations...
+🔄 Phase III: Machine Capacity Repair - Resolving machine overlaps
+🔧 Repairing machine capacity violations...
+🔄 Phase IV: Iterative Improvement - Optimizing schedule quality
+🔧 Applying iterative improvement...
+🔄 Phase V: Final validation and cleanup
+🔧 Final cleanup - ensuring valid operation times...
+✅ Algorithm 3 completed - Generated 245 schedule entries
+📊 Repair iteration 4 makespan: 388
+📊 Repair iteration 4 schedule entries: 245
+📊 Latest operations: [('Job59', 2, 388), ('Job59', 1, 387), ('Job67', 2, 364)]
+💾 Saved repair iteration 4 to: maple_optimized(claude-4)/TA72_repair_iteration_4.json
+⚠️ Repair iteration 4 reduced errors from 1 to 1 (makespan: 388)
+🔧 Repair iteration 5/5
+🔧 Starting Algorithm 3: Cascading Repair and Queue Reordering
+📊 Processing 245 schedule entries
+❌ Found 1 constraint violations
+🔄 Phase I: Status Update - Identifying affected operations
+🔧 Fixing immediate constraint violations...
+🔄 Phase II: Job Precedence Repair - Fixing step ordering violations
+🔧 Repairing job precedence violations...
+🔄 Phase III: Machine Capacity Repair - Resolving machine overlaps
+🔧 Repairing machine capacity violations...
+🔄 Phase IV: Iterative Improvement - Optimizing schedule quality
+🔧 Applying iterative improvement...
+🔄 Phase V: Final validation and cleanup
+🔧 Final cleanup - ensuring valid operation times...
+✅ Algorithm 3 completed - Generated 245 schedule entries
+📊 Repair iteration 5 makespan: 388
+📊 Repair iteration 5 schedule entries: 245
+📊 Latest operations: [('Job59', 2, 388), ('Job59', 1, 387), ('Job67', 2, 364)]
+💾 Saved repair iteration 5 to: maple_optimized(claude-4)/TA72_repair_iteration_5.json
+⚠️ Repair iteration 5 reduced errors from 1 to 1 (makespan: 388)
+⚠️ Repair completed after 5 iterations with remaining errors
+4️⃣ ValidationTools revalidating schedule...
+❌ Revalidation failed: ["Unused machines: ['Machine19', 'Machine13', 'Machine65', 'Machine77', 'Machine67', 'Machine47', 'Machine90']"]
+[31m❌ ERROR in workflow: Schedule validation failed after repair
+⚡ Disruption detected in Unknown Agent: Schedule validation failed after repair
+🔄 Initiating global replanning...
+⚠️ Global replanning completed. Manual intervention may be required.
+[31m🚨 Workflow execution halted due to error.
+❌ New 4-step workflow failed
+📊 Found 5 repair iterations
+  Iteration 1: makespan=387, entries=245
+  Iteration 2: makespan=388, entries=245
+  Iteration 3: makespan=388, entries=245
+  Iteration 4: makespan=388, entries=245
+  Iteration 5: makespan=388, entries=245
+
+============================================================
+WORKFLOW COMPARISON SUMMARY for TA72
+============================================================
+❌ Full Workflow        | Makespan:      N/A | Time: 0.07s | Repairs: 5
+✅ No Repair Tools      | Makespan:      269 | Time: 0.00s
+✅ No Validation Tools  | Makespan:      387 | Time: 0.85s
+❌ No Optimization Tools | Makespan:      N/A | Time: 0.08s | Repairs: 5

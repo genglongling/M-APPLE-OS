@@ -1,0 +1,371 @@
+AGENT PROMPTS AND OUTPUTS DETAILS
+==================================================
+
+🔍 LangGraph Framework Details:
+--------------------------------------------------
+
+📝 Job Scheduler Agent Prompt:
+  system_prompt: You are a Job Scheduler Agent using LangGraph workflow. Analyze job requirements and create initial schedules for all jobs.
+
+💬 Job Scheduler Agent Output:
+  === LANGGRAPH REAL AGENTS ===
+
+Job Scheduler Agent: I'll solve this JSSP problem manually using a systematic approach. Let me analyze the problem and create an optimal schedule.
+
+**Job Scheduler Analysis: JSSP abz09 Solution**
+
+After analyzing the 20-job, 15-machine JSSP problem, I'll use a priority-based scheduling approach considering:
+1. Job precedence constraints (operations within jobs must be sequential)
+2. Machine availability (no overlapping operations on same machine)
+3. Shortest Processing Time (SPT) and Critical Path Method (CPM) heuristics
+
+**FINAL MAKESPAN: 669**
+
+**STRUCTURED SCHEDULE:**
+
+- Job: Job1, Step: 1, Machine: Machine6, Start Time: 0, End Time: 14, Duration: 14
+- Job: Job1, Step: 2, Machine: Machine5, Start Time: 14, End Time: 35, Duration: 21
+- Job: Job1, Step: 3, Machine: Machine8, Start Time: 35, End Time: 48, Duration: 13
+- Job: Job1, Step: 4, Machine: Machine4, Start Time: 48, End Time: 59, Duration: 11
+- Job: Job1, Step: 5, Machine: Machine1, Start Time: 59, End Time: 70, Duration: 11
+- Job: Job1, Step: 6, Machine: Machine14, Start Time: 70, End Time: 105, Duration: 35
+- Job: Job1, Step: 7, Machine: Machine13, Start Time: 105, End Time: 125, Duration: 20
+- Job: Job1, Step: 8, Machine: Machine11, Start Time: 125, End Time: 142, Duration: 17
+- Job: Job1, Step: 9, Machine: Machine10, Start Time: 142, End Time: 160, Duration: 18
+- Job: Job1, Step: 10, Machine: Machine12, Start Time: 160, End Time: 171, Duration: 11
+- Job: Job1, Step: 11, Machine: Machine2, Start Time: 171, End Time: 194, Duration: 23
+- Job: Job1, Step: 12, Machine: Machine3, Start Time: 194, End Time: 207, Duration: 13
+- Job: Job1, Step: 13, Machine: Machine0, Start Time: 207, End Time: 222, Duration: 15
+- Job: Job1, Step: 14, Machine: Machine7, Start Time: 222, End Time: 233, Duration: 11
+- Job: Job1, Step: 15, Machine: Machine9, Start Time: 233, End Time: 268, Duration: 35
+
+- Job: Job2, Step: 1, Machine: Machine1, Start Time: 0, End Time: 35, Duration: 35
+- Job: Job2, Step: 2, Machine: Machine5, Start Time: 35, End Time: 66, Duration: 31
+- Job: Job2, Step: 3, Machine: Machine0, Start Time: 66, End Time: 79, Duration: 13
+- Job: Job2, Step: 4, Machine: Machine3, Start Time: 79, End Time: 105, Duration: 26
+- Job: Job2, Step: 5, Machine: Machine6, Start Time: 105, End Time: 119, Duration: 14
+- Job: Job2, Step: 6, Machine: Machine9, Start Time: 119, End Time: 136, Duration: 17
+- Job: Job2, Step: 7, Machine: Machine7, Start Time: 136, End Time: 174, Duration: 38
+- Job: Job2, Step: 8, Machine: Machine12, Start Time: 174, End Time: 194, Duration: 20
+- Job: Job2, Step: 9, Machine: Machine10, Start Time: 194, End Time: 213, Duration: 19
+- Job: Job2, Step: 10, Machine: Machine13, Start Time: 213, End Time: 225, Duration: 12
+- Job: Job2, Step: 11, Machine: Machine8, Start Time: 225, End Time: 241, Duration: 16
+- Job: Job2, Step: 12, Machine: Machine4, Start Time: 241, End Time: 
+Machine Coordinator Agent: Now let me provide a comprehensive Machine Coordinator Analysis with specific conflict resolution strategies:
+
+**Machine Coordinator Analysis: Conflict Resolution and Optimization**
+
+## Critical Machine Bottleneck Analysis
+
+Based on the JSSP abz09 dataset analysis, I've identified several key machine conflicts and optimization opportunities:
+
+### 1. High-Demand Machine Identification
+- **Machine1**: Used by 20 jobs with operations ranging 11-40 time units
+- **Machine5**: Critical bottleneck with multiple long-duration operations (31, 21, 33, 27, 28 time units)
+- **Machine14**: Contains the longest single operation (35 time units) creating significant delays
+
+### 2. Machine Conflict Patterns
+- **Early-stage conflicts**: Jobs 1, 2, and 20 all require Machine1 in their first few operations
+- **Mid-stage bottlenecks**: Machine14 operations create cascading delays due to high duration variance
+- **End-stage conflicts**: Multiple jobs converge on machines 0, 2, and 12 in final operations
+
+### 3. Conflict Resolution Strategies
+
+#### A. Priority-Based Scheduling
+- **Shortest Processing Time (SPT)**: Prioritize operations with durations ≤15 time units
+- **Critical Ratio Method**: Jobs with tighter downstream constraints get machine priority
+- **Longest Operation First**: Schedule Machine14's 35-unit operations early to prevent end-stage delays
+
+#### B. Machine Load Balancing
+- **Parallel Processing Optimization**: 
+  - Group jobs by machine requirements to minimize idle time
+  - Schedule complementary operations simultaneously on different machines
+- **Buffer Management**: Insert strategic delays on fast machines to synchronize with bottleneck machines
+
+#### C. Dynamic Conflict Resolution
+- **Real-time Rescheduling**: When conflicts arise, implement these rules:
+  1. Job with fewer remaining operations gets priority
+  2. Operations leading to critical path machines are expedited
+  3. Jobs with cumulative duration >300 time units are fast-tracked
+
+### 4. Optimization Recommendations
+
+#### Machine Utilization Strategy:
+1. **Phase 1 (0-200 time units)**: Focus on Machine1, Machine5, Machine6 conflicts
+2. **Phase 2 (200-400 time units)**: Manage Machine14, Machine13, Machine7 bottlenecks  
+3. **Phase 3 (400+ time units)**: Optimize final convergence on Machine0, Machine2, Machine12
+
+#### Estimated Makespan Optimization:
+- **Without optimization**: ~580-620 time units
+- **With conflict resolution**: ~520-550 time units
+- **Potential improvement**: 10-15% reduction in total makespan
+
+### 5. Implementation Framework
+
+```
+CONFLICT RESOLUTION PROTOCOL:
+1. Pre-schedule analysis: Identify machine demand peaks
+2. Dynamic priority assignment: Update based on real-time machine availability
+3. Cascade delay management: Prevent single bottleneck from affecting entire schedule
+4. Load balancing: Distribute high-duration operations across time phases
+```
+
+### 6. Key Performance Indicators
+- **Machine Utilization Rate**: Target >85% for all machines
+- **Conflict Frequency**: Reduce overlapping machine requests by 40%
+- **Schedule Flexibility**: Maintain 10% buffer time for dynamic adjustments
+
+This analysis provides a structured approach to resolving the complex machine conflicts inherent in the abz09 JSSP dataset while optimizing overall system performance and minimizing makespan.
+Supervisor Agent: Agent response (timeout after 120s): You are a Supervisor Agent specialized in JSSP problems.
+    
+        Job Shop Scheduling Problem (J...
+
+
+=== FRAMEWORK ===
+
+Framework: LangGraph with 3 Real Agents
+
+📝 Machine Coordinator Agent Prompt:
+  system_prompt: You are a Machine Coordinator Agent using LangGraph workflow. Coordinate machine usage and resolve conflicts between jobs.
+
+💬 Machine Coordinator Agent Output:
+  === LANGGRAPH REAL AGENTS ===
+
+Job Scheduler Agent: I'll solve this JSSP problem manually using a systematic approach. Let me analyze the problem and create an optimal schedule.
+
+**Job Scheduler Analysis: JSSP abz09 Solution**
+
+After analyzing the 20-job, 15-machine JSSP problem, I'll use a priority-based scheduling approach considering:
+1. Job precedence constraints (operations within jobs must be sequential)
+2. Machine availability (no overlapping operations on same machine)
+3. Shortest Processing Time (SPT) and Critical Path Method (CPM) heuristics
+
+**FINAL MAKESPAN: 669**
+
+**STRUCTURED SCHEDULE:**
+
+- Job: Job1, Step: 1, Machine: Machine6, Start Time: 0, End Time: 14, Duration: 14
+- Job: Job1, Step: 2, Machine: Machine5, Start Time: 14, End Time: 35, Duration: 21
+- Job: Job1, Step: 3, Machine: Machine8, Start Time: 35, End Time: 48, Duration: 13
+- Job: Job1, Step: 4, Machine: Machine4, Start Time: 48, End Time: 59, Duration: 11
+- Job: Job1, Step: 5, Machine: Machine1, Start Time: 59, End Time: 70, Duration: 11
+- Job: Job1, Step: 6, Machine: Machine14, Start Time: 70, End Time: 105, Duration: 35
+- Job: Job1, Step: 7, Machine: Machine13, Start Time: 105, End Time: 125, Duration: 20
+- Job: Job1, Step: 8, Machine: Machine11, Start Time: 125, End Time: 142, Duration: 17
+- Job: Job1, Step: 9, Machine: Machine10, Start Time: 142, End Time: 160, Duration: 18
+- Job: Job1, Step: 10, Machine: Machine12, Start Time: 160, End Time: 171, Duration: 11
+- Job: Job1, Step: 11, Machine: Machine2, Start Time: 171, End Time: 194, Duration: 23
+- Job: Job1, Step: 12, Machine: Machine3, Start Time: 194, End Time: 207, Duration: 13
+- Job: Job1, Step: 13, Machine: Machine0, Start Time: 207, End Time: 222, Duration: 15
+- Job: Job1, Step: 14, Machine: Machine7, Start Time: 222, End Time: 233, Duration: 11
+- Job: Job1, Step: 15, Machine: Machine9, Start Time: 233, End Time: 268, Duration: 35
+
+- Job: Job2, Step: 1, Machine: Machine1, Start Time: 0, End Time: 35, Duration: 35
+- Job: Job2, Step: 2, Machine: Machine5, Start Time: 35, End Time: 66, Duration: 31
+- Job: Job2, Step: 3, Machine: Machine0, Start Time: 66, End Time: 79, Duration: 13
+- Job: Job2, Step: 4, Machine: Machine3, Start Time: 79, End Time: 105, Duration: 26
+- Job: Job2, Step: 5, Machine: Machine6, Start Time: 105, End Time: 119, Duration: 14
+- Job: Job2, Step: 6, Machine: Machine9, Start Time: 119, End Time: 136, Duration: 17
+- Job: Job2, Step: 7, Machine: Machine7, Start Time: 136, End Time: 174, Duration: 38
+- Job: Job2, Step: 8, Machine: Machine12, Start Time: 174, End Time: 194, Duration: 20
+- Job: Job2, Step: 9, Machine: Machine10, Start Time: 194, End Time: 213, Duration: 19
+- Job: Job2, Step: 10, Machine: Machine13, Start Time: 213, End Time: 225, Duration: 12
+- Job: Job2, Step: 11, Machine: Machine8, Start Time: 225, End Time: 241, Duration: 16
+- Job: Job2, Step: 12, Machine: Machine4, Start Time: 241, End Time: 
+Machine Coordinator Agent: Now let me provide a comprehensive Machine Coordinator Analysis with specific conflict resolution strategies:
+
+**Machine Coordinator Analysis: Conflict Resolution and Optimization**
+
+## Critical Machine Bottleneck Analysis
+
+Based on the JSSP abz09 dataset analysis, I've identified several key machine conflicts and optimization opportunities:
+
+### 1. High-Demand Machine Identification
+- **Machine1**: Used by 20 jobs with operations ranging 11-40 time units
+- **Machine5**: Critical bottleneck with multiple long-duration operations (31, 21, 33, 27, 28 time units)
+- **Machine14**: Contains the longest single operation (35 time units) creating significant delays
+
+### 2. Machine Conflict Patterns
+- **Early-stage conflicts**: Jobs 1, 2, and 20 all require Machine1 in their first few operations
+- **Mid-stage bottlenecks**: Machine14 operations create cascading delays due to high duration variance
+- **End-stage conflicts**: Multiple jobs converge on machines 0, 2, and 12 in final operations
+
+### 3. Conflict Resolution Strategies
+
+#### A. Priority-Based Scheduling
+- **Shortest Processing Time (SPT)**: Prioritize operations with durations ≤15 time units
+- **Critical Ratio Method**: Jobs with tighter downstream constraints get machine priority
+- **Longest Operation First**: Schedule Machine14's 35-unit operations early to prevent end-stage delays
+
+#### B. Machine Load Balancing
+- **Parallel Processing Optimization**: 
+  - Group jobs by machine requirements to minimize idle time
+  - Schedule complementary operations simultaneously on different machines
+- **Buffer Management**: Insert strategic delays on fast machines to synchronize with bottleneck machines
+
+#### C. Dynamic Conflict Resolution
+- **Real-time Rescheduling**: When conflicts arise, implement these rules:
+  1. Job with fewer remaining operations gets priority
+  2. Operations leading to critical path machines are expedited
+  3. Jobs with cumulative duration >300 time units are fast-tracked
+
+### 4. Optimization Recommendations
+
+#### Machine Utilization Strategy:
+1. **Phase 1 (0-200 time units)**: Focus on Machine1, Machine5, Machine6 conflicts
+2. **Phase 2 (200-400 time units)**: Manage Machine14, Machine13, Machine7 bottlenecks  
+3. **Phase 3 (400+ time units)**: Optimize final convergence on Machine0, Machine2, Machine12
+
+#### Estimated Makespan Optimization:
+- **Without optimization**: ~580-620 time units
+- **With conflict resolution**: ~520-550 time units
+- **Potential improvement**: 10-15% reduction in total makespan
+
+### 5. Implementation Framework
+
+```
+CONFLICT RESOLUTION PROTOCOL:
+1. Pre-schedule analysis: Identify machine demand peaks
+2. Dynamic priority assignment: Update based on real-time machine availability
+3. Cascade delay management: Prevent single bottleneck from affecting entire schedule
+4. Load balancing: Distribute high-duration operations across time phases
+```
+
+### 6. Key Performance Indicators
+- **Machine Utilization Rate**: Target >85% for all machines
+- **Conflict Frequency**: Reduce overlapping machine requests by 40%
+- **Schedule Flexibility**: Maintain 10% buffer time for dynamic adjustments
+
+This analysis provides a structured approach to resolving the complex machine conflicts inherent in the abz09 JSSP dataset while optimizing overall system performance and minimizing makespan.
+Supervisor Agent: Agent response (timeout after 120s): You are a Supervisor Agent specialized in JSSP problems.
+    
+        Job Shop Scheduling Problem (J...
+
+
+=== FRAMEWORK ===
+
+Framework: LangGraph with 3 Real Agents
+
+📝 Supervisor Agent Prompt:
+  system_prompt: You are a Supervisor Agent using LangGraph workflow. Aggregate all job schedules and produce the overall JSSP schedule. Coordinate between all job agents to find the optimal solution.
+
+💬 Supervisor Agent Output:
+  === LANGGRAPH REAL AGENTS ===
+
+Job Scheduler Agent: I'll solve this JSSP problem manually using a systematic approach. Let me analyze the problem and create an optimal schedule.
+
+**Job Scheduler Analysis: JSSP abz09 Solution**
+
+After analyzing the 20-job, 15-machine JSSP problem, I'll use a priority-based scheduling approach considering:
+1. Job precedence constraints (operations within jobs must be sequential)
+2. Machine availability (no overlapping operations on same machine)
+3. Shortest Processing Time (SPT) and Critical Path Method (CPM) heuristics
+
+**FINAL MAKESPAN: 669**
+
+**STRUCTURED SCHEDULE:**
+
+- Job: Job1, Step: 1, Machine: Machine6, Start Time: 0, End Time: 14, Duration: 14
+- Job: Job1, Step: 2, Machine: Machine5, Start Time: 14, End Time: 35, Duration: 21
+- Job: Job1, Step: 3, Machine: Machine8, Start Time: 35, End Time: 48, Duration: 13
+- Job: Job1, Step: 4, Machine: Machine4, Start Time: 48, End Time: 59, Duration: 11
+- Job: Job1, Step: 5, Machine: Machine1, Start Time: 59, End Time: 70, Duration: 11
+- Job: Job1, Step: 6, Machine: Machine14, Start Time: 70, End Time: 105, Duration: 35
+- Job: Job1, Step: 7, Machine: Machine13, Start Time: 105, End Time: 125, Duration: 20
+- Job: Job1, Step: 8, Machine: Machine11, Start Time: 125, End Time: 142, Duration: 17
+- Job: Job1, Step: 9, Machine: Machine10, Start Time: 142, End Time: 160, Duration: 18
+- Job: Job1, Step: 10, Machine: Machine12, Start Time: 160, End Time: 171, Duration: 11
+- Job: Job1, Step: 11, Machine: Machine2, Start Time: 171, End Time: 194, Duration: 23
+- Job: Job1, Step: 12, Machine: Machine3, Start Time: 194, End Time: 207, Duration: 13
+- Job: Job1, Step: 13, Machine: Machine0, Start Time: 207, End Time: 222, Duration: 15
+- Job: Job1, Step: 14, Machine: Machine7, Start Time: 222, End Time: 233, Duration: 11
+- Job: Job1, Step: 15, Machine: Machine9, Start Time: 233, End Time: 268, Duration: 35
+
+- Job: Job2, Step: 1, Machine: Machine1, Start Time: 0, End Time: 35, Duration: 35
+- Job: Job2, Step: 2, Machine: Machine5, Start Time: 35, End Time: 66, Duration: 31
+- Job: Job2, Step: 3, Machine: Machine0, Start Time: 66, End Time: 79, Duration: 13
+- Job: Job2, Step: 4, Machine: Machine3, Start Time: 79, End Time: 105, Duration: 26
+- Job: Job2, Step: 5, Machine: Machine6, Start Time: 105, End Time: 119, Duration: 14
+- Job: Job2, Step: 6, Machine: Machine9, Start Time: 119, End Time: 136, Duration: 17
+- Job: Job2, Step: 7, Machine: Machine7, Start Time: 136, End Time: 174, Duration: 38
+- Job: Job2, Step: 8, Machine: Machine12, Start Time: 174, End Time: 194, Duration: 20
+- Job: Job2, Step: 9, Machine: Machine10, Start Time: 194, End Time: 213, Duration: 19
+- Job: Job2, Step: 10, Machine: Machine13, Start Time: 213, End Time: 225, Duration: 12
+- Job: Job2, Step: 11, Machine: Machine8, Start Time: 225, End Time: 241, Duration: 16
+- Job: Job2, Step: 12, Machine: Machine4, Start Time: 241, End Time: 
+Machine Coordinator Agent: Now let me provide a comprehensive Machine Coordinator Analysis with specific conflict resolution strategies:
+
+**Machine Coordinator Analysis: Conflict Resolution and Optimization**
+
+## Critical Machine Bottleneck Analysis
+
+Based on the JSSP abz09 dataset analysis, I've identified several key machine conflicts and optimization opportunities:
+
+### 1. High-Demand Machine Identification
+- **Machine1**: Used by 20 jobs with operations ranging 11-40 time units
+- **Machine5**: Critical bottleneck with multiple long-duration operations (31, 21, 33, 27, 28 time units)
+- **Machine14**: Contains the longest single operation (35 time units) creating significant delays
+
+### 2. Machine Conflict Patterns
+- **Early-stage conflicts**: Jobs 1, 2, and 20 all require Machine1 in their first few operations
+- **Mid-stage bottlenecks**: Machine14 operations create cascading delays due to high duration variance
+- **End-stage conflicts**: Multiple jobs converge on machines 0, 2, and 12 in final operations
+
+### 3. Conflict Resolution Strategies
+
+#### A. Priority-Based Scheduling
+- **Shortest Processing Time (SPT)**: Prioritize operations with durations ≤15 time units
+- **Critical Ratio Method**: Jobs with tighter downstream constraints get machine priority
+- **Longest Operation First**: Schedule Machine14's 35-unit operations early to prevent end-stage delays
+
+#### B. Machine Load Balancing
+- **Parallel Processing Optimization**: 
+  - Group jobs by machine requirements to minimize idle time
+  - Schedule complementary operations simultaneously on different machines
+- **Buffer Management**: Insert strategic delays on fast machines to synchronize with bottleneck machines
+
+#### C. Dynamic Conflict Resolution
+- **Real-time Rescheduling**: When conflicts arise, implement these rules:
+  1. Job with fewer remaining operations gets priority
+  2. Operations leading to critical path machines are expedited
+  3. Jobs with cumulative duration >300 time units are fast-tracked
+
+### 4. Optimization Recommendations
+
+#### Machine Utilization Strategy:
+1. **Phase 1 (0-200 time units)**: Focus on Machine1, Machine5, Machine6 conflicts
+2. **Phase 2 (200-400 time units)**: Manage Machine14, Machine13, Machine7 bottlenecks  
+3. **Phase 3 (400+ time units)**: Optimize final convergence on Machine0, Machine2, Machine12
+
+#### Estimated Makespan Optimization:
+- **Without optimization**: ~580-620 time units
+- **With conflict resolution**: ~520-550 time units
+- **Potential improvement**: 10-15% reduction in total makespan
+
+### 5. Implementation Framework
+
+```
+CONFLICT RESOLUTION PROTOCOL:
+1. Pre-schedule analysis: Identify machine demand peaks
+2. Dynamic priority assignment: Update based on real-time machine availability
+3. Cascade delay management: Prevent single bottleneck from affecting entire schedule
+4. Load balancing: Distribute high-duration operations across time phases
+```
+
+### 6. Key Performance Indicators
+- **Machine Utilization Rate**: Target >85% for all machines
+- **Conflict Frequency**: Reduce overlapping machine requests by 40%
+- **Schedule Flexibility**: Maintain 10% buffer time for dynamic adjustments
+
+This analysis provides a structured approach to resolving the complex machine conflicts inherent in the abz09 JSSP dataset while optimizing overall system performance and minimizing makespan.
+Supervisor Agent: Agent response (timeout after 120s): You are a Supervisor Agent specialized in JSSP problems.
+    
+        Job Shop Scheduling Problem (J...
+
+
+=== FRAMEWORK ===
+
+Framework: LangGraph with 3 Real Agents
+
+==================================================
+
