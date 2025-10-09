@@ -236,7 +236,7 @@ For each dataset (rcmax_20_15_5, TA01, abz07, swv01, yn01):
 │
 └─ For each optimization method (6 methods):
     │
-    ├─ 3. OptimizationTools.run_optimization_schedule()
+    ├─ 3. OptimizationTools.run_optimization_schedule() （optional)
     │   ├─ Creates optimizer (SA, GA, TS, VNS, MA, LRCP)
     │   ├─ Runs optimization (max 5 iterations)
     │   ├─ Validates result against upper bounds
