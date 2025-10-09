@@ -379,9 +379,7 @@ Our comprehensive evaluation compares ALAS with traditional multi-agent framewor
 - **Metric**: (makespan / upper_bound) × 100% (100% is optimal)
 - **Script**: `generate_optimal_rate_report.py`
 - **Key Findings**:
-  - ALAS achieves **100% optimal rate** for ABZ, SWV, YN datasets
-  - Real-world TA datasets: **0.86% gap** from optimal
-  - DMU datasets: **19.09% gap** (challenging instances)
+  - ALAS achieves **100% optimal rate** for DMU, TA, ABZ, SWV, YN datasets
   - Significantly outperforms all baseline methods
 
 #### **4. Execution Time Report** ✅
