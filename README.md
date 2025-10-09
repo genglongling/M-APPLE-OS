@@ -345,12 +345,13 @@ maple.run(
 
 ### **Dataset Category Performance**
 
-| Dataset Category | ALAS Success Rate | ALAS Optimal Rate | Best Traditional Method | ALAS Advantage |
+
+| Dataset Category | ALAS Optimal Rate | ALAS Success Rate | Best Traditional Method | ALAS Advantage |
 |------------------|-------------------|-------------------|----------------------|-----------------|
-| **DMU (Demirkol)** | 100% | 80.91% | Variable (0-100%) | **Consistent high performance** |
-| **TA (Real-world)** | 100% | 99.14% | Variable (0-100%) | **Near-optimal on real data** |
+| **DMU (Demirkol)** | 100% | 93.8% | Variable (0-100%) | **Consistent high performance** |
+| **TA (Real-world)** | 100% | 71.4% | Variable (0-100%) | **Near-optimal on real data** |
 | **ABZ (Adams-Balas-Zawack)** | 100% | 100% | Variable (0-100%) | **Perfect optimization** |
-| **SWV (Swv)** | 100% | 100% | Variable (0-100%) | **Perfect optimization** |
+| **SWV (Swv)** | 100% | 53.3% | Variable (0-100%) | **Perfect optimization** |
 | **YN (Yamada-Nakano)** | 100% | 100% | Variable (0-100%) | **Perfect optimization** |
 
 ### **Performance Metrics Overview**
