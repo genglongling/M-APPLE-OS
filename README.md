@@ -335,11 +335,11 @@ maple.run(
 
 ### **ALAS Performance Summary Table**
 
-| **Metric** | **ALAS Performance** | **Traditional Methods** | **ALAS Advantage** |
+| **Metric** | **ALAS Performance** | **Traditional MAS Methods** | **ALAS Advantage** |
 |------------|---------------------|-------------------------|-------------------|
 | **Success Rate** | **100%** across all dataset categories | 0-100% (highly variable) | **Consistent reliability** |
 | **Optimal Rate** | **100%** for ABZ/SWV/YN<br>**99.14%** for TA<br>**80.91%** for DMU | 0-100% (inconsistent) | **Near-perfect optimization** |
-| **Execution Time** | **2.5-3.0 seconds** | 10-100+ seconds | **10-40x faster** |
+| **Execution Time** | **~60 seconds per task** | 100+ seconds per task | **2x faster** |
 | **Error Rate** | **0%** (full workflow) | 0-100% (variable) | **Perfect error elimination** |
 | **Token Usage** | **Optimized efficiency** | High consumption (MAS)<br>Variable (single-agent) | **Better results, lower cost** |
 
