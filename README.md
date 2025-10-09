@@ -61,7 +61,7 @@ ALAS is as far as we know, the first comprehensive middleware for agent applicat
 
 ## ALAS Design and Workflow
 
-### ALAS System Algorithm Workflow
+### LCRP Algorithm
 
 ![ALAS Algorithm](figures/algorithm.png)
 
