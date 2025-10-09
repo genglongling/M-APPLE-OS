@@ -691,10 +691,9 @@ The system supports 5 dataset categories:
 ### **6️⃣ Expected Results**
 
 After running the experiments, you should see:
-- **ALAS Success Rate**: 100% across all datasets
-- **ALAS Optimal Rate**: 100% for ABZ/SWV/YN, 99.14% for TA, 80.91% for DMU
-- **ALAS Execution Time**: 2.5-3.0 seconds
-- **ALAS Error Rate**: 0% (full workflow)
+- **ALAS Success Rate**: 83.7% average across all datasets
+- **ALAS Optimal Rate**: 100% for DMU/TA/ABZ/SWV/YN
+- **ALAS Execution Time**: ~60 seconds per task
 - **ALAS Token Usage**: Optimized efficiency
 
 ### **7️⃣ Troubleshooting**
