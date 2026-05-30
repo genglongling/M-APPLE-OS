@@ -1,0 +1,65 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Workflow
+metadata:
+  generateName: maple-jssp-full-
+  namespace: default
+  labels:
+    app.kubernetes.io/name: alas
+    alas.workflow/name: maple-jssp-full
+spec:
+  entrypoint: main-dag
+  templates:
+  - name: main-dag
+    dag:
+      tasks:
+      - name: generate_schedule
+        template: generate_schedule
+      - name: validate_schedule
+        template: validate_schedule
+        dependencies:
+            - name: generate_schedule
+      - name: optimize_schedule
+        template: optimize_schedule
+        dependencies:
+            - name: validate_schedule
+      - name: persist_schedule
+        template: persist_schedule
+        dependencies:
+            - name: optimize_schedule
+
+  - name: generate_schedule
+    container:
+      image: python:3.11-slim
+      command: [python, -m, applications.run_workflow_step]
+      args: ["--step-id", "generate_schedule", "--agent", "MAPLEJSSPQueryAgent"]
+      env:
+        - name: ALAS_WORKFLOW_STEP
+          value: "generate_schedule"
+
+  - name: validate_schedule
+    container:
+      image: python:3.11-slim
+      command: [python, -m, applications.run_workflow_step]
+      args: ["--step-id", "validate_schedule", "--agent", "ValidationTools"]
+      env:
+        - name: ALAS_WORKFLOW_STEP
+          value: "validate_schedule"
+
+  - name: optimize_schedule
+    container:
+      image: python:3.11-slim
+      command: [python, -m, applications.run_workflow_step]
+      args: ["--step-id", "optimize_schedule", "--agent", "OptimizationTools"]
+      env:
+        - name: ALAS_WORKFLOW_STEP
+          value: "optimize_schedule"
+
+  - name: persist_schedule
+    container:
+      image: python:3.11-slim
+      command: [python, -m, applications.run_workflow_step]
+      args: ["--step-id", "persist_schedule", "--agent", "FileStorageTools"]
+      env:
+        - name: ALAS_WORKFLOW_STEP
+          value: "persist_schedule"
+

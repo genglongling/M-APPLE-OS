@@ -8,6 +8,8 @@ import json
 import os
 from collections import defaultdict
 
+from benchmark_utils import CATEGORIES, categorize_dataset
+
 def load_validation_results():
     """Load the comprehensive validation results"""
     results_file = "comprehensive_initial_schedule_validation_with_alas.json"
@@ -17,21 +19,6 @@ def load_validation_results():
     
     with open(results_file, 'r') as f:
         return json.load(f)
-
-def categorize_dataset(dataset_name):
-    """Categorize dataset into one of the 5 categories"""
-    if dataset_name.startswith('rcmax_'):
-        return "DMU"
-    elif dataset_name.startswith('TA'):
-        return "TA"
-    elif dataset_name.startswith('abz'):
-        return "ABZ"
-    elif dataset_name.startswith('swv'):
-        return "SWV"
-    elif dataset_name.startswith('yn'):
-        return "YN"
-    else:
-        return "Unknown"
 
 def generate_success_rate_report():
     """Generate success rate report by dataset category"""
@@ -53,13 +40,12 @@ def generate_success_rate_report():
         category = categorize_dataset(dataset)
         success = result['success']
         
-        if category != "Unknown":
+        if category is not None:
             if success:
                 category_stats[source][framework][category]['valid'] += 1
             category_stats[source][framework][category]['total'] += 1
     
-    # Define the 5 dataset categories
-    categories = ["DMU", "TA", "ABZ", "SWV", "YN"]
+    categories = CATEGORIES
     
     # Define all sources and frameworks
     sources = ["MAS-GPT4o", "MAS-Claude4", "Single", "ALAS-GPT4o", "ALAS-Claude4", "ALAS-DeepSeek-V3", "ALAS-Gemini-2.5"]

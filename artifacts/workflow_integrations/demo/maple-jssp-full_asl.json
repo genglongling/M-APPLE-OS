@@ -1,0 +1,67 @@
+{
+  "Comment": "ALAS MAPLE JSSP workflow (full)",
+  "StartAt": "generate_schedule",
+  "States": {
+    "generate_schedule": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::lambda:invoke",
+      "Parameters": {
+        "FunctionName": "${AlasWorkflowStepFunction}",
+        "Payload": {
+          "step_id": "generate_schedule",
+          "agent.$": "$.agent",
+          "workflow.$": "$.workflow"
+        }
+      },
+      "ResultPath": "$.results.generate_schedule",
+      "Next": "validate_schedule"
+    },
+    "validate_schedule": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::lambda:invoke",
+      "Parameters": {
+        "FunctionName": "${AlasWorkflowStepFunction}",
+        "Payload": {
+          "step_id": "validate_schedule",
+          "agent.$": "$.agent",
+          "workflow.$": "$.workflow"
+        }
+      },
+      "ResultPath": "$.results.validate_schedule",
+      "Next": "optimize_schedule"
+    },
+    "optimize_schedule": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::lambda:invoke.waitForTaskToken",
+      "Parameters": {
+        "FunctionName": "${AlasWorkflowStepFunction}",
+        "Payload": {
+          "step_id": "optimize_schedule",
+          "agent.$": "$.agent",
+          "workflow.$": "$.workflow"
+        }
+      },
+      "ResultPath": "$.results.optimize_schedule",
+      "Next": "persist_schedule"
+    },
+    "persist_schedule": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::lambda:invoke",
+      "Parameters": {
+        "FunctionName": "${AlasWorkflowStepFunction}",
+        "Payload": {
+          "step_id": "persist_schedule",
+          "agent.$": "$.agent",
+          "workflow.$": "$.workflow"
+        }
+      },
+      "ResultPath": "$.results.persist_schedule",
+      "End": true
+    }
+  },
+  "Metadata": {
+    "alas_workflow": "maple-jssp-full",
+    "verification": "python",
+    "terminal_step": "persist_schedule"
+  }
+}

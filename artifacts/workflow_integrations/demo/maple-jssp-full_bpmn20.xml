@@ -1,0 +1,46 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<ns0:definitions xmlns:ns0="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:ns1="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:ns2="http://www.omg.org/spec/DD/20100524/DC" id="alas-definitions" xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI">
+  <ns0:process id="maple-jssp-full" name="maple-jssp-full">
+    <ns0:startEvent id="start" />
+    <ns0:task id="generate_schedule" name="MAPLEJSSPQueryAgent">
+      <ns0:documentation>kind=llm; optional=False</ns0:documentation>
+    </ns0:task>
+    <ns0:sequenceFlow id="flow_start_to_generate_schedule" sourceRef="start" targetRef="generate_schedule" />
+    <ns0:task id="validate_schedule" name="ValidationTools">
+      <ns0:documentation>kind=python; optional=False</ns0:documentation>
+    </ns0:task>
+    <ns0:sequenceFlow id="flow_generate_schedule_to_validate_schedule" sourceRef="generate_schedule" targetRef="validate_schedule" />
+    <ns0:task id="optimize_schedule" name="OptimizationTools">
+      <ns0:documentation>kind=python; optional=True</ns0:documentation>
+    </ns0:task>
+    <ns0:sequenceFlow id="flow_validate_schedule_to_optimize_schedule" sourceRef="validate_schedule" targetRef="optimize_schedule" />
+    <ns0:task id="persist_schedule" name="FileStorageTools">
+      <ns0:documentation>kind=python; optional=False</ns0:documentation>
+    </ns0:task>
+    <ns0:sequenceFlow id="flow_optimize_schedule_to_persist_schedule" sourceRef="optimize_schedule" targetRef="persist_schedule" />
+    <ns0:endEvent id="end" />
+    <ns0:sequenceFlow id="flow_persist_schedule_to_end" sourceRef="persist_schedule" targetRef="end" />
+  </ns0:process>
+  <ns1:BPMNDiagram id="BPMNDiagram_1">
+    <ns1:BPMNPlane id="BPMNPlane_1" bpmnElement="maple-jssp-full">
+      <ns1:BPMNShape id="start_di" bpmnElement="start">
+        <ns2:Bounds x="80" y="80" width="36" height="36" />
+      </ns1:BPMNShape>
+      <ns1:BPMNShape id="generate_schedule_di" bpmnElement="generate_schedule">
+        <ns2:Bounds x="180" y="68" width="120" height="60" />
+      </ns1:BPMNShape>
+      <ns1:BPMNShape id="validate_schedule_di" bpmnElement="validate_schedule">
+        <ns2:Bounds x="340" y="68" width="120" height="60" />
+      </ns1:BPMNShape>
+      <ns1:BPMNShape id="optimize_schedule_di" bpmnElement="optimize_schedule">
+        <ns2:Bounds x="500" y="68" width="120" height="60" />
+      </ns1:BPMNShape>
+      <ns1:BPMNShape id="persist_schedule_di" bpmnElement="persist_schedule">
+        <ns2:Bounds x="660" y="68" width="120" height="60" />
+      </ns1:BPMNShape>
+      <ns1:BPMNShape id="end_di" bpmnElement="end">
+        <ns2:Bounds x="820" y="80" width="36" height="36" />
+      </ns1:BPMNShape>
+    </ns1:BPMNPlane>
+  </ns1:BPMNDiagram>
+</ns0:definitions>

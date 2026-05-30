@@ -1,0 +1,380 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage{enumitem}
+\usepackage{hyperref}
+\usepackage{microtype}
+\usepackage{booktabs}
+\usepackage{multirow}
+\usepackage{graphicx}
+
+\title{CS 486 Assignment A (Part A)}
+\author{Longling Name}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+
+\section{Chosen problem}
+We study \textbf{human--LLM collaboration for generating, repairing, and certifying feasible schedules} for a classical \emph{job-shop scheduling} style specification: each job is a fixed sequence of operations; each operation requires a machine for a known duration; each machine handles at most one operation at a time; the objective is to minimize makespan (or, in a relaxed variant, to obtain any feasible schedule with a certified feasibility check).
+
+This problem is a concrete instance of a broader theme: \emph{NP-hard combinatorial optimization with cheap \emph{syntax} (constraint) checking but expensive \emph{semantic} (globally optimal) reasoning}.
+
+\section{Coding platform and experiment setup}
+
+All experiments are implemented in the public repository
+\url{https://github.com/genglongling/M-APPLE-OS}.
+Table~\ref{tab:main_benchmark} and Table~\ref{tab:ablation}  lays out the benchmark-by-method evaluation matrix and ablation studies.
+
+
+\begin{table*}[t]
+  \centering
+  \small
+  \setlength{\tabcolsep}{4pt}
+  \resizebox{\textwidth}{!}{
+  \begin{tabular}{l|l|ccc|ccc}
+  \toprule
+  \textbf{Benchmark} & \textbf{Method} 
+  & \multicolumn{3}{c|}{\textbf{Static Planning}} 
+  & \multicolumn{3}{c}{\textbf{Dynamic / Disruption}} \\
+  \cline{3-8}
+  & 
+  & Feasibility $\uparrow$ 
+  & Violations $\downarrow$ 
+  & Makespan Gap $\downarrow$
+  & Replan Success $\uparrow$ 
+  & Repair Cost $\downarrow$ 
+  & State Errors $\downarrow$ \\
+  \midrule
+  
+  \multirow{6}{*}{DMU} 
+  & Single-Agent &  &  &  &  &  &  \\
+  & Single-Agent +CoT/ReAct &  &  &  &  &  &  \\
+  & Single-Agent+ Self-refine &  &  &  &  &  &  \\
+  & MAS (LangGraph/AutoGen/GPTSwarm/AFlow) &  &  &  &  &  &  \\
+  % HTN-style
+  % reviews
+  & OR/DRL &  &  &  &  &  &  \\
+  & \textbf{ALAS} &  &  &  &  &  &  \\
+  
+  \midrule
+  
+  \multirow{6}{*}{TA} 
+  & Single-Agent &  &  &  &  &  &  \\
+  & Single-Agent +CoT/ReAct &  &  &  &  &  &  \\
+  & Single-Agent+ Self-refine &  &  &  &  &  &  \\
+  & MAS (LangGraph/AutoGen/GPTSwarm/AFlow) &  &  &  &  &  &  \\
+  % HTN-style
+  % reviews
+  & OR/DRL &  &  &  &  &  &  \\
+  & \textbf{ALAS} &  &  &  &  &  &  \\
+  
+  \midrule
+  
+  \multirow{6}{*}{SWZ} 
+  & Single-Agent &  &  &  &  &  &  \\
+  & Single-Agent +CoT/ReAct &  &  &  &  &  &  \\
+  & Single-Agent+ Self-refine &  &  &  &  &  &  \\
+  & MAS (LangGraph/AutoGen/GPTSwarm/AFlow) &  &  &  &  &  &  \\
+  % HTN-style
+  % reviews
+  & OR/DRL &  &  &  &  &  &  \\
+  & \textbf{ALAS} &  &  &  &  &  &  \\
+  
+  \midrule
+  
+  \multirow{6}{*}{YN} 
+  & Single-Agent &  &  &  &  &  &  \\
+  & Single-Agent +CoT/ReAct &  &  &  &  &  &  \\
+  & Single-Agent+ Self-refine &  &  &  &  &  &  \\
+  & MAS (LangGraph/AutoGen/GPTSwarm/AFlow) &  &  &  &  &  &  \\
+  % HTN-style
+  % reviews
+  & OR/DRL &  &  &  &  &  &  \\
+  & \textbf{ALAS} &  &  &  &  &  &  \\
+  
+  \midrule
+  
+  \multirow{6}{*}{ABZ} 
+  & Single-Agent &  &  &  &  &  &  \\
+  & Single-Agent +CoT/ReAct &  &  &  &  &  &  \\
+  & Single-Agent+ Self-refine &  &  &  &  &  &  \\
+  & MAS (LangGraph/AutoGen/GPTSwarm/AFlow) &  &  &  &  &  &  \\
+  % HTN-style
+  % reviews
+  & OR/DRL &  &  &  &  &  &  \\
+  & \textbf{ALAS} &  &  &  &  &  &  \\
+  
+  \bottomrule
+  \end{tabular}
+  }
+  \caption{
+  Main results on industrial job-shop scheduling benchmarks (DMU, TA, SWZ, YN, ABZ).
+  Static planning evaluates feasibility and optimization quality, while dynamic settings assess disruption recovery,
+  state consistency, and repair efficiency. ALAS is expected to achieve the strongest performance under dynamic disruptions
+  while remaining competitive in static optimization.
+  }
+  \label{tab:main_benchmark}
+  \end{table*}
+
+  \begin{table}[t]
+    \centering
+    \small
+    \setlength{\tabcolsep}{4pt}
+    \resizebox{\columnwidth}{!}{
+    \begin{tabular}{lcccccc}
+    \toprule
+    \textbf{Variant} 
+    & \textbf{Horizon} 
+    & \textbf{State} 
+    & \textbf{Constraint} 
+    & \textbf{Replan} 
+    & \textbf{Repair Cost} 
+    & \textbf{Robustness} \\
+    \midrule
+    
+    ALAS (full) 
+    & \textbf{High} 
+    & \textbf{High} 
+    & \textbf{High} 
+    & \textbf{High} 
+    & \textbf{Low} 
+    & \textbf{High} \\
+    
+    w/o Memory 
+    & Medium 
+    & Low 
+    & Medium 
+    & Low 
+    & High 
+    & Low \\
+    
+    w/o Validator 
+    & Medium 
+    & Medium 
+    & Low 
+    & Medium 
+    & Medium 
+    & Medium \\
+    
+    w/o LRCP 
+    & Medium 
+    & Medium 
+    & Medium 
+    & Low 
+    & High 
+    & Low \\
+    
+    % Single-Agent 
+    % & Low 
+    % & Low 
+    % & Low 
+    % & Low 
+    % & High 
+    % & Low \\
+    
+    \bottomrule
+    \end{tabular}
+    }
+    \caption{
+    Ablation study of ALAS components across key planning capabilities. 
+    Removing memory degrades state consistency, removing validation harms constraint satisfaction, 
+    and removing LRCP significantly reduces replanning effectiveness and increases repair cost.
+    }
+    \label{tab:ablation}
+    \end{table}
+
+\section{Related work}
+
+\paragraph{Job-shop scheduling and complexity.}
+The job-shop problem to minimize makespan is a standard strongly NP-hard model in machine scheduling~\cite{GJ79,LRKB77}.
+Exact methods (branch-and-bound, constraint programming, mixed-integer programming) and dedicated JSSP algorithms have been studied for decades; representative exact/heuristic lines include the shifting bottleneck heuristic~\cite{Adams1988}, branch-and-bound frameworks for the job-shop problem~\cite{Carlier1989}, and high-performance tabu search~\cite{Nowicki1996}.
+Textbooks and monographs synthesize complexity, dispatching rules, and metaheuristics for production scheduling~\cite{CPHandbook}.
+
+\paragraph{Large language models as collaborators (not certified solvers).}
+Foundation models are widely used for step-by-step reasoning prompts (chain-of-thought)~\cite{Wei2022} and for interleaving reasoning with tool use (ReAct-style agents)~\cite{Yao2023}.
+Multi-agent \emph{conversation} frameworks such as AutoGen coordinate roles and tool calls among LLMs and humans~\cite{Wu2024}.
+In operations research, there is peer-reviewed work on using language models to help translate natural-language problem descriptions into formal optimization formulations, with human validation in the loop~\cite{Ramamonjison2022}.
+These lines support using LLMs for modeling, explanation, and proposal generation, but they do not replace the need for independent verification of feasibility and optimality on concrete instances.
+
+\paragraph{Gap addressed in this project.}
+Classical scheduling literature assumes solutions are produced by specified algorithms; recent LLM agent work emphasizes flexible dialogue but often elides \emph{deterministic} checking of constraints.
+Our setup follows the OR ``augmentation'' perspective---LLM proposals plus human oversight~\cite{Ramamonjison2022}---while tightening the loop with explicit verifiers, logged failures, and benchmark artifacts (Section~\ref{sec:problem-spec}).
+
+\section{Problem specification}
+\label{sec:problem-spec}
+
+\paragraph{Survey methodology.} We used an LLM as a \emph{guidance and summarization} assistant, not as an oracle:
+\begin{enumerate}[noitemsep]
+  \item Seed queries with precise keywords (\texttt{job shop NP-hard}, \texttt{disjunctive graph}, \texttt{branch and bound JSSP}, \texttt{large neighborhood search scheduling}, \texttt{LLM operations research scheduling}).
+  \item Require the LLM to return \emph{search strings}, venues, and author names; we then opened primary sources (journal PDFs, textbooks, reputable surveys).
+  \item For each ``theorem-level'' claim extracted by the LLM, we checked: statement, hypotheses, and whether the source is a proof or an empirical report.
+\end{enumerate}
+
+\textbf{Known results (high level).}
+\begin{itemize}[noitemsep]
+  \item \textbf{Computational complexity.} The job-shop problem to minimize makespan is strongly NP-hard; exact methods (branch-and-bound, constraint programming, MIP) scale poorly as jobs and machines grow.
+  \item \textbf{Classical algorithmic cores.} Industrial practice relies on dispatching rules, metaheuristics (tabu, genetic algorithms, simulated annealing), and large neighborhood search; these often lack \emph{universal} worst-case guarantees matching the best-known approximation bounds for restricted variants.
+  \item \textbf{Learning and LLMs in scheduling.} Recent work explores LLMs for modeling, code synthesis, and heuristic design; however, \emph{plan feasibility} and \emph{plan constraint satisfaction} remain only checkable by traditional solvers, while \emph{plan optimality} and \emph{plan scalability} are generally unavailable for large instances within strict time budgets.
+\end{itemize}
+
+\subsection{Our Method: ALAS Workflow}
+We decompose the collaboration target into four layers:
+\begin{enumerate}[label=\textbf{L\arabic*.}, leftmargin=*]
+  \item \textbf{Problem formalization layer.} Parse instance data (jobs, machines, durations, routes) into a structured representation suitable for both human inspection and automated checking.
+  \item \textbf{Candidate generation layer.} Propose a schedule (start/end times per operation) using heuristics, LLM-authored code, or hybrid search; this layer is creative and error-prone.
+  \item \textbf{Verification layer.} Check precedence, machine capacity, and completeness (all operations scheduled exactly once) with deterministic procedures independent of the LLM.
+  \item \textbf{Improvement layer.} If verification fails, localize violations and repair (human-guided or algorithmic); if verification succeeds, optionally run optimization or bound computation as a separate, clearly scoped step.
+\end{enumerate}
+
+\subsection{Hard core}
+\begin{itemize}[noitemsep]
+  \item \textbf{Tractable (relative to human + modest compute).} Feasibility checking for a \emph{given} schedule; small-scale exact optimization; bounded local repair moves; logging and diffing of intermediate artifacts; reproducible scripts.
+  \item \textbf{Hard core.} Global optimality (or tight approximation guarantees) for large unstructured instances within strict time limits; reliably \emph{generating} feasible high-quality schedules without search; any claim of ``this is optimal'' without an explicit certificate from a trusted solver or a proved special-case theorem.
+\end{itemize}
+
+\subsection{Planned angle of attack}
+Our angle is \textbf{separation of concerns}: treat the LLM as a \emph{proposal engine} and possibly as an \emph{explainer} of repair strategies, but treat \emph{truth} about feasibility as the output of Layer~L3 only. Concretely:
+\begin{itemize}[noitemsep]
+  \item Standardize on a machine-readable schedule format and a single verifier implementation (the ``ground truth'' for feasibility).
+  \item Iterate \textbf{generate $\rightarrow$ verify $\rightarrow$ diagnose $\rightarrow$ repair}, with explicit logging of failed attempts (counteracting memory loss across sessions).
+  \item Reserve claims of optimality for instances where an exact solver or a clearly stated relaxation bound is available; otherwise report \emph{makespan} with the status \emph{feasible / infeasible / unknown optimality}.
+\end{itemize}
+
+\section{Protocol design}
+
+\subsection{Using CS486 ``knobs'' explicitly}
+
+\paragraph{Knob 1: Hypothesis discipline (vs.\ exaggeration/confabulation).}
+\textbf{Use:} Every substantive claim is tagged in the shared log as one of:
+\textsc{proved} (with citation and exact theorem statement),
+\textsc{checked-by-code} (script name + input hash + output),
+\textsc{empirical} (instance class + experimental protocol),
+\textsc{conjecture} (explicitly labeled).
+\textbf{Prompt pattern:} ``State the \emph{minimal} hypotheses needed. If you cannot prove it, move the statement to \textsc{conjecture} and list what would falsify it.''
+
+\paragraph{Knob 2: Adversarial review (vs.\ sycophancy).}
+\textbf{Use:} The Critic's success metric is \emph{finding} issues, not agreement.
+\textbf{Prompt pattern:} ``Your job is to break this schedule or argument. If you agree, you must still spend 200 words on the strongest counter-case. Then argue the opposite position for one paragraph.''
+\textbf{Test:} If the model flips from ``sound'' to ``fatally flawed'' with a mild rewording of the user hypothesis, treat prior endorsement as unreliable.
+
+\paragraph{Knob 3: External memory (vs.\ no regret / memory loss).}
+\textbf{Use:} A human-maintained \texttt{collab\_log.md} (or equivalent) with sections:
+\texttt{FAILED\_APPROACHES}, \texttt{RETRACTED\_CLAIMS}, \texttt{VERIFIED\_FACTS}, \texttt{OPEN\_QUESTIONS}.
+At the start of each session, paste the log into context \emph{before} asking for new ideas.
+\textbf{Rule:} If an approach appears twice without addressing why it failed before, stop and require a diff against the prior failure.
+
+\paragraph{Knob 4: Paradigm pivots (vs.\ paradigm blindness).}
+\textbf{Use:} When progress stalls, the human explicitly forces a framework shift (e.g., ``encode as CP-SAT,'' ``use disjunctive graph visualization,'' ``reduce to maximum clique on interval conflicts,'' ``switch from narrative proof to counterexample search'').
+\textbf{Prompt pattern:} ``Do not refine the previous approach. Pick a different mathematical packaging and restate the problem in that language only.''
+
+
+\subsection{Roles and information flow}
+We use a small multi-role pattern (these may be separate prompts, separate agents, or the same model with a \emph{forced role switch}):
+\begin{itemize}[noitemsep]
+  \item \textbf{Architect:} states assumptions, decomposes the instance, proposes plan of attack.
+  \item \textbf{Builder:} emits structured schedule artifacts and code.
+  \item \textbf{Critic:} adversarial review; must output \emph{falsifiable} objections (e.g., a specific operation overlap).
+  \item \textbf{Verifier (non-LLM):} deterministic checker.
+\end{itemize}
+
+
+\subsection{The four LLM failure modes: concrete countermeasures}
+
+\paragraph{1. Exaggeration and confabulation.}
+\begin{itemize}[noitemsep]
+  \item Require scope tags on claims (\textsc{proved} / \textsc{checked-by-code} / \textsc{empirical} / \textsc{conjecture}).
+  \item For anything that ``sounds like a theorem,'' ask: \emph{Which sentence uses which hypothesis?} and demand a line-by-line map.
+  \item Never accept ``this algorithm is optimal'' without a certificate source named in the log.
+\end{itemize}
+
+\paragraph{2. Sycophancy.}
+\begin{itemize}[noitemsep]
+  \item Separate Builder and Critic prompts; instruct Critic to maximize defect detection.
+  \item Periodic \emph{red-team} prompts: argue against the user's favorite approach.
+  \item Cross-check with non-LLM tools (verifier, solver) whenever agreement appears ``too easy.''
+\end{itemize}
+
+\paragraph{3. No persistent memory, no regret.}
+\begin{itemize}[noitemsep]
+  \item Running \texttt{FAILED\_APPROACHES} and \texttt{RETRACTED\_CLAIMS} lists, re-injected each session.
+  \item Versioned artifacts (schedules, logs) with hashes/timestamps; require the LLM to reference the latest artifact filename when proposing edits.
+\end{itemize}
+
+\paragraph{4. No intuition, no paradigm bridging.}
+\begin{itemize}[noitemsep]
+  \item Human-owned ``pivot checklist'' (CP/MIP, graph formulations, probabilistic intuition, local search neighborhoods).
+  \item When stuck, mandate a \emph{new} representation before more local edits.
+\end{itemize}
+
+\subsection{Verification strategy (end-to-end)}
+\textbf{Primary verifier (trusted):} a deterministic checker that validates:
+(i) each job's operations respect precedence and durations;
+(ii) each machine has no overlapping operations;
+(iii) every operation appears exactly once.
+\textbf{Secondary checks (optional):} compare makespan to known upper bounds or best-known values for benchmark instances; run a small exact solver on a reduced sub-instance as a sanity check.
+\textbf{Reporting rule:} publish \emph{feasibility verdict} from the primary verifier; publish \emph{optimality} only when a named exact method certifies it or a proved bound applies.
+
+\subsection{Extension to JSSP-dynamic}
+Because scheduling outputs can affect real resource allocation, the protocol also logs \emph{assumptions about uncertainty} (durations known vs.\ stochastic) and avoids presenting heuristic outputs as certifiably safe without domain review.
+
+\begin{thebibliography}{99}
+
+\bibitem{GJ79}
+M.~R. Garey and D.~S. Johnson.
+\newblock \emph{Computers and Intractability: A Guide to the Theory of NP-Completeness}.
+\newblock W.~H. Freeman, 1979.
+
+\bibitem{LRKB77}
+J.~K. Lenstra, A.~H.~G. Rinnooy Kan, and P. Brucker.
+\newblock Complexity of machine scheduling problems.
+\newblock \emph{Annals of Discrete Mathematics}, 1:343--362, 1977.
+
+\bibitem{CPHandbook}
+M.~L. Pinedo.
+\newblock \emph{Scheduling: Theory, Algorithms, and Systems}.
+\newblock Springer Science+Business Media, 2008.
+\newblock \href{https://doi.org/10.1007/978-0-387-78935-4}{doi:10.1007/978-0-387-78935-4}.
+
+\bibitem{Adams1988}
+J.~Adams, E.~Balas, and D.~Zawack.
+\newblock The shifting bottleneck procedure for job shop scheduling.
+\newblock \emph{Management Science}, 34(3):391--401, 1988.
+
+\bibitem{Carlier1989}
+J.~Carlier and E.~Pinson.
+\newblock An algorithm for solving the job-shop problem.
+\newblock \emph{Management Science}, 35(11):1648--1655, 1989.
+
+\bibitem{Nowicki1996}
+E.~Nowicki and C.~Smutnicki.
+\newblock A fast tabu search algorithm for the job shop problem.
+\newblock \emph{Management Science}, 42(6):797--813, 1996.
+
+\bibitem{Wei2022}
+J.~Wei, X.~Wang, D.~Schuurmans, M.~Bosma, B.~Ichter, F.~Xia, E.~Chi, Q.~Le, and D.~Zhou.
+\newblock Chain-of-thought prompting elicits reasoning in large language models.
+\newblock In \emph{Advances in Neural Information Processing Systems (NeurIPS)}, volume~35, 2022.
+
+\bibitem{Yao2023}
+S.~Yao, J.~Zhao, D.~Yu, N.~Du, I.~Shafran, K.~Narasimhan, and Y.~Cao.
+\newblock {ReAct}: Synergizing reasoning and acting in language models.
+\newblock In \emph{International Conference on Learning Representations (ICLR)}, 2023.
+
+\bibitem{Wu2024}
+Q.~Wu, G.~Bansal, J.~Zhang, Y.~Wu, B.~Li, E.~Zhu, L.~Jiang, X.~Zhang, S.~Zhang, J.~Liu, et al.
+\newblock {AutoGen}: Enabling next-gen {LLM} applications via multi-agent conversations.
+\newblock In \emph{First Conference on Language Modeling (COLM)}, 2024.
+\newblock \url{https://openreview.net/forum?id=BAakY1hNKS}.
+
+\bibitem{Ramamonjison2022}
+R.~Ramamonjison, H.~Li, T.~Yu, S.~He, V.~Rengan, A.~Banitalebi-dehkordi, Z.~Zhou, and Y.~Zhang.
+\newblock Augmenting operations research with auto-formulation of optimization models from problem descriptions.
+\newblock In Y.~Li and A.~Lazaridou (eds.), \emph{Proceedings of the 2022 Conference on Empirical Methods in Natural Language Processing: Industry Track}, pages 29--62, Abu Dhabi, UAE, December 2022. Association for Computational Linguistics.
+\newblock \href{https://doi.org/10.18653/v1/2022.emnlp-industry.4}{doi:10.18653/v1/2022.emnlp-industry.4}.
+\newblock \url{https://aclanthology.org/2022.emnlp-industry.4/}.
+
+\end{thebibliography}
+
+\end{document}

@@ -1,0 +1,33 @@
+{
+  "name": "maple-jssp-full",
+  "description": "ALAS MAPLE JSSP full workflow (Python verification default)",
+  "verification": "python",
+  "variant": "full",
+  "steps": [
+    {
+      "id": "generate_schedule",
+      "agent": "MAPLEJSSPQueryAgent",
+      "depends_on": [],
+      "kind": "llm"
+    },
+    {
+      "id": "validate_schedule",
+      "agent": "ValidationTools",
+      "depends_on": ["generate_schedule"],
+      "kind": "python"
+    },
+    {
+      "id": "optimize_schedule",
+      "agent": "OptimizationTools",
+      "depends_on": ["validate_schedule"],
+      "kind": "python",
+      "optional": true
+    },
+    {
+      "id": "persist_schedule",
+      "agent": "FileStorageTools",
+      "depends_on": ["optimize_schedule"],
+      "kind": "python"
+    }
+  ]
+}

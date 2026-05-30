@@ -1,0 +1,39 @@
+{
+  "format": "alas-python-verification-v1",
+  "workflow_name": "maple-jssp-full",
+  "default_verifier": "ValidationTools.validate_schedule",
+  "maple_self_validate": "ExecutionManager.self_validate",
+  "comprehensive_script": "validate_all_initial_schedules_comprehensive.py",
+  "steps": [
+    {
+      "id": "generate_schedule",
+      "agent": "MAPLEJSSPQueryAgent",
+      "verifier": "agent_output_review",
+      "depends_on": []
+    },
+    {
+      "id": "validate_schedule",
+      "agent": "ValidationTools",
+      "verifier": "ValidationTools.comprehensive_validation",
+      "depends_on": [
+        "generate_schedule"
+      ]
+    },
+    {
+      "id": "optimize_schedule",
+      "agent": "OptimizationTools",
+      "verifier": "ValidationTools.comprehensive_validation",
+      "depends_on": [
+        "validate_schedule"
+      ]
+    },
+    {
+      "id": "persist_schedule",
+      "agent": "FileStorageTools",
+      "verifier": "ValidationTools.comprehensive_validation",
+      "depends_on": [
+        "optimize_schedule"
+      ]
+    }
+  ]
+}

@@ -10,6 +10,13 @@ print(f"📂 Project Root: {project_root}")
 src_path = os.path.join(project_root, 'src')
 sys.path.append(src_path)
 
+# Also add the current directory to sys.path for relative imports
+sys.path.append(os.getcwd())
+
+# Add the M-APPLE-OS directory to sys.path
+mapple_os_path = '/Users/glin/Documents/GitHub/M-APPLE/M-APPLE-OS'
+sys.path.append(mapple_os_path)
+
 # Print sys.path to verify
 print("🔍 Updated sys.path:")
 for path in sys.path:

@@ -8,6 +8,8 @@ import json
 import os
 from collections import defaultdict
 
+from benchmark_utils import CATEGORIES, categorize_dataset, get_upper_bound
+
 def load_validation_results():
     """Load the comprehensive validation results"""
     results_file = "comprehensive_initial_schedule_validation_with_alas.json"
@@ -17,43 +19,6 @@ def load_validation_results():
     
     with open(results_file, 'r') as f:
         return json.load(f)
-
-def categorize_dataset(dataset_name):
-    """Categorize dataset into one of the 5 categories"""
-    if dataset_name.startswith('rcmax_'):
-        return "DMU"
-    elif dataset_name.startswith('TA'):
-        return "TA"
-    elif dataset_name.startswith('abz'):
-        return "ABZ"
-    elif dataset_name.startswith('swv'):
-        return "SWV"
-    elif dataset_name.startswith('yn'):
-        return "YN"
-    else:
-        return "Unknown"
-
-def get_upper_bound(dataset_name):
-    """Get upper bound for a dataset"""
-    # Real upper bounds from validation_tools.py
-    upper_bounds = {
-        # DMU datasets
-        "rcmax_20_15_5": 2731, "rcmax_20_15_8": 2669, "rcmax_20_20_7": 3188, "rcmax_20_20_8": 3092,
-        "rcmax_30_15_5": 3681, "rcmax_30_15_4": 3394, "rcmax_30_20_9": 3844, "rcmax_30_20_8": 3764,
-        "rcmax_40_15_10": 4668, "rcmax_40_15_8": 4648, "rcmax_40_20_6": 4692, "rcmax_40_20_2": 4691,
-        "rcmax_50_15_2": 5385, "rcmax_50_15_4": 5385, "rcmax_50_20_6": 5713, "rcmax_50_20_9": 5747,
-        # TA datasets
-        "TA01": 1231, "TA02": 1039, "TA51": 1234, "TA52": 1000, "TA61": 1231, "TA71": 1659, "TA72": 1247,
-        # ABZ datasets
-        "abz07": 656, "abz08": 665, "abz09": 679,
-        # SWV datasets
-        "swv01": 1397, "swv02": 1250, "swv03": 1268, "swv04": 616, "swv05": 1294, "swv06": 1268,
-        "swv07": 1478, "swv08": 1500, "swv09": 1659, "swv10": 1234, "swv11": 1435, "swv12": 1794,
-        "swv13": 1547, "swv14": 1000, "swv15": 1000,
-        # YN datasets
-        "yn01": 1165, "yn02": 1000, "yn03": 892, "yn04": 1165
-    }
-    return upper_bounds.get(dataset_name, 1000)  # Default upper bound
 
 def calculate_optimal_rate(result, dataset_name):
     """Calculate optimal gap as makespan / ub * 100%"""
@@ -87,14 +52,13 @@ def generate_optimal_rate_report():
         dataset = result['dataset']
         category = categorize_dataset(dataset)
         
-        if category != "Unknown":
+        if category is not None:
             deviation = calculate_optimal_rate(result, dataset)
             
             category_stats[source][framework][category]['total_deviation'] += deviation
             category_stats[source][framework][category]['count'] += 1
     
-    # Define the 5 dataset categories
-    categories = ["DMU", "TA", "ABZ", "SWV", "YN"]
+    categories = CATEGORIES
     
     # Define all sources and frameworks
     sources = ["MAS-GPT4o", "MAS-Claude4", "Single", "ALAS-GPT4o", "ALAS-Claude4", "ALAS-DeepSeek-V3", "ALAS-Gemini-2.5"]
