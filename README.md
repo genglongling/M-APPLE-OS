@@ -65,6 +65,10 @@ ALAS is as far as we know, the first comprehensive middleware for agent applicat
 
 ![ALAS Algorithm](figures/algorithm.png)
 
+- `src/workflow_integrations/` — optional Argo / ASL / BPMN exporters (Python verification remains default)
+- `applications/export_workflow_integrations.py` — CLI to generate those artifacts
+- `examples/workflow_integrations/` — sample canonical workflow JSON
+
 ---
 
 ## **🔄 Multi-Agent Framework Comparison**
@@ -120,6 +124,45 @@ This project compares four established multi-agent frameworks with our novel ALA
 | **Scalability** | Medium | Medium | High | High | **Highly scalable** |
 | **Ease of Use** | Medium | High | Medium | Medium | **High (automated)** |
 | **JSSP Performance** | Variable | Variable | Variable | Variable | **Consistently optimal** |
+
+### **Workflow Verification (optional)**
+
+**Default (always on):** Verification and orchestration are **Python-based**—no external workflow engine is required.
+
+| Layer | Implementation |
+|-------|----------------|
+| Schedule / constraint checks | `src/utils/validation_tools.py`, `ValidationTools` in MAPLE runners |
+| Batch validation | `validate_all_initial_schedules_comprehensive.py` |
+| In-loop self-check | `ExecutionManager.self_validate()` in `src/multi_agent/MAPLE.py` |
+| Agent prompts | Plain-text task specifications (not BPMN) |
+
+**Optional (off by default):** Export the same canonical workflow graph to other formats for **Kubernetes execution**, **cloud state machines**, or **documentation diagrams**. These do not replace Python verification; they are adapters you can enable when deploying outside a single Python process.
+
+| Integration | Format | Purpose | Enable |
+|-------------|--------|---------|--------|
+| **Python spec** (default export) | `*_python_verification.json` | Documents which Python verifier applies to each step | Default; use `--no-python-spec` to skip |
+| **Argo Workflows** | `*_argo_workflow.yaml` | Run steps as a DAG on Kubernetes | `ALAS_ENABLE_ARGO=1` or `--enable-argo` |
+| **Amazon States Language (ASL)** | `*_asl.json` | JSON state machine (e.g. Step Functions) | `ALAS_ENABLE_ASL=1` or `--enable-asl` |
+| **BPMN 2.0** | `*_bpmn20.xml` | Documentation-quality process diagrams | `ALAS_ENABLE_BPMN=1` or `--enable-bpmn` |
+
+```bash
+# Export all optional artifacts for the built-in MAPLE JSSP full workflow
+PYTHONPATH=src python3 applications/export_workflow_integrations.py \
+  --enable-argo --enable-asl --enable-bpmn \
+  --out-dir artifacts/workflow_integrations
+
+# Or from a JSON task_spec / canonical workflow
+PYTHONPATH=src python3 applications/export_workflow_integrations.py \
+  --workflow examples/workflow_integrations/maple_jssp_full.json \
+  --enable-bpmn
+
+# Kubernetes: submit generated manifest (cluster must have Argo Workflows installed)
+# kubectl create -f artifacts/workflow_integrations/maple-jssp-full_argo_workflow.yaml
+```
+
+Module layout: `src/workflow_integrations/` (`canonical.py`, `argo_export.py`, `asl_export.py`, `bpmn_export.py`). Step containers/Lambdas can call `applications/run_workflow_step.py` as a stub entrypoint and wire it to MAPLE agents in your image.
+
+Preset workflow JSON: `examples/workflow_integrations/maple_jssp_full.json`.
 
 ### **ALAS Advantages**
 
@@ -236,7 +279,11 @@ For each dataset (rcmax_20_15_5, TA01, abz07, swv01, yn01):
 │
 └─ For each optimization method (6 methods):
     │
+<<<<<<< HEAD
+    ├─ 3. OptimizationTools.run_optimization_schedule() (optional)
+=======
     ├─ 3. OptimizationTools.run_optimization_schedule() （optional)
+>>>>>>> 867d34a51df476c442275c5963030d18087d88d0
     │   ├─ Creates optimizer (SA, GA, TS, VNS, MA, LRCP)
     │   ├─ Runs optimization (max 5 iterations)
     │   ├─ Validates result against upper bounds
@@ -259,11 +306,11 @@ LLM USAGE:
 - TOTAL LLM CALLS: 5-15 (depends on validation success)
 
 TOTAL METHODS TESTED: 6
-- Simulated Annealing
-- Genetic Algorithm  
-- Tabu Search
-- Variable Neighborhood Search
-- Memetic Algorithm
+- Simulated Annealing (optional)
+- Genetic Algorithm   (optional)
+- Tabu Search (optional)
+- Variable Neighborhood Search (optional)
+- Memetic Algorithm (optional)
 - LRCP
 
 TOTAL DATASETS: 5
