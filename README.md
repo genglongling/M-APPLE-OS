@@ -79,6 +79,10 @@ ALAS is as far as we know, the first comprehensive middleware for agent applicat
 - `applications/export_workflow_integrations.py` — CLI to generate those artifacts
 - `examples/workflow_integrations/` — sample canonical workflow JSON
 
+- `src/workflow_integrations/` — optional Argo / ASL / BPMN exporters (Python verification remains default)
+- `applications/export_workflow_integrations.py` — CLI to generate those artifacts
+- `examples/workflow_integrations/` — sample canonical workflow JSON
+
 ---
 
 ## **🔄 Multi-Agent Framework Comparison**
@@ -274,7 +278,15 @@ For each dataset (rcmax_20_15_5, TA01, abz07, swv01, yn01):
 │
 └─ For each optimization method (6 methods):
     │
+<<<<<<< HEAD
     ├─ 3. OptimizationTools.run_optimization_schedule() (optional)
+=======
+<<<<<<< HEAD
+    ├─ 3. OptimizationTools.run_optimization_schedule() (optional)
+=======
+    ├─ 3. OptimizationTools.run_optimization_schedule() （optional)
+>>>>>>> 867d34a51df476c442275c5963030d18087d88d0
+>>>>>>> a8de420a5961303908f5c2b53c2c4a620764d537
     │   ├─ Creates optimizer (SA, GA, TS, VNS, MA, LRCP)
     │   ├─ Runs optimization (max 5 iterations)
     │   ├─ Validates result against upper bounds
