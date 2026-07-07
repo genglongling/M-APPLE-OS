@@ -1,4 +1,4 @@
-# **ALAS: First Automated, Dynamic, General-Purpose Multi-Agent Workflow/Pipeline/Framework for Planning and Optimization**
+# **M-APPLE-OS: First Automated, Dynamic, General-Purpose Multi-Agent Workflow/Pipeline/Framework for Planning and Optimization**
 
 ```
 A General-Purpose Operating System for Dynamic Planning, Multi-Agent Communication, Multi-Thread Job Execution and Goal optimization. **
@@ -825,7 +825,7 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 If you find this repository helpful, please cite the following paper:  
 
 ```
-ALAS: An Adaptive LLM-based Agentic System for Planning with Intelligence and Integrity
+M-APPLE-OS: First Automated, Dynamic, General-Purpose Multi-Agent Workflow/Pipeline/Framework for Planning and Optimization
 Anonymous Author(s)  
 ```
 
