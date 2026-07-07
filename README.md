@@ -825,7 +825,7 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 If you find this repository helpful, please cite the following paper:  
 
 ```
-ALAS: A Dynamic Multi-LLM Agent Framework for Disruption-Aware Planning and Optimization
+ALAS: An Adaptive LLM-based Agentic System for Planning with Intelligence and Integrity
 Anonymous Author(s)  
 ```
 
