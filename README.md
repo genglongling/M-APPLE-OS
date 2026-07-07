@@ -5,11 +5,6 @@ A General-Purpose Operating System for Dynamic Planning, Multi-Agent Communicati
 --- ALAS Authors
 ```
 
-<p align="center">
-  ⬇️ <a href="https://github.com/genglongling/REALM-Bench?tab=readme-ov-file">Github</a>  
-  📃 <a href="https://arxiv.org/abs/2502.18836">Paper</a>  
-  🌐 <a href="https://example.com/project">Project Page</a>
-</p>
 
 This repository **ALAS** provides:
 
